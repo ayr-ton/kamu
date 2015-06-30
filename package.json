@@ -1,7 +1,11 @@
 {
   "name": "libraryui",
   "version": "0.0.0",
-  "dependencies": {},
+  "dependencies": {
+    "express": "^4.13.0",
+    "gzippo": "^0.2.0",
+    "morgan": "^1.6.0"
+  },
   "repository": {},
   "devDependencies": {
     "grunt": "^0.4.5",
