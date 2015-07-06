@@ -81,3 +81,10 @@ body {
     border-bottom: 0;
   }
 }
+
+
+.md-toolbar-tools h1 {
+  font-size: inherit;
+  font-weight: inherit;
+  margin: inherit;
+}
