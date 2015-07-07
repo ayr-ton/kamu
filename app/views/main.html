@@ -1,24 +1,31 @@
-<div ng-controller="MainCtrl">
 
-            <table border="1">
-                             <thead>
-                                 <tr>
-                                     <th>Title</th>
-                                     <th>Author</th>
-                                     <th>Status</th>
-                                 </tr>
-                             </thead>
-                            
-                             <tbody ng-repeat="book in books">
+  <md-data-table-toolbar>
+      <h2 class="md-title">Book List</h2>
+  </md-data-table-toolbar>
+  
+  <md-data-table-container>
 
-                                 <tr class="odd gradeX" ng-class-odd="odd" ng-class-even="even">
+    <table md-data-table md-row-select="selected" >
+
+       <thead>
+           <tr layout="row">
+               <th flex="40">Title</th>
+               <th flex="40">Author</th>
+               <th flex="19">Status</th>
+           </tr>
+       </thead>
+      
+       <tbody md-auto-select>
+
+           <tr ng-repeat="book in books" layout="row">
+             
+               <td flex="40">{{book.title}}</td>
+               <td flex="40">{{book.author}}</td>
+               <td flex="19">{{book.status}}</td>
+
+           </tr>
                                    
-                                     <td>{{book.title}}</td>
-                                     <td>{{book.author}}</td>
-                                     <td>{{book.status}}</td>
-
-                                 </tr>
-                                                         
-                             </tbody>
+       </tbody>
           </table>
-</div>
+  </md-data-table-container>
+
