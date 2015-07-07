@@ -9,20 +9,20 @@
 
        <thead>
            <tr layout="row">
-               <th flex="40">Title</th>
-               <th flex="40">Author</th>
-               <th flex="19">Status</th>
+              <th flex="5">Id</th>
+              <th flex="40">Title</th>
+              <th flex="35">Author</th>
+              <th flex="19">Status</th>
            </tr>
        </thead>
       
        <tbody md-auto-select>
 
            <tr ng-repeat="book in books" layout="row">
-             
-               <td flex="40">{{book.title}}</td>
-               <td flex="40">{{book.author}}</td>
-               <td flex="19">{{book.status}}</td>
-
+              <td flex="5">{{book.id}}</td>
+              <td flex="40">{{book.title}}</td>
+              <td flex="35">{{book.author}}</td>
+              <td flex="19">{{book.status}}</td>
            </tr>
                                    
        </tbody>
