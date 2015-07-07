@@ -1,6 +1,8 @@
 # library-ui [![Build Status](https://snap-ci.com/tw-library/library-ui/branch/master/build_image)](https://snap-ci.com/tw-library/library-ui/branch/master)
 
-This project is generated with [yo angular generator](https://github.com/yeoman/generator-angular)
+Available at: http://tw-library-ui.herokuapp.com/
+
+This project was generated with [yo angular generator](https://github.com/yeoman/generator-angular)
 version 0.11.1.
 
 ## Build & development
