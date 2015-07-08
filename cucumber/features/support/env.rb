@@ -1,5 +1,6 @@
 require 'selenium-webdriver'
 require 'page-object'
+require 'rest-assured'
 
 World PageObject::PageFactory
 
@@ -12,6 +13,7 @@ Before do
 	else
 		@browser = Selenium::WebDriver.for :chrome		
 	end	
+	RestAssured::Server.start(database: ':memory:')
 end
 
 After do

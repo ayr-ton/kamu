@@ -6,7 +6,7 @@ class ListBooksPage
 
   table(:book_table, :class => 'ng-isolate-scope')
 
-  page_url 'http://tw-library-ui.herokuapp.com/'
+  page_url 'localhost:9000'
   
   def get_book_list_data
   	sleep 1
