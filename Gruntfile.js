@@ -464,7 +464,7 @@ module.exports = function (grunt) {
     grunt.task.run(['serve:' + target]);
   });
 
-  grunt.registerTask('stage', [
+  grunt.registerTask('cukes', [
     'build',
     'ngconstant:staging',
     'connect:dist',
