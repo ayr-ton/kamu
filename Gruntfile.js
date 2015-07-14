@@ -28,7 +28,7 @@ module.exports = function (grunt) {
       // Options for all targets
       options: {
         space: '  ',
-        wrap: '"use strict";\n\n {%= __ngModule %}',
+        wrap: '\'use strict\';\n\n {%= __ngModule %}',
         name: 'config',
       },
       // Environment targets
@@ -462,7 +462,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('test', [
     'clean:server',
-    'ngconstant:test',
+    'ngconstant:development',
     'wiredep',
     'concurrent:test',
     'autoprefixer',
