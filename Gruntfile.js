@@ -24,6 +24,15 @@ module.exports = function (grunt) {
   // Define the configuration for all the tasks
   grunt.initConfig({
 
+    shell: {
+        options: {
+            stderr: false
+        },
+        cucumber: {
+            command: 'cd cucumber && bundle exec cucumber'
+        }
+    },
+
     ngconstant: {
       // Options for all targets
       options: {
@@ -432,6 +441,7 @@ module.exports = function (grunt) {
     }
   });
 
+  grunt.registerTask('default', ['shell']);
 
   grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
     if (target === 'dist') {
@@ -457,7 +467,8 @@ module.exports = function (grunt) {
   grunt.registerTask('stage', [
     'build',
     'ngconstant:staging',
-    'connect:dist:keepalive'
+    'connect:dist',
+    'shell:cucumber'
   ]);
 
   grunt.registerTask('test', [
