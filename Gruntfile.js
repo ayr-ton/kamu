@@ -29,7 +29,11 @@ module.exports = function (grunt) {
             stderr: false
         },
         cucumber: {
-            command: 'cd cucumber && bundle exec cucumber'
+            command: [
+              'cd cucumber',
+              'bundle install',
+              'bundle exec cucumber'
+            ].join('&&')
         }
     },
 
