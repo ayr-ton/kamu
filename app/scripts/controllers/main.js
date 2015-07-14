@@ -10,14 +10,13 @@
 angular
 
 	.module('libraryUiApp')
-	.controller('MainCtrl', ['$scope', '$http', function($scope, $http){
+	.controller('MainCtrl', ['$scope', '$http', 'ENV', function($scope, $http, ENV){
 
 
-  		var endPoint = 'https://tw-library-api.herokuapp.com/books';
+		var endPoint = ENV.apiEndpoint + '/books';
 
 		function findBooks() {
-		        
-		        //get all tasks and display initially
+
 		        $http.get(endPoint).
 		            success(function (data) {
 		                if (data._embedded !== undefined) {
@@ -31,5 +30,5 @@ angular
 		}
 
 		findBooks();
- 
+
 }]);
