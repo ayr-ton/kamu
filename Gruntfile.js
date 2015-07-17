@@ -23,20 +23,6 @@ module.exports = function (grunt) {
 
   // Define the configuration for all the tasks
   grunt.initConfig({
-
-    shell: {
-        options: {
-            stderr: false
-        },
-        cucumber: {
-            command: [
-              'cd cucumber',
-              'bundle install',
-              'bundle exec cucumber'
-            ].join('&&')
-        }
-    },
-
     ngconstant: {
       // Options for all targets
       options: {
@@ -52,18 +38,7 @@ module.exports = function (grunt) {
         constants: {
           ENV: {
             name: 'development',
-            apiEndpoint: 'http://localhost:4578'
-          }
-        }
-      },
-      staging: {
-        options: {
-          dest: '<%= yeoman.dist %>/scripts/config.js'
-        },
-        constants: {
-          ENV: {
-            name: 'staging',
-            apiEndpoint: 'http://localhost:4578'
+            apiEndpoint: 'http://localhost:8080'
           }
         }
       },
@@ -445,8 +420,6 @@ module.exports = function (grunt) {
     }
   });
 
-  grunt.registerTask('default', ['shell']);
-
   grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
     if (target === 'dist') {
       return grunt.task.run(['build', 'connect:dist:keepalive']);
@@ -467,13 +440,6 @@ module.exports = function (grunt) {
     grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
     grunt.task.run(['serve:' + target]);
   });
-
-  grunt.registerTask('cukes', [
-    'build',
-    'ngconstant:staging',
-    'connect:dist',
-    'shell:cucumber'
-  ]);
 
   grunt.registerTask('test', [
     'clean:server',
