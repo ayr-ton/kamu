@@ -21,6 +21,8 @@ module.exports = function (grunt) {
     dist: 'dist'
   };
 
+  grunt.loadNpmTasks('grunt-karma');
+
   // Define the configuration for all the tasks
   grunt.initConfig({
     ngconstant: {
@@ -71,10 +73,10 @@ module.exports = function (grunt) {
           livereload: '<%= connect.options.livereload %>'
         }
       },
-      // jsTest: {
-      //   files: ['test/spec/**/*.js'],
-      //   tasks: ['newer:jshint:test', 'karma']
-      // },
+      jsTest: {
+        files: ['test/spec/**/*.js'],
+        tasks: ['newer:jshint:test', 'karma']
+      },
       styles: {
         files: ['<%= yeoman.app %>/styles/**/*.css'],
         tasks: ['newer:copy:styles', 'autoprefixer']
@@ -440,8 +442,6 @@ module.exports = function (grunt) {
     grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
     grunt.task.run(['serve:' + target]);
   });
-
-  grunt.loadNpmTasks('grunt-karma');
 
   grunt.registerTask('test', [
     'clean:server',
