@@ -10,7 +10,6 @@
  */
 angular
   .module('libraryUiApp', [
-    'config',
     'ngAnimate',
     'ngCookies',
     'ngResource',
