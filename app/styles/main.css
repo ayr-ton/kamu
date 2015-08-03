@@ -1,29 +1,372 @@
-@md-media-sm: 600px;
-@md-media-gt-sm: (@md-media-sm + 1px);
+/*INIT COMPONENTS-------------------------------------------------------------------*/
+html, button, input, select, textarea {margin: 0px;padding: 0px;}
+/*INIT BODY-------------------------------------------------------------------------*/
+body{margin: 0px;padding: 0px;}
+/*INIT TEXT-------------------------------------------------------------------------*/
+p, h1, h2, h3, h4, h5, h6{margin: 0px;padding: 0px;}
+/*INIT LINKS------------------------------------------------------------------------*/
+a, a:hover, a:active, a:visited, a:focus{
+  margin: 0px;
+  padding: 0px;
+  text-decoration: none;
+  background: none;
+  outline: 0;
+}
+* {
+  -webkit-tap-highlight-color: transparent;
+  -moz-tap-highlight-color: transparent;
+}
+/*INIT LIST-------------------------------------------------------------------------*/
+ul, ol, li{margin: 0px;padding: 0px; list-style-type: none;}
 
-html, body, md-content {
-  background-color: darken(#fff, 4%) !important;
-  -moz-osx-font-smoothing: grayscale;
+body{
+  font-family: 'Open Sans', sans-serif;
+  background-color: #f2f2f2;
 }
 
-md-toolbar {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+/*HEADER----------------------------------------------------------------------------*/
+header{
+  height: 58px;
+  background-color: #434544;
+  border-bottom: 1px solid #3c3e3d;
+  box-sizing: border-box;
+}
+header::after{
+  content: "";
+  height: 8px;
+  top: 58px;
+  background: url("../images/header-shadow.png");
+  background-size: 8px;
+  display: block;
+  position: relative;
 }
 
-@media all and (min-width: @md-media-gt-sm) {
-
-  md-toolbar {
-    .md-title {
-      margin-left: 56px;
-    }
-  }
+/*MAIN-AVIGATION--------------------------------------------------------------------*/
+.main-nav{
+  height: 48px;
+  background-color: #f2f2f2;
+}
+.main-nav ul li{
+  float: left;
+  display: inline-block;
+}
+.main-nav ul li a{
+  line-height: 48px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  float: left;
+  text-align: center;
+  width: 156px;
   
-  md-card {
-    margin: 72px;
-  }
+  -webkit-transition: all 0.2s ease;                  
+  -moz-transition: all 0.2s ease;                 
+  -o-transition: all 0.2s ease;   
+  -ms-transition: all 0.2s ease;          
+  transition: all 0.2s ease;
+}
+.main-nav .main-nav-active{
+  background-color: #ffffff;
+  color: #333333;
+}
+.main-nav .main-nav-unactive{
+  color: #999999;
+}
+.main-nav .main-nav-unactive:hover{
+  background-color: #e1e1e1;
+}
+/*SUB-NAVIGATION--------------------------------------------------------------------*/
+.sub-nav{
+  height: 52px;
+  background-color: #ffffff;
+  border-bottom: 1px solid #f2f2f2;
+  box-sizing: border-box;
 }
 
-md-data-table-toolbar.alternate {
-  color: #1e88e5;
-  background-color: #e3f2fd;
+/*CONTAINERS------------------------------------------------------------------------*/
+.main-container{
+  width: 100%;
+  /*padding-right: 20px;
+  padding-left: 20px;*/
+  box-sizing: border-box;
+  float: left;
+}
+
+/*SHELF-----------------------------------------------------------------------------*/
+.books-shelf{
+  
+}
+.books-shelf ul{
+  float: left;
+  width: 100%;
+  box-sizing: border-box;
+  background: url("../images/shelf-bg.png") repeat;
+  background-size: 5px;
+  padding-bottom: 10px;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+.books-shelf ul li{
+  width: 33.3333333333%;
+  box-sizing: border-box;
+  height: 270px;
+  /*padding-right: 10px;
+  padding-left: 10px;*/
+  float: left;
+}
+@media screen and (max-width:460px) {
+  .books-shelf ul li{width: 50%;}
+}
+@media screen and (min-width:660px) {
+  .books-shelf ul li{width: 25%;}
+}
+@media screen and (min-width:860px) {
+  .books-shelf ul li{width: 20%;}
+}
+@media screen and (min-width:1060px) {
+  .books-shelf ul li{width: 16.66666666666667%;}
+}
+@media screen and (min-width:1260px) {
+  .books-shelf ul li{width: 14.285714286%;}
+}
+@media screen and (min-width:1460px) {
+  .books-shelf ul li{width: 12.5%;}
+}
+@media screen and (min-width:1660px) {
+  .books-shelf ul li{width: 11.111111111%;}
+}
+@media screen and (min-width:1860px) {
+  .books-shelf ul li{width: 10%;}
+}
+.books-shelf ul li a{
+  width: 140px;
+  margin-right: auto;
+  margin-left: auto;
+  display: table;
+  color: #000000;
+  height: 258px;
+}
+.books-shelf .books-shelf-image-container{
+  width: 140px;
+  position: relative;
+  height: 246px;
+  
+  -webkit-transition: all 0.2s ease;                  
+  -moz-transition: all 0.2s ease;                 
+  -o-transition: all 0.2s ease;   
+  -ms-transition: all 0.2s ease;          
+  transition: all 0.2s ease;
+}
+.books-shelf .books-shelf-image-container .books-img{
+  width: 100%;
+  bottom: 0;
+  position: absolute;
+  display: block;
+  box-sizing: border-box;
+}
+.books-shelf .books-shelf-image-container::after{
+  content: "";
+  height: 2px;
+  width: 100%;
+  display: block;
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.4);
+  top: 246px;
+  border-radius: 2px;
+  
+  -webkit-transition: all 0.2s ease;                  
+  -moz-transition: all 0.2s ease;                 
+  -o-transition: all 0.2s ease;   
+  -ms-transition: all 0.2s ease;          
+  transition: all 0.2s ease;
+}
+.books-shelf .books-shelf-image-container img{
+  width: 140px;
+  vertical-align: bottom;
+  position: relative;
+  box-sizing: border-box;
+  z-index: 1;
+  background-color: #f5f5f5;
+}
+.books-shelf ul li a:hover .books-shelf-image-container{
+  margin-top: -8px;
+  cursor: pointer;
+}
+.books-shelf ul li a:hover .books-shelf-image-container::after{
+  top: 254px;
+  background-color: rgba(0, 0, 0, 0.14);
+}
+.books-new{
+  background: url("../images/ind-new.png") no-repeat;
+  background-size: 72px;
+  width: 72px;
+  height: 72px;
+  z-index: 5;
+  position: absolute;
+  right: -2px;
+  top: -2px;
+}
+
+/*LIST-----------------------------------------------------------------------------*/
+.books-list{
+  
+}
+.books-list ul{
+  float: left;
+  width: 100%;
+  box-sizing: border-box;
+}
+.books-list::before{
+  content: "";
+  background: url("../images/shelf-bg.png") repeat-x;
+  background-size: 5px;
+  height: 10px;
+  width: 100%;
+  z-index: 10;
+  display: block;
+  position: absolute;
+}
+.books-list ul li{
+  float: left;
+  box-sizing: border-box;
+  width: 50%;
+  border: 1px solid #e6e6e6;
+  border-top-style: none;
+  border-left-style: none;
+  padding: 34px 30px 30px;
+}
+@media screen and (min-width:1060px) {
+  .books-list ul li{width: 33.3333333333%;}
+}
+.books-list ul li a{
+  float: left;
+  height: 182px;
+  box-sizing: border-box;
+  
+  -webkit-transition: all 0.2s ease;                  
+  -moz-transition: all 0.2s ease;                 
+  -o-transition: all 0.2s ease;   
+  -ms-transition: all 0.2s ease;          
+  transition: all 0.2s ease;
+}
+.books-list ul li a:hover{
+  /*background-color: #e6e6e6;*/
+}
+.books-list .books-list-image-container{
+  float: left;
+  height: 182px;
+  
+  -webkit-transition: all 0.2s ease;                  
+  -moz-transition: all 0.2s ease;                 
+  -o-transition: all 0.2s ease;   
+  -ms-transition: all 0.2s ease;          
+  transition: all 0.2s ease;
+}
+.books-list .books-list-image-container::after{
+  content: "";
+  height: 2px;
+  width: 100%;
+  display: block;
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 2px;
+  margin-top: -5px;
+  
+  -webkit-transition: all 0.2s ease;                  
+  -moz-transition: all 0.2s ease;                 
+  -o-transition: all 0.2s ease;   
+  -ms-transition: all 0.2s ease;          
+  transition: all 0.2s ease;
+}
+.books-list .books-list-image-container img{
+  height: 180px;
+}
+.books-list ul li a:hover .books-list-image-container{
+  margin-top: -8px;
+}
+.books-list ul li a:hover .books-list-image-container::after{
+  margin-top: 3px;
+  background-color: rgba(0, 0, 0, 0.14);
+}
+.books-list .books-list-info{
+  box-sizing: border-box;
+  margin-left: 180px;
+  padding-left: 20px;
+}
+.books-list-info .books-list-info-title{
+  font-size: 18px;
+  color: #1a1a1a;
+  /*font-weight: 700;*/
+  margin-bottom: 8px;
+  
+  overflow : hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  max-height: 4em;
+}
+.books-list-info .books-list-info-author{
+  font-size: 12px;
+  color: #7e7e7e;
+  font-style: italic;
+  width: 80%;
+}
+.books-list-info-author-title{
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #1a1a1a;
+}
+.books-list .books-list-image-container .books-new{
+  position: relative;
+  float: right;
+  margin-left: -72px;
+}
+
+/*MOBILE/TABLET-----------------------------------------------------------------------------*/
+@media screen and (max-width:660px){
+  header{height: 49px;}
+  header::after{visibility: hidden;}
+  .main-nav{display: none;}
+  .sub-nav{height: 48px;}
+  .books-shelf ul{padding-right: 0px;padding-left: 0px;}
+  .books-shelf ul li{padding: 0;}
+  .books-shelf ul li a:hover .books-shelf-image-container{margin-top: 0px;}
+  .books-shelf ul li a:hover .books-shelf-image-container::after{
+    top: 246px;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+  .books-list ul li{width: 100%;padding: 0px;height: auto;border-right-style: none;}
+  .books-list ul li a{height: auto;width: 100%; padding: 12px; float: left;}
+  .books-list ul li a:focus, .books-list ul li a:active{background-color: #ffffff;}
+  .books-list .books-list-image-container{height: 94px;}
+  .books-list .books-list-image-container img{height: 92px;}
+  .books-list .books-list-info{margin-left: 92px;margin-top: 8px;}
+  .books-list ul li a:hover .books-list-image-container{margin-top: 0px;}
+  .books-list ul li a:hover .books-list-image-container::after{
+    margin-top: -5px;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+  .books-list-info .books-list-info-title{
+    font-size: 16px;
+    overflow : hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    margin-bottom: 0;
+    max-height: 2.8em;
+  }
+  .books-list-info .books-list-info-author{
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .books-list .books-list-image-container .books-new{
+    background-size: 54px;
+    width: 54px;
+    height: 54px;
+  }
 }

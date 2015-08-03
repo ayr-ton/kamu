@@ -2,18 +2,17 @@
 <html class="no-js">
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>TW Library</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
-    <link rel="stylesheet" href="bower_components/angular-material-data-table/dist/md-data-table.min.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,300,700' rel='stylesheet' type='text/css'>
     <!-- endbuild -->
   </head>
   <body ng-app="libraryUiApp">
@@ -22,15 +21,16 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <md-toolbar class="md-default-theme">
-      <div class="md-toolbar-tools" layout-align="space-between">
-        <div class="md-title">TW Library</div>
-      </div>
-    </md-toolbar>
-
-    <md-content class="container">
-        <md-card  ng-view="" ng-controller="MainCtrl">
-    </md-content>
+    <header></header>
+    <nav class="main-nav">
+      <ul>
+        <li><a href="http://" class="main-nav-active">Library</a></li>
+        <li><a href="#" class="main-nav-unactive">Wishlist</a></li>
+      </ul>
+    </nav>
+    <nav class="sub-nav"></nav>
+    <div class="main-container" ng-view="" ng-controller="MainCtrl">
+    </div>
 
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
@@ -43,9 +43,6 @@
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="bower_components/angular-touch/angular-touch.js"></script>
-    <script src="bower_components/angular-aria/angular-aria.js"></script>
-    <script src="bower_components/angular-material/angular-material.js"></script>
-    <script src="bower_components/angular-material-data-table/dist/md-data-table.min.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 

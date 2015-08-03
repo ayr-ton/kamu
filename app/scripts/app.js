@@ -16,11 +16,9 @@ angular
     'ngResource',
     'ngRoute',
     'ngSanitize',
-    'ngTouch',
-    'md.data.table',
-    'ngMaterial'
+    'ngTouch'
   ])
-  .config(function ($routeProvider, $mdThemingProvider) {
+  .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -33,9 +31,4 @@ angular
       .otherwise({
         redirectTo: '/'
       });
-
-	$mdThemingProvider
-		.theme('default')
-        .primaryPalette('blue')
-	    .accentPalette('blue');
   });
