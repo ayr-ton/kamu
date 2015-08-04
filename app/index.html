@@ -12,6 +12,7 @@
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/custom.css">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,300,700' rel='stylesheet' type='text/css'>
     <!-- endbuild -->
   </head>
@@ -22,15 +23,6 @@
 
     <!-- Add your site or application content here -->
     <header></header>
-    <nav class="main-nav">
-      <ul>
-        <li><a href="http://" class="main-nav-active">Library</a></li>
-        <li><a href="#" class="main-nav-unactive">Wishlist</a></li>
-      </ul>
-    </nav>
-    <nav class="sub-nav"></nav>
-    <div class="main-container" ng-view="" ng-controller="MainCtrl">
-    </div>
 
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
@@ -43,6 +35,7 @@
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="bower_components/angular-touch/angular-touch.js"></script>
+    <script src="bower_components/angular-translate/angular-translate.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -51,6 +44,23 @@
         <script src="scripts/app.js"></script>
         <script src="scripts/controllers/main.js"></script>
         <script src="scripts/controllers/about.js"></script>
+        <script src="scripts/controllers/translate.js"></script>
         <!-- endbuild -->
+
+
+    <nav class="main-nav">
+      <ul>
+        <li><a href="http://" class="main-nav-active">{{ 'APP_LIBRARY_TAB' | translate}}</a></li>
+        <li><a href="#" class="main-nav-unactive">{{ 'APP_WISHLIST_TAB' | translate}}</a></li>
+      </ul>
+    </nav>
+    <nav class="sub-nav">
+        <div ng-controller="TranslateCtrl" class="hide">
+          <img src="images/en-us.png" class="language" ng-click="changeLanguage('en-US')" />
+          <img src="images/pt-br.png" class="language" ng-click="changeLanguage('pt-BR')" />
+          <img src="images/es-ec.png" class="language" ng-click="changeLanguage('es-EC')" />
+        </div>
+    </nav>
+    <div class="main-container" ng-view="" ng-controller="MainCtrl"></div>
 </body>
 </html>
