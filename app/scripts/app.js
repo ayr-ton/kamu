@@ -57,10 +57,13 @@ angular
       var language = $cookies.get('language');
 
       if (language == null) {
-        var expireDate = new Date();
-        expireDate.setDate(expireDate.getDate() + 365);
+        language = navigator.language || navigator.userLanguage;
 
-        $cookies.put('language', navigator.language || navigator.userLanguage, { 'expires' : expireDate });
+        var cookieLifespan = 365;
+        var expireDate = new Date();
+        expireDate.setDate(expireDate.getDate() + cookieLifespan);
+
+        $cookies.put('language', language, { 'expires' : expireDate });
       }
 
       return language;
