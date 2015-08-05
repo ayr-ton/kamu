@@ -74,6 +74,7 @@ header::after{
 }
 .main-nav .main-nav-unactive:hover{
   background-color: #e1e1e1;
+  color: #606060;
 }
 /*SUB-NAVIGATION--------------------------------------------------------------------*/
 .sub-nav{
@@ -230,7 +231,7 @@ header::after{
   float: left;
   box-sizing: border-box;
   width: 50%;
-  border: 1px solid #e6e6e6;
+  /*border: 1px solid #e6e6e6;*/
   border-top-style: none;
   border-left-style: none;
   padding: 34px 30px 30px;
@@ -255,7 +256,7 @@ header::after{
 .books-list .books-list-image-container{
   float: left;
   height: 182px;
-  max-width: 150px;
+  max-width: 140px;
   
   -webkit-transition: all 0.2s ease;                  
   -moz-transition: all 0.2s ease;                 
@@ -305,13 +306,17 @@ header::after{
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
-  max-height: 4em;
+  max-height: 4.2em;
 }
 .books-list-info .books-list-info-author{
   font-size: 12px;
   color: #7e7e7e;
   font-style: italic;
   width: 80%;
+  overflow : hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  
 }
 .books-list-info-author-title{
   font-size: 11px;
@@ -324,7 +329,40 @@ header::after{
   float: right;
   margin-left: -72px;
 }
-
+.books-list .bt_borrow, .books-list .bt_return{
+  text-align: center;
+  color: #909090;
+  line-height: 28px;
+  border-radius: 15px;
+  font-size: 11px;
+  letter-spacing: 0.07em;
+  display: table;
+  margin-left: 198px;
+  position: absolute;
+  margin-top: 150px;
+  padding-right: 20px;
+  padding-left: 20px;
+  text-transform: uppercase;
+  border: 1px solid #b9b9b9;
+  
+  -webkit-transition: all 0.2s ease;                  
+  -moz-transition: all 0.2s ease;                 
+  -o-transition: all 0.2s ease;   
+  -ms-transition: all 0.2s ease;          
+  transition: all 0.2s ease;  
+}
+.books-list .bt_borrow:hover{
+  background-color: #74cf2d;
+  cursor: pointer;
+  color: #ffffff;
+  border-color: #6cc12a;
+}
+.books-list .bt_return:hover{
+  background-color: #fe3e4d;
+  cursor: pointer;
+  color: #ffffff;
+  border-color: #ed0012;
+}
 /*MOBILE/TABLET-----------------------------------------------------------------------------*/
 @media screen and (max-width:660px){
   header{height: 49px;}
@@ -338,12 +376,23 @@ header::after{
     top: 246px;
     background-color: rgba(0, 0, 0, 0.4);
   }
-  .books-list ul li{width: 100%;padding: 0px;height: auto;border-right-style: none;}
-  .books-list ul li a{height: auto;width: 100%; padding: 12px; float: left;}
-  .books-list ul li a:focus, .books-list ul li a:active{background-color: #ffffff;}
-  .books-list .books-list-image-container{height: 94px; max-width: 1000px;}
+  .books-list ul li{
+    width: 100%;
+    padding: 0px;
+    height: 119px;
+    border-right-style: none;
+    border: 1px solid #e6e6e6;
+    border-top-style: none;
+    border-left-style: none;
+  }
+  .books-list ul li a{height: auto;width: 100%; padding: 12px;position: absolute;}
+  .books-list ul li a:focus, .books-list ul li a:active{background-color: #ffffff;z-index: -1;}
+  .books-list .books-list-image-container{height: 94px;max-width: 140px;}
   .books-list .books-list-image-container img{height: 92px;}
-  .books-list .books-list-info{margin-left: 92px;margin-top: 8px;}
+  .books-list .books-list-info{margin-left: 92px;margin-top: 8px;
+    padding-left: 26px;
+    padding-right: 26px;
+  }
   .books-list ul li a:hover .books-list-image-container{margin-top: 0px;}
   .books-list ul li a:hover .books-list-image-container::after{
     margin-top: -5px;
@@ -358,6 +407,7 @@ header::after{
     -webkit-box-orient: vertical;
     margin-bottom: 0;
     max-height: 2.8em;
+    margin-top: 20px;
   }
   .books-list-info .books-list-info-author{
     width: 100%;
@@ -370,4 +420,5 @@ header::after{
     width: 54px;
     height: 54px;
   }
+  .books-list .bt_borrow, .books-list .bt_return{display: none;}
 }
