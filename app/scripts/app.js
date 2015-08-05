@@ -48,15 +48,15 @@ angular
         APP_BORROW: 'Borrow'
       })
       .translations('pt-BR', {
-        APP_LIBRARY_TAB: 'Biblioteca',
+        APP_LIBRARY_TAB: 'Todos Os Livros',
         APP_BORROWED_BOOKS_TAB: 'Livros Emprestados',
         APP_WISHLIST_TAB: 'Lista de Desejos',
         APP_BOOK_BY: 'De',
         APP_BORROW: 'Pegar Emprestado'
       })
       .translations('es-EC', {
-        APP_LIBRARY_TAB: 'Libreria',
-        APP_BORROWED_BOOKS_TAB: 'Livros Prestados',
+        APP_LIBRARY_TAB: 'Todos Los Libros',
+        APP_BORROWED_BOOKS_TAB: 'Libros Prestados',
         APP_WISHLIST_TAB: 'Lista',
         APP_BOOK_BY: 'De',
         APP_BORROW: 'Pedir Prestado'
