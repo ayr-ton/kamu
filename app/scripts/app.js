@@ -51,14 +51,14 @@ angular
         APP_LIBRARY_TAB: 'Biblioteca',
         APP_BORROWED_BOOKS_TAB: 'Livros Emprestados',
         APP_WISHLIST_TAB: 'Lista de Desejos',
-        APP_BOOK_BY: 'Por',
+        APP_BOOK_BY: 'De',
         APP_BORROW: 'Pegar Emprestado'
       })
       .translations('es-EC', {
         APP_LIBRARY_TAB: 'Libreria',
         APP_BORROWED_BOOKS_TAB: 'Livros Prestados',
         APP_WISHLIST_TAB: 'Lista',
-        APP_BOOK_BY: 'Por',
+        APP_BOOK_BY: 'De',
         APP_BORROW: 'Pedir Prestado'
       });
 
