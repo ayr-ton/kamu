@@ -41,16 +41,25 @@ angular
 
     $translateProvider
       .translations('en-US', {
-        APP_LIBRARY_TAB: 'Library',
-        APP_WISHLIST_TAB: 'WISH LIST',
+        APP_LIBRARY_TAB: 'All Books',
+        APP_BORROWED_BOOKS_TAB: 'Borrowed Books',
+        APP_WISHLIST_TAB: 'Wish List',
+        APP_BOOK_BY: 'By',
+        APP_BORROW: 'Borrow'
       })
       .translations('pt-BR', {
         APP_LIBRARY_TAB: 'Biblioteca',
+        APP_BORROWED_BOOKS_TAB: 'Livros Emprestados',
         APP_WISHLIST_TAB: 'Lista de Desejos',
+        APP_BOOK_BY: 'Por',
+        APP_BORROW: 'Pegar Emprestado'
       })
       .translations('es-EC', {
         APP_LIBRARY_TAB: 'Libreria',
+        APP_BORROWED_BOOKS_TAB: 'Livros Prestados',
         APP_WISHLIST_TAB: 'Lista',
+        APP_BOOK_BY: 'Por',
+        APP_BORROW: 'Pedir Prestado'
       });
 
     $translateProvider.determinePreferredLanguage(function(){

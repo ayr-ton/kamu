@@ -1,12 +1,18 @@
-<section class="books-shelf">
+<section class="books-list">
   <ul>
-    <li ng-repeat="book in books">
-      <a href="#">
-        <div class="books-shelf-image-container">
-          <div class="books-img">
-            <img src="" alt="{{book.title}}" id="{{book.id}}" />
-          </div>
+    <li id="{{book.id}}" ng-repeat="book in books">
+      <div class="bt_borrow">{{ 'APP_BORROW' | translate }}</div>
+      <a href="">
+        <div class="books-list-image-container">
+          <img src="" alt="{{book.title}}"/>
         </div>
       </a>
+        <div class="books-list-info">
+          <p class="books-list-info-title">{{book.title}}</p>
+          <p class="books-list-info-author-title">{{ 'APP_BOOK_BY' | translate }}</p>
+          <p class="books-list-info-author">{{book.author}}</p>
+        </div>
     </li>
+  </ul>
+  <!-- <div class="bt_return">Return</div> -->
 </section>

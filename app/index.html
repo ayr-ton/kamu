@@ -47,13 +47,13 @@
         <script src="scripts/controllers/translate.js"></script>
         <!-- endbuild -->
 
-
     <nav class="main-nav">
       <ul>
-        <li><a href="http://" class="main-nav-active">{{ 'APP_LIBRARY_TAB' | translate}}</a></li>
-        <li><a href="#" class="main-nav-unactive">{{ 'APP_WISHLIST_TAB' | translate}}</a></li>
+        <li><a href="#" class="main-nav-active">{{ 'APP_LIBRARY_TAB' | translate }}</a></li>
+        <li><a href="#" class="main-nav-unactive">{{ 'APP_BORROWED_BOOKS_TAB' | translate }}</a></li>
       </ul>
     </nav>
+
     <nav class="sub-nav">
         <div ng-controller="TranslateCtrl" class="hide">
           <img src="images/en-us.png" class="language" ng-click="changeLanguage('en-US')" />
