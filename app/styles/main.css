@@ -255,6 +255,7 @@ header::after{
 .books-list .books-list-image-container{
   float: left;
   height: 182px;
+  max-width: 150px;
   
   -webkit-transition: all 0.2s ease;                  
   -moz-transition: all 0.2s ease;                 
@@ -340,7 +341,7 @@ header::after{
   .books-list ul li{width: 100%;padding: 0px;height: auto;border-right-style: none;}
   .books-list ul li a{height: auto;width: 100%; padding: 12px; float: left;}
   .books-list ul li a:focus, .books-list ul li a:active{background-color: #ffffff;}
-  .books-list .books-list-image-container{height: 94px;}
+  .books-list .books-list-image-container{height: 94px; max-width: 1000px;}
   .books-list .books-list-image-container img{height: 92px;}
   .books-list .books-list-info{margin-left: 92px;margin-top: 8px;}
   .books-list ul li a:hover .books-list-image-container{margin-top: 0px;}
