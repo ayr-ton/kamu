@@ -43,6 +43,7 @@
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/config.js"></script>
         <script src="scripts/app.js"></script>
+        <script src="scripts/controllers/book.js"></script>
         <script src="scripts/controllers/main.js"></script>
         <script src="scripts/controllers/about.js"></script>
         <script src="scripts/controllers/translate.js"></script>
@@ -62,6 +63,8 @@
           <img src="images/es-ec.png" class="language" ng-click="changeLanguage('es-EC')" />
         </div>
     </nav>
-    <div class="main-container" ng-view="" ng-controller="MainCtrl"></div>
+    
+    <div class="main-container" ng-init="findBooks()" ng-view="" ng-controller="MainCtrl"></div>
+    
 </body>
 </html>
