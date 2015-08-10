@@ -1,6 +1,18 @@
 .language {
   width: 20px;   
   cursor: pointer;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: normal;
+}
+
+#language-menu {
+  vertical-align: center;
+  float: right;
+  margin-right: 16px;
+  height: 48px;
+  line-height: 48px;
+  text-align: center;
 }
 
 .hide {
