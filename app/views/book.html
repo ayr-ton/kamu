@@ -1,0 +1,43 @@
+<span>ISBN: <input type='text' id='isbn' value='9780932633019'/><button id='book-search' ng-click='findGoogleBooks()'>Search</button></span>
+
+<div ng-repeat='book in books'>
+    <form method="POST" ng-model="book">
+        <div>
+            <label>Title</label>
+            <input type="text" ng-bind="{{title}}" value="{{title}}" />
+        </div>
+        <div>
+            <label>Subtitle</label>
+            <input type="text" ng-bind="{{subtitle}}" />
+        </div>
+        <div>
+            <label>Authors</label>
+            <input type="text" ng-bind="{{author}}" />
+        </div>
+        <div>
+            <label>Description</label>
+            <textarea cols="5" rows="3" ng-bind="{{description}}"></textarea>
+        </div>
+        <div>
+            <label>ISBN 13</label>
+            <input type="text" ng-bind="{{isbn13}}" />
+        </div>
+        <div>
+            <label>Publisher</label>
+            <input type="text" ng-bind="{{publisher}}" />
+        </div>
+        <div>
+            <label>Publication Date</label>
+            <input type="text" ng-bind="{{publicationDate}}" />
+        </div>
+        <div>
+            <label>Image URL</label>
+            <input type="text" ng-bind="{{imageUrl}}" />
+        </div>
+        <div>
+            <label></label>
+            <img src="{{imageUrl}}">
+        </div>
+    </form>
+
+</div>

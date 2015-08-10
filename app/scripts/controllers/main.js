@@ -29,6 +29,4 @@ angular
                });
     }
 
-    findBooks();
-
 }]);
