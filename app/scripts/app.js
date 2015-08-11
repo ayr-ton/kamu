@@ -49,21 +49,48 @@ angular
         APP_BORROWED_BOOKS_TAB: 'Borrowed Books',
         APP_WISHLIST_TAB: 'Wish List',
         APP_BOOK_BY: 'By',
-        APP_BORROW: 'Borrow'
+        APP_BORROW: 'Borrow',
+        APP_SEARCH: 'Search',
+        BOOK_TITLE: 'Title',
+        BOOK_SUBTITLE: 'Subtitle',
+        BOOK_AUTHORS: 'Authors',
+        BOOK_DESCRIPTION: 'Description',
+        BOOK_ISBN_13: 'ISBN 13',
+        BOOK_PUBLISHER: 'Publisher',
+        BOOK_PUBLICATION_DATE: 'Publication Date',
+        BOOK_IMAGE_URL: 'Image URL'
       })
       .translations('pt-BR', {
         APP_LIBRARY_TAB: 'Todos Os Livros',
         APP_BORROWED_BOOKS_TAB: 'Livros Emprestados',
         APP_WISHLIST_TAB: 'Lista de Desejos',
         APP_BOOK_BY: 'De',
-        APP_BORROW: 'Pegar Emprestado'
+        APP_BORROW: 'Pegar Emprestado',
+        APP_SEARCH: 'Busca',
+        BOOK_TITLE: 'Título',
+        BOOK_SUBTITLE: 'Subtítulo',
+        BOOK_AUTHORS: 'Autores',
+        BOOK_DESCRIPTION: 'Descrição',
+        BOOK_ISBN_13: 'ISBN 13',
+        BOOK_PUBLISHER: 'Editora',
+        BOOK_PUBLICATION_DATE: 'Data de Publicação',
+        BOOK_IMAGE_URL: 'URL da Imagem'
       })
       .translations('es-EC', {
         APP_LIBRARY_TAB: 'Todos Los Libros',
         APP_BORROWED_BOOKS_TAB: 'Libros Prestados',
         APP_WISHLIST_TAB: 'Lista',
         APP_BOOK_BY: 'De',
-        APP_BORROW: 'Pedir Prestado'
+        APP_BORROW: 'Pedir Prestado',
+        APP_SEARCH: '',
+        BOOK_TITLE: '',
+        BOOK_SUBTITLE: '',
+        BOOK_AUTHORS: '',
+        BOOK_DESCRIPTION: '',
+        BOOK_ISBN_13: '',
+        BOOK_PUBLISHER: '',
+        BOOK_PUBLICATION_DATE: '',
+        BOOK_IMAGE_URL: ''
       });
 
     $translateProvider.determinePreferredLanguage(function(){
@@ -86,5 +113,4 @@ angular
       return language;
     });
 
-    $translateProvider.useSanitizeValueStrategy('sanitize');
   });

@@ -1,31 +1,31 @@
-<span>ISBN: <input type='text' ng-model="searchCriteria"/><button id='book-search' ng-click='findGoogleBooks()'>SEARCH</button></span>
+<span>ISBN: <input type='text' ng-model="searchCriteria"/><button id='book-search' ng-click='findGoogleBooks()'>{{ 'APP_SEARCH' | translate}}</button></span>
 
 <form method="POST" id="{{book.id}}">
     <div>
-        Title: <input type="text" ng-model="book.title"/>
+        {{ 'BOOK_TITLE' | translate }}: <input type="text" ng-model="book.title"/>
     </div>
     <div>
-        Subtitle: <input type="text" ng-model="book.subtitle"/>
+        {{ 'BOOK_SUBTITLE' | translate }}: <input type="text" ng-model="book.subtitle"/>
     </div>
     <div>
-        Authors: <input type="text" ng-model="book.author"/>
+        {{ 'BOOK_AUTHORS' | translate }}: <input type="text" ng-model="book.author"/>
     </div>
     <div>
-        Description: <textarea cols="50" row="3" ng-model="book.description"></textarea>
+        {{ 'BOOK_DESCRIPTION' | translate }}: <textarea cols="50" row="3" ng-model="book.description"></textarea>
     </div>
     <div>
-        ISBN 13: <input type="text" ng-model="book.isbn13"/>
+        {{ 'BOOK_ISBN_13' | translate }}: <input type="text" ng-model="book.isbn13"/>
     </div>
     <div>
-        Publisher: <input type="text" ng-model="book.publisher"/>
+        {{ 'BOOK_PUBLISHER' | translate }}: <input type="text" ng-model="book.publisher"/>
     </div>
     <div>
-        Publication Date: <input type="text" ng-model="book.publicationDate"/>
+        {{ 'BOOK_PUBLICATION_DATE' | translate }}: <input type="text" ng-model="book.publicationDate"/>
     </div>
     <div>
-        Image URL: <input type="text" ng-model="book.imageUrl"/>
+        {{ 'BOOK_IMAGE_URL' | translate }}: <input type="text" ng-model="book.imageUrl"/>
     </div>
     <div>
-        <img src="{{book.imageUrl}}">
+        <img src="{{ 'book'.imageUrl }}">
     </div>
 </form>
