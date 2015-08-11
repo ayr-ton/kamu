@@ -58,7 +58,8 @@ angular
         BOOK_ISBN_13: 'ISBN 13',
         BOOK_PUBLISHER: 'Publisher',
         BOOK_PUBLICATION_DATE: 'Publication Date',
-        BOOK_IMAGE_URL: 'Image URL'
+        BOOK_IMAGE_URL: 'Image URL',
+        BOOK_NUMBER_OF_PAGES: 'Number of Pages'
       })
       .translations('pt-BR', {
         APP_LIBRARY_TAB: 'Todos Os Livros',
@@ -74,7 +75,8 @@ angular
         BOOK_ISBN_13: 'ISBN 13',
         BOOK_PUBLISHER: 'Editora',
         BOOK_PUBLICATION_DATE: 'Data de Publicação',
-        BOOK_IMAGE_URL: 'URL da Imagem'
+        BOOK_IMAGE_URL: 'URL da Imagem',
+        BOOK_NUMBER_OF_PAGES: 'Número de Paginas'
       })
       .translations('es-EC', {
         APP_LIBRARY_TAB: 'Todos Los Libros',
@@ -90,7 +92,8 @@ angular
         BOOK_ISBN_13: '',
         BOOK_PUBLISHER: '',
         BOOK_PUBLICATION_DATE: '',
-        BOOK_IMAGE_URL: ''
+        BOOK_IMAGE_URL: '',
+        BOOK_NUMBER_OF_PAGES: ''
       });
 
     $translateProvider.determinePreferredLanguage(function(){

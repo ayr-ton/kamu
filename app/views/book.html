@@ -1,4 +1,4 @@
-<span>ISBN: <input type='text' ng-model="searchCriteria"/><button id='book-search' ng-click='findGoogleBooks()'>{{ 'APP_SEARCH' | translate}}</button></span>
+<span>ISBN 13: <input type='text' ng-model="searchCriteria"/><button id='book-search' ng-click='findGoogleBooks()'>{{ 'APP_SEARCH' | translate}}</button></span>
 
 <form method="POST" id="{{book.id}}">
     <div>
@@ -14,7 +14,10 @@
         {{ 'BOOK_DESCRIPTION' | translate }}: <textarea cols="50" row="3" ng-model="book.description"></textarea>
     </div>
     <div>
-        {{ 'BOOK_ISBN_13' | translate }}: <input type="text" ng-model="book.isbn13"/>
+        {{ 'BOOK_NUMBER_OF_PAGES' | translate }}: <input type="text" ng-model="book.numberOfPages"/>
+    </div>
+    <div>
+        {{ 'BOOK_ISBN_13' | translate }}: <input type="text" ng-model="book.isbn"/>
     </div>
     <div>
         {{ 'BOOK_PUBLISHER' | translate }}: <input type="text" ng-model="book.publisher"/>
