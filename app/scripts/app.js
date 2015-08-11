@@ -98,7 +98,7 @@ angular
       var defaultLanguage = 'en-US';
       var supportedLanguages = ['en-US', 'pt-BR', 'es-EC'];
 
-      if (language == null) {
+      if (language === null) {
         language = navigator.language || navigator.userLanguage;
 
         var cookieLifespan = 365;
@@ -108,7 +108,7 @@ angular
         $cookies.put('language', language, { 'expires' : expireDate });
       }
 
-      language = supportedLanguages.indexOf(language) == -1 ? defaultLanguage : language
+      language = supportedLanguages.indexOf(language) === -1 ? defaultLanguage : language;
 
       return language;
     });

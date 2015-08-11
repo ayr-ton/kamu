@@ -2,30 +2,17 @@
 
 angular
   .module('libraryUiApp')
-  .controller('BookCtrl', function($scope, $http) {
+  .service('BookService', function($http) {
+    this.findGoogleBooks = function(searchCriteria) {
+        var endPoint = 'https://www.googleapis.com/books/v1/volumes?q=isbn:' + searchCriteria;
 
-    $scope.searchCriteria = "";
+        return $http.get(endPoint);
+    };
 
-    $scope.findGoogleBooks = function findGoogleBooks() {
-        var searchCriteria = $scope.searchCriteria.toString();
-        $scope.book = {};
-
-        if (searchCriteria != "") {
-            var endPoint = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + searchCriteria;
-
-            $http.get(endPoint).
-                success(function (data) {
-                    angular.forEach(data.items, function (item) {
-                        $scope.book = extractBookInformation(item.volumeInfo, searchCriteria)
-                    });
-               });
-        }
-    }
-
-    function extractBookInformation(bookInfo, searchCriteria) {
+    this.extractBookInformation = function(bookInfo, searchCriteria) {
         var targetBookIdentifier = 'ISBN_13';
 
-        var book = {}
+        var book = {};
 
         angular.forEach(bookInfo.industryIdentifiers, function (isbn) {
             if (isbn.type === targetBookIdentifier && isbn.identifier === searchCriteria) {
@@ -34,7 +21,7 @@ angular
         });
 
         return book;
-    }
+    };
 
     function buildBook(bookInfo, isbn) {
         var book = {};
@@ -51,10 +38,28 @@ angular
         if (bookInfo.imageLinks !== undefined) {
             book.imageUrl = bookInfo.imageLinks.thumbnail;
         } else {
-            book.imageUrl = "images\\no-image.png";
+            book.imageUrl = 'images\\no-image.png';
         }
 
         return book;
     }
+  })
+  .controller('BookCtrl', function($scope, BookService) {
 
+    $scope.searchCriteria = '';
+
+    $scope.findGoogleBooks = function() {
+        var searchCriteria = $scope.searchCriteria.toString();
+        
+        $scope.book = {};
+
+        if (searchCriteria !== '') {
+            BookService.findGoogleBooks(searchCriteria).
+                success(function (data) {
+                    angular.forEach(data.items, function (item) {
+                        $scope.book = BookService.extractBookInformation(item.volumeInfo, searchCriteria);
+                    });
+                });
+        }   
+    };
 });
