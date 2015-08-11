@@ -2,9 +2,15 @@
 
 angular
   .module('libraryUiApp')
-  .service('BookService', function($http) {
+  .service('BookService', function($http, ENV) {
     this.findGoogleBooks = function(searchCriteria) {
         var endPoint = 'https://www.googleapis.com/books/v1/volumes?q=isbn:' + searchCriteria;
+
+        return $http.get(endPoint);
+    };
+
+    this.findLibraryBook = function(searchCriteria) {
+        var endPoint = ENV.apiEndpoint + '/books/search/findByIsbn?isbn=' + searchCriteria;
 
         return $http.get(endPoint);
     };
@@ -30,17 +36,21 @@ angular
         book.author = bookInfo.authors;
         book.subtitle = bookInfo.subtitle;
         book.description = bookInfo.description;
-        book.isbn13 = isbn.identifier;
+        book.isbn = isbn.identifier;
         book.publisher = bookInfo.publisher;
         book.publicationDate = bookInfo.publishedDate;
         book.numberOfPages = bookInfo.pageCount;
-
-        if (bookInfo.imageLinks !== undefined) {
-            book.imageUrl = bookInfo.imageLinks.thumbnail;
-        } else {
-            book.imageUrl = 'images\\no-image.png';
-        }
+        var imageUrl = bookInfo.imageLinks == undefined ? null : bookInfo.imageLinks.thumbnail
+        book.imageUrl = resolveBookImage(imageUrl);
 
         return book;
+    }
+
+    function resolveBookImage(imageUrl) {
+        return imageUrl !== null ? imageUrl : 'images\\no-image.png';
+    }
+
+    this.resolveBookImage = function(imageUrl) {
+        return resolveBookImage(imageUrl);
     }
   });
