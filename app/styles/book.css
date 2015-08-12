@@ -492,6 +492,7 @@ header::after{
 	padding-top: 10px;
 	padding-bottom: 10px;
 	text-transform: uppercase;
+	margin-bottom: 35px;
 }
 .popup-donator-mail{
 	float: left;
