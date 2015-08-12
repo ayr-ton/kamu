@@ -36,7 +36,7 @@ angular
         controller: 'AboutCtrl'
       })
       .when('/add_book',  {
-        templateUrl: 'views/book.html',
+        templateUrl: 'views/book/add-book.html',
         controller: 'BookCtrl'
       })
       .otherwise({
@@ -51,15 +51,20 @@ angular
         APP_BOOK_BY: 'By',
         APP_BORROW: 'Borrow',
         APP_SEARCH: 'Search',
+        APP_ADD_BOOK: 'Add book to library',
+        APP_ADD: 'Add',
+        APP_MANUAL: 'Manual',
+        BOOK_NOT_FOUND: "Sorry we can't find any match. Please enter manually.",
         BOOK_TITLE: 'Title',
         BOOK_SUBTITLE: 'Subtitle',
-        BOOK_AUTHORS: 'Authors',
-        BOOK_DESCRIPTION: 'Description',
+        BOOK_AUTHORS: 'Author(s)',
+        BOOK_DESCRIPTION: 'About this book',
         BOOK_ISBN_13: 'ISBN 13',
         BOOK_PUBLISHER: 'Publisher',
         BOOK_PUBLICATION_DATE: 'Publication Date',
-        BOOK_IMAGE_URL: 'Image URL',
-        BOOK_NUMBER_OF_PAGES: 'Number of Pages'
+        BOOK_IMAGE_URL: 'Cover',
+        BOOK_NUMBER_OF_PAGES: 'Pages',
+        BOOK_DONATOR: 'Donator'
       })
       .translations('pt-BR', {
         APP_LIBRARY_TAB: 'Todos Os Livros',
@@ -68,15 +73,20 @@ angular
         APP_BOOK_BY: 'De',
         APP_BORROW: 'Pegar Emprestado',
         APP_SEARCH: 'Busca',
+        APP_ADD_BOOK: 'Incluir livro na biblioteca',
+        APP_MANUAL: 'Manual',
+        APP_ADD: 'Incluir',
+        BOOK_NOT_FOUND: 'Livro não encontrado. Por favor insira os dados manualmente.',
         BOOK_TITLE: 'Título',
         BOOK_SUBTITLE: 'Subtítulo',
-        BOOK_AUTHORS: 'Autores',
-        BOOK_DESCRIPTION: 'Descrição',
+        BOOK_AUTHORS: 'Autor(es)',
+        BOOK_DESCRIPTION: 'Sobre este livro',
         BOOK_ISBN_13: 'ISBN 13',
         BOOK_PUBLISHER: 'Editora',
         BOOK_PUBLICATION_DATE: 'Data de Publicação',
-        BOOK_IMAGE_URL: 'URL da Imagem',
-        BOOK_NUMBER_OF_PAGES: 'Número de Paginas'
+        BOOK_IMAGE_URL: 'Capa',
+        BOOK_NUMBER_OF_PAGES: 'Páginas',
+        BOOK_DONATOR: 'Doador'
       })
       .translations('es-EC', {
         APP_LIBRARY_TAB: 'Todos Los Libros',
@@ -84,8 +94,12 @@ angular
         APP_WISHLIST_TAB: 'Lista',
         APP_BOOK_BY: 'De',
         APP_BORROW: 'Pedir Prestado',
-        APP_SEARCH: '',
-        BOOK_TITLE: '',
+        APP_SEARCH: 'Busca',
+        APP_ADD_BOOK: '',
+        APP_MANUAL: '',
+        APP_ADD: '',
+        BOOK_NOT_FOUND: '',
+        BOOK_TITLE: 'Titulo',
         BOOK_SUBTITLE: '',
         BOOK_AUTHORS: '',
         BOOK_DESCRIPTION: '',
@@ -93,7 +107,8 @@ angular
         BOOK_PUBLISHER: '',
         BOOK_PUBLICATION_DATE: '',
         BOOK_IMAGE_URL: '',
-        BOOK_NUMBER_OF_PAGES: ''
+        BOOK_NUMBER_OF_PAGES: '',
+        BOOK_DONATOR: ''
       });
 
     $translateProvider.determinePreferredLanguage(function(){
