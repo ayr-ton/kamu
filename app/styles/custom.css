@@ -15,6 +15,14 @@
   text-align: center;
 }
 
+.cover-image {
+  height: 100%;
+}
+
+.cover-image-container {
+  text-align: center;
+}
+
 .hide {
   display: none;
 }

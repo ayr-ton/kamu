@@ -20,45 +20,51 @@
 			</div>
 		</div>
 		<div id="not-found-message" class="popup-error hide">{{ 'BOOK_NOT_FOUND' | translate }}</div>
-		<div id="search-result" class="popup-margin popup-bottom-line hide">
-			<div class="popup-col1">
-				<label for="title">{{ 'BOOK_TITLE' | translate }}</label>
-				<input type="text" name="" id="title" ng-model="book.title"/>
-			</div>
-			<div class="popup-col1">
-				<label for="subtitle">{{ 'BOOK_SUBTITLE' | translate }}</label>
-				<input type="text" name="" id="subtitle" ng-model="book.subtitle" />
-			</div>
-			<div class="popup-col2 popup-col2-left">
-				<label for="author"> {{ 'BOOK_AUTHORS' | translate }}</label>
-				<input type="text" name="" id="author" ng-model="book.author" />
-				<label for="publisher">{{ 'BOOK_PUBLISHER' | translate }}</label>
-				<input type="text" name="" id="publisher" ng-model="book.publisher" />
-				<label for="publication-date">{{ 'BOOK_PUBLICATION_DATE' | translate }}</label>
-				<input type="text" name="" id="publication-date" ng-model="book.publicationDate" />
-				<label for="pages">{{ 'BOOK_NUMBER_OF_PAGES' | translate }}</label>
-				<input type="text" name="" id="pages" ng-model="book.numberOfPages" />
-			</div>
-			<div class="popup-col2 popup-col2-right">
-				<label for="about">{{ 'BOOK_IMAGE_URL' | translate }}</label>
-				<div class="popup-cover-container">
-					<img src="{{ book.imageUrl }}">
+		<div id="book-form">
+			<div id="search-result" class="popup-margin popup-bottom-line hide">
+				<div class="popup-col1">
+					<label for="title">{{ 'BOOK_TITLE' | translate }}</label>
+					<input type="text" name="" id="title" ng-model="book.title"/>
+				</div>
+				<div class="popup-col1">
+					<label for="subtitle">{{ 'BOOK_SUBTITLE' | translate }}</label>
+					<input type="text" name="" id="subtitle" ng-model="book.subtitle" />
+				</div>
+				<div class="popup-col2 popup-col2-left">
+					<label for="author"> {{ 'BOOK_AUTHORS' | translate }}</label>
+					<input type="text" name="" id="author" ng-model="book.author" />
+					<label for="publisher">{{ 'BOOK_PUBLISHER' | translate }}</label>
+					<input type="text" name="" id="publisher" ng-model="book.publisher" />
+					<label for="publication-date">{{ 'BOOK_PUBLICATION_DATE' | translate }}</label>
+					<input type="text" name="" id="publication-date" ng-model="book.publicationDate" />
+					<label for="pages">{{ 'BOOK_NUMBER_OF_PAGES' | translate }}</label>
+					<input type="text" name="" id="pages" ng-model="book.numberOfPages" />
+				</div>
+				<div class="popup-col2 popup-col2-right">
+					<label for="about">{{ 'BOOK_IMAGE_URL' | translate }}</label>
+					<div class="popup-cover-container cover-image-container">
+						<img src="{{ book.imageUrl }}" class="cover-image">
+					</div>
+				</div>
+				<div class="popup-col1">
+					<label for="cover">{{ 'BOOK_IMAGE_URL' | translate }}</label>
+					<input type="text" name="" id="cover" ng-model="book.imageUrl" />
+				</div>
+				<div class="popup-col1">
+					<label for="about">{{ 'BOOK_DESCRIPTION' | translate }}</label>
+					<textarea name="comment" id="about" ng-model="book.description"></textarea>
 				</div>
 			</div>
-			<div class="popup-col1">
-				<label for="about">{{ 'BOOK_DESCRIPTION' | translate }}</label>
-				<textarea name="comment" id="about" ng-model="book.description"></textarea>
+			<div id="donator" class="popup-margin popup-bottom-line hide">
+				<div class="popup-col2 popup-col2-left">
+					<label for="donator">{{ 'BOOK_DONATOR' | translate }}</label>
+					<input type="text" name="" id="donator" ng-model="book.donator" class="text-align-right input-no-margin"/>
+				</div>
+				<div class="popup-col2 popup-col2-right"><span class="popup-donator-mail">@thoughtworks.com</span></div>
 			</div>
-		</div>
-		<div id="donator" class="popup-margin popup-bottom-line hide">
-			<div class="popup-col2 popup-col2-left">
-				<label for="donator">{{ 'BOOK_DONATOR' | translate }}</label>
-				<input type="text" name="" id="donator" ng-model="book.donator" class="text-align-right input-no-margin"/>
+			<div id="add-book" class="popup-margin-small hide">
+				<input type="button" name="" value="{{ 'APP_ADD' | translate }}" />
 			</div>
-			<div class="popup-col2 popup-col2-right"><span class="popup-donator-mail">@thoughtworks.com</span></div>
-		</div>
-		<div id="add-book" class="popup-margin-small hide">
-			<input type="button" name="" value="{{ 'APP_ADD' | translate }}" />
 		</div>
 	</div>
 </div>

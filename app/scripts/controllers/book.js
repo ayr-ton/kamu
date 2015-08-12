@@ -21,10 +21,9 @@ angular
 
                         $scope.book.imageUrl = BookService.resolveBookImage($scope.book.imageUrl);
 
-                        angular.element('#search-result').removeClass('hide');
-                        angular.element('#donator').removeClass('hide');
-                        angular.element('#add-book').removeClass('hide');
                         angular.element('#not-found-message').addClass('hide');
+                        angular.element('#book-form').removeClass('hide');
+                        
                     } else {
                         BookService.findGoogleBooks(searchCriteria).
                             success(function (data) {
@@ -33,28 +32,20 @@ angular
                                 angular.forEach(data.items, function (item) {
                                     $scope.book = BookService.extractBookInformation(item.volumeInfo, searchCriteria);
 
-                                    angular.element('#search-result').removeClass('hide');
                                     angular.element('#not-found-message').addClass('hide');
-                                    angular.element('#donator').removeClass('hide');
-                                    angular.element('#add-book').removeClass('hide');
+                                    angular.element('#book-form').removeClass('hide');
 
                                     bookFound = true;
                                 });
 
                                 if(!bookFound) {
                                     angular.element('#not-found-message').removeClass('hide');
-                                    angular.element('#search-result').addClass('hide');
-                                    angular.element('#donator').addClass('hide');
-                                    angular.element('#add-book').addClass('hide');
-
+                                    angular.element('#book-form').addClass('hide');
                                 }
                             }).
                             error(function() {
                                 angular.element('#not-found-message').removeClass('hide');
-                                angular.element('#search-result').addClass('hide');
-                                angular.element('#donator').addClass('hide');
-                                angular.element('#add-book').addClass('hide');
-
+                                angular.element('#book-form').addClass('hide');
                             });
                     }
 
@@ -65,11 +56,11 @@ angular
     $scope.autoCompleteSearch = function () {
         angular.element('#search').removeClass('hide');
         angular.element('#not-found-message').addClass('hide');
-        angular.element('#search-result').addClass('hide');
-        angular.element('#donator').addClass('hide');
-        angular.element('#add-book').addClass('hide');
+        angular.element('#book-form').addClass('hide');
+
         angular.element('#isbn-search').removeClass('popup-nav-unactive');
         angular.element('#isbn-search').addClass('popup-nav-active');
+
         angular.element('#manual-add').removeClass('popup-nav-active');
         angular.element('#manual-add').addClass('popup-nav-unactive');
     }
@@ -77,11 +68,11 @@ angular
     $scope.addManually = function() {
         angular.element('#search').addClass('hide');
         angular.element('#not-found-message').addClass('hide');
-        angular.element('#search-result').removeClass('hide');
-        angular.element('#donator').removeClass('hide');
-        angular.element('#add-book').removeClass('hide');
+        angular.element('#book-form').removeClass('hide');
+
         angular.element('#isbn-search').removeClass('popup-nav-active');
         angular.element('#isbn-search').addClass('popup-nav-unactive');
+
         angular.element('#manual-add').removeClass('popup-nav-unactive');
         angular.element('#manual-add').addClass('popup-nav-active');
     }
