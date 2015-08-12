@@ -11,6 +11,7 @@
 			</div>
 		</div>
 		<div id="search" class="popup-margin">
+			<div id="not-found-message" class="popup-error hide">{{ 'BOOK_NOT_FOUND' | translate }}</div>
 			<div class="popup-col1">
 				<div class="popup-isbn-data">
 					<label for="isbn-search">{{ 'BOOK_ISBN_13' | translate }}</label>
@@ -19,9 +20,8 @@
 				<div class="popup-isbn-search"><input type="button" name="" value="{{ 'APP_SEARCH' | translate }}" ng-click="findGoogleBooks()"/></div>
 			</div>
 		</div>
-		<div id="not-found-message" class="popup-error hide">{{ 'BOOK_NOT_FOUND' | translate }}</div>
-		<div id="book-form">
-			<div id="search-result" class="popup-margin popup-bottom-line hide">
+		<div id="book-form" class="hide">
+			<div class="popup-margin popup-bottom-line">
 				<div class="popup-col1">
 					<label for="title">{{ 'BOOK_TITLE' | translate }}</label>
 					<input type="text" name="" id="title" ng-model="book.title"/>
@@ -55,14 +55,14 @@
 					<textarea name="comment" id="about" ng-model="book.description"></textarea>
 				</div>
 			</div>
-			<div id="donator" class="popup-margin popup-bottom-line hide">
+			<div class="popup-margin popup-bottom-line">
 				<div class="popup-col2 popup-col2-left">
 					<label for="donator">{{ 'BOOK_DONATOR' | translate }}</label>
 					<input type="text" name="" id="donator" ng-model="book.donator" class="text-align-right input-no-margin"/>
 				</div>
 				<div class="popup-col2 popup-col2-right"><span class="popup-donator-mail">@thoughtworks.com</span></div>
 			</div>
-			<div id="add-book" class="popup-margin-small hide">
+			<div class="popup-margin-small">
 				<input type="button" name="" value="{{ 'APP_ADD' | translate }}" />
 			</div>
 		</div>

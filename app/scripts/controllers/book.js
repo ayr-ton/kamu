@@ -13,43 +13,8 @@ angular
 
         if (searchCriteria !== '') {
             BookService.findLibraryBook(searchCriteria).
-                success(function(data){
-                    console.log(data);
-
-                    if (data._embedded !== undefined) {
-                        $scope.book = data._embedded.books[0];
-
-                        $scope.book.imageUrl = BookService.resolveBookImage($scope.book.imageUrl);
-
-                        angular.element('#not-found-message').addClass('hide');
-                        angular.element('#book-form').removeClass('hide');
-                        
-                    } else {
-                        BookService.findGoogleBooks(searchCriteria).
-                            success(function (data) {
-                                var bookFound = false;
-
-                                angular.forEach(data.items, function (item) {
-                                    $scope.book = BookService.extractBookInformation(item.volumeInfo, searchCriteria);
-
-                                    angular.element('#not-found-message').addClass('hide');
-                                    angular.element('#book-form').removeClass('hide');
-
-                                    bookFound = true;
-                                });
-
-                                if(!bookFound) {
-                                    angular.element('#not-found-message').removeClass('hide');
-                                    angular.element('#book-form').addClass('hide');
-                                }
-                            }).
-                            error(function() {
-                                angular.element('#not-found-message').removeClass('hide');
-                                angular.element('#book-form').addClass('hide');
-                            });
-                    }
-
-                });
+                success(populateBookFromLibraryApi).
+                error(hideForm);
         }   
     };
 
@@ -66,6 +31,8 @@ angular
     }
 
     $scope.addManually = function() {
+        $scope.book = {};
+
         angular.element('#search').addClass('hide');
         angular.element('#not-found-message').addClass('hide');
         angular.element('#book-form').removeClass('hide');
@@ -75,5 +42,39 @@ angular
 
         angular.element('#manual-add').removeClass('popup-nav-unactive');
         angular.element('#manual-add').addClass('popup-nav-active');
+    }
+
+    var populateBookFromLibraryApi = function(data) {
+        if (data._embedded !== undefined) {
+            $scope.book = data._embedded.books[0];
+            $scope.book.imageUrl = BookService.resolveBookImage($scope.book.imageUrl);
+
+            showForm();
+        } else {
+            BookService.findGoogleBooks($scope.searchCriteria).
+                success(populateBookFromGoogleApi).
+                error(hideForm);
+        }
+    }
+
+    var populateBookFromGoogleApi = function (data) {
+        var bookFound = false;
+
+        angular.forEach(data.items, function (item) {
+            bookFound = true;
+            $scope.book = BookService.extractBookInformation(item.volumeInfo, $scope.searchCriteria);
+        });
+
+        bookFound ? showForm() : hideForm();
+    }
+
+    function showForm() {
+        angular.element('#not-found-message').addClass('hide');
+        angular.element('#book-form').removeClass('hide');
+    }
+
+    function hideForm() {
+        angular.element('#not-found-message').removeClass('hide');
+        angular.element('#book-form').addClass('hide');
     }
 });
