@@ -1,7 +1,7 @@
 <section class="books-list">
   <ul>
     <li id="{{book.id}}" ng-repeat="book in books">
-      <div class="bt_borrow">{{ 'APP_BORROW' | translate }}</div>
+      <div ng-click="borrowCopy(book.id)" class="bt_borrow">{{ 'APP_BORROW' | translate }}</div>
       <a href="">
         <div class="books-list-image-container">
           <img src="{{book.imageUrl}}" alt="{{book.title}}"/>
@@ -16,3 +16,34 @@
   </ul>
   <!-- <div class="bt_return">Return</div> -->
 </section>
+
+<div
+    bn-modals
+    ng-show="subview"
+    class="m-modals"
+    ng-switch="subview">
+
+    <form
+        ng-switch-when="prompt"
+        ng-controller="BorrowModalCtrl"
+        ng-submit="submit()"
+        class="modal">
+
+        <p>
+            Who are borrowing this book?
+        </p>
+
+        <p>
+            <label>User</label>
+            <input type="text" ng-model="form.user" />@thoughtworks.com
+        </p>
+
+        <p>
+            <a ng-click="submit()">Borrow</a>
+            &mdash;
+            <a ng-click="cancel()">X</a>
+        </p>
+
+    </form>
+
+</div>
