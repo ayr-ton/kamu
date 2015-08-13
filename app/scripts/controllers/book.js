@@ -5,11 +5,17 @@ angular
   .controller('BookCtrl', function($scope, BookService) {
 
     $scope.searchCriteria = '';
-    $scope.formShowable  = false;
-    $scope.errorShowable = false;
-    $scope.searchShowable = true;
 
+    var initializeControls = function() {
+        $scope.formShowable  = false;
+        $scope.errorShowable = false;
+        $scope.searchShowable = true;
+        $scope.isbnSearch = true;
+    };
+    initializeControls();
 
+    $scope.autoCompleteSearch = initializeControls;
+    
     $scope.findGoogleBooks = function() {
         var searchCriteria = $scope.searchCriteria.toString();
         
@@ -22,29 +28,12 @@ angular
         }   
     };
 
-    $scope.autoCompleteSearch = function () {
-        $scope.formShowable  = false;
-        $scope.errorShowable = false;
-        $scope.searchShowable = true;
-
-        angular.element('#isbn-search').removeClass('popup-nav-unactive');
-        angular.element('#isbn-search').addClass('popup-nav-active');
-
-        angular.element('#manual-add').removeClass('popup-nav-active');
-        angular.element('#manual-add').addClass('popup-nav-unactive');
-    };
-
     $scope.addManually = function() {
         $scope.book = {};
+        $scope.searchShowable = false;
+        $scope.isbnSearch = false;
 
         toggleFormDisplay(true);
-        $scope.searchShowable = false;
-
-        angular.element('#isbn-search').removeClass('popup-nav-active');
-        angular.element('#isbn-search').addClass('popup-nav-unactive');
-
-        angular.element('#manual-add').removeClass('popup-nav-unactive');
-        angular.element('#manual-add').addClass('popup-nav-active');
     };
 
     $scope.addBookToLibrary = function() {
