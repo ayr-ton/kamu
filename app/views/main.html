@@ -46,4 +46,21 @@
 
     </form>
 
+    <form
+        ng-switch-when="prompt"
+        ng-controller="ReturnModalCtrl"
+        ng-submit="submit()"
+        class="modal">
+
+        <p>
+          {{ user }}, are you returning this book?
+        </p>
+
+        <p>
+          <a ng-click="submit()">Return</a>
+          &mdash;
+          <a ng-click="cancel()">X</a>
+        </p>
+
+    </form>
 </div>

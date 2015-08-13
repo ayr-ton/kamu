@@ -55,5 +55,29 @@
 
   };
 
+  $scope.returnCopy = function() {
+
+    var promise = modals.open(
+      "confirm",
+      {
+        message: "Are you sure you want to taste that?!"
+      }
+    );
+
+    promise.then(
+      function handleResolve( response ) {
+
+        console.log( "Confirm resolved." );
+
+      },
+      function handleReject( error ) {
+
+        console.warn( "Confirm rejected!" );
+
+      }
+    );
+
+  };
+
 
 }]);
