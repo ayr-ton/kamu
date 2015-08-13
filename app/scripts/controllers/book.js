@@ -5,6 +5,10 @@ angular
   .controller('BookCtrl', function($scope, BookService) {
 
     $scope.searchCriteria = '';
+    $scope.formShowable  = false;
+    $scope.errorShowable = false;
+    $scope.searchShowable = true;
+
 
     $scope.findGoogleBooks = function() {
         var searchCriteria = $scope.searchCriteria.toString();
@@ -19,9 +23,9 @@ angular
     };
 
     $scope.autoCompleteSearch = function () {
-        angular.element('#search').removeClass('hide');
-        angular.element('#not-found-message').addClass('hide');
-        angular.element('#book-form').addClass('hide');
+        $scope.formShowable  = false;
+        $scope.errorShowable = false;
+        $scope.searchShowable = true;
 
         angular.element('#isbn-search').removeClass('popup-nav-unactive');
         angular.element('#isbn-search').addClass('popup-nav-active');
@@ -33,9 +37,8 @@ angular
     $scope.addManually = function() {
         $scope.book = {};
 
-        angular.element('#search').addClass('hide');
-        angular.element('#not-found-message').addClass('hide');
-        angular.element('#book-form').removeClass('hide');
+        toggleFormDisplay(true);
+        $scope.searchShowable = false;
 
         angular.element('#isbn-search').removeClass('popup-nav-active');
         angular.element('#isbn-search').addClass('popup-nav-unactive');
@@ -43,43 +46,6 @@ angular
         angular.element('#manual-add').removeClass('popup-nav-unactive');
         angular.element('#manual-add').addClass('popup-nav-active');
     };
-
-    var populateBookFromLibraryApi = function(data) {
-        $scope.bookExistsInTheLibrary = false;
-
-        if (data._embedded !== undefined) {
-            $scope.book = data._embedded.books[0];
-            $scope.book.imageUrl = BookService.resolveBookImage($scope.book.imageUrl);
-            $scope.bookExistsInTheLibrary = true;
-
-            showForm();
-        } else {
-            BookService.findGoogleBooks($scope.searchCriteria).
-                success(populateBookFromGoogleApi).
-                error(hideForm);
-        }
-    };
-
-    var populateBookFromGoogleApi = function (data) {
-        var bookFound = false;
-
-        angular.forEach(data.items, function (item) {
-            bookFound = true;
-            $scope.book = BookService.extractBookInformation(item.volumeInfo, $scope.searchCriteria);
-        });
-
-        bookFound ? showForm() : hideForm();
-    };
-
-    function showForm() {
-        angular.element('#not-found-message').addClass('hide');
-        angular.element('#book-form').removeClass('hide');
-    }
-
-    function hideForm() {
-        angular.element('#not-found-message').removeClass('hide');
-        angular.element('#book-form').addClass('hide');
-    }
 
     $scope.addBookToLibrary = function() {
         var libraryId = 50;
@@ -95,6 +61,37 @@ angular
                     addCopy(library, book);
                 }
             });
+    };
+
+    var populateBookFromLibraryApi = function(data) {
+        $scope.bookExistsInTheLibrary = false;
+
+        if (data._embedded !== undefined) {
+            $scope.book = data._embedded.books[0];
+            $scope.book.imageUrl = BookService.resolveBookImage($scope.book.imageUrl);
+            $scope.bookExistsInTheLibrary = true;
+
+            toggleFormDisplay(true);
+        } else {
+            BookService.findGoogleBooks($scope.searchCriteria).
+                success(populateBookFromGoogleApi).
+                error(function () {
+                   toggleFormDisplay(false);
+                });
+        }
+    };
+
+
+    var populateBookFromGoogleApi = function (data) {
+        $scope.formShowable  = false;
+
+        angular.forEach(data.items, function (item) {
+            $scope.formShowable  = true;
+
+            $scope.book = BookService.extractBookInformation(item.volumeInfo, $scope.searchCriteria);
+        });
+
+        $scope.errorShowable = !$scope.formShowable;
     };
 
     function addCopy(library, book) {
@@ -121,5 +118,10 @@ angular
             error(function(){
                 window.alert('Error occurred while adding ' + $scope.book.title + '.');
             });
+    }
+
+    function toggleFormDisplay(displayable) {
+        $scope.formShowable = displayable;
+        $scope.errorShowable = !displayable;
     }
 });

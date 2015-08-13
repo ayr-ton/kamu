@@ -10,8 +10,8 @@
 				</ul>
 			</div>
 		</div>
-		<div id="search" class="popup-margin">
-			<div id="not-found-message" class="popup-error hide">{{ 'BOOK_NOT_FOUND' | translate }}</div>
+		<div id="search" class="popup-margin" ng-show="searchShowable">
+			<div id="not-found-message" class="popup-error" ng-show="errorShowable">{{ 'BOOK_NOT_FOUND' | translate }}</div>
 			<div class="popup-col1">
 				<div class="popup-isbn-data">
 					<label for="isbn-search">{{ 'BOOK_ISBN_13' | translate }}</label>
@@ -20,7 +20,7 @@
 				<div class="popup-isbn-search"><input type="button" name="" value="{{ 'APP_SEARCH' | translate }}" ng-click="findGoogleBooks()"/></div>
 			</div>
 		</div>
-		<div id="book-form" class="hide">
+		<div id="book-form" ng-show="formShowable">
 			<div class="popup-margin popup-bottom-line">
 				<div class="popup-col1">
 					<label for="title">{{ 'BOOK_TITLE' | translate }}</label>
