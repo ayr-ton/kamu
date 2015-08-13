@@ -23,3 +23,11 @@ app.controller(
 
   }
 );
+
+app.controller(
+  "ReturnModalCtrl",
+  function( $scope, modals ) {
+    $scope.confirm = modals.resolve;
+    $scope.deny = modals.reject;
+  }
+);
