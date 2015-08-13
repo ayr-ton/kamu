@@ -3,6 +3,8 @@
 angular
   .module('libraryUiApp')
   .service('BookService', function($http, ENV) {
+    var postConfiguration = { "Content-Type": "application/json; charset=utf-8" };
+
     this.findGoogleBooks = function(searchCriteria) {
         var endPoint = 'https://www.googleapis.com/books/v1/volumes?q=isbn:' + searchCriteria;
 
@@ -29,6 +31,28 @@ angular
         return book;
     };
 
+    this.resolveBookImage = function(imageUrl) {
+        return resolveBookImage(imageUrl);
+    };
+    
+    this.addBook = function (book) {
+        var endPoint = ENV.apiEndpoint + '/books';
+
+        return $http.post(endPoint, book, postConfiguration);
+    };
+
+    this.addCopy = function (copy) {
+        var endPoint = ENV.apiEndpoint + '/copies';
+
+        return $http.post(endPoint, copy, postConfiguration);
+    };
+
+    this.findLibrary = function(id) {
+        var endPoint = ENV.apiEndpoint + '/libraries/' + id;
+        
+        return $http.get(endPoint);
+    };
+
     function buildBook(bookInfo, isbn) {
         var book = {};
 
@@ -50,25 +74,4 @@ angular
     function resolveBookImage(imageUrl) {
         return imageUrl !== null ? imageUrl : 'images\\no-image.png';
     }
-
-    this.resolveBookImage = function(imageUrl) {
-        return resolveBookImage(imageUrl);
-    };
-
-    
-    this.addBook = function (book) {
-        var endPoint = ENV.apiEndpoint + '/books';
-        return $http.post(endPoint, book, { "Content-Type": "application/json; charset=utf-8" });
-    };
-
-    this.addCopy = function (copy) {
-        var endPoint = ENV.apiEndpoint + '/copies';
-        return $http.post(endPoint, copy, { "Content-Type": "application/json; charset=utf-8" });
-    };
-
-    this.findLibrary = function(id) {
-        var endPoint = ENV.apiEndpoint + '/libraries/' + id;
-        return $http.get(endPoint);
-    };
-
 });

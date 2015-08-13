@@ -82,45 +82,44 @@ angular
     }
 
     $scope.addBookToLibrary = function() {
-        var library = {};
+        var libraryId = 50;
 
-        BookService.findLibrary(50).
+        BookService.findLibrary(libraryId).
             success(function (data)  {
-                library = data;
-
-                var addCopyRequest = {};
-                addCopyRequest.status = 'AVAILABLE';
-                
-                addCopyRequest.library = library._links.self.href;
+                var library = data._links.self.href;
 
                 if (!$scope.bookExistsInTheLibrary)  {
-                    BookService.addBook($scope.book).
-                        success(function(data, status, headers, config) {
-
-                            addCopyRequest.book = headers('Location');
-
-                            BookService.addCopy(addCopyRequest).
-                                success(function() {
-                                    window.alert('Book has been added to ' + library.name + ' library successfully.');
-                                }).
-                                error(function(){
-                                    window.alert('Error occurred while adding ' + $scope.book.title + ' to ' + library.name + '.');
-                                });
-                        }).
-                        error(function(){
-                            window.alert('Error occurred while adding ' + $scope.book.title + ' to ' + library.name + '.');
-                        });
+                    addBook(library);
                 } else {
-                    addCopyRequest.book = $scope.book._links.self.href;
-
-                    BookService.addCopy(addCopyRequest).
-                        success(function() {
-                            window.alert('Book has been added to ' + library.name + ' library successfully.');
-                        }).
-                        error(function(){
-                            window.alert('Error occurred while adding ' + $scope.book.title + ' to ' + library.name + '.');
-                        });
+                    var book = $scope.book._links.self.href;
+                    addCopy(library, book);
                 }
             });
     };
+
+    function addCopy(library, book) {
+        var addCopyRequest = {};
+        addCopyRequest.status = 'AVAILABLE';
+        addCopyRequest.library = library;
+        addCopyRequest.book = book;
+
+        BookService.addCopy(addCopyRequest).
+            success(function() {
+                window.alert('Book has been added to library successfully.');
+            }).
+            error(function(){
+                window.alert('Error occurred while adding ' + $scope.book.title + '.');
+            });
+    }
+
+    function addBook(library) {
+        BookService.addBook($scope.book).
+            success(function(data, status, headers, config) {
+                var book = headers('Location');
+                addCopy(library, book);
+            }).
+            error(function(){
+                window.alert('Error occurred while adding ' + $scope.book.title + '.');
+            });
+    }
 });
