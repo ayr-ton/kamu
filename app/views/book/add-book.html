@@ -5,8 +5,8 @@
 		<div class="popup-margin-small popup-bottom-line">
 			<div class="popup-nav">
 				<ul>
-					<li><a id="isbn-search" href="" class="popup-nav-active popup-nav-left" ng-click="autoCompleteSearch()">{{ 'BOOK_ISBN_13' | translate }}</a></li>
-					<li><a id="manual-add" href="" class="popup-nav-unactive popup-nav-right" ng-click="addManually()">{{ 'APP_MANUAL' | translate }}</a></li>
+					<li><a id="isbn-search" href="" ng-class="{'popup-nav-active': isbnSearch, 'popup-nav-unactive': !isbnSearch}" ng- class="popup-nav-left" ng-click="autoCompleteSearch()">{{ 'BOOK_ISBN_13' | translate }}</a></li>
+					<li><a id="manual-add" href="" ng-class="{'popup-nav-active': !isbnSearch, 'popup-nav-unactive': isbnSearch}" class="popup-nav-right" ng-click="addManually()">{{ 'APP_MANUAL' | translate }}</a></li>
 				</ul>
 			</div>
 		</div>
