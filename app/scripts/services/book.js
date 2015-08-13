@@ -33,14 +33,14 @@ angular
         var book = {};
 
         book.title = bookInfo.title;
-        book.author = bookInfo.authors;
+        book.author = bookInfo.authors.join();
         book.subtitle = bookInfo.subtitle;
         book.description = bookInfo.description;
         book.isbn = isbn.identifier;
         book.publisher = bookInfo.publisher;
         book.publicationDate = bookInfo.publishedDate;
         book.numberOfPages = bookInfo.pageCount;
-        var imageUrl = bookInfo.imageLinks == undefined ? null : bookInfo.imageLinks.thumbnail
+        var imageUrl = bookInfo.imageLinks === undefined ? null : bookInfo.imageLinks.thumbnail;
         book.imageUrl = resolveBookImage(imageUrl);
         book.donator = '';
 
@@ -53,5 +53,22 @@ angular
 
     this.resolveBookImage = function(imageUrl) {
         return resolveBookImage(imageUrl);
-    }
-  });
+    };
+
+    
+    this.addBook = function (book) {
+        var endPoint = ENV.apiEndpoint + '/books';
+        return $http.post(endPoint, book, { "Content-Type": "application/json; charset=utf-8" });
+    };
+
+    this.addCopy = function (copy) {
+        var endPoint = ENV.apiEndpoint + '/copies';
+        return $http.post(endPoint, copy, { "Content-Type": "application/json; charset=utf-8" });
+    };
+
+    this.findLibrary = function(id) {
+        var endPoint = ENV.apiEndpoint + '/libraries/' + id;
+        return $http.get(endPoint);
+    };
+
+});

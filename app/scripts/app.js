@@ -54,7 +54,7 @@ angular
         APP_ADD_BOOK: 'Add book to library',
         APP_ADD: 'Add',
         APP_MANUAL: 'Manual',
-        BOOK_NOT_FOUND: "Sorry we can't find any match. Please enter manually.",
+        BOOK_NOT_FOUND: 'Sorry we can\'t find any match. Please enter manually.',
         BOOK_TITLE: 'Title',
         BOOK_SUBTITLE: 'Subtitle',
         BOOK_AUTHORS: 'Author(s)',
