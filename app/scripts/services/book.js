@@ -9,13 +9,13 @@ angular
         var endPoint = 'https://www.googleapis.com/books/v1/volumes?q=isbn:' + searchCriteria;
 
         return $http.get(endPoint);
-    };
+      };
 
     this.findLibraryBook = function(searchCriteria) {
         var endPoint = ENV.apiEndpoint + '/books/search/findByIsbn?isbn=' + searchCriteria;
 
         return $http.get(endPoint);
-    };
+      };
 
     this.extractBookInformation = function(bookInfo, searchCriteria) {
         var targetBookIdentifier = 'ISBN_13';
@@ -24,34 +24,34 @@ angular
 
         angular.forEach(bookInfo.industryIdentifiers, function (isbn) {
             if (isbn.type === targetBookIdentifier && isbn.identifier === searchCriteria) {
-                book = buildBook(bookInfo, isbn);
+              book = buildBook(bookInfo, isbn);
             }
-        });
+          });
 
         return book;
-    };
+      };
 
     this.resolveBookImage = function(imageUrl) {
         return resolveBookImage(imageUrl);
-    };
-    
+      };
+
     this.addBook = function (book) {
         var endPoint = ENV.apiEndpoint + '/books';
 
         return $http.post(endPoint, book, postConfiguration);
-    };
+      };
 
     this.addCopy = function (copy) {
         var endPoint = ENV.apiEndpoint + '/copies';
 
         return $http.post(endPoint, copy, postConfiguration);
-    };
+      };
 
     this.findLibrary = function(id) {
         var endPoint = ENV.apiEndpoint + '/libraries/' + id;
-        
+
         return $http.get(endPoint);
-    };
+      };
 
     function buildBook(bookInfo, isbn) {
         var book = {};
@@ -69,9 +69,9 @@ angular
         book.donator = '';
 
         return book;
-    }
+      }
 
     function resolveBookImage(imageUrl) {
         return imageUrl !== null ? imageUrl : 'images\\no-image.png';
-    }
-});
+      }
+  });
