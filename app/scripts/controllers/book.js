@@ -81,6 +81,10 @@ angular
           $scope.book = BookService.extractBookInformation(item.volumeInfo, $scope.searchCriteria);
         });
 
+      if($scope.book.title == undefined) {
+        $scope.formShowable = false;
+      }
+
       $scope.errorShowable = !$scope.formShowable;
     };
 
