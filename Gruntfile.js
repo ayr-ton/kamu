@@ -48,11 +48,19 @@ module.exports = function (grunt) {
           }
         }
       },
+      staging: {
+        constants: {
+          ENV: {
+            name: 'staging',
+            apiEndpoint: 'http://staging-twlib-api.herokuapp.com'
+          }
+        }
+      },
       production: {
         constants: {
           ENV: {
             name: 'production',
-            apiEndpoint: 'http://tw-library-api.herokuapp.com'
+            apiEndpoint: 'http://twlib-api.herokuapp.com'
           }
         }
       }
@@ -465,9 +473,11 @@ module.exports = function (grunt) {
     'karma'
   ]);
 
+  var target = process.env.NODE_ENV || 'development';
+
   grunt.registerTask('build', [
     'clean:dist',
-    'ngconstant:production',
+    'ngconstant:' + target,
     'wiredep',
     'useminPrepare',
     'concurrent:dist',
