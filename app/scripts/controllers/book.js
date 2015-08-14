@@ -1,4 +1,4 @@
-'use strict';
+ 'use strict';
 
 angular
   .module('libraryUiApp')
@@ -105,8 +105,11 @@ angular
 
   function addBook(library) {
     BookService.addBook($scope.book).
-      success(function(data, status, headers, config) {
-        var book = headers('Location');
+      success(function(response) {
+        var book = ""; //headers('Location');
+
+        console.log(response);
+
         addCopy(library, book);
       }).
       error(function(){

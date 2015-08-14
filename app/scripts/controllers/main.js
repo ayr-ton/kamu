@@ -58,4 +58,8 @@
       }
     );
   };
+
+  $scope.gotoAddBook = function () {
+    window.location = '/#/add_book';
+  }
 }]);
