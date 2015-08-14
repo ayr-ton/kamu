@@ -95,9 +95,9 @@ angular
         APP_BOOK_BY: 'De',
         APP_BORROW: 'Pedir Prestado',
         APP_SEARCH: 'Busca',
-        APP_ADD_BOOK: '',
-        APP_MANUAL: '',
-        APP_ADD: '',
+        APP_ADD_BOOK: 'Añadir libro a la biblioteca',
+        APP_MANUAL: 'Manual',
+        APP_ADD: 'Adicionar',
         BOOK_NOT_FOUND: '',
         BOOK_TITLE: 'Titulo',
         BOOK_SUBTITLE: 'Subtitulo',
@@ -107,8 +107,8 @@ angular
         BOOK_PUBLISHER: 'Publicador',
         BOOK_PUBLICATION_DATE: 'Fecha de Publicación',
         BOOK_IMAGE_URL: 'URL de Imagen',
-        BOOK_NUMBER_OF_PAGES: '',
-        BOOK_DONATOR: ''
+        BOOK_NUMBER_OF_PAGES: 'Páginas',
+        BOOK_DONATOR: 'Donante'
       });
 
     $translateProvider.determinePreferredLanguage(function(){
