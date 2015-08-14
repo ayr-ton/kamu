@@ -25,7 +25,9 @@
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <header></header>
+        <header>
+            <div class='add-book' ng-controller = "MainCtrl" ng-click="gotoAddBook()"></div>
+        </header>
 
         <!-- build:js(.) scripts/vendor.js -->
         <!-- bower:js -->
@@ -57,7 +59,7 @@
 
         <nav class="main-nav">
             <ul>
-                <li><a href="#" class="main-nav-active">{{ 'APP_LIBRARY_TAB' | translate }}</a></li>
+                <li><a href="#/" class="main-nav-active">{{ 'APP_LIBRARY_TAB' | translate }}</a></li>
                 <!-- <li><a href="#" class="main-nav-unactive">{{ 'APP_BORROWED_BOOKS_TAB' | translate }}</a></li> -->
             </ul>
         </nav>

@@ -365,6 +365,19 @@ header::after{
   color: #ffffff;
   border-color: #ed0012;
 }
+
+.add-book{
+  float: right;
+  background: url(../images/add-book-button.svg) left top no-repeat;
+  width: 34px;
+  height: 34px;
+  margin: 10px 12px 10px 10px;
+}
+.add-book:hover{
+  cursor: pointer;
+  background: url(../images/add-book-button.svg) 0 bottom no-repeat;
+}
+
 /*MOBILE/TABLET-----------------------------------------------------------------------------*/
 @media screen and (max-width:660px){
   header{height: 49px;}
@@ -378,6 +391,17 @@ header::after{
     top: 246px;
     background-color: rgba(0, 0, 0, 0.4);
   }
+
+  .add-book{
+    margin: 9px;
+    height: 32px;
+    width: 32px;
+    background-size: 32px;
+  }
+  .add-book:hover{
+    background-size: 32px;
+  }
+
   .books-list ul li{
     width: 100%;
     padding: 0px;
