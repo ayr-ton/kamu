@@ -24,7 +24,9 @@ angular
       if (searchCriteria !== '') {
         BookService.findLibraryBook(searchCriteria).
           success(populateBookFromLibraryApi).
-          error(hideForm);
+          error(function() {
+              toggleFormDisplay(false);
+            });
       }   
     };
 
