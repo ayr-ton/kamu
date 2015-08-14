@@ -1,20 +1,23 @@
-<section class="books-list">
+<section class="books-shelf">
   <ul>
     <li id="{{book.id}}" ng-repeat="book in books">
-      <div ng-click="borrowCopy(book.id)" class="bt_borrow">{{ 'APP_BORROW' | translate }}</div>
-      <a href="">
-        <div class="books-list-image-container">
-          <img src="{{book.imageUrl}}" alt="{{book.title}}"/>
+      <div class="books-shelf-content">
+        <div class="books-shelf-image-container">
+          <a href="">
+            <div class="books-img">
+              <img src="{{book.imageUrl}}" alt="{{book.title}}"/>
+            </div>
+          </a>
         </div>
-      </a>
-        <div class="books-list-info">
-          <p class="books-list-info-title">{{book.title}}</p>
-          <p class="books-list-info-author-title">{{ 'APP_BOOK_BY' | translate }}</p>
-          <p class="books-list-info-author">{{book.author}}</p>
-        </div>
+      </div>
+      <div class="book-shelf-info">
+        <p class="book-shelf-title">{{book.title}}</p>
+        <p class="book-shelf-author">{{book.author}}</p>
+        <div class="books-shelf-borrow" ng-click="borrowCopy(book.id)">{{ 'APP_BORROW' | translate }}</div>
+      </div>
     </li>
   </ul>
-  <!-- <div class="bt_return">Return</div> -->
+  <!-- <div class="books-shelf-return" ng-click="returnCopy(book.id)">{{ 'APP_RETURN' | translate }}</div> -->
 </section>
 
 <div id="modal">
