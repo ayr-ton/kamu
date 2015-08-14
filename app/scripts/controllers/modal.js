@@ -2,30 +2,24 @@
 
 var app = angular.module('libraryUiApp');
 
-app.controller(
-  "BorrowModalCtrl",
-  function( $scope, modals ) {
+app.controller('BorrowModalCtrl', function( $scope, modals ) {
+  $scope.copy = modals.params().copy;
+  $scope.cancel = modals.reject;
 
-    $scope.copy = modals.params().copy;
+  $scope.submit = function() {
+    if ( ! $scope.form.user ) {
+      return( $scope.errorMessage = 'Please identify yourself!' );
+    }
 
-    $scope.cancel = modals.reject;
+    var loan = { copy: $scope.copy, email: $scope.form.user + '@thoughtworks.com' };
 
-    $scope.submit = function() {
-      if ( ! $scope.form.user ) {
-        return( $scope.errorMessage = "Please identify yourself!" );
-      }
-
-      var loan = { copy: $scope.copy, email: $scope.form.user + "@thoughtworks.com" };
-
-      modals.resolve(loan);
-
+    modals.resolve(loan);
     };
-
   }
 );
 
 app.controller(
-  "ReturnModalCtrl",
+  'ReturnModalCtrl',
   function( $scope, modals ) {
     $scope.confirm = modals.resolve;
     $scope.deny = modals.reject;
