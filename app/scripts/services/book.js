@@ -3,7 +3,7 @@
 angular
   .module('libraryUiApp')
   .service('BookService', function($http, ENV) {
-    var postConfiguration = { "Content-Type": "application/json; charset=utf-8" };
+    var postConfiguration = { 'Content-Type': 'application/json; charset=utf-8' };
 
     this.findGoogleBooks = function(searchCriteria) {
         var endPoint = 'https://www.googleapis.com/books/v1/volumes?q=isbn:' + searchCriteria;

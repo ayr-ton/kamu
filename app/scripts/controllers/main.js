@@ -31,7 +31,7 @@
 
   $scope.borrowCopy = function(copy) {
     var promise = modals.open(
-      "prompt", { copy: copy }
+      'prompt', { copy: copy }
     );
 
     promise.then(
@@ -39,23 +39,22 @@
         console.log( "%s borrowed the copy %s", response.email, response.copy  );
       },
       function handleReject( error ) {
-        console.warn( "Prompt rejected!" );
+        console.warn( 'Prompt rejected!' );
       }
     );
   };
 
   $scope.returnCopy = function() {
     var promise = modals.open(
-      "confirm", 
-      { message: "Are you sure you want to taste that?!" }
+      'confirm', { message: 'Are you sure you want to taste that?!' }
     );
 
     promise.then(
       function handleResolve( response ) {
-        console.log( "Confirm resolved." );
+        console.log( 'Confirm resolved.' );
       },
       function handleReject( error ) {
-        console.warn( "Confirm rejected!" );
+        console.warn( 'Confirm rejected!' );
       }
     );
   };
