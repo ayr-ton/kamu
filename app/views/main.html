@@ -17,50 +17,50 @@
   <!-- <div class="bt_return">Return</div> -->
 </section>
 
-<div
+<div id="modal">
+  <div
     bn-modals
     ng-show="subview"
     class="m-modals"
     ng-switch="subview">
 
     <form
-        ng-switch-when="prompt"
-        ng-controller="BorrowModalCtrl"
-        ng-submit="submit()"
-        class="modal">
+      ng-switch-when="prompt"
+      ng-controller="BorrowModalCtrl"
+      ng-submit="submit()"
+      class="modal">
 
-        <p>
-            Who are borrowing this book?
-        </p>
+      <p>
+        Who are borrowing this book?
+      </p>
 
-        <p>
-            <label>User</label>
-            <input type="text" ng-model="form.user" />@thoughtworks.com
-        </p>
+      <p>
+        <label>User</label>
+        <input type="text" ng-model="form.user" />@thoughtworks.com
+      </p>
 
-        <p>
-            <a ng-click="submit()">Borrow</a>
-            &mdash;
-            <a ng-click="cancel()">X</a>
-        </p>
-
+      <p>
+        <a ng-click="submit()">Borrow</a>
+        &mdash;
+        <a ng-click="cancel()">X</a>
+      </p>
     </form>
 
     <form
-        ng-switch-when="prompt"
-        ng-controller="ReturnModalCtrl"
-        ng-submit="submit()"
-        class="modal">
+      ng-switch-when="prompt"
+      ng-controller="ReturnModalCtrl"
+      ng-submit="submit()"
+      class="modal">
 
-        <p>
-          {{ user }}, are you returning this book?
-        </p>
+      <p>
+        {{ user }}, are you returning this book?
+      </p>
 
-        <p>
-          <a ng-click="submit()">Return</a>
-          &mdash;
-          <a ng-click="cancel()">X</a>
-        </p>
-
+      <p>
+        <a ng-click="submit()">Return</a>
+        &mdash;
+        <a ng-click="cancel()">X</a>
+      </p>
     </form>
+  </div>
 </div>
