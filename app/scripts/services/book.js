@@ -66,7 +66,6 @@ angular
         book.numberOfPages = bookInfo.pageCount;
         var imageUrl = bookInfo.imageLinks === undefined ? null : bookInfo.imageLinks.thumbnail;
         book.imageUrl = resolveBookImage(imageUrl);
-        book.donator = '';
 
         return book;
       }
