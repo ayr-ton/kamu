@@ -98,7 +98,7 @@ angular
         APP_ADD_BOOK: 'Añadir libro a la biblioteca',
         APP_MANUAL: 'Manual',
         APP_ADD: 'Adicionar',
-        BOOK_NOT_FOUND: '',
+        BOOK_NOT_FOUND: 'Lo sentimos no podemos encontrar un resultado. Por favor ingresar manualmente.',
         BOOK_TITLE: 'Titulo',
         BOOK_SUBTITLE: 'Subtitulo',
         BOOK_AUTHORS: 'Autor(es)',
