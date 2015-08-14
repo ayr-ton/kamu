@@ -3,9 +3,6 @@
 angular
   .module('libraryUiApp')
   .directive('bnModals', function($rootScope, modals) {
-    // Return the directive configuration.
-    return(link);
-
     // I bind the JavaScript events to the scope.
     function link(scope, element, attributes) {
       // I define which modal window is being rendered. By convention,
@@ -34,5 +31,8 @@ angular
           scope.subview = null;
         });
     }
+
+    // Return the directive configuration.
+    return(link);
   }
 );
