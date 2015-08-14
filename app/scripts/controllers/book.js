@@ -105,10 +105,8 @@ angular
 
   function addBook(library) {
     BookService.addBook($scope.book).
-      success(function(response) {
-        var book = ""; //headers('Location');
-
-        console.log(response);
+      success(function(data, status, headers, config) {
+        var book = headers('Location');
 
         addCopy(library, book);
       }).
