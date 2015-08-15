@@ -106,7 +106,7 @@ angular
         BOOK_ISBN_13: 'ISBN 13',
         BOOK_PUBLISHER: 'Publicador',
         BOOK_PUBLICATION_DATE: 'Fecha de Publicación',
-        BOOK_IMAGE_URL: 'URL de Imagen',
+        BOOK_IMAGE_URL: 'Imagen',
         BOOK_NUMBER_OF_PAGES: 'Páginas',
         BOOK_DONATOR: 'Donante'
       });
