@@ -53,6 +53,12 @@ angular
         return $http.get(endPoint);
       };
 
+    this.listBooks = function() {
+        var endPoint = ENV.apiEndpoint + '/copies';
+
+        return $http.get(endPoint);
+      }
+
     function buildBook(bookInfo, isbn) {
         var book = {};
 

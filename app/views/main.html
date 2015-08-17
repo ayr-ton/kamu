@@ -1,23 +1,22 @@
 <section class="books-shelf">
   <ul>
-    <li id="{{book.id}}" ng-repeat="book in books">
+    <li id="{{copy.id}}" ng-repeat="copy in copies">
       <div class="books-shelf-content">
         <div class="books-shelf-image-container">
           <a href="">
             <div class="books-img">
-              <img src="{{book.imageUrl}}" alt="{{book.title}}"/>
+              <img src="{{copy.book.imageUrl}}" alt="{{copy.book.title}}"/>
             </div>
           </a>
         </div>
       </div>
       <div class="book-shelf-info">
-        <p class="book-shelf-title">{{book.title}}</p>
-        <p class="book-shelf-author">{{book.author}}</p>
-        <div class="books-shelf-borrow" ng-click="borrowCopy(book.id)">{{ 'APP_BORROW' | translate }}</div>
+        <p class="book-shelf-title">{{copy.book.title}}</p>
+        <p class="book-shelf-author">{{copy.book.author}}</p>
+        <div class="books-shelf-borrow" ng-click="borrowCopy(copy.id)" ng-show="{{copy.status == 'AVAILABLE'}}">{{ 'APP_BORROW' | translate }}</div>
       </div>
     </li>
   </ul>
-  <!-- <div class="books-shelf-return" ng-click="returnCopy(book.id)">{{ 'APP_RETURN' | translate }}</div> -->
 </section>
 
 <div class="modal-root">
