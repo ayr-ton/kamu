@@ -24,8 +24,7 @@ div.m-modals.ng-hide-remove.ng-hide-remove-active {
 }
 
 .modal-root div.m-modals > .modal {
-  background-color: #FAFAFA ;
-  border-radius: 3px 3px 3px 3px ;
+  /*border-radius: 3px 3px 3px 3px ;
   box-sizing: border-box ;
     -moz-box-sizing: border-box ;
   padding: 20px 20px 20px 20px ;
@@ -33,7 +32,9 @@ div.m-modals.ng-hide-remove.ng-hide-remove-active {
   left: 50% ;
   margin-left: -200px ;
   top: 200px ;
-  width: 400px ;
+  width: 400px ;*/
+  margin: 200px auto;
+  display: table;
 }
 
 .modal-root div.m-modals.ng-hide > .modal.ng-enter {

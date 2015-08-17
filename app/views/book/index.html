@@ -18,7 +18,7 @@
     </li>
   </ul>
 </section>
-
+<!-- 
 <div class="modal-root">
   <div
     bn-modals
@@ -64,5 +64,28 @@
         <a ng-click="cancel()">X</a>
       </p>
     </form>
+  </div>
+</div> -->
+
+<div class="modal-root">
+  <div bn-modals ng-show="subview" class="m-modals" ng-switch="subview">
+    <div class="modal" bn-modals ng-show="subview" ng-switch="subview">
+      <div class="popup-window" ng-controller="BorrowModalCtrl">
+        <div class="popup-close" ng-click="cancel()"></div>
+        <div class="popup-header">borrow a book</div>
+         <form ng-switch-when="prompt" class="">
+          <div class="popup-margin popup-bottom-line">
+            <div class="popup-col2 popup-col2-left">
+              <label for="user">user</label>
+              <input type="text" ng-model="form.user" class="text-align-right input-no-margin"/>
+            </div>
+            <div class="popup-col2 popup-col2-right"><span class="popup-donator-mail">@thoughtworks.com</span></div>
+          </div>
+          <div class="popup-margin-small">
+            <input type="button" value="borrow" ng-click="submit()" />
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </div>
