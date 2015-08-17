@@ -57,7 +57,7 @@ angular
         var endPoint = ENV.apiEndpoint + '/copies';
 
         return $http.get(endPoint);
-      }
+      };
 
     function buildBook(bookInfo, isbn) {
         var book = {};
