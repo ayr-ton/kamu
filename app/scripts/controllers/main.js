@@ -9,25 +9,21 @@
  */
  angular
   .module('libraryUiApp')
-  .controller('MainCtrl', ['$scope', '$http', 'ENV', 'modals' , function($scope, $http, ENV, modals){
+  .controller('MainCtrl', ['$scope', '$http', 'BookService', 'modals' , function($scope, $http, BookService, modals){
 
+   $scope.findBooks = function() {
+      var available = 'AVAILABLE';
+      $scope.copies = [];
 
-  var endPoint = ENV.apiEndpoint + '/books';
+      BookService.listBooks()
+        .success(function (data) {
+          if (data._embedded !== undefined && data._embedded.copies !== undefined) {
+            $scope.copies = data._embedded.copies;
+          }
+        }); 
+   };
 
-  function findBooks() {
-    $http.get(endPoint).
-      success(function (data) {
-        if (data._embedded !== undefined) {
-          angular.forEach(data._embedded, function (item) {
-            $scope.books = item;
-          });
-        } else {
-          $scope.books = [];
-        }
-      });
-  }
-
-  findBooks();
+  $scope.findBooks();
 
   $scope.borrowCopy = function(copy) {
     var promise = modals.open(
