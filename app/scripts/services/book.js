@@ -63,7 +63,9 @@ angular
         var book = {};
 
         book.title = bookInfo.title;
-        book.author = bookInfo.authors.join();
+        if (bookInfo.authors !== undefined) {
+          book.author = bookInfo.authors.join();
+        }
         book.subtitle = bookInfo.subtitle;
         book.description = bookInfo.description;
         book.isbn = isbn.identifier;
