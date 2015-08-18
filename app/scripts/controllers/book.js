@@ -2,7 +2,7 @@
 
 angular
   .module('libraryUiApp')
-  .controller('BookCtrl', ['$scope', 'BookService', 'modals', function($scope, BookService, modals) {
+  .controller('BookCtrl', ['$scope', 'BookService', 'LoanService', 'modals', function($scope, BookService, LoanService, modals) {
 
     $scope.searchCriteria = '';
 
@@ -64,24 +64,56 @@ angular
               $scope.copies = data._embedded.copies;
 
               angular.forEach($scope.copies, function(copy) {
-                copy.available = function() {
-                  return this.status === 'AVAILABLE';
-                }.bind(copy);
+                  copy = initializeCopy(copy);
               });
             } 
           });
      };
 
+    function initializeCopy(copy) {
+
+      copy.book.imageUrl = copy.book.imageUrl || 'images/no-image.png';
+
+      //copy.available = function() {
+      //  return this.status === 'AVAILABLE';
+      //}.bind(copy); 
+
+      return copy;
+    }
+
     $scope.listBooks();
 
     $scope.borrowCopy = function(copy) {
+      
       var promise = modals.open(
         'prompt', { copy: copy }
       );
 
       promise.then(
         function handleResolve( response ) {
-          console.log( '%s borrowed the copy %s', response.email, response.copy  );
+
+          console.log( '%s borrowed the copy %s', response.email, response.copy.id  );
+          LoanService.
+                  borrowCopy(response.copy.id , response.email).
+                  success(function() {
+                      modals.reject;
+
+                      window.alert('Book has been loaning by '.concat(response.email).concat('.'));
+
+                      BookService.getCopy(copy.id)
+                        .success(function(data) {
+
+                            var scope = angular.element('#copy-'.concat(copy.id)).scope();
+
+                            scope.copy = data;
+
+                            scope.copy.book.imageUrl = scope.copy.book.imageUrl || 'images/no-image.png';
+                        
+                        });
+                  }).
+                  error(function(){
+                      window.alert('Error occurred while loaning a book.');
+                  });
         },
         function handleReject( error ) {
           console.warn( 'Prompt rejected!' );
