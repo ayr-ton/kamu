@@ -72,7 +72,11 @@ angular
 
     function initializeCopy(copy) {
 
-      copy.book.imageUrl = copy.book.imageUrl || 'images/no-image.png';
+      if ( copy.book.imageUrl === undefined || copy.book.imageUrl === null ) {
+       
+          copy.book.imageUrl = 'images/no-image.png';
+
+      }
 
       //copy.available = function() {
       //  return this.status === 'AVAILABLE';
