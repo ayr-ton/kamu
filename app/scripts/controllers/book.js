@@ -60,7 +60,7 @@ angular
 
         BookService.listBooks()
           .success(function (data) {
-            if (data._embedded !== undefined && data._embedded.copies !== undefined) {
+            if (data._embedded.copies !== undefined) {
               $scope.copies = data._embedded.copies;
 
               angular.forEach($scope.copies, function(copy) {
