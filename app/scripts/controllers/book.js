@@ -73,16 +73,14 @@ angular
     function initializeCopy(copy) {
 
       if ( copy.book.imageUrl === undefined || copy.book.imageUrl === null ) {
-       
           copy.book.imageUrl = 'images/no-image.png';
-
       }
 
-      //copy.available = function() {
-      //  return this.status === 'AVAILABLE';
-      //}.bind(copy); 
-
       return copy;
+    }
+
+    function checkAvailability(copy) {
+      return copy.status === 'AVAILABLE';
     }
 
     $scope.listBooks();
