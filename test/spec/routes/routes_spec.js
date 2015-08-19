@@ -1,21 +1,40 @@
 'use strict';
 
-
-describe('libraryUiApp routing', function() {
-  it('should map BookCtrl routes to BookCtrl', function() {
-    module('libraryUiApp');
-
-    inject(function($route) {
-      var rootUrl = $route.routes['/'];
-      expect(rootUrl.controller).toBe('BookCtrl');
-      expect(rootUrl.templateUrl).toEqual('views/book/index.html');
-
-      var addBookUrl = $route.routes['/add_book'];
-      expect(addBookUrl.controller).toBe('BookCtrl');
-      expect(addBookUrl.templateUrl).toEqual('views/book/add-book.html');
-
+describe('libraryUIApp routing', function() {
   
-      // expect($route.routes[null].redirectTo).toEqual('/phones')
-    });
+  var location, route, rootScope;
+
+  beforeEach(function() {
+    module('libraryUiApp');  
   });
+
+
+  beforeEach(inject(
+    function( _$location_, _$route_, _$rootScope_ ) {
+      location = _$location_;
+      route = _$route_;
+      rootScope = _$rootScope_;
+    }));
+
+   describe('case insensitive routes', function() {
+      beforeEach(inject(
+        function($httpBackend) {
+            $httpBackend.expectGET('views/book/add-book.html')
+            .respond(200);
+        }));
+
+      it('should route correctly when route is lower case', function() {
+          location.path('/add_book');
+          rootScope.$digest();
+
+          expect(route.current.controller).toBe('BookCtrl');
+      });
+
+      it('should route correctly when route is upper case', function() {
+          location.path('/ADD_BOOK');
+          rootScope.$digest();
+
+          expect(route.current.controller).toBe('BookCtrl');
+      });
+  });    
 });

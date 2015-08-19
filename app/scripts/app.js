@@ -26,6 +26,8 @@ angular
       $cookies = _$cookies_;
     }]);
 
+    $routeProvider.caseInsensitiveMatch = true;
+
     $routeProvider
       .when('/', {
         templateUrl: 'views/book/index.html',
