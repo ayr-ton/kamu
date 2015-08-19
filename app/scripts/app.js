@@ -143,4 +143,12 @@ angular
       return language;
     });
 
+  }).run(function($rootScope) {
+     $rootScope.$on('$routeChangeSuccess', function(event, current, previous) {
+        event.preventDefault();
+
+        if (angular.isDefined(current.pathParams.library)) {
+          $rootScope.library_slug = current.pathParams.library;
+        }
+      });
   });

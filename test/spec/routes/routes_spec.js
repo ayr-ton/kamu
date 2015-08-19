@@ -54,4 +54,24 @@ describe('libraryUIApp routing', function() {
       });
     });
   });
+
+  describe('route change events', function() {
+     beforeEach(inject(
+        function($httpBackend) {
+          $httpBackend.expectGET('views/book/add-book.html')
+          .respond(200);
+        }));
+
+     xit('sets library on root scope when it is not already set', function() {
+       inject(function($route, $rootScope, $injector) {
+        rootScope = $injector.get('$rootScope');
+        location.path('/library/random/add_book');
+        rootScope.$digest();
+
+        expect(rootScope.library_slug).toBe('random');
+      });
+     })
+
+  })
+
 });
