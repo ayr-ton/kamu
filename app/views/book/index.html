@@ -25,9 +25,10 @@
     <div class="modal" bn-modals ng-show="subview" ng-switch="subview">
       <div class="popup-window" ng-controller="BorrowModalCtrl">
         <div class="popup-close" ng-click="cancel()"></div>
-        <div class="popup-header">{{ 'BOOK_BORROW_TITLE'| translate }}</div>
+        <div class="popup-header" ng-switch-when="available">{{ 'BOOK_BORROW_TITLE' | translate }}</div>
+        <div class="popup-header" ng-switch-when="not-available">{{ 'BOOK_RETURN_TITLE' | translate }}</div>
 
-           <form ng-switch-when="prompt" class="" ng-submit="submit()" ng-controller="BorrowModalCtrl">
+           <form ng-switch-when="available" class="" ng-submit="submit()" ng-controller="BorrowModalCtrl">
                 <div class="popup-margin popup-bottom-line">
                   <div class="popup-col2 popup-col2-left">
                     <label for="user">{{ 'APP_USER' | translate }}</label>
@@ -41,6 +42,14 @@
                 </div>
           </form>
 
+          <div class="popup-margin popup-bottom-line" ng-switch-when="not-available">
+            <div class="popup-col2 popup-col2-left">
+              {{ user }}, are you returning this book?
+            </div>
+          </div>
+          <div class="popup-margin-small" ng-switch-when="not-available">
+            <input type="submit" value="{{ 'APP_RETURN' | translate }}" ng-click="returnBook()" />
+          </div>
       </div>
     </div>
   </div>

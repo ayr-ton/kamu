@@ -79,16 +79,12 @@ angular
       return copy;
     }
 
-    function checkAvailability(copy) {
-      return copy.status === 'AVAILABLE';
-    }
-
     $scope.listBooks();
 
     $scope.borrowCopy = function(copy) {
       
       var promise = modals.open(
-        'prompt', { copy: copy }
+        'available', { copy: copy }
       );
 
       promise.then(
@@ -100,8 +96,7 @@ angular
                   success(function() {
                       modals.reject;
 
-                      window.alert('Book has been loaning by '.concat(response.email).concat('.'));
-
+                      window.alert('Book has loaned to '.concat(response.email).concat('.'));
                       BookService.getCopy(copy.id)
                         .success(function(data) {
 
@@ -113,19 +108,19 @@ angular
                         
                         });
                   }).
-                  error(function(){
-                      window.alert('Error occurred while loaning a book.');
+                  error(function(data, status){
+                      window.alert(status);
                   });
         },
         function handleReject( error ) {
-          console.warn( 'Prompt rejected!' );
+          console.warn( 'Available rejected!' );
         }
       );
     };
 
-    $scope.returnCopy = function() {
+    $scope.returnCopy = function(loan) {
       var promise = modals.open(
-        'confirm', { message: 'Are you sure you want to taste that?!' }
+        'not-available', { loan: loan }
       );
 
       promise.then(
