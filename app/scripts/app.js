@@ -26,14 +26,16 @@ angular
       $cookies = _$cookies_;
     }]);
 
+    var rootUrl = '/library/:library';
+
     $routeProvider.caseInsensitiveMatch = true;
 
     $routeProvider
-      .when('/library/:library', {
+      .when(rootUrl, {
         templateUrl: 'views/book/index.html',
         controller: 'BookCtrl'
       })
-      .when('/library/:library/add_book',  {
+      .when(rootUrl + '/add_book',  {
         templateUrl: 'views/book/add-book.html',
         controller: 'BookCtrl'
       })
