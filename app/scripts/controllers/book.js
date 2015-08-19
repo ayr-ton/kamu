@@ -2,7 +2,11 @@
 
 angular
   .module('libraryUiApp')
-  .controller('BookCtrl', ['$scope', 'BookService', 'LoanService', 'modals', function($scope, BookService, LoanService, modals) {
+  .controller('BookCtrl', ['$scope', 
+                            'BookService', 
+                            'LoanService', 
+                            'modals' , 
+                            '$translate', function($scope, BookService, LoanService, modals, $translate) {
 
     $scope.searchCriteria = '';
 
@@ -109,16 +113,35 @@ angular
                         });
                   }).
                   error(function(data, status){
-                      window.alert(status);
+
+                      var errorMessage;
+
+                      switch(status) {
+                          case 412:
+                              errorMessage = $translate.instant('HTTP_CODE_412');
+                              break;
+                          case 409:
+                              errorMessage = $translate.instant('HTTP_CODE_409');
+                              break;
+                          default:
+                              errorMessage = $translate.instant('HTTP_CODE_500');
+                              break;
+                      }                      
+
+                      window.alert("Ops! Loan wasn't realize. Cause: ".concat(errorMessage));
                   });
         },
         function handleReject( error ) {
-          console.warn( 'Available rejected!' );
+
+            console.warn( 'Available rejected!' );
         }
       );
     };
 
     $scope.returnCopy = function(loan) {
+
+      alert(loan.lastLoan);
+
       var promise = modals.open(
         'not-available', { loan: loan }
       );

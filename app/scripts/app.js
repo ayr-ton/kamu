@@ -68,7 +68,10 @@ angular
         BOOK_PUBLICATION_DATE: 'Publication Date',
         BOOK_IMAGE_URL: 'Cover',
         BOOK_NUMBER_OF_PAGES: 'Pages',
-        BOOK_DONATOR: 'Donator'
+        BOOK_DONATOR: 'Donator',
+        HTTP_CODE_409:'Book requested is not available for do that.',
+        HTTP_CODE_412:'Email is required to make a loan',
+        HTTP_CODE_500:'Internal error' 
       })
       .translations('pt-BR', {
         APP_LIBRARY_TAB: 'Todos Os Livros',
@@ -94,7 +97,11 @@ angular
         BOOK_PUBLICATION_DATE: 'Data de Publicação',
         BOOK_IMAGE_URL: 'Capa',
         BOOK_NUMBER_OF_PAGES: 'Páginas',
-        BOOK_DONATOR: 'Doador'
+        BOOK_DONATOR: 'Doador',
+        HTTP_CODE_409:'Livro solicitado está indisponível para o empréstimo.',
+        HTTP_CODE_412:'Email é obrigatório',
+        HTTP_CODE_500:'Problema interno' 
+
       })
       .translations('es-EC', {
         APP_LIBRARY_TAB: 'Todos Los Libros',
@@ -120,7 +127,10 @@ angular
         BOOK_PUBLICATION_DATE: 'Fecha de Publicación',
         BOOK_IMAGE_URL: 'Imagen',
         BOOK_NUMBER_OF_PAGES: 'Páginas',
-        BOOK_DONATOR: 'Donante'
+        BOOK_DONATOR: 'Donante',
+        HTTP_CODE_409:'Libro solicitado no está disponible para el préstamo',
+        HTTP_CODE_412:'El correo electrónico es necesario',
+        HTTP_CODE_500:'Problema interno' 
       });
 
     $translateProvider.determinePreferredLanguage(function(){
