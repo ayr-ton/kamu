@@ -4,9 +4,7 @@ describe('libraryUIApp routing', function() {
   
   var location, route, rootScope;
 
-  beforeEach(function() {
-    module('libraryUiApp');  
-  });
+  beforeEach(module('libraryUiApp'));
 
 
   beforeEach(inject(

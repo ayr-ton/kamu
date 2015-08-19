@@ -1,9 +1,7 @@
 'use strict';
 
 describe('BookCtrl routing', function() {
-  beforeEach(function() {
-    module('libraryUiApp');  
-  });
+  beforeEach(module('libraryUiApp'));
   
   it('routes / to #index', function() {
     inject(function($route) {
