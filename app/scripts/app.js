@@ -29,11 +29,11 @@ angular
     $routeProvider.caseInsensitiveMatch = true;
 
     $routeProvider
-      .when('/', {
+      .when('/library/:library', {
         templateUrl: 'views/book/index.html',
         controller: 'BookCtrl'
       })
-      .when('/add_book',  {
+      .when('/library/:library/add_book',  {
         templateUrl: 'views/book/add-book.html',
         controller: 'BookCtrl'
       })

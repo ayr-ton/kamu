@@ -5,7 +5,7 @@ describe('BookCtrl routing', function() {
   
   it('routes / to #index', function() {
     inject(function($route) {
-      var rootUrl = $route.routes['/'];
+      var rootUrl = $route.routes['/library/:library'];
       expect(rootUrl.controller).toBe('BookCtrl');
       expect(rootUrl.templateUrl).toEqual('views/book/index.html');
     });
@@ -13,7 +13,7 @@ describe('BookCtrl routing', function() {
   
   it('routes /add_book to #add-book', function() {
     inject(function($route) {
-      var addBookUrl = $route.routes['/add_book'];
+      var addBookUrl = $route.routes['/library/:library/add_book'];
       expect(addBookUrl.controller).toBe('BookCtrl');
       expect(addBookUrl.templateUrl).toEqual('views/book/add-book.html');
     });
