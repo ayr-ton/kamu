@@ -134,7 +134,7 @@ angular
     };
 
     $scope.gotoAddBook = function () {
-      window.location = '/#/add_book';
+      window.location = '/#/library/placeholder/add_book';
     };
 
     var populateBookFromLibraryApi = function(data) {
