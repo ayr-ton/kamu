@@ -31,13 +31,13 @@ angular
         templateUrl: 'views/book/index.html',
         controller: 'BookCtrl'
       })
-      .when('/about', {
-        templateUrl: 'views/about.html',
-        controller: 'AboutCtrl'
-      })
       .when('/add_book',  {
         templateUrl: 'views/book/add-book.html',
         controller: 'BookCtrl'
+      })
+      .when('/about', {
+        templateUrl: 'views/about.html',
+        controller: 'AboutCtrl'
       })
       .otherwise({
         redirectTo: '/'
