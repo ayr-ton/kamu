@@ -140,8 +140,6 @@ angular
 
     $scope.returnCopy = function(loan) {
 
-      alert(loan.lastLoan);
-
       var promise = modals.open(
         'not-available', { loan: loan }
       );
