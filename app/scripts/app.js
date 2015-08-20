@@ -120,9 +120,9 @@ angular
         APP_MANUAL: 'Manual',
         APP_ADD: 'Añadir',
         APP_USER: 'Usuario',
-        BOOK_BORROW_TITLE: '',
-        BOOK_RETURN_TITLE: 'Regresar Libro',
-        BOOK_NOT_FOUND: 'Lo sentimos no podemos encontrar un resultado. Por favor ingresar manualmente.',
+        BOOK_BORROW_TITLE: 'Pedir préstamo de libro',
+        BOOK_RETURN_TITLE: 'Devolver Libro',
+        BOOK_NOT_FOUND: 'Lo sentimos, no podemos encontrar coincidencias. Por favor ingresar los detalles manualmente.',
         BOOK_TITLE: 'Título',
         BOOK_SUBTITLE: 'Subtítulo',
         BOOK_AUTHORS: 'Autor(es)',
@@ -133,8 +133,8 @@ angular
         BOOK_IMAGE_URL: 'Imagen',
         BOOK_NUMBER_OF_PAGES: 'Páginas',
         BOOK_DONATOR: 'Donante',
-        HTTP_CODE_409:'Libro solicitado no está disponible para el préstamo',
-        HTTP_CODE_412:'El correo electrónico es necesario',
+        HTTP_CODE_409:'El libro solicitado no está disponible para el préstamo',
+        HTTP_CODE_412:'Es necesario su correo electrónico para el préstamo',
         HTTP_CODE_500:'Problema interno' 
       });
 
