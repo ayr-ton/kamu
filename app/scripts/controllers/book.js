@@ -76,8 +76,8 @@ angular
 
     function initializeCopy(copy) {
 
-      if ( copy.book.imageUrl === undefined || copy.book.imageUrl === null ) {
-          copy.book.imageUrl = 'images/no-image.png';
+      if ( copy.imageUrl === undefined || copy.imageUrl === null ) {
+          copy.imageUrl = 'images/no-image.png';
       }
 
       return copy;
@@ -108,7 +108,7 @@ angular
 
                             scope.copy = data;
 
-                            scope.copy.book.imageUrl = scope.copy.book.imageUrl || 'images/no-image.png';
+                            scope.copy.imageUrl = scope.copy.imageUrl || 'images/no-image.png';
                         
                         });
                   }).
