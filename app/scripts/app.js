@@ -174,7 +174,7 @@ angular
             $http.get(endPoint).
               success(function(data) {
                 $rootScope.library = data;
-              })
+              });
           }
         }
       });
