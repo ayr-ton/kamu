@@ -40,8 +40,8 @@
     "time-grunt": "^1.0.0"
   },
   "engines": {
-    "node": ">=0.10.0",
-    "npm": "2.11.3"
+    "node": "0.12.7",
+    "npm": "2.13.5"
   },
   "scripts": {
     "test": "grunt test",
