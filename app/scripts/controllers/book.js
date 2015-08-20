@@ -212,7 +212,6 @@ angular
       BookService.addBook($scope.book).
         success(function(data, status, headers, config) {
           var book = headers('Location');
-
           addCopy(library, book);
         }).
         error(function(){

@@ -14,8 +14,9 @@
       <div id="not-found-message" class="popup-error" ng-show="errorShowable">{{ 'BOOK_NOT_FOUND' | translate }}</div>
       <div class="popup-col1">
         <div class="popup-isbn-data">
+
           <label for="isbn-search">{{ 'BOOK_ISBN_13' | translate }}</label>
-          <input type="text" name="" id="isbn-search" class="input-no-margin" ng-model="searchCriteria"/>
+          <input type="text" maxlength=13 name="" id="isbn-search" class="input-no-margin" ng-model="searchCriteria" ui-mask="9999999999999" />
         </div>
         <div class="popup-isbn-search"><input type="button" name="" value="{{ 'APP_SEARCH' | translate }}" ng-click="findGoogleBooks()"/></div>
       </div>
