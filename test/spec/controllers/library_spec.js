@@ -24,7 +24,7 @@ describe('LibraryCtrl', function() {
       var $scope = {};
       
       var httpBackend = $injector.get('$httpBackend');
-      httpBackend.whenGET(librariesUrl).respond(200, { '_embedded': 'library' });
+      httpBackend.whenGET(librariesUrl).respond(200, { '_embedded': { libraries: 'library' }});
 
       var controller = $controller('LibraryCtrl', { $scope: $scope });
 

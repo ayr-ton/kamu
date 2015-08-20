@@ -1,11 +1,15 @@
 <div>
-  Would you like to select a library to browse?
+  <p>
+    Would you like to select a library to browse?
+  </p>
   <br>
-  Luckily, you've got several options:
+  <p>
+    Luckily, you've got several options:
+  </p>
 
   <ul>
     <li ng-repeat='library in libraries'>
-      <a href='/library/{{ library.slug }}'>{{ library.name }}</a>
+      <a href='/#/library/{{ library.slug }}'>{{ library.name }}</a>
     </li>
   </ul>
 </div>
