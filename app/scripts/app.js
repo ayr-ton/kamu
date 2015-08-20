@@ -153,12 +153,18 @@ angular
       return language;
     });
 
-  }).run(function($rootScope) {
+  }).run(function($rootScope, $http, ENV) {
      $rootScope.$on('$routeChangeSuccess', function(event, current, previous) {
         event.preventDefault();
 
-        if (angular.isDefined(current.pathParams.library)) {
-          $rootScope.library_slug = current.pathParams.library;
+        var currentLibrary = angular.isDefined(current.pathParams) ? current.pathParams.library : undefined;
+        var previousLibrary = angular.isDefined(previous) ? (angular.isDefined(previous.pathParams) ? previous.pathParams.library : undefined) : undefined;
+
+        if (previousLibrary !== currentLibrary && currentLibrary !== undefined) {
+          $http.get(ENV.apiEndpoint + '/library/' + currentLibrary).
+            success(function(data) {
+              $rootScope.library = data;
+            })
         }
       });
   });
