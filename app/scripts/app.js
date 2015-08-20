@@ -18,7 +18,8 @@ angular
     'ngSanitize',
     'ngTouch',
     'pascalprecht.translate',
-    'ngCookies'
+    'ngCookies',
+    'ui.mask'
   ])
   .config(function ($routeProvider, $translateProvider) {
     var $cookies;
