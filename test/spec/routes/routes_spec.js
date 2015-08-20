@@ -1,4 +1,4 @@
-// 'use strict';
+'use strict';
 
 
 describe('libraryUiApp routing', function() {
@@ -51,29 +51,51 @@ describe('libraryUiApp routing', function() {
 
   describe('route change events', function() {
     it('resets rootScope library when location library changes', 
-      inject(function ($http, $httpBackend, ENV) {
+      inject(function ($http, $injector, $location, ENV) {
         var url = ENV.apiEndpoint + '/library/new_random';
         var previousLocation = { 'pathParams': { 'library': 'random' } };
         var currentLocation = { 'pathParams': { 'library': 'new_random' } };
 
-        $httpBackend.whenGET(url).respond(200, 'libraryData');  
+        $location.path = function() {
+          return '/library/new_random'
+        }
+
+        var httpBackend = $injector.get('$httpBackend');
+        httpBackend.expectGET('views/book/index.html').respond(200);
+        httpBackend.whenGET(url).respond(200, 'libraryData');
 
         rootScope.$broadcast('$routeChangeSuccess', currentLocation, previousLocation);
 
-        $httpBackend.flush();
+        httpBackend.flush();
         
         expect(rootScope.library).toBe('libraryData');
       }
     ));
 
-    it('does not reset rootScope library when location library remains the same', 
-      inject(function ($http, $httpBackend, ENV) {
-        var url = ENV.apiEndpoint + '/library/random';
+    it('does not reset library at rootScope when location remains the same', 
+      inject(function ($http) {
         var previousLocation = { 'pathParams': { 'library': 'random' } };
         var currentLocation = { 'pathParams': { 'library': 'random' } };
 
-        $httpBackend.whenGET(url).respond(200, 'libraryData');  
-        
+        spyOn($http, 'get');
+
+        rootScope.library = 'initial';
+        rootScope.$broadcast('$routeChangeSuccess', currentLocation, previousLocation);
+
+        expect($http.get).not.toHaveBeenCalled();
+        expect(rootScope.library).toBe('initial');
+      }
+    ));
+
+    it('does not reset library at rootScope when location is in exclusion list',
+      inject(function ($http, $location) {
+        var previousLocation = {};
+        var currentLocation = {};
+
+        $location.path = function(){
+          return '/non_existent_link';
+        };        
+
         spyOn($http, 'get');
 
         rootScope.library = 'initial';
