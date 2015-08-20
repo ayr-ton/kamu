@@ -3,16 +3,15 @@
 
 describe('libraryUiApp routing', function() {
   
-  var location, route, rootScope, routeParams;
+  var location, route, rootScope;
 
   beforeEach(module('libraryUiApp'));
 
   beforeEach(inject(
-    function(_$location_, _$route_, _$rootScope_, _$routeParams_) {
+    function(_$location_, _$route_, _$rootScope_) {
       location = _$location_;
       route = _$route_;
       rootScope = _$rootScope_;
-      routeParams = _$routeParams_;
     }));
 
    describe('case insensitive routes', function() {
@@ -38,7 +37,7 @@ describe('libraryUiApp routing', function() {
 
   describe('library dymanic routes', function() {
     it('correctly identifies library param', function() {
-      inject(function($route, $httpBackend) {
+      inject(function($httpBackend) {
         $httpBackend.expectGET('views/book/add-book.html').respond(200);
 
         location.path('/library/random/add_book');
@@ -51,12 +50,12 @@ describe('libraryUiApp routing', function() {
 
   describe('route change events', function() {
     it('resets rootScope library when location library changes', 
-      inject(function ($http, $injector, $location, ENV) {
+      inject(function ($http, $injector, ENV) {
         var url = ENV.apiEndpoint + '/library/new_random';
         var previousLocation = { 'pathParams': { 'library': 'random' } };
         var currentLocation = { 'pathParams': { 'library': 'new_random' } };
 
-        $location.path = function() {
+        location.path = function() {
           return '/library/new_random'
         }
 
@@ -88,11 +87,11 @@ describe('libraryUiApp routing', function() {
     ));
 
     it('does not reset library at rootScope when location is in exclusion list',
-      inject(function ($http, $location) {
+      inject(function ($http) {
         var previousLocation = {};
         var currentLocation = {};
 
-        $location.path = function(){
+        location.path = function(){
           return '/non_existent_link';
         };        
 
