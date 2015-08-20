@@ -1,12 +1,11 @@
-'use strict';
+// 'use strict';
 
-describe('libraryUIApp routing', function() {
+
+describe('libraryUiApp routing', function() {
   
   var location, route, rootScope, routeParams;
 
   beforeEach(module('libraryUiApp'));
-  beforeEach(module('ngRoute'));
-
 
   beforeEach(inject(
     function(_$location_, _$route_, _$rootScope_, _$routeParams_) {
@@ -19,8 +18,7 @@ describe('libraryUIApp routing', function() {
    describe('case insensitive routes', function() {
       beforeEach(inject(
         function($httpBackend) {
-          $httpBackend.expectGET('views/book/add-book.html')
-          .respond(200);
+          $httpBackend.expectGET('views/book/add-book.html').respond(200);
         }));
 
       it('should route correctly when route is lower case', function() {
@@ -39,14 +37,10 @@ describe('libraryUIApp routing', function() {
   });
 
   describe('library dymanic routes', function() {
-    beforeEach(inject(
-        function($httpBackend) {
-          $httpBackend.expectGET('views/book/add-book.html')
-          .respond(200);
-        }));
-
     it('correctly identifies library param', function() {
-      inject(function($route) {
+      inject(function($route, $httpBackend) {
+        $httpBackend.expectGET('views/book/add-book.html').respond(200);
+
         location.path('/library/random/add_book');
         rootScope.$digest();
 
@@ -56,22 +50,38 @@ describe('libraryUIApp routing', function() {
   });
 
   describe('route change events', function() {
-     beforeEach(inject(
-        function($httpBackend) {
-          $httpBackend.expectGET('views/book/add-book.html')
-          .respond(200);
-        }));
+    it('resets rootScope library when location library changes', 
+      inject(function ($http, $httpBackend, ENV) {
+        var url = ENV.apiEndpoint + '/library/new_random';
+        var previousLocation = { 'pathParams': { 'library': 'random' } };
+        var currentLocation = { 'pathParams': { 'library': 'new_random' } };
 
-     xit('sets library on root scope when it is not already set', function() {
-       inject(function($route, $rootScope, $injector) {
-        rootScope = $injector.get('$rootScope');
-        location.path('/library/random/add_book');
-        rootScope.$digest();
+        $httpBackend.whenGET(url).respond(200, 'libraryData');  
 
-        expect(rootScope.library_slug).toBe('random');
-      });
-     })
+        rootScope.$broadcast('$routeChangeSuccess', currentLocation, previousLocation);
 
-  })
+        $httpBackend.flush();
+        
+        expect(rootScope.library).toBe('libraryData');
+      }
+    ));
 
+    it('does not reset rootScope library when location library remains the same', 
+      inject(function ($http, $httpBackend, ENV) {
+        var url = ENV.apiEndpoint + '/library/random';
+        var previousLocation = { 'pathParams': { 'library': 'random' } };
+        var currentLocation = { 'pathParams': { 'library': 'random' } };
+
+        $httpBackend.whenGET(url).respond(200, 'libraryData');  
+        
+        spyOn($http, 'get');
+
+        rootScope.library = 'initial';
+        rootScope.$broadcast('$routeChangeSuccess', currentLocation, previousLocation);
+
+        expect($http.get).not.toHaveBeenCalled();
+        expect(rootScope.library).toBe('initial');
+      }
+    ));
+  });
 });
