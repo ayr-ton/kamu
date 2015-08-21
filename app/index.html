@@ -25,7 +25,7 @@
 
         <!-- Add your site or application content here -->
         <header>
-            <div class='add_book' ng-controller = "BookCtrl" ng-click="gotoAddBook()"></div>
+            <div class='add_book' ng-show="isInsideLibrary()" ng-controller = "BookCtrl" ng-click="gotoAddBook()"></div>
         </header>
 
         <!-- build:js(.) scripts/vendor.js -->

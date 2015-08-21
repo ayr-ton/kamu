@@ -2,12 +2,15 @@
 
 angular
   .module('libraryUiApp')
-  .controller('BookCtrl', ['$scope', 
+  .controller('BookCtrl', [ '$rootScope',
+                            '$scope',
                             'BookService', 
                             'LoanService', 
-                            'modals' , 
+                            'modals', 
                             '$translate',
-                            '$rootScope', function($scope, BookService, LoanService, modals, $translate, $rootScope) {
+                            '$route',
+                            '$http',
+                            function($rootScope, $scope, BookService, LoanService, modals, $translate, $route, $http) {
 
     $scope.searchCriteria = '';
 
@@ -35,6 +38,10 @@ angular
         }   
       };
 
+    $scope.isInsideLibrary = function() {
+      return angular.isDefined($route.current) ? angular.isDefined(getLibrarySlug()) : false;
+    };
+
     $scope.addManually = function() {
         $scope.book = {};
         $scope.searchShowable = false;
@@ -44,11 +51,12 @@ angular
       };
 
     $scope.addBookToLibrary = function() {
-        var libraryId = 50;
+      var librarySlug = getLibrarySlug();
 
-        BookService.findLibrary(libraryId).
-          success(function(data) {
-            var library = data._links.self.href;
+      BookService.getLibraryBySlug(librarySlug).
+        success(function(data){
+          if (angular.isDefined(data._embedded)) {
+            var library = data._embedded.libraries[0]._links.self.href;
 
             if (!$scope.bookExistsInTheLibrary) {
               addBook(library);
@@ -56,35 +64,38 @@ angular
               var book = $scope.book._links.self.href;
               addCopy(library, book);
             }
-          });
+          } else {
+            window.alert($translate.instant('INVALID_LIBRARY_ERROR'));
+          }
+        });
       };
 
     $scope.listBooks = function() {
-        
         $scope.copies = [];
 
-        BookService.listBooks()
-          .success(function (data) {
-            if (data._embedded.copies !== undefined) {
-              $scope.copies = data._embedded.copies;
+        BookService.getLibraryBySlug(getLibrarySlug()).
+          success(function(data) {
+            if (angular.isDefined(data._embedded) && data._embedded.libraries[0]._embedded) {
+              $scope.copies = data._embedded.libraries[0]._embedded.copies;
 
               angular.forEach($scope.copies, function(copy) {
-                  copy = initializeCopy(copy);
+                copy = initializeCopy(copy);
               });
-            } 
+            }
           });
      };
 
     function initializeCopy(copy) {
-
       if ( copy.imageUrl === undefined || copy.imageUrl === null ) {
-          copy.imageUrl = 'images/no-image.png';
+        copy.imageUrl = 'images/no-image.png';
       }
 
       return copy;
     }
 
-    $scope.listBooks();
+    $scope.$on('$viewContentLoaded', function(){
+        $scope.listBooks();
+      });
 
     $scope.borrowCopy = function(copy) {
       
@@ -156,7 +167,7 @@ angular
     };
 
     $scope.gotoAddBook = function () {
-      window.location = '/#/library/placeholder/add_book';
+      window.location = '/#/library/' + getLibrarySlug() + '/add_book';
     };
 
     var populateBookFromLibraryApi = function(data) {
@@ -193,6 +204,10 @@ angular
         $scope.errorShowable = !$scope.formShowable;
       };
 
+    function getLibrarySlug() {
+      return $route.current.pathParams.library;
+    }
+
     function addCopy(library, book) {
       var addCopyRequest = {};
       addCopyRequest.status = 'AVAILABLE';
@@ -203,7 +218,7 @@ angular
       BookService.addCopy(addCopyRequest).
         success(function() {
           window.alert('Book has been added to library successfully.');
-          window.location = '/#/library/'+$rootScope.library.slug;
+          window.location = '/#/library/' + getLibrarySlug();
         }).
         error(function(){
           window.alert('Error occurred while adding ' + $scope.book.title + '.');

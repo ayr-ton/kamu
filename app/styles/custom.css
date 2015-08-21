@@ -26,3 +26,7 @@
 .hide {
   display: none;
 }
+
+.select-library {
+  padding: 30px;
+}
