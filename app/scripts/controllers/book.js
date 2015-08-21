@@ -6,7 +6,8 @@ angular
                             'BookService', 
                             'LoanService', 
                             'modals' , 
-                            '$translate', function($scope, BookService, LoanService, modals, $translate) {
+                            '$translate',
+                            '$rootScope', function($scope, BookService, LoanService, modals, $translate, $rootScope) {
 
     $scope.searchCriteria = '';
 
@@ -202,6 +203,7 @@ angular
       BookService.addCopy(addCopyRequest).
         success(function() {
           window.alert('Book has been added to library successfully.');
+          window.location = '/#/library/'+$rootScope.library.slug;
         }).
         error(function(){
           window.alert('Error occurred while adding ' + $scope.book.title + '.');

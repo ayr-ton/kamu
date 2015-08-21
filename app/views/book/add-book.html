@@ -1,6 +1,6 @@
+<form name="newCopyForm">
 <div class="popup-window-center">
   <div class="popup-window">
-    <div class="popup-close"></div>
     <div class="popup-header">{{ 'APP_ADD_BOOK' | translate}}</div>
     <div class="popup-margin-small popup-bottom-line">
       <div class="popup-nav">
@@ -23,17 +23,26 @@
     </div>
     <div id="book-form" ng-show="formShowable">
       <div class="popup-margin popup-bottom-line">
+        <div class="error" ng-show="newCopyForm.title.$error.required"> {{ 'BOOK_TITLE' | translate }} {{ 'REQUIRED' | translate }}</div>
+        <div class="error" ng-show="newCopyForm.author.$error.required">{{ 'BOOK_AUTHORS' | translate }} {{ 'REQUIRED' | translate }}</div>
+
+          
         <div class="popup-col1">
           <label for="title">{{ 'BOOK_TITLE' | translate }}</label>
-          <input type="text" name="" id="title" ng-model="book.title"/>
+          <input type="text" name="title" id="title" ng-model="book.title" required />
         </div>
+        
         <div class="popup-col1">
           <label for="subtitle">{{ 'BOOK_SUBTITLE' | translate }}</label>
           <input type="text" name="" id="subtitle" ng-model="book.subtitle" />
         </div>
         <div class="popup-col2 popup-col2-left">
-          <label for="author"> {{ 'BOOK_AUTHORS' | translate }}</label>
-          <input type="text" name="" id="author" ng-model="book.author" />
+
+          <label for="author"> {{ 'BOOK_AUTHORS' | translate }}
+          </label>
+          
+          <input type="text" name="author" id="author" ng-model="book.author" required/>
+          
           <label for="publisher">{{ 'BOOK_PUBLISHER' | translate }}</label>
           <input type="text" name="" id="publisher" ng-model="book.publisher" />
           <label for="publication-date">{{ 'BOOK_PUBLICATION_DATE' | translate }}</label>
@@ -42,7 +51,7 @@
           <input type="text" name="" id="pages" ng-model="book.numberOfPages" />
         </div>
         <div class="popup-col2 popup-col2-right">
-          <label for="about">{{ 'BOOK_IMAGE_URL' | translate }}</label>
+          <label for="about">{{ 'BOOK_COVER' | translate }}</label>
           <div class="popup-cover-container cover-image-container">
             <img ng-src="{{ book.imageUrl }}" class="cover-image">
           </div>
@@ -63,8 +72,11 @@
         </div>
       </div>
       <div class="popup-margin-small">
-        <input type="button" name="" value="{{ 'APP_ADD' | translate }}" ng-click="addBookToLibrary()"/>
+          <input type="button" name="" value="{{ 'APP_ADD' | translate }}" ng-click="addBookToLibrary()" ng-disabled="newCopyForm.$invalid"/>
       </div>
     </div>
   </div>
 </div>
+</form>
+
+
