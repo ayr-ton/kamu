@@ -2,7 +2,7 @@
 
 angular
   .module('libraryUiApp')
-  .controller('LibraryCtrl', ['$scope', '$http', 'LibraryService', 'ENV', function($scope, $http, LibraryService, ENV) {
+  .controller('LibraryCtrl', ['$scope', '$http', 'LibraryService', function($scope, $http, LibraryService) {
     $scope.libraries = {};
 
     var listLibraries = function() {

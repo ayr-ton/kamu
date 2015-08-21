@@ -56,16 +56,14 @@ angular
         return $http.post(endPoint, copy, postConfiguration);
       };
 
-    this.findLibrary = function(id) {
-        var endPoint = ENV.apiEndpoint + '/libraries/' + id;
+    this.getLibraryBySlug = function(slug) {
+        var endPoint = ENV.apiEndpoint + '/libraries/search/findBySlug?slug=' + slug;
 
         return $http.get(endPoint);
       };
 
-    this.listBooks = function() {
-        var endPoint = ENV.apiEndpoint + '/copies';
-
-        return $http.get(endPoint);
+    this.getCopies = function(copiesUrl) {
+        return $http.get(copiesUrl);
       };
 
     function buildBook(bookInfo, isbn) {

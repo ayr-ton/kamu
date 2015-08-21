@@ -1,12 +1,8 @@
-<div>
+<div class='select-library'>
   <p>
-    Would you like to select a library to browse?
+    {{ 'APP_LIBRARY_BROWSE_PROMPT' | translate }}
   </p>
   <br>
-  <p>
-    Luckily, you've got several options:
-  </p>
-
   <ul>
     <li ng-repeat='library in libraries'>
       <a href='/#/library/{{ library.slug }}'>{{ library.name }}</a>

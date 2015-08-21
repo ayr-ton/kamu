@@ -61,6 +61,7 @@ angular
         APP_ADD: 'Add',
         APP_MANUAL: 'Manual',
         APP_USER: 'User',
+        APP_LIBRARY_BROWSE_PROMPT: 'Would you like to select a library to browse? Luckily, you\'ve got several options:',
         BOOK_BORROW_TITLE: 'Borrow Book',
         BOOK_RETURN_TITLE: 'Return Book',
         BOOK_NOT_FOUND: 'Sorry we can\'t find any match. Please enter book details manually.',
@@ -78,7 +79,8 @@ angular
         HTTP_CODE_409:'Book requested is not available for do that.',
         HTTP_CODE_412:'Email is required to make a loan',
         HTTP_CODE_500:'Internal error', 
-        REQUIRED: '(Required Field)'
+        REQUIRED: '(Required Field)',
+        INVALID_LIBRARY_ERROR: 'Oops! The library you are adding a book to is not registered with us.'
       })
       .translations('pt-BR', {
         APP_LIBRARY_TAB: 'Todos Os Livros',
@@ -92,6 +94,7 @@ angular
         APP_MANUAL: 'Manual',
         APP_ADD: 'Incluir',
         APP_USER: 'Usuario',
+        APP_LIBRARY_BROWSE_PROMPT: 'Gostaria de selecionar uma biblioteca para navegar? Felizmente, você tem várias opções:',
         BOOK_BORROW_TITLE: 'Pegar O Livro Emprestado',
         BOOK_RETURN_TITLE: 'Devolver O Livro',
         BOOK_NOT_FOUND: 'Livro não encontrado. Por favor insira os dados manualmente.',
@@ -109,8 +112,8 @@ angular
         HTTP_CODE_409:'Livro solicitado está indisponível para o empréstimo.',
         HTTP_CODE_412:'Email é obrigatório',
         HTTP_CODE_500:'Problema interno',
-        REQUIRED: '(Campo Obrigatório)' 
-
+        REQUIRED: '(Campo Obrigatório)',
+        INVALID_LIBRARY_ERROR: 'Desculpe, você está adiconando um livro em uma biblioteca que não está regirstrada.' 
       })
       .translations('es-EC', {
         APP_LIBRARY_TAB: 'Todos Los Libros',
@@ -124,6 +127,7 @@ angular
         APP_MANUAL: 'Manual',
         APP_ADD: 'Añadir',
         APP_USER: 'Usuario',
+        APP_LIBRARY_BROWSE_PROMPT: '',
         BOOK_BORROW_TITLE: 'Pedir préstamo de libro',
         BOOK_RETURN_TITLE: 'Devolver Libro',
         BOOK_NOT_FOUND: 'Lo sentimos, no podemos encontrar coincidencias. Por favor ingresar los detalles manualmente.',
@@ -138,10 +142,11 @@ angular
         BOOK_COVER: 'Imagen',
         BOOK_NUMBER_OF_PAGES: 'Páginas',
         BOOK_DONATOR: 'Donante',
-        HTTP_CODE_409:'El libro solicitado no está disponible para el préstamo',
-        HTTP_CODE_412:'Es necesario su correo electrónico para el préstamo',
+        HTTP_CODE_409:'El libro solicitado no está disponible para el préstamo.',
+        HTTP_CODE_412:'Es necesario su correo electrónico para el préstamo.',
         HTTP_CODE_500:'Problema interno' ,
-        REQUIRED: '(Campo Obrigatório)'
+        REQUIRED: '(Campo Obrigatório)',
+        INVALID_LIBRARY_ERROR: ''
       });
 
     $translateProvider.determinePreferredLanguage(function(){
@@ -163,25 +168,4 @@ angular
 
       return language;
     });
-
-  }).run(function($rootScope, $http, $location, ENV) {
-     $rootScope.$on('$routeChangeSuccess', function(event, current, previous) {
-        event.preventDefault();
-
-        var currentPath = $location.path();
-
-        if (['/'].indexOf(currentPath) === -1) {
-          var currentLibrary = angular.isDefined(current.pathParams) ? current.pathParams.library : undefined;
-          var previousLibrary = angular.isDefined(previous) ? (angular.isDefined(previous.pathParams) ? previous.pathParams.library : undefined) : undefined;
-
-          if (previousLibrary !== currentLibrary && angular.isDefined(currentLibrary)) {
-            var endPoint = ENV.apiEndpoint + '/library/' + currentLibrary;
-
-            $http.get(endPoint).
-              success(function(data) {
-                $rootScope.library = data;
-              });
-          }
-        }
-      });
   });
