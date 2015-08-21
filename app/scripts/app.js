@@ -71,12 +71,14 @@ angular
         BOOK_ISBN_13: 'ISBN 13',
         BOOK_PUBLISHER: 'Publisher',
         BOOK_PUBLICATION_DATE: 'Publication Date',
-        BOOK_IMAGE_URL: 'Cover',
+        BOOK_IMAGE_URL: 'Cover URL',
+        BOOK_COVER: 'Cover',
         BOOK_NUMBER_OF_PAGES: 'Pages',
         BOOK_DONATOR: 'Donator',
         HTTP_CODE_409:'Book requested is not available for do that.',
         HTTP_CODE_412:'Email is required to make a loan',
-        HTTP_CODE_500:'Internal error' 
+        HTTP_CODE_500:'Internal error', 
+        REQUIRED: '(Required Field)'
       })
       .translations('pt-BR', {
         APP_LIBRARY_TAB: 'Todos Os Livros',
@@ -100,12 +102,14 @@ angular
         BOOK_ISBN_13: 'ISBN 13',
         BOOK_PUBLISHER: 'Editora',
         BOOK_PUBLICATION_DATE: 'Data de Publicação',
-        BOOK_IMAGE_URL: 'Capa',
+        BOOK_IMAGE_URL: 'URL da Capa',
+        BOOK_COVER: 'Capa',
         BOOK_NUMBER_OF_PAGES: 'Páginas',
         BOOK_DONATOR: 'Doador',
         HTTP_CODE_409:'Livro solicitado está indisponível para o empréstimo.',
         HTTP_CODE_412:'Email é obrigatório',
-        HTTP_CODE_500:'Problema interno' 
+        HTTP_CODE_500:'Problema interno',
+        REQUIRED: '(Campo Obrigatório)' 
 
       })
       .translations('es-EC', {
@@ -130,12 +134,14 @@ angular
         BOOK_ISBN_13: 'ISBN 13',
         BOOK_PUBLISHER: 'Publicador',
         BOOK_PUBLICATION_DATE: 'Fecha de Publicación',
-        BOOK_IMAGE_URL: 'Imagen',
+        BOOK_IMAGE_URL: 'URL de la Imagen',
+        BOOK_COVER: 'Imagen',
         BOOK_NUMBER_OF_PAGES: 'Páginas',
         BOOK_DONATOR: 'Donante',
         HTTP_CODE_409:'El libro solicitado no está disponible para el préstamo',
         HTTP_CODE_412:'Es necesario su correo electrónico para el préstamo',
-        HTTP_CODE_500:'Problema interno' 
+        HTTP_CODE_500:'Problema interno' ,
+        REQUIRED: '(Campo Obrigatório)'
       });
 
     $translateProvider.determinePreferredLanguage(function(){

@@ -471,6 +471,11 @@ header::after{
 .popup-window input[type=button]:active, .popup-window input[type=submit]:active{
   background-color: #6cc12a;
 }
+
+.popup-window input[type=button]:disabled, .popup-window input[type=submit]:disabled{
+  background-color: #808080;
+}
+
 .popup-isbn-search{
   text-align: right;
   display: table-cell;
