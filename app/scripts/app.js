@@ -40,7 +40,7 @@ angular
         templateUrl: 'views/book/add-book.html',
         controller: 'BookCtrl'
       })
-      .when('/', {
+      .when('/libraries', {
         templateUrl: 'views/library/index.html',
         controller: 'LibraryCtrl'
       })
@@ -61,7 +61,7 @@ angular
         APP_ADD: 'Add',
         APP_MANUAL: 'Manual',
         APP_USER: 'User',
-        APP_LIBRARY_BROWSE_PROMPT: 'Would you like to select a library to browse? Luckily, you\'ve got several options:',
+        APP_LIBRARY_BROWSE_PROMPT: 'Oops! The library you are looking for does not exist yet. Want to try out one of the following?',
         BOOK_BORROW_TITLE: 'Borrow Book',
         BOOK_RETURN_TITLE: 'Return Book',
         BOOK_NOT_FOUND: 'Sorry we can\'t find any match. Please enter book details manually.',
@@ -94,7 +94,7 @@ angular
         APP_MANUAL: 'Manual',
         APP_ADD: 'Incluir',
         APP_USER: 'Usuario',
-        APP_LIBRARY_BROWSE_PROMPT: 'Gostaria de selecionar uma biblioteca para navegar? Felizmente, você tem várias opções:',
+        APP_LIBRARY_BROWSE_PROMPT: 'Oops! A biblioteca que você esta procurando não existe ainda. Gostaria de tentar alguma das seguintes?',
         BOOK_BORROW_TITLE: 'Pegar O Livro Emprestado',
         BOOK_RETURN_TITLE: 'Devolver O Livro',
         BOOK_NOT_FOUND: 'Livro não encontrado. Por favor insira os dados manualmente.',
@@ -168,4 +168,37 @@ angular
 
       return language;
     });
-  });
+  }).
+  run(['$rootScope', '$http', '$location', 'ENV', function($rootScope, $http, $location, ENV){
+    $rootScope.$on('$routeChangeStart', function(event, next, current) {
+      var slug = next.pathParams.library;
+
+      if(angular.isDefined(slug)) {
+        var $cookies;
+
+        angular.injector(['ngCookies']).invoke(['$cookies', function(_$cookies_) {
+          $cookies = _$cookies_;
+        }]);
+
+        var cookieKey = 'libraries';
+        var cookies = angular.isDefined($cookies.get(cookieKey)) ? $cookies.get(cookieKey).split(',') : [];
+        
+        if (cookies.indexOf(slug) === -1) {
+          var endPoint = ENV.apiEndpoint + '/libraries/search/findBySlug?slug=' + slug;
+
+          $http.get(endPoint).
+            success(function(data){
+              if(angular.isDefined(data._embedded)) {
+                cookies.push(data._embedded.libraries[0].slug);
+
+                $cookies.put(cookieKey, cookies);
+              } else {
+                event.preventDefault();
+
+                $location.path('/libraries');
+              }
+            })
+        }
+      }
+    });
+  }]);
