@@ -3,8 +3,8 @@
 describe('LibraryCtrl routing', function() {
   beforeEach(module('libraryUiApp'));
 
-  it('routes / to #select_library', inject(function($route){
-    var route = $route.routes['/'];
+  it('routes /libraries to library selection page', inject(function($route){
+    var route = $route.routes['/libraries'];
 
     expect(route.controller).toBe('LibraryCtrl');
     expect(route.templateUrl).toEqual('views/library/index.html');
