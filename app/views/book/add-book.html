@@ -72,7 +72,8 @@
         </div>
       </div>
       <div class="popup-margin-small">
-          <input type="button" name="" value="{{ 'APP_ADD' | translate }}" ng-click="addBookToLibrary()" ng-disabled="newCopyForm.$invalid"/>
+          <input type="button" name="" value="{{ 'APP_ADD' | translate }}" ng-click="addBookToLibrary()" ng-disabled="newCopyForm.$invalid || addingBook"/>
+          <div data-ng-show="addingBook">{{ 'APP_WAIT' | translate }} <i class="fa fa-spinner fa-spin"></i></div>
       </div>
     </div>
   </div>
