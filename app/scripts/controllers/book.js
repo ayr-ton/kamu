@@ -13,6 +13,7 @@ angular
 
     $scope.searchCriteria = '';
     $scope.addingBook = false ; 
+    $scope.isGoogleBook = false;
 
     $scope.autoCompleteSearch = function() {
         $scope.formShowable  = false;
@@ -48,6 +49,7 @@ angular
         $scope.book = {};
         $scope.searchShowable = false;
         $scope.isbnSearch = false;
+        $scope.isGoogleBook = false;
 
         toggleFormDisplay(true);
       };
@@ -180,6 +182,8 @@ angular
           $scope.book = data._embedded.books[0];
           $scope.book.imageUrl = BookService.resolveBookImage($scope.book.imageUrl);
           $scope.bookExistsInTheLibrary = true;
+          $scope.isGoogleBook = true;
+          console.log($scope.isGoogleBook);
 
           toggleFormDisplay(true);
         } else {
@@ -198,6 +202,7 @@ angular
             $scope.formShowable  = true;
 
             $scope.book = BookService.extractBookInformation(item.volumeInfo, $scope.searchCriteria);
+            $scope.isGoogleBook = true;
           });
 
         if($scope.book.title === undefined) {
