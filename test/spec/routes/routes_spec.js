@@ -92,6 +92,10 @@ describe('libraryUiApp routing', function() {
           .expectGET(apiEndpoint)
           .respond(200, library);
 
+        httpBackend
+          .expectGET('views/library/index.html')
+          .respond(200);
+
         rootScope.$broadcast('$routeChangeStart', route);
 
         httpBackend.flush();

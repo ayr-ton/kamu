@@ -9,4 +9,11 @@ describe('LibraryCtrl routing', function() {
     expect(route.controller).toBe('LibraryCtrl');
     expect(route.templateUrl).toEqual('views/library/index.html');
   }));
+
+  it('routes / to library selection page', inject(function($route){
+    var route = $route.routes['/'];
+
+    expect(route.controller).toBe('LibraryCtrl');
+    expect(route.templateUrl).toEqual('views/library/index.html');
+  }));
 });
