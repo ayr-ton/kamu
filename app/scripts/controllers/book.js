@@ -222,6 +222,7 @@ angular
         }).
         error(function(){
           window.alert('Error occurred while adding ' + $scope.book.title + '.');
+          $scope.addingBook = false; 
         });
     }
 
@@ -233,6 +234,7 @@ angular
         }).
         error(function(){
           window.alert('Error occurred while adding ' + $scope.book.title + '.');
+          $scope.addingBook = false; 
         });
     }
 
