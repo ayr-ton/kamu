@@ -1,42 +1,18 @@
 'use strict';
 
 describe('BookCtrl', function() {
-  var scope, createController;
+  var scope, controller;
   
   beforeEach(module('libraryUiApp'));
 
-  // beforeEach(inject(function (
-  //                           $_controller_,
-  //                           $rootScope,
-  //                           BookService, 
-  //                           LoanService, 
-  //                           modals, 
-  //                           $translate,
-  //                           $route,
-  //                           $http) {
+  beforeEach(inject(function($controller, $rootScope){
+    scope = $rootScope;
+    controller = $controller('BookCtrl', { '$scope' : scope });
+  }));
 
-  //     scope = $rootScope.$new();
-
-  //     createController = function() {
-  //         return $_controller_('BookCtrl', {
-  //             '$scope': scope,
-  //             'BookService': BookService,
-  //             'LoanService': LoanService,
-  //             'modals': modals,
-  //             '$translate': $translate,
-  //             '$route': $route,
-  //             '$http': $http
-  //         });
-  //     };
-
-  //     console.log(createController());
-  // }));
 
   describe('#autoCompleteSearch', function() {
     it('only shows isbn field', inject(function($controller, $rootScope) {
-      var scope = $rootScope;
-      var controller = $controller('BookCtrl', { '$scope' : scope });
-
       scope.autoCompleteSearch();
 
       expect(scope.formShowable).toBe(false);
@@ -44,5 +20,15 @@ describe('BookCtrl', function() {
       expect(scope.searchShowable).toBe(true);
       expect(scope.isbnSearch).toBe(true);
     }));
+  });
+
+  describe('#findGoogleBooks', function(){
+    it('expect book to be empty when criteria is empty', function(){
+      scope.searchCriteria = '';
+
+      scope.findGoogleBooks();
+
+      expect(scope.book).toEqual({});
+    });
   });
 });
