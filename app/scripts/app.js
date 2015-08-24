@@ -127,7 +127,7 @@ angular
         APP_MANUAL: 'Manual',
         APP_ADD: 'Añadir',
         APP_USER: 'Usuario',
-        APP_LIBRARY_BROWSE_PROMPT: '',
+        APP_LIBRARY_BROWSE_PROMPT:'¡Ups! La librería que buscas no existe aún. ¿Te gustaría intentar una de las siguientes?',
         BOOK_BORROW_TITLE: 'Pedir préstamo de libro',
         BOOK_RETURN_TITLE: 'Devolver Libro',
         BOOK_NOT_FOUND: 'Lo sentimos, no podemos encontrar coincidencias. Por favor ingresar los detalles manualmente.',
@@ -145,8 +145,8 @@ angular
         HTTP_CODE_409:'El libro solicitado no está disponible para el préstamo.',
         HTTP_CODE_412:'Es necesario su correo electrónico para el préstamo.',
         HTTP_CODE_500:'Problema interno' ,
-        REQUIRED: '(Campo Obrigatório)',
-        INVALID_LIBRARY_ERROR: ''
+        REQUIRED: '(Campo Obligatorio)',
+        INVALID_LIBRARY_ERROR: '¡Ups! La librería a la que intenta agregar un libro no está registrada.'
       });
 
     $translateProvider.determinePreferredLanguage(function(){
