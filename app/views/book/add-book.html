@@ -29,19 +29,22 @@
           
         <div class="popup-col1">
           <label for="title">{{ 'BOOK_TITLE' | translate }}</label>
-          <input type="text" name="title" id="title" ng-model="book.title" maxlength=255 required />
+          <input type="text" name="title" id="title" ng-model="book.title" maxlength=255 required 
+          ng-disabled="isGoogleBook"/>
         </div>
         
         <div class="popup-col1">
           <label for="subtitle">{{ 'BOOK_SUBTITLE' | translate }}</label>
-          <input type="text" name="" id="subtitle" ng-model="book.subtitle" maxlength=255 />
+          <input type="text" name="" id="subtitle" ng-model="book.subtitle" maxlength=255 
+          ng-disabled="isGoogleBook"/>
         </div>
         <div class="popup-col2 popup-col2-left">
 
           <label for="author"> {{ 'BOOK_AUTHORS' | translate }}
           </label>
           
-          <input type="text" name="author" id="author" ng-model="book.author" maxlength=255 required/>
+          <input type="text" name="author" id="author" ng-model="book.author" maxlength=255 required
+          ng-disabled="isGoogleBook"/>
           
           <label for="publisher">{{ 'BOOK_PUBLISHER' | translate }}</label>
           <input type="text" name="" id="publisher" ng-model="book.publisher" maxlength=255 />
