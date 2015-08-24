@@ -2,27 +2,24 @@
 
 angular
   .module('libraryUiApp')
-  .controller('BookCtrl', [ '$rootScope',
-                            '$scope',
+  .controller('BookCtrl', [ '$scope',
                             'BookService', 
                             'LoanService', 
                             'modals', 
                             '$translate',
                             '$route',
                             '$http',
-                            function($rootScope, $scope, BookService, LoanService, modals, $translate, $route, $http) {
+                            function($scope, BookService, LoanService, modals, $translate, $route, $http) {
 
     $scope.searchCriteria = '';
 
-    var initializeControls = function() {
+    $scope.autoCompleteSearch = function() {
         $scope.formShowable  = false;
         $scope.errorShowable = false;
         $scope.searchShowable = true;
         $scope.isbnSearch = true;
       };
-    initializeControls();
-
-    $scope.autoCompleteSearch = initializeControls;
+    $scope.autoCompleteSearch();
 
     $scope.findGoogleBooks = function() {
         var searchCriteria = $scope.searchCriteria.toString();
