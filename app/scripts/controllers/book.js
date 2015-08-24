@@ -24,7 +24,7 @@ angular
     $scope.findGoogleBooks = function() {
         var searchCriteria = $scope.searchCriteria.toString();
 
-        $scope.book = {};
+        $scope.book = { };
 
         if (searchCriteria !== '') {
           BookService.findLibraryBook(searchCriteria).
