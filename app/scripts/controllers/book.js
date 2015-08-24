@@ -22,6 +22,10 @@ angular
       };
     $scope.autoCompleteSearch();
 
+    $scope.getCurrentLibraryPath = function(){
+      return $scope.isInsideLibrary() ? '#/library/' + getLibrarySlug() : '#/libraries' ;
+    }
+
     $scope.findGoogleBooks = function() {
         var searchCriteria = $scope.searchCriteria.toString();
 
