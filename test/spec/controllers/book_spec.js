@@ -31,4 +31,18 @@ describe('BookCtrl', function() {
       expect(scope.book).toEqual({});
     });
   });
+
+  describe('#getCurrentLibraryPath', function(){
+    it('routes to root when library path param is not set', function(){
+      expect(scope.getCurrentLibraryPath()).toBe('#/libraries');
+    });
+
+    it('routes to library path when library path param is set', inject(function($location, $route){
+      var route = $route;
+
+      route.current = { 'pathParams': {'library': 'random'} }
+
+      expect(scope.getCurrentLibraryPath()).toBe('#/library/random');
+    }));
+  });
 });
