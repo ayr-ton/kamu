@@ -1,86 +1,90 @@
-<form name="newCopyForm">
-<div class="popup-window-center">
-  <div class="popup-window">
-    <div class="popup-header">{{ 'APP_ADD_BOOK' | translate}}</div>
-    <div class="popup-margin-small popup-bottom-line">
-      <div class="popup-nav">
-        <ul>
-          <li><a id="isbn-search" href="" ng-class="{'popup-nav-active': isbnSearch, 'popup-nav-unactive': !isbnSearch}" ng- class="popup-nav-left" ng-click="autoCompleteSearch()">{{ 'BOOK_ISBN_13' | translate }}</a></li>
-          <li><a id="manual-add" href="" ng-class="{'popup-nav-active': !isbnSearch, 'popup-nav-unactive': isbnSearch}" class="popup-nav-right" ng-click="addManually()">{{ 'APP_MANUAL' | translate }}</a></li>
-        </ul>
+<div>
+  <form name="searchForm">
+  <div class="popup-window-center">
+    <div class="popup-window">
+      <div class="popup-header">{{ 'APP_ADD_BOOK' | translate}}</div>
+      <div class="popup-margin-small popup-bottom-line">
+        <div class="popup-nav">
+          <ul>
+            <li><a id="isbn-search" href="" ng-class="{'popup-nav-active': isbnSearch, 'popup-nav-unactive': !isbnSearch}" ng- class="popup-nav-left" ng-click="autoCompleteSearch()">{{ 'BOOK_ISBN_13' | translate }}</a></li>
+            <li><a id="manual-add" href="" ng-class="{'popup-nav-active': !isbnSearch, 'popup-nav-unactive': isbnSearch}" class="popup-nav-right" ng-click="addManually()">{{ 'APP_MANUAL' | translate }}</a></li>
+          </ul>
+        </div>
       </div>
-    </div>
-    <div id="search" class="popup-margin" ng-show="searchShowable">
-      <div id="not-found-message" class="popup-error" ng-show="errorShowable">{{ 'BOOK_NOT_FOUND' | translate }}</div>
-      <div class="popup-col1">
-        <div class="popup-isbn-data">
-
-          <label for="isbn-search">{{ 'BOOK_ISBN_13' | translate }}</label>
-          <input type="text" maxlength=13 name="" id="isbn-search" class="input-no-margin" ng-model="searchCriteria" ui-mask="9999999999999" />
-        </div>
-        <div class="popup-isbn-search"><input type="button" name="" value="{{ 'APP_SEARCH' | translate }}" ng-click="findGoogleBooks()"/></div>
-      </div>
-    </div>
-    <div id="book-form" ng-show="formShowable">
-      <div class="popup-margin popup-bottom-line">
-        <div class="error" ng-show="newCopyForm.title.$error.required"> {{ 'BOOK_TITLE' | translate }} {{ 'REQUIRED' | translate }}</div>
-        <div class="error" ng-show="newCopyForm.author.$error.required">{{ 'BOOK_AUTHORS' | translate }} {{ 'REQUIRED' | translate }}</div>
-
-          
+      <div id="search" class="popup-margin" ng-show="searchShowable">
+        <div id="not-found-message" class="popup-error" ng-show="errorShowable">{{ 'BOOK_NOT_FOUND' | translate }}</div>
         <div class="popup-col1">
-          <label for="title">{{ 'BOOK_TITLE' | translate }}</label>
-          <input type="text" name="title" id="title" ng-model="book.title" maxlength=255 required 
-          ng-disabled="isGoogleBook"/>
-        </div>
-        
-        <div class="popup-col1">
-          <label for="subtitle">{{ 'BOOK_SUBTITLE' | translate }}</label>
-          <input type="text" name="" id="subtitle" ng-model="book.subtitle" maxlength=255 
-          ng-disabled="isGoogleBook"/>
-        </div>
-        <div class="popup-col2 popup-col2-left">
+          <div class="popup-isbn-data">
 
-          <label for="author"> {{ 'BOOK_AUTHORS' | translate }}
-          </label>
-          
-          <input type="text" name="author" id="author" ng-model="book.author" maxlength=255 required
-          ng-disabled="isGoogleBook"/>
-          
-          <label for="publisher">{{ 'BOOK_PUBLISHER' | translate }}</label>
-          <input type="text" name="" id="publisher" ng-model="book.publisher" maxlength=255 />
-          <label for="publication-date">{{ 'BOOK_PUBLICATION_DATE' | translate }}</label>
-          <input type="text" name="" id="publication-date" ng-model="book.publicationDate" maxlength=255 />
-          <label for="pages">{{ 'BOOK_NUMBER_OF_PAGES' | translate }}</label>
-          <input type="text" name="" id="pages" ng-model="book.numberOfPages" maxlength=4 ui-mask="9999"/>
-        </div>
-        <div class="popup-col2 popup-col2-right">
-          <label for="about">{{ 'BOOK_COVER' | translate }}</label>
-          <div class="popup-cover-container cover-image-container">
-            <img ng-src="{{ book.imageUrl }}" class="cover-image">
+            <label for="isbn-search">{{ 'BOOK_ISBN_13' | translate }}</label>
+            <input type="text" maxlength=13 name="" id="isbn-search" class="input-no-margin" ng-model="searchCriteria" ui-mask="9999999999999" />
+          </div>
+          <div class="popup-isbn-search">
+            <input type="submit" name="" value="{{ 'APP_SEARCH' | translate }}" ui-keypress="{13:'findGoogleBooks()'}" ng-click="findGoogleBooks()"/>
           </div>
         </div>
-        <div class="popup-col1">
-          <label for="cover">{{ 'BOOK_IMAGE_URL' | translate }}</label>
-          <input type="text" name="" id="cover" ng-model="book.imageUrl" />
-        </div>
-        <div class="popup-col1">
-          <label for="about">{{ 'BOOK_DESCRIPTION' | translate }}</label>
-          <textarea name="comment" id="about" ng-model="book.description"></textarea>
-        </div>
       </div>
-      <div class="popup-margin popup-bottom-line">
-        <div class="popup-col1">
-          <label for="donator">{{ 'BOOK_DONATOR' | translate }}</label>
-          <input type="text" name="" id="donator" ng-model="donator" class="input-no-margin" maxlength=255/>
+  </form>
+  <form name="newCopyForm">
+      <div id="book-form" ng-show="formShowable">
+        <div class="popup-margin popup-bottom-line">
+          <div class="error" ng-show="newCopyForm.title.$error.required"> {{ 'BOOK_TITLE' | translate }} {{ 'REQUIRED' | translate }} </div>
+          <div class="error" ng-show="newCopyForm.author.$error.required">{{ 'BOOK_AUTHORS' | translate }} {{ 'REQUIRED' | translate }} </div>
+
+          <div class="popup-col1">
+            <label for="title">{{ 'BOOK_TITLE' | translate }}</label>
+            <input type="text" name="title" id="title" ng-model="book.title" maxlength=255 required
+            ng-disabled="isGoogleBook"/>
+          </div>
+          
+          <div class="popup-col1">
+            <label for="subtitle">{{ 'BOOK_SUBTITLE' | translate }}</label>
+            <input type="text" name="" id="subtitle" ng-model="book.subtitle" maxlength=255
+            ng-disabled="isGoogleBook"/>
+          </div>
+          <div class="popup-col2 popup-col2-left">
+
+            <label for="author"> {{ 'BOOK_AUTHORS' | translate }}
+            </label>
+
+            <input type="text" name="author" id="author" ng-model="book.author" maxlength=255 required
+            ng-disabled="isGoogleBook"/>
+
+            <label for="publisher">{{ 'BOOK_PUBLISHER' | translate }}</label>
+            <input type="text" name="" id="publisher" ng-model="book.publisher" maxlength=255 />
+            <label for="publication-date">{{ 'BOOK_PUBLICATION_DATE' | translate }}</label>
+            <input type="text" name="" id="publication-date" ng-model="book.publicationDate" maxlength=255 />
+            <label for="pages">{{ 'BOOK_NUMBER_OF_PAGES' | translate }}</label>
+            <input type="text" name="" id="pages" ng-model="book.numberOfPages" maxlength=4 ui-mask="9999"/>
+          </div>
+          <div class="popup-col2 popup-col2-right">
+            <label for="about">{{ 'BOOK_COVER' | translate }}</label>
+            <div class="popup-cover-container cover-image-container">
+              <img ng-src="{{ book.imageUrl }}" class="cover-image">
+            </div>
+          </div>
+          <div class="popup-col1">
+            <label for="cover">{{ 'BOOK_IMAGE_URL' | translate }}</label>
+            <input type="text" name="" id="cover" ng-model="book.imageUrl" />
+          </div>
+          <div class="popup-col1">
+            <label for="about">{{ 'BOOK_DESCRIPTION' | translate }}</label>
+            <textarea name="comment" id="about" ng-model="book.description"></textarea>
+          </div>
         </div>
-      </div>
-      <div class="popup-margin-small">
-          <input type="button" name="" value="{{ 'APP_ADD' | translate }}" ng-click="addBookToLibrary()" ng-disabled="newCopyForm.$invalid || addingBook"/>
-          <div data-ng-show="addingBook">{{ 'APP_WAIT' | translate }} <i class="fa fa-spinner fa-spin"></i></div>
+        <div class="popup-margin popup-bottom-line">
+          <div class="popup-col1">
+            <label for="donator">{{ 'BOOK_DONATOR' | translate }}</label>
+            <input type="text" name="" id="donator" ng-model="donator" class="input-no-margin" maxlength=255/>
+          </div>
+        </div>
+        <div class="popup-margin-small">
+            <input type="submit" name="" value="{{ 'APP_ADD' | translate }}" ng-click="addBookToLibrary()" ng-disabled="newCopyForm.$invalid || addingBook"/>
+            <div data-ng-show="addingBook">{{ 'APP_WAIT' | translate }} <i class="fa fa-spinner fa-spin"></i></div>
+        </div>
       </div>
     </div>
   </div>
+  </form>
 </div>
-</form>
-
 
