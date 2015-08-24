@@ -12,6 +12,7 @@ angular
                             function($scope, BookService, LoanService, modals, $translate, $route, $http) {
 
     $scope.searchCriteria = '';
+    $scope.addingBook = false ; 
 
     $scope.autoCompleteSearch = function() {
         $scope.formShowable  = false;
@@ -49,6 +50,7 @@ angular
 
     $scope.addBookToLibrary = function() {
       var librarySlug = getLibrarySlug();
+      $scope.addingBook = true ; 
 
       BookService.getLibraryBySlug(librarySlug).
         success(function(data){
@@ -214,6 +216,7 @@ angular
 
       BookService.addCopy(addCopyRequest).
         success(function() {
+           $scope.addingBook = false; 
           window.alert('Book has been added to library successfully.');
           window.location = '/#/library/' + getLibrarySlug();
         }).

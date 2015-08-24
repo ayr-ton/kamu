@@ -65,6 +65,7 @@ angular
         APP_ADD: 'Add',
         APP_MANUAL: 'Manual',
         APP_USER: 'User',
+        APP_WAIT: 'Please, wait ',
         APP_LIBRARY_BROWSE_PROMPT: 'Oops! The library you are looking for does not exist yet. Want to try out one of the following?',
         BOOK_BORROW_TITLE: 'Borrow Book',
         BOOK_RETURN_TITLE: 'Return Book',
@@ -98,6 +99,7 @@ angular
         APP_MANUAL: 'Manual',
         APP_ADD: 'Incluir',
         APP_USER: 'Usuario',
+        APP_WAIT: 'Por favor aguarde ',
         APP_LIBRARY_BROWSE_PROMPT: 'Oops! A biblioteca que você esta procurando não existe ainda. Gostaria de tentar alguma das seguintes?',
         BOOK_BORROW_TITLE: 'Pegar O Livro Emprestado',
         BOOK_RETURN_TITLE: 'Devolver O Livro',
@@ -131,6 +133,7 @@ angular
         APP_MANUAL: 'Manual',
         APP_ADD: 'Añadir',
         APP_USER: 'Usuario',
+        APP_WAIT: 'Gracias por esperar',
         APP_LIBRARY_BROWSE_PROMPT:'¡Ups! La librería que buscas no existe aún. ¿Te gustaría intentar una de las siguientes?',
         BOOK_BORROW_TITLE: 'Pedir préstamo de libro',
         BOOK_RETURN_TITLE: 'Devolver Libro',
@@ -201,7 +204,7 @@ angular
 
                 $location.path('/libraries');
               }
-            })
+            });
         }
       }
     });
