@@ -406,4 +406,114 @@ describe('BookCtrl', function() {
       })
     });
   });
+
+  describe('#listBooks', function() {
+    it('sets copies to be empty when copies retrieval fails', inject(function($httpBackend, $route, ENV){
+      var slug = 'bh';
+
+      var route = $route;
+      route.current = { 'pathParams': {'library': slug } };
+
+      $httpBackend.expectGET(ENV.apiEndpoint + '/libraries/search/findBySlug?slug=' + slug)
+        .respond(500);
+
+      $httpBackend.expectGET('views/library/index.html')
+        .respond(200);
+
+      scope.listBooks();
+
+      $httpBackend.flush();
+
+      expect(scope.copies).toEqual([]);
+    }));
+
+    it('correctly initializes each copy when copy has no imageUrl',
+      inject(function($route, $httpBackend, ENV){
+        var library = {
+                '_embedded': {
+                  'libraries' : [
+                    {
+                      '_links': {
+                        'self': {
+                          'href': 'link/to/library'
+                        }
+                      },
+                      '_embedded' : {
+                        'copies': [
+                          {
+                            'title': 'Enjoying Fifa with your eyes closed.',
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              };
+
+        var slug = 'bh';
+
+        var route = $route;
+        route.current = { 'pathParams': {'library': slug } };
+
+        $httpBackend.expectGET(ENV.apiEndpoint + '/libraries/search/findBySlug?slug=' + slug)
+          .respond(200, library);
+
+        $httpBackend.expectGET('views/library/index.html')
+          .respond(200);
+
+        scope.listBooks();
+
+        $httpBackend.flush();
+
+        expect(scope.copies.length).toEqual(1);
+        expect(scope.copies[0].title).toEqual('Enjoying Fifa with your eyes closed.');
+        expect(scope.copies[0].imageUrl).toEqual('images/no-image.png');
+      })
+    );
+
+    it('correctly initializes each copy when copy has imageUrl',
+      inject(function($route, $httpBackend, ENV){
+        var library = {
+                '_embedded': {
+                  'libraries' : [
+                    {
+                      '_links': {
+                        'self': {
+                          'href': 'link/to/library'
+                        }
+                      },
+                      '_embedded' : {
+                        'copies': [
+                          {
+                            'title': 'Enjoying Fifa with your eyes closed.',
+                            'imageUrl': 'path/to/image'
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              };
+
+        var slug = 'bh';
+
+        var route = $route;
+        route.current = { 'pathParams': {'library': slug } };
+
+        $httpBackend.expectGET(ENV.apiEndpoint + '/libraries/search/findBySlug?slug=' + slug)
+          .respond(200, library);
+
+        $httpBackend.expectGET('views/library/index.html')
+          .respond(200);
+
+        scope.listBooks();
+
+        $httpBackend.flush();
+
+        expect(scope.copies.length).toEqual(1);
+        expect(scope.copies[0].title).toEqual('Enjoying Fifa with your eyes closed.');
+        expect(scope.copies[0].imageUrl).toEqual('path/to/image');
+      })
+    );
+  });
 });
