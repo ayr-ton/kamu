@@ -55,19 +55,19 @@ angular
       };
 
     $scope.addBookToLibrary = function() {
-      var librarySlug = getLibrarySlug();
+      var slug = getLibrarySlug();
       $scope.addingBook = true ; 
 
-      BookService.getLibraryBySlug(librarySlug).
+      BookService.getLibraryBySlug(slug).
         success(function(data){
           if (angular.isDefined(data._embedded)) {
             var library = data._embedded.libraries[0]._links.self.href;
 
             if (!$scope.bookExistsInTheLibrary) {
-              addBook(library);
+              addBook(library, slug);
             } else {
               var book = $scope.book._links.self.href;
-              addCopy(library, book);
+              addCopy(library, slug, book);
             }
           } else {
             window.alert($translate.instant('INVALID_LIBRARY_ERROR'));
@@ -209,7 +209,7 @@ angular
       return $route.current.pathParams.library;
     }
 
-    function addCopy(library, book) {
+    function addCopy(library, slug, book) {
       var addCopyRequest = {};
       addCopyRequest.status = 'AVAILABLE';
       addCopyRequest.library = library;
@@ -218,9 +218,10 @@ angular
 
       BookService.addCopy(addCopyRequest).
         success(function() {
-           $scope.addingBook = false; 
+          $scope.addingBook = false;
+
           window.alert('Book has been added to library successfully.');
-          window.location = '/#/library/' + getLibrarySlug();
+          window.location.replace('/#/library/' + slug);
         }).
         error(function(){
           window.alert('Error occurred while adding ' + $scope.book.title + '.');
@@ -228,11 +229,11 @@ angular
         });
     }
 
-    function addBook(library) {
+    function addBook(library, slug) {
       BookService.addBook($scope.book).
         success(function(data, status, headers, config) {
           var book = headers('Location');
-          addCopy(library, book);
+          addCopy(library, slug, book);
         }).
         error(function(){
           window.alert('Error occurred while adding ' + $scope.book.title + '.');

@@ -181,8 +181,7 @@ describe('BookCtrl', function() {
 
     it('routes to library path when library path param is set', inject(function($location, $route){
       var route = $route;
-
-      route.current = { 'pathParams': {'library': 'random'} }
+      route.current = { 'pathParams': {'library': 'random' } };
 
       expect(scope.getCurrentLibraryPath()).toBe('#/library/random');
     }));
@@ -192,8 +191,7 @@ describe('BookCtrl', function() {
     it('returns true when current route is defined',
       inject(function($route){
         var route = $route;
-
-        route.current = { 'pathParams': {'library': 'random'} }
+        route.current = { 'pathParams': {'library': 'random' } };
 
         expect(scope.isInsideLibrary()).toBe(true);
     }));
@@ -213,6 +211,96 @@ describe('BookCtrl', function() {
       expect(scope.isGoogleBook).toBe(false);
       expect(scope.formShowable).toBe(true);
       expect(scope.errorShowable).toBe(false);
+    });
+  });
+
+  describe('#addBookToLibrary', function(){
+    describe('when library is retrieved', function(){
+      var slug = 'bh';
+      var librarySearchEndpoint, addBookEndpoint, addCopyEndpoint;
+
+      beforeEach(inject(function($route, ENV){
+        // route = $route;
+        // route.current = { 'pathParams': {'library': slug } };
+
+        librarySearchEndpoint = ENV.apiEndpoint + '/libraries/search/findBySlug?slug=' + slug;
+        addBookEndpoint = ENV.apiEndpoint + '/books';
+        addCopyEndpoint = ENV.apiEndpoint + '/copies';
+      }));
+
+      it('shows alert when library is not found', inject(function($httpBackend, $translate, $window, $route){
+        var library = {};
+
+        var route = $route;
+        route.current = { 'pathParams': {'library': slug } };
+
+        spyOn($translate, 'instant')
+        spyOn($window, 'alert')
+
+        $httpBackend
+          .expectGET(librarySearchEndpoint)
+          .respond(200, library)
+
+        $httpBackend.expectGET('views/library/index.html')
+          .respond(200);
+
+        scope.addBookToLibrary();
+
+        $httpBackend.flush();
+
+        expect($translate.instant).toHaveBeenCalledWith('INVALID_LIBRARY_ERROR');
+        expect($window.alert).toHaveBeenCalled();
+        expect(scope.addingBook).toBe(true);
+      }));
+
+      it('adds book when book does not exist in library', inject(function($injector, $httpBackend, $window, $route, $location){
+        var library = {
+          '_embedded': {
+            'libraries' : [
+              {
+                '_links': {
+                  'self': {
+                    'href': 'link/to/library'
+                  }
+                }
+              }
+            ]
+          }
+        };
+
+        var route = $injector.get('$route');
+        route.current = { 'pathParams': {'library': 'bh' } };
+
+        scope.bookExistsInTheLibrary = false;
+        scope.book = {};
+
+        spyOn($window, 'alert');
+        spyOn($window.location, 'replace');
+
+        $httpBackend
+          .expectGET(librarySearchEndpoint)
+          .respond(200, library);
+
+        $httpBackend.expectGET('views/library/index.html')
+          .respond(200);
+
+        $httpBackend
+          .expectPOST(addBookEndpoint, scope.book)
+          .respond(201)
+
+        $httpBackend
+          .expectPOST(addCopyEndpoint)
+          .respond(201)
+
+        scope.addBookToLibrary();
+
+        $httpBackend.flush();
+
+        expect(scope.addingBook).toBe(false);
+        expect($window.alert).toHaveBeenCalledWith('Book has been added to library successfully.');
+        expect($window.location.replace).toHaveBeenCalledWith('/#/library/' + slug);
+        // expect($location.toBe("fgsdfg");
+      }));
     });
   });
 });
