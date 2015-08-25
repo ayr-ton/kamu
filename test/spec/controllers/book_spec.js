@@ -31,7 +31,7 @@ describe('BookCtrl', function() {
       expect(scope.book).toEqual({});
     });
 
-    it('sets book properties correctly when book exists in library', 
+    it('sets book properties correctly when book exists in library',
       inject(function($controller, $httpBackend, ENV){
         scope.searchCriteria = '985693865986';
 
@@ -47,7 +47,7 @@ describe('BookCtrl', function() {
                           ]
                       }
                     }
-          
+
         $httpBackend
           .expectGET(ENV.apiEndpoint + '/books/search/findByIsbn?isbn=' + scope.searchCriteria)
           .respond(200, data);
@@ -65,6 +65,55 @@ describe('BookCtrl', function() {
         expect(scope.book.imageUrl).toEqual('images\\no-image.png');
 
         expect(scope.bookExistsInTheLibrary).toBe(true);
+
+        expect(scope.formShowable).toBe(true);
+        expect(scope.errorShowable).toBe(false);
+      })
+    );
+
+    it('calls google service when book does not exist in library', 
+      inject(function($controller, $httpBackend, ENV){
+        scope.searchCriteria = '985693865986';
+
+        var libraryData = {};
+        var googleData = {
+                          'items' : [
+                            {
+                              'volumeInfo':
+                              {
+                                'title': 'How to enjoy pairing - 2nd Edition',
+                                'subtitle': 'The francieli-ekow way',
+                                'industryIdentifiers': [
+                                  {
+                                    'type': 'ISBN_13',
+                                    'identifier': scope.searchCriteria
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        }
+
+        $httpBackend
+          .expectGET(ENV.apiEndpoint + '/books/search/findByIsbn?isbn=' + scope.searchCriteria)
+          .respond(200, libraryData);
+
+        $httpBackend.expectGET('views/library/index.html')
+          .respond(200);
+
+        $httpBackend
+          .expectGET('https://www.googleapis.com/books/v1/volumes?q=isbn:' + scope.searchCriteria)
+          .respond(200, googleData);
+
+        scope.findGoogleBooks();
+
+        $httpBackend.flush();
+
+        expect(scope.book.title).toEqual('How to enjoy pairing - 2nd Edition');
+        expect(scope.book.subtitle).toEqual('The francieli-ekow way');
+        expect(scope.book.isbn).toEqual('985693865986');
+
+        expect(scope.bookExistsInTheLibrary).toBe(false);
 
         expect(scope.formShowable).toBe(true);
         expect(scope.errorShowable).toBe(false);
