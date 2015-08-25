@@ -23,13 +23,53 @@ describe('BookCtrl', function() {
   });
 
   describe('#findGoogleBooks', function(){
-    it('expect book to be empty when criteria is empty', function(){
+    it('expects book to be empty when criteria is empty', function(){
       scope.searchCriteria = '';
 
       scope.findGoogleBooks();
 
       expect(scope.book).toEqual({});
     });
+
+    it('sets book properties correctly when book exists in library', 
+      inject(function($controller, $httpBackend, ENV){
+        scope.searchCriteria = '985693865986';
+
+        var data = {
+                        '_embedded' : {
+                          'books' : [
+                            {
+                              'title': 'How to enjoy pairing',
+                              'subtitle': 'The francieli-ekow way',
+                              'authors': ['Francieli', 'Ekow'],
+                              'imageUrl': null
+                            }
+                          ]
+                      }
+                    }
+          
+        $httpBackend
+          .expectGET(ENV.apiEndpoint + '/books/search/findByIsbn?isbn=' + scope.searchCriteria)
+          .respond(200, data);
+
+        $httpBackend.expectGET('views/library/index.html')
+          .respond(200);
+                    
+        scope.findGoogleBooks();
+
+        $httpBackend.flush();
+
+        expect(scope.book.title).toEqual('How to enjoy pairing');
+        expect(scope.book.subtitle).toEqual('The francieli-ekow way');
+        expect(scope.book.authors).toEqual([ 'Francieli', 'Ekow' ]);
+        expect(scope.book.imageUrl).toEqual('images\\no-image.png');
+
+        expect(scope.bookExistsInTheLibrary).toBe(true);
+
+        expect(scope.formShowable).toBe(true);
+        expect(scope.errorShowable).toBe(false);
+      })
+    );
   });
 
   describe('#getCurrentLibraryPath', function(){
