@@ -70,6 +70,28 @@ describe('BookCtrl', function() {
         expect(scope.errorShowable).toBe(false);
       })
     );
+
+    it('toggles error display when library search returns an error', 
+      inject(function($controller, $httpBackend, ENV){
+        scope.searchCriteria = '985693865986';
+          
+        $httpBackend
+          .expectGET(ENV.apiEndpoint + '/books/search/findByIsbn?isbn=' + scope.searchCriteria)
+          .respond(500);
+
+        $httpBackend.expectGET('views/library/index.html')
+          .respond(200);
+                    
+        scope.findGoogleBooks();
+
+        $httpBackend.flush();
+
+        expect(scope.book).toEqual({});
+
+        expect(scope.formShowable).toBe(false);
+        expect(scope.errorShowable).toBe(true);
+      })
+    );
   });
 
   describe('#getCurrentLibraryPath', function(){
