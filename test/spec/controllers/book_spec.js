@@ -71,55 +71,6 @@ describe('BookCtrl', function() {
       })
     );
 
-    it('calls google service when book does not exist in library', 
-      inject(function($controller, $httpBackend, ENV){
-        scope.searchCriteria = '985693865986';
-
-        var libraryData = {};
-        var googleData = {
-                          'items' : [
-                            {
-                              'volumeInfo':
-                              {
-                                'title': 'How to enjoy pairing - 2nd Edition',
-                                'subtitle': 'The francieli-ekow way',
-                                'industryIdentifiers': [
-                                  {
-                                    'type': 'ISBN_13',
-                                    'identifier': scope.searchCriteria
-                                  }
-                                ]
-                              }
-                            }
-                          ]
-                        }
-
-        $httpBackend
-          .expectGET(ENV.apiEndpoint + '/books/search/findByIsbn?isbn=' + scope.searchCriteria)
-          .respond(200, libraryData);
-
-        $httpBackend.expectGET('views/library/index.html')
-          .respond(200);
-
-        $httpBackend
-          .expectGET('https://www.googleapis.com/books/v1/volumes?q=isbn:' + scope.searchCriteria)
-          .respond(200, googleData);
-
-        scope.findGoogleBooks();
-
-        $httpBackend.flush();
-
-        expect(scope.book.title).toEqual('How to enjoy pairing - 2nd Edition');
-        expect(scope.book.subtitle).toEqual('The francieli-ekow way');
-        expect(scope.book.isbn).toEqual('985693865986');
-
-        expect(scope.bookExistsInTheLibrary).toBe(false);
-
-        expect(scope.formShowable).toBe(true);
-        expect(scope.errorShowable).toBe(false);
-      })
-    );
-
     it('toggles error display when library search returns an error', 
       inject(function($controller, $httpBackend, ENV){
         scope.searchCriteria = '985693865986';
@@ -141,6 +92,86 @@ describe('BookCtrl', function() {
         expect(scope.errorShowable).toBe(true);
       })
     );
+
+    describe('when book does not exist in library', function() {
+      it('calls google service and setup up book', 
+        inject(function($controller, $httpBackend, ENV){
+          scope.searchCriteria = '985693865986';
+
+          var libraryData = {};
+          var googleData = {
+                            'items' : [
+                              {
+                                'volumeInfo':
+                                {
+                                  'title': 'How to enjoy pairing - 2nd Edition',
+                                  'subtitle': 'The francieli-ekow way',
+                                  'industryIdentifiers': [
+                                    {
+                                      'type': 'ISBN_13',
+                                      'identifier': scope.searchCriteria
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+
+          $httpBackend
+            .expectGET(ENV.apiEndpoint + '/books/search/findByIsbn?isbn=' + scope.searchCriteria)
+            .respond(200, libraryData);
+
+          $httpBackend.expectGET('views/library/index.html')
+            .respond(200);
+
+          $httpBackend
+            .expectGET('https://www.googleapis.com/books/v1/volumes?q=isbn:' + scope.searchCriteria)
+            .respond(200, googleData);
+
+          scope.findGoogleBooks();
+
+          $httpBackend.flush();
+
+          expect(scope.book.title).toEqual('How to enjoy pairing - 2nd Edition');
+          expect(scope.book.subtitle).toEqual('The francieli-ekow way');
+          expect(scope.book.isbn).toEqual('985693865986');
+
+          expect(scope.bookExistsInTheLibrary).toBe(false);
+
+          expect(scope.formShowable).toBe(true);
+          expect(scope.errorShowable).toBe(false);
+        })
+      );
+
+      it('shows error message when no book in found in google',
+        inject(function($controller, $httpBackend, ENV){
+          scope.searchCriteria = '985693865986';
+
+          var libraryData = {};
+          var googleData = {}
+
+          $httpBackend
+            .expectGET(ENV.apiEndpoint + '/books/search/findByIsbn?isbn=' + scope.searchCriteria)
+            .respond(200, libraryData);
+
+          $httpBackend.expectGET('views/library/index.html')
+            .respond(200);
+
+          $httpBackend
+            .expectGET('https://www.googleapis.com/books/v1/volumes?q=isbn:' + scope.searchCriteria)
+            .respond(200, googleData);
+
+          scope.findGoogleBooks();
+
+          $httpBackend.flush();
+
+          expect(scope.book).toEqual({});
+
+          expect(scope.formShowable).toBe(false);
+          expect(scope.errorShowable).toBe(true);
+        })
+      );
+    });
   });
 
   describe('#getCurrentLibraryPath', function(){
