@@ -215,14 +215,11 @@ describe('BookCtrl', function() {
   });
 
   describe('#addBookToLibrary', function(){
-    describe('when library is retrieved', function(){
+    describe('when book does not exist', function(){
       var slug = 'bh';
       var librarySearchEndpoint, addBookEndpoint, addCopyEndpoint;
 
       beforeEach(inject(function($route, ENV){
-        // route = $route;
-        // route.current = { 'pathParams': {'library': slug } };
-
         librarySearchEndpoint = ENV.apiEndpoint + '/libraries/search/findBySlug?slug=' + slug;
         addBookEndpoint = ENV.apiEndpoint + '/books';
         addCopyEndpoint = ENV.apiEndpoint + '/copies';
@@ -301,7 +298,7 @@ describe('BookCtrl', function() {
         expect($window.location.replace).toHaveBeenCalledWith('/#/library/' + slug);
       }));
 
-      it('throws error when atttempt to add existing book fails', inject(function($injector, $httpBackend, $window, $route, $location){
+      it('throws error when atttempt to add existing book fails', inject(function($injector, $httpBackend, $window, $route){
         var library = {
           '_embedded': {
             'libraries' : [
@@ -346,6 +343,86 @@ describe('BookCtrl', function() {
         expect(scope.addingBook).toBe(false);
         expect($window.alert).toHaveBeenCalledWith('Error occurred while adding How to increase test coverage.');
       }));
+    });
+
+    describe('when book already exists', function(){
+      var slug = 'bh';
+      var library, book, route, window, httpBackend, librarySearchEndpoint, addBookEndpoint, addCopyEndpoint;
+
+      beforeEach(inject(function($route, $httpBackend, $window, ENV){
+        httpBackend = $httpBackend;
+        route = $route;
+        window = $window;
+
+        librarySearchEndpoint = ENV.apiEndpoint + '/libraries/search/findBySlug?slug=' + slug;
+        addBookEndpoint = ENV.apiEndpoint + '/books';
+        addCopyEndpoint = ENV.apiEndpoint + '/copies';
+
+        library = {
+                  '_embedded': {
+                    'libraries' : [
+                      {
+                        '_links': {
+                          'self': {
+                            'href': 'link/to/library'
+                          }
+                        }
+                      }
+                    ]
+                  }
+                };
+
+        route.current = { 'pathParams': {'library': 'bh' } };
+
+        scope.bookExistsInTheLibrary = true;
+        scope.book = { 
+                  'title': 'How to increase test coverage',
+                   '_links': {
+                          'self': {
+                            'href': 'link/to/book'
+                          }
+                        }
+                   };
+
+        spyOn(window, 'alert');
+
+        $httpBackend
+          .expectGET(librarySearchEndpoint)
+          .respond(200, library);
+
+        $httpBackend.expectGET('views/library/index.html')
+          .respond(200);
+
+      }));
+
+      it('adds copy successfully', function(){
+        spyOn(window.location, 'replace');
+
+        httpBackend
+          .expectPOST(addCopyEndpoint)
+          .respond(200)
+
+        scope.addBookToLibrary();
+
+        httpBackend.flush();
+
+        expect(scope.addingBook).toBe(false);
+        expect(window.alert).toHaveBeenCalledWith('Book has been added to library successfully.');
+        expect(window.location.replace).toHaveBeenCalledWith('/#/library/' + slug);
+      });
+
+      it('throws error when atttempt to add copy fails', function(){
+        httpBackend
+          .expectPOST(addCopyEndpoint)
+          .respond(500)
+
+        scope.addBookToLibrary();
+
+        httpBackend.flush();
+
+        expect(scope.addingBook).toBe(false);
+        expect(window.alert).toHaveBeenCalledWith('Error occurred while adding How to increase test coverage.');
+      })
     });
   });
 });
