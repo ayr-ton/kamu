@@ -413,8 +413,8 @@ describe('BookCtrl', function() {
 
     beforeEach(inject(function($httpBackend, $route, ENV){
       httpBackend = $httpBackend;
+      
       route = $route;
-
       route.current = { 'pathParams': {'library': slug } };
 
       searchUrl = ENV.apiEndpoint + '/libraries/search/findBySlug?slug=' + slug;
@@ -488,5 +488,18 @@ describe('BookCtrl', function() {
       expect(scope.copies[0].title).toEqual('Enjoying Fifa with your eyes closed.');
       expect(scope.copies[0].imageUrl).toEqual('path/to/image');
     });
+  });
+
+  describe('#gotoAddBook', function(){
+    it('redirects to add book page for current slug', inject(function($window, $route) {
+      var route = $route;
+      route.current = { 'pathParams': {'library': 'quito' } };
+
+      spyOn($window.location, 'assign');
+
+      scope.gotoAddBook();
+
+      expect($window.location.assign).toHaveBeenCalledWith('/#/library/quito/add_book');
+    }));
   });
 });

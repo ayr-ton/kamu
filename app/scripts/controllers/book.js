@@ -172,7 +172,7 @@ angular
     };
 
     $scope.gotoAddBook = function () {
-      window.location = '/#/library/' + getLibrarySlug() + '/add_book';
+      window.location.assign('/#/library/' + getLibrarySlug() + '/add_book');
     };
 
     var populateBookFromLibraryApi = function(data) {
