@@ -196,19 +196,12 @@ angular
       };
 
     var populateBookFromGoogleApi = function (data) {
-        $scope.formShowable  = false;
-
         angular.forEach(data.items, function (item) {
-            $scope.formShowable  = true;
+          $scope.book = BookService.extractBookInformation(item.volumeInfo, $scope.searchCriteria);
+          $scope.isGoogleBook = true;
+        });
 
-            $scope.book = BookService.extractBookInformation(item.volumeInfo, $scope.searchCriteria);
-            $scope.isGoogleBook = true;
-          });
-
-        if($scope.book.title === undefined) {
-          $scope.formShowable = false;
-        }
-
+        $scope.formShowable = $scope.book.title !== undefined;
         $scope.errorShowable = !$scope.formShowable;
       };
 
