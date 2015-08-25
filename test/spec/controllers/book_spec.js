@@ -408,112 +408,85 @@ describe('BookCtrl', function() {
   });
 
   describe('#listBooks', function() {
-    it('sets copies to be empty when copies retrieval fails', inject(function($httpBackend, $route, ENV){
-      var slug = 'bh';
+    var route, searchUrl, httpBackend, library;
+    var slug = 'bh';
 
-      var route = $route;
+    beforeEach(inject(function($httpBackend, $route, ENV){
+      httpBackend = $httpBackend;
+      route = $route;
+
       route.current = { 'pathParams': {'library': slug } };
 
-      $httpBackend.expectGET(ENV.apiEndpoint + '/libraries/search/findBySlug?slug=' + slug)
+      searchUrl = ENV.apiEndpoint + '/libraries/search/findBySlug?slug=' + slug;
+
+      library = {
+              '_embedded': {
+                'libraries' : [
+                  {
+                    '_links': {
+                      'self': {
+                        'href': 'link/to/library'
+                      }
+                    },
+                    '_embedded' : {
+                      'copies': [
+                        {
+                          'title': 'Enjoying Fifa with your eyes closed.',
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            };
+    }));
+
+    it('sets copies to be empty when copies retrieval fails', function(){
+      httpBackend.expectGET(searchUrl)
         .respond(500);
 
-      $httpBackend.expectGET('views/library/index.html')
+      httpBackend.expectGET('views/library/index.html')
         .respond(200);
 
       scope.listBooks();
 
-      $httpBackend.flush();
+      httpBackend.flush();
 
       expect(scope.copies).toEqual([]);
-    }));
+    });
 
-    it('correctly initializes each copy when copy has no imageUrl',
-      inject(function($route, $httpBackend, ENV){
-        var library = {
-                '_embedded': {
-                  'libraries' : [
-                    {
-                      '_links': {
-                        'self': {
-                          'href': 'link/to/library'
-                        }
-                      },
-                      '_embedded' : {
-                        'copies': [
-                          {
-                            'title': 'Enjoying Fifa with your eyes closed.',
-                          }
-                        ]
-                      }
-                    }
-                  ]
-                }
-              };
+    it('correctly initializes each copy when copy has no imageUrl', function() {
+      httpBackend.expectGET(searchUrl)
+        .respond(200, library);
 
-        var slug = 'bh';
+      httpBackend.expectGET('views/library/index.html')
+        .respond(200);
 
-        var route = $route;
-        route.current = { 'pathParams': {'library': slug } };
+      scope.listBooks();
 
-        $httpBackend.expectGET(ENV.apiEndpoint + '/libraries/search/findBySlug?slug=' + slug)
-          .respond(200, library);
+      httpBackend.flush();
 
-        $httpBackend.expectGET('views/library/index.html')
-          .respond(200);
+      expect(scope.copies.length).toEqual(1);
+      expect(scope.copies[0].title).toEqual('Enjoying Fifa with your eyes closed.');
+      expect(scope.copies[0].imageUrl).toEqual('images/no-image.png');
+    });
 
-        scope.listBooks();
+    it('correctly initializes each copy when copy has imageUrl', function(){
+      library._embedded.libraries[0]._embedded.copies[0].imageUrl = "path/to/image"
 
-        $httpBackend.flush();
+      httpBackend.expectGET(searchUrl)
+        .respond(200, library);
 
-        expect(scope.copies.length).toEqual(1);
-        expect(scope.copies[0].title).toEqual('Enjoying Fifa with your eyes closed.');
-        expect(scope.copies[0].imageUrl).toEqual('images/no-image.png');
-      })
-    );
+      httpBackend.expectGET('views/library/index.html')
+        .respond(200);
 
-    it('correctly initializes each copy when copy has imageUrl',
-      inject(function($route, $httpBackend, ENV){
-        var library = {
-                '_embedded': {
-                  'libraries' : [
-                    {
-                      '_links': {
-                        'self': {
-                          'href': 'link/to/library'
-                        }
-                      },
-                      '_embedded' : {
-                        'copies': [
-                          {
-                            'title': 'Enjoying Fifa with your eyes closed.',
-                            'imageUrl': 'path/to/image'
-                          }
-                        ]
-                      }
-                    }
-                  ]
-                }
-              };
+      scope.listBooks();
 
-        var slug = 'bh';
+      httpBackend.flush();
 
-        var route = $route;
-        route.current = { 'pathParams': {'library': slug } };
-
-        $httpBackend.expectGET(ENV.apiEndpoint + '/libraries/search/findBySlug?slug=' + slug)
-          .respond(200, library);
-
-        $httpBackend.expectGET('views/library/index.html')
-          .respond(200);
-
-        scope.listBooks();
-
-        $httpBackend.flush();
-
-        expect(scope.copies.length).toEqual(1);
-        expect(scope.copies[0].title).toEqual('Enjoying Fifa with your eyes closed.');
-        expect(scope.copies[0].imageUrl).toEqual('path/to/image');
-      })
-    );
+      expect(scope.copies.length).toEqual(1);
+      expect(scope.copies[0].title).toEqual('Enjoying Fifa with your eyes closed.');
+      expect(scope.copies[0].imageUrl).toEqual('path/to/image');
+    });
   });
 });
