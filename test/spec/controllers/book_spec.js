@@ -202,4 +202,17 @@ describe('BookCtrl', function() {
       expect(scope.isInsideLibrary()).toBe(false);
     });
   });
+
+  describe('#addManually', function(){
+    it('sets initializes form elements correctly', function(){
+      scope.addManually();
+
+      expect(scope.book).toEqual({});
+      expect(scope.searchShowable).toBe(false);
+      expect(scope.isbnSearch).toBe(false);
+      expect(scope.isGoogleBook).toBe(false);
+      expect(scope.formShowable).toBe(true);
+      expect(scope.errorShowable).toBe(false);
+    });
+  });
 });
