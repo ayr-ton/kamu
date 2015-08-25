@@ -299,7 +299,52 @@ describe('BookCtrl', function() {
         expect(scope.addingBook).toBe(false);
         expect($window.alert).toHaveBeenCalledWith('Book has been added to library successfully.');
         expect($window.location.replace).toHaveBeenCalledWith('/#/library/' + slug);
-        // expect($location.toBe("fgsdfg");
+      }));
+
+      it('throws error when atttempt to add existing book fails', inject(function($injector, $httpBackend, $window, $route, $location){
+        var library = {
+          '_embedded': {
+            'libraries' : [
+              {
+                '_links': {
+                  'self': {
+                    'href': 'link/to/library'
+                  }
+                }
+              }
+            ]
+          }
+        };
+
+        var route = $injector.get('$route');
+        route.current = { 'pathParams': {'library': 'bh' } };
+
+        scope.bookExistsInTheLibrary = false;
+        scope.book = { 'title': 'How to increase test coverage' };
+
+        spyOn($window, 'alert');
+
+        $httpBackend
+          .expectGET(librarySearchEndpoint)
+          .respond(200, library);
+
+        $httpBackend.expectGET('views/library/index.html')
+          .respond(200);
+
+        $httpBackend
+          .expectPOST(addBookEndpoint, scope.book)
+          .respond(201)
+
+        $httpBackend
+          .expectPOST(addCopyEndpoint)
+          .respond(500)
+
+        scope.addBookToLibrary();
+
+        $httpBackend.flush();
+
+        expect(scope.addingBook).toBe(false);
+        expect($window.alert).toHaveBeenCalledWith('Error occurred while adding How to increase test coverage.');
       }));
     });
   });
