@@ -214,135 +214,117 @@ describe('BookCtrl', function() {
     });
   });
 
-  describe('#addBookToLibrary', function(){
-    describe('when book does not exist', function(){
-      var slug = 'bh';
-      var librarySearchEndpoint, addBookEndpoint, addCopyEndpoint;
+  describe('#addBookToLibrary', function() {
+    describe('when book does not exist', function() {
+      describe('when library is found', function() {
+        var slug = 'bh';
+        var route, httpBackend, window, library, librarySearchEndpoint, addBookEndpoint, addCopyEndpoint;
 
-      beforeEach(inject(function($route, ENV){
-        librarySearchEndpoint = ENV.apiEndpoint + '/libraries/search/findBySlug?slug=' + slug;
-        addBookEndpoint = ENV.apiEndpoint + '/books';
-        addCopyEndpoint = ENV.apiEndpoint + '/copies';
-      }));
+        beforeEach(inject(function($route, $httpBackend, $window, ENV){
+          route = $route;
+          route.current = { 'pathParams': {'library': 'bh' } };
 
-      it('shows alert when library is not found', inject(function($httpBackend, $translate, $window, $route){
-        var library = {};
+          httpBackend = $httpBackend;
+          window = $window;
 
-        var route = $route;
-        route.current = { 'pathParams': {'library': slug } };
+          librarySearchEndpoint = ENV.apiEndpoint + '/libraries/search/findBySlug?slug=' + slug;
+          addBookEndpoint = ENV.apiEndpoint + '/books';
+          addCopyEndpoint = ENV.apiEndpoint + '/copies';
 
-        spyOn($translate, 'instant')
-        spyOn($window, 'alert')
-
-        $httpBackend
-          .expectGET(librarySearchEndpoint)
-          .respond(200, library)
-
-        $httpBackend.expectGET('views/library/index.html')
-          .respond(200);
-
-        scope.addBookToLibrary();
-
-        $httpBackend.flush();
-
-        expect($translate.instant).toHaveBeenCalledWith('INVALID_LIBRARY_ERROR');
-        expect($window.alert).toHaveBeenCalled();
-        expect(scope.addingBook).toBe(true);
-      }));
-
-      it('adds book when book does not exist in library', inject(function($injector, $httpBackend, $window, $route, $location){
-        var library = {
-          '_embedded': {
-            'libraries' : [
-              {
-                '_links': {
-                  'self': {
-                    'href': 'link/to/library'
+          library = {
+              '_embedded': {
+                'libraries' : [
+                  {
+                    '_links': {
+                      'self': {
+                        'href': 'link/to/library'
+                      }
+                    }
                   }
-                }
+                ]
               }
-            ]
-          }
-        };
+            };
 
-        var route = $injector.get('$route');
-        route.current = { 'pathParams': {'library': 'bh' } };
+          spyOn($window, 'alert');
 
-        scope.bookExistsInTheLibrary = false;
-        scope.book = {};
+          scope.book = { 'title': 'How to increase test coverage' };
+          scope.bookExistsInTheLibrary = false;
 
-        spyOn($window, 'alert');
-        spyOn($window.location, 'replace');
+          httpBackend
+            .expectGET(librarySearchEndpoint)
+            .respond(200, library);
 
-        $httpBackend
-          .expectGET(librarySearchEndpoint)
-          .respond(200, library);
+          httpBackend.expectGET('views/library/index.html')
+            .respond(200);
+        }));
 
-        $httpBackend.expectGET('views/library/index.html')
-          .respond(200);
+        it('adds book when book does not exist in library', inject(function($location){
+          spyOn(window.location, 'replace');
 
-        $httpBackend
-          .expectPOST(addBookEndpoint, scope.book)
-          .respond(201)
+          httpBackend
+            .expectPOST(addBookEndpoint, scope.book)
+            .respond(201)
 
-        $httpBackend
-          .expectPOST(addCopyEndpoint)
-          .respond(201)
+          httpBackend
+            .expectPOST(addCopyEndpoint)
+            .respond(201)
 
-        scope.addBookToLibrary();
+          scope.addBookToLibrary();
 
-        $httpBackend.flush();
+          httpBackend.flush();
 
-        expect(scope.addingBook).toBe(false);
-        expect($window.alert).toHaveBeenCalledWith('Book has been added to library successfully.');
-        expect($window.location.replace).toHaveBeenCalledWith('/#/library/' + slug);
-      }));
+          expect(scope.addingBook).toBe(false);
+          expect(window.alert).toHaveBeenCalledWith('Book has been added to library successfully.');
+          expect(window.location.replace).toHaveBeenCalledWith('/#/library/' + slug);
+        }));
 
-      it('throws error when atttempt to add existing book fails', inject(function($injector, $httpBackend, $window, $route){
-        var library = {
-          '_embedded': {
-            'libraries' : [
-              {
-                '_links': {
-                  'self': {
-                    'href': 'link/to/library'
-                  }
-                }
-              }
-            ]
-          }
-        };
+        it('throws error when atttempt to add existing book fails', inject(function(){
+          httpBackend
+            .expectPOST(addBookEndpoint, scope.book)
+            .respond(201);
 
-        var route = $injector.get('$route');
-        route.current = { 'pathParams': {'library': 'bh' } };
+          httpBackend
+            .expectPOST(addCopyEndpoint)
+            .respond(500);
 
-        scope.bookExistsInTheLibrary = false;
-        scope.book = { 'title': 'How to increase test coverage' };
+          scope.addBookToLibrary();
 
-        spyOn($window, 'alert');
+          httpBackend.flush();
 
-        $httpBackend
-          .expectGET(librarySearchEndpoint)
-          .respond(200, library);
+          expect(scope.addingBook).toBe(false);
+          expect(window.alert).toHaveBeenCalledWith('Error occurred while adding How to increase test coverage.');
+        }));
+      });
 
-        $httpBackend.expectGET('views/library/index.html')
-          .respond(200);
+      describe('when library is not found', function() {
+        it('shows alert when library is not found', inject(function($translate, $httpBackend, $window, $route, ENV){
+          var library = {};
+          var librarySearchEndpoint = ENV.apiEndpoint + '/libraries/search/findBySlug?slug=bh';
+          var route = $route;
+          route.current = { 'pathParams': {'library': 'bh' } };
 
-        $httpBackend
-          .expectPOST(addBookEndpoint, scope.book)
-          .respond(201)
+          scope.book = {};
+          scope.bookExistsInTheLibrary = false;
 
-        $httpBackend
-          .expectPOST(addCopyEndpoint)
-          .respond(500)
+          $httpBackend
+            .expectGET(librarySearchEndpoint)
+            .respond(200, library);
 
-        scope.addBookToLibrary();
+          $httpBackend.expectGET('views/library/index.html')
+            .respond(200);
 
-        $httpBackend.flush();
+          spyOn($translate, 'instant');
+          spyOn($window, 'alert');
 
-        expect(scope.addingBook).toBe(false);
-        expect($window.alert).toHaveBeenCalledWith('Error occurred while adding How to increase test coverage.');
-      }));
+          scope.addBookToLibrary();
+
+          $httpBackend.flush();
+
+          expect($translate.instant).toHaveBeenCalledWith('INVALID_LIBRARY_ERROR');
+          expect($window.alert).toHaveBeenCalled();
+          expect(scope.addingBook).toBe(true);
+        }));
+      });
     });
 
     describe('when book already exists', function(){
@@ -392,7 +374,6 @@ describe('BookCtrl', function() {
 
         $httpBackend.expectGET('views/library/index.html')
           .respond(200);
-
       }));
 
       it('adds copy successfully', function(){
