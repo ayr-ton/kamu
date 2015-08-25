@@ -187,4 +187,19 @@ describe('BookCtrl', function() {
       expect(scope.getCurrentLibraryPath()).toBe('#/library/random');
     }));
   });
+
+  describe('#isInsideLibrary', function(){
+    it('returns true when current route is defined',
+      inject(function($route){
+        var route = $route;
+
+        route.current = { 'pathParams': {'library': 'random'} }
+
+        expect(scope.isInsideLibrary()).toBe(true);
+    }));
+
+    it('returns false when current route is defined', function(){
+      expect(scope.isInsideLibrary()).toBe(false);
+    });
+  });
 });
