@@ -23,7 +23,7 @@ angular
   ])
   .config(function ($routeProvider, $translateProvider) {
     var $cookies;
-    angular.injector(['ngCookies']).invoke(['$cookies', function(_$cookies_) {
+    angular.injector(['ngCookies']).invoke(['$cookies', function (_$cookies_) {
       $cookies = _$cookies_;
     }]);
 
@@ -36,7 +36,7 @@ angular
         templateUrl: 'views/book/index.html',
         controller: 'BookCtrl'
       })
-      .when(rootUrl + '/add_book',  {
+      .when(rootUrl + '/add_book', {
         templateUrl: 'views/book/add-book.html',
         controller: 'BookCtrl'
       })
@@ -81,9 +81,9 @@ angular
         BOOK_COVER: 'Cover',
         BOOK_NUMBER_OF_PAGES: 'Pages',
         BOOK_DONATOR: 'Donator',
-        HTTP_CODE_409:'Book requested is not available for do that.',
-        HTTP_CODE_412:'Email is required to make a loan',
-        HTTP_CODE_500:'Internal error', 
+        HTTP_CODE_409: 'Book requested is not available for do that.',
+        HTTP_CODE_412: 'Email is required to make a loan',
+        HTTP_CODE_500: 'Internal error',
         REQUIRED: '(Required Field)',
         INVALID_LIBRARY_ERROR: 'Oops! The library you are adding a book to is not registered with us.'
       })
@@ -115,11 +115,11 @@ angular
         BOOK_COVER: 'Capa',
         BOOK_NUMBER_OF_PAGES: 'Páginas',
         BOOK_DONATOR: 'Doador',
-        HTTP_CODE_409:'Livro solicitado está indisponível para o empréstimo.',
-        HTTP_CODE_412:'Email é obrigatório',
-        HTTP_CODE_500:'Problema interno',
+        HTTP_CODE_409: 'Livro solicitado está indisponível para o empréstimo.',
+        HTTP_CODE_412: 'Email é obrigatório',
+        HTTP_CODE_500: 'Problema interno',
         REQUIRED: '(Campo Obrigatório)',
-        INVALID_LIBRARY_ERROR: 'Desculpe, você está adiconando um livro em uma biblioteca que não está regirstrada.' 
+        INVALID_LIBRARY_ERROR: 'Desculpe, você está adiconando um livro em uma biblioteca que não está regirstrada.'
       })
       .translations('es-EC', {
         APP_LIBRARY_TAB: 'Todos Los Libros',
@@ -134,7 +134,7 @@ angular
         APP_ADD: 'Añadir',
         APP_USER: 'Usuario',
         APP_WAIT: 'Gracias por esperar',
-        APP_LIBRARY_BROWSE_PROMPT:'¡Ups! La librería que buscas no existe aún. ¿Te gustaría intentar una de las siguientes?',
+        APP_LIBRARY_BROWSE_PROMPT: '¡Ups! La librería que buscas no existe aún. ¿Te gustaría intentar una de las siguientes?',
         BOOK_BORROW_TITLE: 'Pedir préstamo de libro',
         BOOK_RETURN_TITLE: 'Devolver Libro',
         BOOK_NOT_FOUND: 'Lo sentimos, no podemos encontrar coincidencias. Por favor ingresar los detalles manualmente.',
@@ -149,14 +149,14 @@ angular
         BOOK_COVER: 'Imagen',
         BOOK_NUMBER_OF_PAGES: 'Páginas',
         BOOK_DONATOR: 'Donante',
-        HTTP_CODE_409:'El libro solicitado no está disponible para el préstamo.',
-        HTTP_CODE_412:'Es necesario su correo electrónico para el préstamo.',
-        HTTP_CODE_500:'Problema interno' ,
+        HTTP_CODE_409: 'El libro solicitado no está disponible para el préstamo.',
+        HTTP_CODE_412: 'Es necesario su correo electrónico para el préstamo.',
+        HTTP_CODE_500: 'Problema interno',
         REQUIRED: '(Campo Obligatorio)',
         INVALID_LIBRARY_ERROR: '¡Ups! La librería a la que intenta agregar un libro no está registrada.'
       });
 
-    $translateProvider.determinePreferredLanguage(function(){
+    $translateProvider.determinePreferredLanguage(function () {
       var language = $cookies.get('language');
       var defaultLanguage = 'en-US';
       var supportedLanguages = ['en-US', 'pt-BR', 'es-EC'];
@@ -168,7 +168,7 @@ angular
         var expireDate = new Date();
         expireDate.setDate(expireDate.getDate() + cookieLifespan);
 
-        $cookies.put('language', language, { 'expires' : expireDate });
+        $cookies.put('language', language, {'expires': expireDate});
       }
 
       language = supportedLanguages.indexOf(language) === -1 ? defaultLanguage : language;
@@ -176,26 +176,26 @@ angular
       return language;
     });
   }).
-  run(['$rootScope', '$http', '$location', 'ENV', function($rootScope, $http, $location, ENV){
-    $rootScope.$on('$routeChangeStart', function(event, next, current) {
+  run(['$rootScope', '$http', '$location', 'ENV', function ($rootScope, $http, $location, ENV) {
+    $rootScope.$on('$routeChangeStart', function (event, next, current) {
       var slug = next.pathParams.library;
 
-      if(angular.isDefined(slug)) {
+      if (angular.isDefined(slug)) {
         var $cookies;
 
-        angular.injector(['ngCookies']).invoke(['$cookies', function(_$cookies_) {
+        angular.injector(['ngCookies']).invoke(['$cookies', function (_$cookies_) {
           $cookies = _$cookies_;
         }]);
 
         var cookieKey = 'libraries';
         var cookies = angular.isDefined($cookies.get(cookieKey)) ? $cookies.get(cookieKey).split(',') : [];
-        
+
         if (cookies.indexOf(slug) === -1) {
           var endPoint = ENV.apiEndpoint + '/libraries/search/findBySlug?slug=' + slug;
 
           $http.get(endPoint).
-            success(function(data){
-              if(angular.isDefined(data._embedded)) {
+            success(function (data) {
+              if (angular.isDefined(data._embedded)) {
                 cookies.push(data._embedded.libraries[0].slug);
 
                 $cookies.put(cookieKey, cookies);

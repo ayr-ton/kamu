@@ -2,50 +2,50 @@
 
 angular
   .module('libraryUiApp')
-  .controller('BookCtrl', [ '$scope',
-                            'BookService', 
-                            'LoanService', 
-                            'modals', 
-                            '$translate',
-                            '$route',
-                            '$http',
-                            function($scope, BookService, LoanService, modals, $translate, $route, $http) {
+  .controller('BookCtrl', ['$scope',
+    'BookService',
+    'LoanService',
+    'modals',
+    '$translate',
+    '$route',
+    '$http',
+    function ($scope, BookService, LoanService, modals, $translate, $route, $http) {
 
-    $scope.searchCriteria = '';
-    $scope.addingBook = false ; 
-    $scope.isGoogleBook = false;
+      $scope.searchCriteria = '';
+      $scope.addingBook = false;
+      $scope.isGoogleBook = false;
 
-    $scope.autoCompleteSearch = function() {
-        $scope.formShowable  = false;
+      $scope.autoCompleteSearch = function () {
+        $scope.formShowable = false;
         $scope.errorShowable = false;
         $scope.searchShowable = true;
         $scope.isbnSearch = true;
       };
-    $scope.autoCompleteSearch();
+      $scope.autoCompleteSearch();
 
-    $scope.getCurrentLibraryPath = function(){
-      return $scope.isInsideLibrary() ? '#/library/' + getLibrarySlug() : '#/libraries' ;
-    }
+      $scope.getCurrentLibraryPath = function () {
+        return $scope.isInsideLibrary() ? '#/library/' + getLibrarySlug() : '#/libraries';
+      }
 
-    $scope.findGoogleBooks = function() {
+      $scope.findGoogleBooks = function () {
         var searchCriteria = $scope.searchCriteria.toString();
 
-        $scope.book = { };
+        $scope.book = {};
 
         if (searchCriteria !== '') {
           BookService.findLibraryBook(searchCriteria).
             success(populateBookFromLibraryApi).
-            error(function() {
-                toggleFormDisplay(false);
-              });
-        }   
+            error(function () {
+              toggleFormDisplay(false);
+            });
+        }
       };
 
-    $scope.isInsideLibrary = function() {
-      return angular.isDefined($route.current) ? angular.isDefined(getLibrarySlug()) : false;
-    };
+      $scope.isInsideLibrary = function () {
+        return angular.isDefined($route.current) ? angular.isDefined(getLibrarySlug()) : false;
+      };
 
-    $scope.addManually = function() {
+      $scope.addManually = function () {
         $scope.book = {};
         $scope.searchShowable = false;
         $scope.isbnSearch = false;
@@ -54,128 +54,119 @@ angular
         toggleFormDisplay(true);
       };
 
-    $scope.addBookToLibrary = function() {
-      var slug = getLibrarySlug();
-      $scope.addingBook = true ; 
+      $scope.addBookToLibrary = function () {
+        var slug = getLibrarySlug();
+        $scope.addingBook = true;
 
-      BookService.getLibraryBySlug(slug).
-        success(function(data){
-          if (angular.isDefined(data._embedded)) {
-            var library = data._embedded.libraries[0]._links.self.href;
+        BookService.getLibraryBySlug(slug).
+          success(function (data) {
+            if (angular.isDefined(data._embedded)) {
+              var library = data._embedded.libraries[0]._links.self.href;
 
-            if (!$scope.bookExistsInTheLibrary) {
-              addBook(library, slug);
+              if (!$scope.bookExistsInTheLibrary) {
+                addBook(library, slug);
+              } else {
+                var book = $scope.book._links.self.href;
+                addCopy(library, slug, book);
+              }
             } else {
-              var book = $scope.book._links.self.href;
-              addCopy(library, slug, book);
+              window.alert($translate.instant('INVALID_LIBRARY_ERROR'));
             }
-          } else {
-            window.alert($translate.instant('INVALID_LIBRARY_ERROR'));
-          }
-        });
+          });
       };
 
-    $scope.listBooks = function() {
+      $scope.listBooks = function () {
         $scope.copies = [];
 
         BookService.getLibraryBySlug(getLibrarySlug()).
-          success(function(data) {
+          success(function (data) {
             if (angular.isDefined(data._embedded) && data._embedded.libraries[0]._embedded) {
               $scope.copies = data._embedded.libraries[0]._embedded.copies;
 
-              angular.forEach($scope.copies, function(copy) {
+              angular.forEach($scope.copies, function (copy) {
                 copy = initializeCopy(copy);
               });
             }
           });
-     };
+      };
 
-    function initializeCopy(copy) {
-      if ( copy.imageUrl === undefined || copy.imageUrl === null ) {
-        copy.imageUrl = 'images/no-image.png';
+      function initializeCopy(copy) {
+        if (copy.imageUrl === undefined || copy.imageUrl === null) {
+          copy.imageUrl = 'images/no-image.png';
+        }
+
+        return copy;
       }
 
-      return copy;
-    }
-
-    $scope.$on('$viewContentLoaded', function(){
+      $scope.$on('$viewContentLoaded', function () {
         $scope.listBooks();
       });
 
-    $scope.borrowCopy = function(copy) {
-      
-      var promise = modals.open(
-        'available', { copy: copy }
-      );
+      $scope.borrowCopy = function (copy) {
+        var promise = modals.open(
+          'available', {copy: copy}
+        );
 
-      promise.then(
-        function handleResolve( response ) {
+        promise.then(
+          function handleResolve(response) {
+            console.log('%s borrowed the copy %s', response.email, response.copy.id);
+            LoanService.
+              borrowCopy(response.copy.id, response.email).
+              success(function () {
+                modals.reject;
 
-          console.log( '%s borrowed the copy %s', response.email, response.copy.id  );
-          LoanService.
-                  borrowCopy(response.copy.id , response.email).
-                  success(function() {
-                      modals.reject;
-
-                      window.alert('Book has loaned to '.concat(response.email).concat('.'));
-                      BookService.getCopy(copy.id)
-                        .success(function(data) {
-
-                            var scope = angular.element('#copy-'.concat(copy.id)).scope();
-
-                            scope.copy = data;
-
-                            scope.copy.imageUrl = scope.copy.imageUrl || 'images/no-image.png';
-                        
-                        });
-                  }).
-                  error(function(data, status){
-
-                      var errorMessage;
-
-                      switch(status) {
-                          case 412:
-                              errorMessage = $translate.instant('HTTP_CODE_412');
-                              break;
-                          case 409:
-                              errorMessage = $translate.instant('HTTP_CODE_409');
-                              break;
-                          default:
-                              errorMessage = $translate.instant('HTTP_CODE_500');
-                              break;
-                      }                      
-
-                      window.alert("Ops! Loan wasn't realize. Cause: ".concat(errorMessage));
+                window.alert('Book has loaned to '.concat(response.email).concat('.'));
+                BookService.getCopy(copy.id)
+                  .success(function (data) {
+                    var scope = angular.element('#copy-'.concat(copy.id)).scope();
+                    scope.copy = data;
+                    scope.copy.imageUrl = scope.copy.imageUrl || 'images/no-image.png';
                   });
-        },
-        function handleReject( error ) {
+              }).
+              error(function (data, status) {
+                var errorMessage;
 
-            console.warn( 'Available rejected!' );
-        }
-      );
-    };
+                switch (status) {
+                  case 412:
+                    errorMessage = $translate.instant('HTTP_CODE_412');
+                    break;
+                  case 409:
+                    errorMessage = $translate.instant('HTTP_CODE_409');
+                    break;
+                  default:
+                    errorMessage = $translate.instant('HTTP_CODE_500');
+                    break;
+                }
 
-    $scope.returnCopy = function(loan) {
+                window.alert("Ops! Loan wasn't realize. Cause: ".concat(errorMessage));
+              });
+          },
+          function handleReject(error) {
+            console.warn('Available rejected!');
+          }
+        );
+      };
 
-      var promise = modals.open(
-        'not-available', { loan: loan }
-      );
+      $scope.returnCopy = function (loan) {
+        var promise = modals.open(
+          'not-available', {loan: loan}
+        );
 
-      promise.then(
-        function handleResolve( response ) {
-          console.log( 'Confirm resolved.' );
-        },
-        function handleReject( error ) {
-          console.warn( 'Confirm rejected!' );
-        }
-      );
-    };
+        promise.then(
+          function handleResolve(response) {
+            console.log('Confirm resolved.');
+          },
+          function handleReject(error) {
+            console.warn('Confirm rejected!');
+          }
+        );
+      };
 
-    $scope.gotoAddBook = function () {
-      window.location.assign('/#/library/' + getLibrarySlug() + '/add_book');
-    };
+      $scope.gotoAddBook = function () {
+        window.location.assign('/#/library/' + getLibrarySlug() + '/add_book');
+      };
 
-    var populateBookFromLibraryApi = function(data) {
+      var populateBookFromLibraryApi = function (data) {
         $scope.bookExistsInTheLibrary = false;
 
         if (data._embedded !== undefined) {
@@ -195,7 +186,7 @@ angular
         }
       };
 
-    var populateBookFromGoogleApi = function (data) {
+      var populateBookFromGoogleApi = function (data) {
         angular.forEach(data.items, function (item) {
           $scope.book = BookService.extractBookInformation(item.volumeInfo, $scope.searchCriteria);
           $scope.isGoogleBook = true;
@@ -205,45 +196,45 @@ angular
         $scope.errorShowable = !$scope.formShowable;
       };
 
-    function getLibrarySlug() {
-      return $route.current.pathParams.library;
-    }
+      function getLibrarySlug() {
+        return $route.current.pathParams.library;
+      }
 
-    function addCopy(library, slug, book) {
-      var addCopyRequest = {};
-      addCopyRequest.status = 'AVAILABLE';
-      addCopyRequest.library = library;
-      addCopyRequest.book = book;
-      addCopyRequest.donator = $scope.donator;
+      function addCopy(library, slug, book) {
+        var addCopyRequest = {};
+        addCopyRequest.status = 'AVAILABLE';
+        addCopyRequest.library = library;
+        addCopyRequest.book = book;
+        addCopyRequest.donator = $scope.donator;
 
-      BookService.addCopy(addCopyRequest).
-        success(function() {
-          $scope.addingBook = false;
+        BookService.addCopy(addCopyRequest).
+          success(function () {
+            $scope.addingBook = false;
 
-          window.alert('Book has been added to library successfully.');
-          window.location.replace('/#/library/' + slug);
-        }).
-        error(function(){
-          window.alert('Error occurred while adding ' + $scope.book.title + '.');
-          $scope.addingBook = false; 
-        });
-    }
+            window.alert('Book has been added to library successfully.');
+            window.location.replace('/#/library/' + slug);
+          }).
+          error(function () {
+            window.alert('Error occurred while adding ' + $scope.book.title + '.');
+            $scope.addingBook = false;
+          });
+      }
 
-    function addBook(library, slug) {
-      BookService.addBook($scope.book).
-        success(function(data, status, headers, config) {
-          var book = headers('Location');
-          addCopy(library, slug, book);
-        }).
-        error(function(){
-          window.alert('Error occurred while adding ' + $scope.book.title + '.');
-          $scope.addingBook = false; 
-        });
-    }
+      function addBook(library, slug) {
+        BookService.addBook($scope.book).
+          success(function (data, status, headers, config) {
+            var book = headers('Location');
+            addCopy(library, slug, book);
+          }).
+          error(function () {
+            window.alert('Error occurred while adding ' + $scope.book.title + '.');
+            $scope.addingBook = false;
+          });
+      }
 
-    function toggleFormDisplay(displayable) {
-      $scope.formShowable = displayable;
-      $scope.errorShowable = !displayable;
-    }
-  }]
+      function toggleFormDisplay(displayable) {
+        $scope.formShowable = displayable;
+        $scope.errorShowable = !displayable;
+      }
+    }]
 );
