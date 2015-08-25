@@ -1,11 +1,11 @@
 'use strict';
 
-describe('LibraryService', function(){
+describe('LibraryService', function () {
 
   beforeEach(module('libraryUiApp'));
 
-  describe('listLibraries', function(){
-    it ('requests list of libraries from api', inject(function($injector, $http, ENV){
+  describe('listLibraries', function () {
+    it('requests list of libraries from api', inject(function ($injector, $http, ENV) {
       var libraryService = $injector.get('LibraryService')
       var url = ENV.apiEndpoint + '/libraries';
 
