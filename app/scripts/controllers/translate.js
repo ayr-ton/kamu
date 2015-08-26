@@ -2,12 +2,7 @@
 
 angular
   .module('libraryUiApp')
-  .controller('TranslateCtrl', function ($translate, $scope) {
-    var $cookies;
-    angular.injector(['ngCookies']).invoke(['$cookies', function (_$cookies_) {
-      $cookies = _$cookies_;
-    }]);
-
+  .controller('TranslateCtrl', ['$translate', '$scope', '$cookies', function ($translate, $scope, $cookies) {
     $scope.changeLanguage = function (language) {
       var expireDate = new Date();
       expireDate.setDate(expireDate.getDate() + 365);
@@ -16,4 +11,4 @@ angular
 
       $translate.use(language);
     };
-  });
+  }]);
