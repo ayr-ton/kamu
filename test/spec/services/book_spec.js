@@ -122,10 +122,8 @@ describe('BookService', function() {
     });
   });
 
-
-
   describe('#getLibraryBySlug', function() {
-    it('call backedn api to retrieve library by slug', function() {
+    it('calls backend api to retrieve library by slug', function() {
       httpBackend.expectGET(apiEndpoint.concat('/libraries/search/findBySlug?slug=quito')).respond(200);
 
       bookService.getLibraryBySlug('quito');
@@ -133,4 +131,18 @@ describe('BookService', function() {
       httpBackend.flush();
     });
   });
+
+  describe('#getCopies', function() {
+    it('fires url endpoint that is passed', function() {
+      var url = 'some/really/cool/endpoint';
+
+      httpBackend.expectGET(url).respond(200);
+
+      bookService.getCopies(url);
+
+      httpBackend.flush();
+    });
+  });
+
+
 });
