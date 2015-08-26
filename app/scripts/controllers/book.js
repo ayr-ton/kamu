@@ -102,65 +102,114 @@ angular
         $scope.listBooks();
       });
 
-      $scope.borrowCopy = function (copy) {
-        var promise = modals.open(
-          'available', {copy: copy}
-        );
+    $scope.borrowCopy = function(copy) {
+      
+      var promise = modals.open(
+        'available', { copy: copy }
+      );
 
-        promise.then(
-          function handleResolve(response) {
-            console.log('%s borrowed the copy %s', response.email, response.copy.id);
-            LoanService.
-              borrowCopy(response.copy.id, response.email).
-              success(function () {
-                modals.reject;
+      promise.then(
+        function handleResolve( response ) {
 
-                window.alert('Book has loaned to '.concat(response.email).concat('.'));
-                BookService.getCopy(copy.id)
-                  .success(function (data) {
-                    var scope = angular.element('#copy-'.concat(copy.id)).scope();
-                    scope.copy = data;
-                    scope.copy.imageUrl = scope.copy.imageUrl || 'images/no-image.png';
+          console.log( '%s borrowed the copy %s', response.email, response.copy.id  );
+          LoanService.
+                  borrowCopy(response.copy.id , response.email).
+                  success(function() {
+                      modals.reject;
+
+                      window.alert('Book has loaned to '.concat(response.email).concat('.'));
+                      BookService.getCopy(copy.id)
+                        .success(function(data) {
+
+                            var scope = angular.element('#copy-'.concat(copy.id)).scope();
+
+                            scope.copy = data;
+
+                            scope.copy.imageUrl = scope.copy.imageUrl || 'images/no-image.png';
+                        
+                        });
+                  }).
+                  error(function(data, status){
+
+                      var errorMessage;
+
+                      switch(status) {
+                          case 412:
+                              errorMessage = $translate.instant('HTTP_CODE_412');
+                              break;
+                          case 409:
+                              errorMessage = $translate.instant('HTTP_CODE_409');
+                              break;
+                          default:
+                              errorMessage = $translate.instant('HTTP_CODE_500');
+                              break;
+                      }                      
+
+                      window.alert(errorMessage);
                   });
-              }).
-              error(function (data, status) {
-                var errorMessage;
+        },
+        function handleReject( error ) {
 
-                switch (status) {
-                  case 412:
-                    errorMessage = $translate.instant('HTTP_CODE_412');
-                    break;
-                  case 409:
-                    errorMessage = $translate.instant('HTTP_CODE_409');
-                    break;
-                  default:
-                    errorMessage = $translate.instant('HTTP_CODE_500');
-                    break;
-                }
+            console.warn( 'Available rejected!' );
+        }
+      );
+    };
 
-                window.alert("Ops! Loan wasn't realize. Cause: ".concat(errorMessage));
-              });
-          },
-          function handleReject(error) {
-            console.warn('Available rejected!');
-          }
-        );
-      };
+    $scope.returnCopy = function(copy) {
 
-      $scope.returnCopy = function (loan) {
-        var promise = modals.open(
-          'not-available', {loan: loan}
-        );
+      var loan = copy.lastLoan;
 
-        promise.then(
-          function handleResolve(response) {
-            console.log('Confirm resolved.');
-          },
-          function handleReject(error) {
-            console.warn('Confirm rejected!');
-          }
-        );
-      };
+      var scope = angular.element('#modal-div').scope();
+
+      scope.loan = copy.lastLoan ;
+
+      var promise = modals.open(
+        'not-available', { loan : copy.lastLoan }
+      );
+
+      promise.then(
+        function handleResolve( response ) {
+
+          LoanService.
+                  returnCopy(response.loan.id).
+                  success(function() {
+
+                      modals.reject;
+
+                      window.alert('Book has returned to library.');
+
+                      BookService.getCopy(copy.id)
+                        .success(function(data) {
+
+                            var scope = angular.element('#copy-'.concat(copy.id)).scope();
+
+                            scope.copy = data;
+
+                            scope.copy.imageUrl = scope.copy.imageUrl || 'images/no-image.png';
+                        
+                        });
+                  }).
+                  error(function(data, status){
+
+                      var errorMessage;
+
+                      switch(status) {
+                          case 428:
+                              errorMessage = $translate.instant('HTTP_CODE_428');
+                              break;
+                          default:
+                              errorMessage = $translate.instant('HTTP_CODE_500');
+                              break;
+                      }                      
+
+                      window.alert(errorMessage);
+                  });
+        },
+        function handleReject( error ) {
+          console.warn( 'Confirm rejected!' );
+        }
+      );
+    };
 
       $scope.gotoAddBook = function () {
         window.location.assign('/#/library/' + getLibrarySlug() + '/add_book');

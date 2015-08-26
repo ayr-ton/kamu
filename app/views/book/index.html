@@ -20,10 +20,10 @@
   </ul>
 </section>
 
-<div class="modal-root">
+<div class="modal-root" id="modal-div">
   <div bn-modals ng-show="subview" class="m-modals" ng-switch="subview">
     <div class="modal" bn-modals ng-show="subview" ng-switch="subview">
-      <div class="popup-window" ng-controller="BorrowModalCtrl">
+      <div class="popup-window">
         <div class="popup-close" ng-click="cancel()"></div>
         <div class="popup-header" ng-switch-when="available">{{ 'BOOK_BORROW_TITLE' | translate }}</div>
         <div class="popup-header" ng-switch-when="not-available">{{ 'BOOK_RETURN_TITLE' | translate }}</div>
@@ -31,9 +31,8 @@
            <form ng-switch-when="available" class="" ng-submit="submit()" ng-controller="BorrowModalCtrl">
                 <div class="popup-margin popup-bottom-line">
                   <div class="popup-col2 popup-col2-left">
-                    <label for="user">{{ 'APP_USER' | translate }}</label>
-                        <input type="text" ng-model="form.user" ng-trim="false" class="text-align-right input-no-margin"/>
-
+                      <label for="user">{{ 'APP_USER' | translate }}</label>
+                      <input type="text" ng-model="form.user" ng-trim="false" class="text-align-right input-no-margin"/>
                   </div>
                   <div class="popup-col2 popup-col2-right"><span class="popup-donator-mail">@thoughtworks.com</span></div>
                 </div>
@@ -42,15 +41,16 @@
                 </div>
           </form>
 
-          <div class="popup-margin popup-bottom-line" ng-switch-when="not-available">
-            <div class="popup-col2 popup-col2-left">
-              {{ user }}, are you returning this book?
-            </div>
-          </div>
-          <div class="popup-margin-small" ng-switch-when="not-available">
-            <input type="submit" value="{{ 'APP_RETURN' | translate }}" ng-click="returnBook()" />
-          </div>
-      </div>
+          <form ng-switch-when="not-available" class="" ng-submit="submit()" ng-controller="ReturnModalCtrl">
+                <div class="popup-margin popup-bottom-line" >
+                    <div class="popup-col2 popup-col2-left">
+                          {{ loan.email }} {{ 'RETURN_MESSAGE' | translate }}
+                    </div>
+                </div>
+                <div class="popup-margin-small">
+                  <input type="submit" value="{{ 'APP_RETURN' | translate }}" ng-click="submit()" />
+                </div>
+          </form>
     </div>
   </div>
 </div>

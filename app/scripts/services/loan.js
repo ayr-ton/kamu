@@ -6,12 +6,23 @@ angular
     var postConfiguration = { 'Content-Type': 'application/json; charset=utf-8' };
 
     this.borrowCopy = function (copy, email) {
-      var loan = {};
-      loan.copy = ENV.apiEndpoint.concat('/copies/').concat(copy);
-      loan.email = email;
+      
+        var loan = {};
+        loan.copy = ENV.apiEndpoint.concat('/copies/').concat(copy);
+        loan.email = email;
 
-      var endPoint = ENV.apiEndpoint.concat('/loans');
+        var endPoint = ENV.apiEndpoint.concat('/loans');
 
-      return $http.post(endPoint, loan, postConfiguration);
+        return $http.post(endPoint, loan, postConfiguration);
     };
+
+     this.returnCopy = function (loanId) {
+
+        var endPoint = ENV.apiEndpoint.concat('/loans/').concat(loanId);
+
+        var loan = {};
+
+        return $http.patch(endPoint, loan, postConfiguration);
+    };
+
   });
