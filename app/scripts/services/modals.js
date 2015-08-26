@@ -16,11 +16,11 @@ angular
       modal.params = params;
 
       if (previousDeferred && pipeResponse) {
-
         modal.deferred.promise.then(previousDeferred.resolve, previousDeferred.reject);
       } else if (previousDeferred) {
         previousDeferred.reject();
       }
+
       $rootScope.$emit('modals.open', type);
 
       return ( modal.deferred.promise );
