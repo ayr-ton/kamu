@@ -81,11 +81,13 @@ angular
         BOOK_COVER: 'Cover',
         BOOK_NUMBER_OF_PAGES: 'Pages',
         BOOK_DONATOR: 'Donator',
-        HTTP_CODE_409: 'Book requested is not available for do that.',
-        HTTP_CODE_412: 'Email is required to make a loan',
-        HTTP_CODE_500: 'Internal error',
+        HTTP_CODE_409:'Ops! Process was not realize. Cause: Book requested is not available for do that.',
+        HTTP_CODE_412:'Ops! Process was not realize. Cause: Email is required to make a loan',
+        HTTP_CODE_428:'Ops! Process was not realize. Cause: This loan does not exists.',
+        HTTP_CODE_500:'Ops! Process was not realize. Cause: Internal error', 
         REQUIRED: '(Required Field)',
-        INVALID_LIBRARY_ERROR: 'Oops! The library you are adding a book to is not registered with us.'
+        INVALID_LIBRARY_ERROR: 'Oops! The library you are adding a book to is not registered with us.',
+        RETURN_MESSAGE: ', are you returning this book?'
       })
       .translations('pt-BR', {
         APP_LIBRARY_TAB: 'Todos Os Livros',
@@ -115,11 +117,13 @@ angular
         BOOK_COVER: 'Capa',
         BOOK_NUMBER_OF_PAGES: 'Páginas',
         BOOK_DONATOR: 'Doador',
-        HTTP_CODE_409: 'Livro solicitado está indisponível para o empréstimo.',
-        HTTP_CODE_412: 'Email é obrigatório',
-        HTTP_CODE_500: 'Problema interno',
+        HTTP_CODE_409:'Ops! Processo não realizado. Motivo: Livro solicitado está indisponível para o empréstimo.',
+        HTTP_CODE_412:'Ops! Processo não realizado. Motivo: Email é obrigatório',
+        HTTP_CODE_500:'Ops! Processo não realizado. Motivo: Problema interno',
+        HTTP_CODE_428:'Ops! Processo não realizado. Motivo: Este emprestimo não existe.',
         REQUIRED: '(Campo Obrigatório)',
-        INVALID_LIBRARY_ERROR: 'Desculpe, você está adiconando um livro em uma biblioteca que não está regirstrada.'
+        INVALID_LIBRARY_ERROR: 'Desculpe, você está adiconando um livro em uma biblioteca que não está regirstrada.' ,
+        RETURN_MESSAGE: ', você deseja realmente retornar este livro??'
       })
       .translations('es-EC', {
         APP_LIBRARY_TAB: 'Todos Los Libros',
@@ -149,11 +153,14 @@ angular
         BOOK_COVER: 'Imagen',
         BOOK_NUMBER_OF_PAGES: 'Páginas',
         BOOK_DONATOR: 'Donante',
-        HTTP_CODE_409: 'El libro solicitado no está disponible para el préstamo.',
-        HTTP_CODE_412: 'Es necesario su correo electrónico para el préstamo.',
-        HTTP_CODE_500: 'Problema interno',
+        HTTP_CODE_409:'Ops! Process was not realize. Cause: El libro solicitado no está disponible para el préstamo.',
+        HTTP_CODE_412:'Ops! Process was not realize. Cause: Es necesario su correo electrónico para el préstamo.',
+        HTTP_CODE_500:'Ops! Process was not realize. Cause: Problema interno.' ,
+        HTTP_CODE_428:'Ops! Process was not realize. Cause: Este préstamo no existe.',
         REQUIRED: '(Campo Obligatorio)',
-        INVALID_LIBRARY_ERROR: '¡Ups! La librería a la que intenta agregar un libro no está registrada.'
+        INVALID_LIBRARY_ERROR: '¡Ups! La librería a la que intenta agregar un libro no está registrada.',
+        RETURN_MESSAGE: ', estas seguro de devolver este libro?'
+
       });
 
     $translateProvider.determinePreferredLanguage(function () {
