@@ -19,11 +19,9 @@ angular
 
 
     this.getCopy = function (copy) {
-
       var endPoint = ENV.apiEndpoint.concat('/copies/').concat(copy).concat('?projection=copyWithBookInline');
 
       return $http.get(endPoint);
-
     };
 
     this.extractBookInformation = function (bookInfo, searchCriteria) {

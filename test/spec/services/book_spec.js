@@ -12,7 +12,7 @@ describe('BookService', function(){
   }));
 
   describe('#findGoogleBooks', function(){
-    it('it calls the google books api with search criteria', function(){
+    it('calls the google books api with search criteria', function(){
       httpBackend.expectGET('https://www.googleapis.com/books/v1/volumes?q=isbn:84698439325325').respond(200);
 
       bookService.findGoogleBooks('84698439325325');
@@ -22,10 +22,20 @@ describe('BookService', function(){
   });
 
   describe('#findLibraryBook', function(){
-    it('it invokes backend findBookByIsbn endpoint', function(){
-      httpBackend.expectGET(apiEndpoint + '/books/search/findByIsbn?isbn=8964869863').respond(200);
+    it('invokes backend findBookByIsbn endpoint', function(){
+      httpBackend.expectGET(apiEndpoint.concat('/books/search/findByIsbn?isbn=8964869863')).respond(200);
 
       bookService.findLibraryBook('8964869863');
+
+      httpBackend.flush();
+    });
+  });
+
+  describe('#getCopy', function(){
+    it('retrieves copies using the inline projection', function(){
+      httpBackend.expectGET(apiEndpoint.concat('/copies/34?projection=copyWithBookInline')).respond(200);
+
+      bookService.getCopy('34');
 
       httpBackend.flush();
     });
