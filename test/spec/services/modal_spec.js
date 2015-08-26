@@ -1,15 +1,15 @@
 'use strict'
 
-describe('Modals', function () {
+describe('Modal', function () {
 
   var modal, q, scope;
 
   beforeEach(module('libraryUiApp'));
 
-  beforeEach(inject(function (_$rootScope_, _$q_, modals) {
+  beforeEach(inject(function (_$rootScope_, _$q_, Modal) {
     scope = _$rootScope_;
     q = _$q_;
-    modal = modals;
+    modal = Modal;
   }));
 
   describe('#open', function () {
@@ -18,7 +18,7 @@ describe('Modals', function () {
 
       var promise = modal.open(window, {}, false);
 
-      expect(scope.$emit).toHaveBeenCalledWith('modals.open', window);
+      expect(scope.$emit).toHaveBeenCalledWith('Modal.open', window);
       expect(promise).toEqual(q.defer().promise);
     });
   });
@@ -51,7 +51,7 @@ describe('Modals', function () {
 
       var promise = modal.reject('wierdReason');
 
-      expect(scope.$emit).toHaveBeenCalledWith('modals.close');
+      expect(scope.$emit).toHaveBeenCalledWith('Modal.close');
     });
 
     it('does not emit message when deferred is not set', function (){
@@ -59,7 +59,7 @@ describe('Modals', function () {
 
       var promise = modal.reject('wierdReason');
 
-      expect(scope.$emit).not.toHaveBeenCalledWith('modals.close');
+      expect(scope.$emit).not.toHaveBeenCalledWith('Modal.close');
     });
   });
 
@@ -71,7 +71,7 @@ describe('Modals', function () {
 
       var promise = modal.resolve('wierdReason');
 
-      expect(scope.$emit).toHaveBeenCalledWith('modals.close');
+      expect(scope.$emit).toHaveBeenCalledWith('Modal.close');
     });
 
     it('does not emit message when deferred is not set', function (){
@@ -79,7 +79,7 @@ describe('Modals', function () {
 
       var promise = modal.resolve('wierdReason');
 
-      expect(scope.$emit).not.toHaveBeenCalledWith('modals.close');
+      expect(scope.$emit).not.toHaveBeenCalledWith('Modal.close');
     });
   });
 });

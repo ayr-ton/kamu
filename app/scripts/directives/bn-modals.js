@@ -2,7 +2,7 @@
 
 angular
   .module('libraryUiApp')
-  .directive('bnModals', function($rootScope, modals) {
+  .directive('bnModals', function($rootScope, Modal) {
     function link(scope, element, attributes) {
       scope.subview = null;
 
@@ -11,14 +11,14 @@ angular
             return;
           }
 
-          scope.$apply(modals.reject);
+          scope.$apply(Modal.reject);
         });
 
-      $rootScope.$on('modals.open', function handleModalOpenEvent(event, modalType) {
+      $rootScope.$on('Modal.open', function handleModalOpenEvent(event, modalType) {
           scope.subview = modalType;
         });
 
-      $rootScope.$on('modals.close', function handleModalCloseEvent(event) {
+      $rootScope.$on('Modal.close', function handleModalCloseEvent(event) {
           scope.subview = null;
         });
     }

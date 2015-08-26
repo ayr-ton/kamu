@@ -2,31 +2,25 @@
 
 var app = angular.module('libraryUiApp');
 
-app.controller('BorrowModalCtrl', function ($scope, modals) {
-    $scope.copy = modals.params().copy;
-    $scope.cancel = modals.reject;
+app.controller('BorrowModalCtrl', function ($scope, Modal) {
+    $scope.copy = Modal.params().copy;
+    $scope.cancel = Modal.reject;
 
     $scope.submit = function () {
-  
-        var loan = { copy: $scope.copy, email: $scope.form.user + '@thoughtworks.com' };
-        modals.resolve(loan);
-    
+      var loan = { copy: $scope.copy, email: $scope.form.user + '@thoughtworks.com' };
+      Modal.resolve(loan);
     };
   }
 );
 
-app.controller('ReturnModalCtrl', function( $scope, modals ) {
-
-    $scope.loan = modals.params().loan;
-    $scope.cancel = modals.reject;
+app.controller('ReturnModalCtrl', function($scope, Modal) {
+    $scope.loan = Modal.params().loan;
+    $scope.cancel = Modal.reject;
 
     $scope.submit = function() {
-
       var loan = { loan: $scope.loan};
 
-      modals.resolve(loan);
-    
+      Modal.resolve(loan);
     };
-
   }
 );
