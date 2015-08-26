@@ -12,14 +12,14 @@ describe('BookCtrl', function () {
 
 
   describe('#autoCompleteSearch', function () {
-    it('only shows isbn field', inject(function ($controller, $rootScope) {
+    it('only shows isbn field', function () {
       scope.autoCompleteSearch();
 
       expect(scope.formShowable).toBe(false);
       expect(scope.errorShowable).toBe(false);
       expect(scope.searchShowable).toBe(true);
       expect(scope.isbnSearch).toBe(true);
-    }));
+    });
   });
 
   describe('#findGoogleBooks', function () {
@@ -46,7 +46,7 @@ describe('BookCtrl', function () {
               }
             ]
           }
-        }
+        };
 
         $httpBackend
           .expectGET(ENV.apiEndpoint + '/books/search/findByIsbn?isbn=' + scope.searchCriteria)
@@ -114,7 +114,7 @@ describe('BookCtrl', function () {
                 }
               }
             ]
-          }
+          };
 
           $httpBackend
             .expectGET(ENV.apiEndpoint + '/books/search/findByIsbn?isbn=' + scope.searchCriteria)
@@ -147,7 +147,7 @@ describe('BookCtrl', function () {
           scope.searchCriteria = '985693865986';
 
           var libraryData = {};
-          var googleData = {}
+          var googleData = {};
 
           $httpBackend
             .expectGET(ENV.apiEndpoint + '/books/search/findByIsbn?isbn=' + scope.searchCriteria)
@@ -257,16 +257,16 @@ describe('BookCtrl', function () {
             .respond(200);
         }));
 
-        it('adds book when book does not exist in library', inject(function ($location) {
+        it('adds book when book does not exist in library', function () {
           spyOn(window.location, 'replace');
 
           httpBackend
             .expectPOST(addBookEndpoint, scope.book)
-            .respond(201)
+            .respond(201);
 
           httpBackend
             .expectPOST(addCopyEndpoint)
-            .respond(201)
+            .respond(201);
 
           scope.addBookToLibrary();
 
@@ -275,7 +275,7 @@ describe('BookCtrl', function () {
           expect(scope.addingBook).toBe(false);
           expect(window.alert).toHaveBeenCalledWith('Book has been added to library successfully.');
           expect(window.location.replace).toHaveBeenCalledWith('/#/library/' + slug);
-        }));
+        });
 
         it('throws error when atttempt to add existing book fails', inject(function () {
           httpBackend
@@ -328,7 +328,7 @@ describe('BookCtrl', function () {
 
     describe('when book already exists', function () {
       var slug = 'bh';
-      var library, book, route, window, httpBackend, librarySearchEndpoint, addBookEndpoint, addCopyEndpoint;
+      var library, route, window, httpBackend, librarySearchEndpoint, addBookEndpoint, addCopyEndpoint;
 
       beforeEach(inject(function ($route, $httpBackend, $window, ENV) {
         httpBackend = $httpBackend;
@@ -380,7 +380,7 @@ describe('BookCtrl', function () {
 
         httpBackend
           .expectPOST(addCopyEndpoint)
-          .respond(200)
+          .respond(200);
 
         scope.addBookToLibrary();
 
@@ -394,7 +394,7 @@ describe('BookCtrl', function () {
       it('throws error when atttempt to add copy fails', function () {
         httpBackend
           .expectPOST(addCopyEndpoint)
-          .respond(500)
+          .respond(500);
 
         scope.addBookToLibrary();
 
@@ -402,7 +402,7 @@ describe('BookCtrl', function () {
 
         expect(scope.addingBook).toBe(false);
         expect(window.alert).toHaveBeenCalledWith('Error occurred while adding How to increase test coverage.');
-      })
+      });
     });
   });
 
@@ -471,7 +471,7 @@ describe('BookCtrl', function () {
     });
 
     it('correctly initializes each copy when copy has imageUrl', function () {
-      library._embedded.libraries[0]._embedded.copies[0].imageUrl = "path/to/image"
+      library._embedded.libraries[0]._embedded.copies[0].imageUrl = 'path/to/image';
 
       httpBackend.expectGET(searchUrl)
         .respond(200, library);
