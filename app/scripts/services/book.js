@@ -6,13 +6,13 @@ angular
     var postConfiguration = {'Content-Type': 'application/json; charset=utf-8'};
 
     this.findGoogleBooks = function (searchCriteria) {
-      var endPoint = 'https://www.googleapis.com/books/v1/volumes?q=isbn:' + searchCriteria;
+      var endPoint = 'https://www.googleapis.com/books/v1/volumes?q=isbn:'.concat(searchCriteria);
 
       return $http.get(endPoint);
     };
 
     this.findLibraryBook = function (searchCriteria) {
-      var endPoint = ENV.apiEndpoint + '/books/search/findByIsbn?isbn=' + searchCriteria;
+      var endPoint = ENV.apiEndpoint.concat('/books/search/findByIsbn?isbn=').concat(searchCriteria);
 
       return $http.get(endPoint);
     };
@@ -43,19 +43,19 @@ angular
     };
 
     this.addBook = function (book) {
-      var endPoint = ENV.apiEndpoint + '/books';
+      var endPoint = ENV.apiEndpoint.concat('/books');
 
       return $http.post(endPoint, book, postConfiguration);
     };
 
     this.addCopy = function (copy) {
-      var endPoint = ENV.apiEndpoint + '/copies';
+      var endPoint = ENV.apiEndpoint.concat('/copies');
 
       return $http.post(endPoint, copy, postConfiguration);
     };
 
     this.getLibraryBySlug = function (slug) {
-      var endPoint = ENV.apiEndpoint + '/libraries/search/findBySlug?slug=' + slug;
+      var endPoint = ENV.apiEndpoint.concat('/libraries/search/findBySlug?slug=').concat(slug);
 
       return $http.get(endPoint);
     };
@@ -84,6 +84,8 @@ angular
     }
 
     function resolveBookImage(imageUrl) {
-      return (imageUrl === null || imageUrl === undefined) ? 'images\\no-image.png' : imageUrl ;
+      var defaultImageUrl = 'images\\no-image.png';
+
+      return (imageUrl === null || imageUrl === undefined) ? defaultImageUrl : imageUrl ;
     }
   });
