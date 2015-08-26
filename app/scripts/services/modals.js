@@ -23,15 +23,15 @@ angular
 
       $rootScope.$emit('modals.open', type);
 
-      return ( modal.deferred.promise );
+      return modal.deferred.promise;
     }
 
     function params() {
-      return ( modal.params || {} );
+      return modal.params || {};
     }
 
     function proceedTo(type, params) {
-      return ( open(type, params, true) );
+      return open(type, params, true);
     }
 
     function reject(reason) {
@@ -57,12 +57,12 @@ angular
     }
 
     // Return the public API.
-    return ({
+    return {
       open: open,
       params: params,
       proceedTo: proceedTo,
       reject: reject,
       resolve: resolve
-    });
+    };
   }
 );
