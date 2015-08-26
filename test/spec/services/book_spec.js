@@ -97,4 +97,28 @@ describe('BookService', function() {
       expect(bookService.resolveBookImage('path/to/image')).toBe('path/to/image');
     });
   });
+
+  describe('#addBook', function() {
+    it('calls backend api to add book', function() {
+      var book = { 'title': 'Some wicked title' };
+
+      httpBackend.expectPOST(apiEndpoint.concat('/books'), book).respond(200);
+
+      bookService.addBook(book);
+
+      httpBackend.flush();
+    });
+  });
+
+  describe('#addCopy', function() {
+    it('calls backend api to add a copy', function() {
+      var copy = { 'title': 'Some wicked title' };
+
+      httpBackend.expectPOST(apiEndpoint.concat('/copies'), copy).respond(200);
+
+      bookService.addCopy(copy);
+
+      httpBackend.flush();
+    });
+  });
 });
