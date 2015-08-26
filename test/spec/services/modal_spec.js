@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 describe('Modal', function () {
 
@@ -25,9 +25,9 @@ describe('Modal', function () {
 
   describe('#params', function () {
     it('returns params when set', function () {
-      var params = { "param": "someValue" };
+      var params = { 'param': 'someValue' };
 
-      var promise = modal.open(window, params, false);
+      modal.open(window, params, false);
 
       expect(modal.params()).toEqual(params);
     });
@@ -49,7 +49,7 @@ describe('Modal', function () {
 
       spyOn(scope, '$emit');
 
-      var promise = modal.reject('wierdReason');
+      modal.reject('wierdReason');
 
       expect(scope.$emit).toHaveBeenCalledWith('Modal.close');
     });
@@ -57,7 +57,7 @@ describe('Modal', function () {
     it('does not emit message when deferred is not set', function (){
       spyOn(scope, '$emit');
 
-      var promise = modal.reject('wierdReason');
+      modal.reject('wierdReason');
 
       expect(scope.$emit).not.toHaveBeenCalledWith('Modal.close');
     });
@@ -69,7 +69,7 @@ describe('Modal', function () {
 
       spyOn(scope, '$emit');
 
-      var promise = modal.resolve('wierdReason');
+      modal.resolve('wierdReason');
 
       expect(scope.$emit).toHaveBeenCalledWith('Modal.close');
     });
@@ -77,7 +77,7 @@ describe('Modal', function () {
     it('does not emit message when deferred is not set', function (){
       spyOn(scope, '$emit');
 
-      var promise = modal.resolve('wierdReason');
+      modal.resolve('wierdReason');
 
       expect(scope.$emit).not.toHaveBeenCalledWith('Modal.close');
     });
