@@ -84,6 +84,6 @@ angular
     }
 
     function resolveBookImage(imageUrl) {
-      return imageUrl !== null ? imageUrl : 'images\\no-image.png';
+      return (imageUrl === null || imageUrl === undefined) ? 'images\\no-image.png' : imageUrl ;
     }
   });

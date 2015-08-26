@@ -83,4 +83,18 @@ describe('BookService', function() {
       expect(book.imageUrl).toEqual('images\\no-image.png');
     });
   });
+
+  describe('#resolveBookImage', function() {
+    it('returns default url when imageUrl is null', function() {
+      expect(bookService.resolveBookImage(null)).toBe('images\\no-image.png');
+    });
+
+    it('returns default url when imageUrl is undefined', function() {
+      expect(bookService.resolveBookImage(undefined)).toBe('images\\no-image.png');
+    });
+
+    it('returns passed imageUrl when it is neither null or undefined', function() {
+      expect(bookService.resolveBookImage('path/to/image')).toBe('path/to/image');
+    });
+  });
 });
