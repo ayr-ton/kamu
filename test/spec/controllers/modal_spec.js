@@ -61,7 +61,7 @@ describe('Modal Controllers', function () {
       it('resolves modal with loan', function () {
         controller('ReturnModalCtrl', {'$scope': scope, 'Modal': modal});
 
-        scope.loan = { 'id' : '34' }
+        scope.loan = { 'id' : '34' };
 
         spyOn(modal, 'resolve');
 

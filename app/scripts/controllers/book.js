@@ -8,8 +8,7 @@ angular
     'Modal',
     '$translate',
     '$route',
-    '$http',
-    function ($scope, BookService, LoanService, Modal, $translate, $route, $http) {
+    function ($scope, BookService, LoanService, Modal, $translate, $route) {
 
       $scope.searchCriteria = '';
       $scope.addingBook = false;
@@ -25,7 +24,7 @@ angular
 
       $scope.getCurrentLibraryPath = function () {
         return $scope.isInsideLibrary() ? '#/library/' + getLibrarySlug() : '#/libraries';
-      }
+      };
 
       $scope.findGoogleBooks = function () {
         var searchCriteria = $scope.searchCriteria.toString();
@@ -156,9 +155,6 @@ angular
     };
 
     $scope.returnCopy = function(copy) {
-
-      var loan = copy.lastLoan;
-
       var scope = angular.element('#modal-div').scope();
 
       scope.loan = copy.lastLoan ;
