@@ -384,7 +384,7 @@ header::after{
   float: left;
   width: 100%;
 }
-.popup-col2{width: 50%;
+.popup-col2{
   box-sizing: border-box;
   float: left;
 }
