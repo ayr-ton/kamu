@@ -6,7 +6,7 @@ describe('LibraryService', function () {
 
   describe('listLibraries', function () {
     it('requests list of libraries from api', inject(function ($injector, $http, ENV) {
-      var libraryService = $injector.get('LibraryService')
+      var libraryService = $injector.get('LibraryService');
       var url = ENV.apiEndpoint + '/libraries';
 
       spyOn($http, 'get');
