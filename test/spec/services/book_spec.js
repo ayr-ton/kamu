@@ -143,6 +143,4 @@ describe('BookService', function() {
       httpBackend.flush();
     });
   });
-
-
 });
