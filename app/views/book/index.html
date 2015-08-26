@@ -24,7 +24,7 @@
   <div bn-modals ng-show="subview" class="m-modals" ng-switch="subview">
     <div class="modal" bn-modals ng-show="subview" ng-switch="subview">
       <div class="popup-window">
-        <div class="popup-close" ng-click="cancel()"></div>
+        <div class="popup-close" ng-click="cancel()" ng-controller="ModalCtrl"></div>
         <div class="popup-header" ng-switch-when="available">{{ 'BOOK_BORROW_TITLE' | translate }}</div>
         <div class="popup-header" ng-switch-when="not-available">{{ 'BOOK_RETURN_TITLE' | translate }}</div>
 
