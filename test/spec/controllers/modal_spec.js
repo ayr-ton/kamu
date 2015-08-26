@@ -2,12 +2,12 @@
 
 describe('ModalCtrl', function () {
 
-  var controller, scope, modals;
+  var controller, scope, Modal;
 
   beforeEach(module('libraryUiApp'));
 
   beforeEach(inject(function (_$controller_, _$rootScope_) {
-    modals = {
+    Modal = {
       params: function () {
         return { copy: 'somecopy'};
       },
@@ -16,7 +16,7 @@ describe('ModalCtrl', function () {
     };
 
     scope = _$rootScope_;
-    controller = _$controller_('BorrowModalCtrl', {'$scope': scope, 'modals': modals});
+    controller = _$controller_('BorrowModalCtrl', {'$scope': scope, 'Modal': Modal});
   }));
 
   describe('initialization', function () {

@@ -5,11 +5,11 @@ angular
   .controller('BookCtrl', ['$scope',
     'BookService',
     'LoanService',
-    'modals',
+    'Modal',
     '$translate',
     '$route',
     '$http',
-    function ($scope, BookService, LoanService, modals, $translate, $route, $http) {
+    function ($scope, BookService, LoanService, Modal, $translate, $route, $http) {
 
       $scope.searchCriteria = '';
       $scope.addingBook = false;
@@ -104,7 +104,7 @@ angular
 
     $scope.borrowCopy = function(copy) {
       
-      var promise = modals.open(
+      var promise = Modal.open(
         'available', { copy: copy }
       );
 
@@ -115,7 +115,7 @@ angular
           LoanService.
                   borrowCopy(response.copy.id , response.email).
                   success(function() {
-                      modals.reject;
+                      Modal.reject;
 
                       window.alert('Book has loaned to '.concat(response.email).concat('.'));
                       BookService.getCopy(copy.id)
@@ -163,7 +163,7 @@ angular
 
       scope.loan = copy.lastLoan ;
 
-      var promise = modals.open(
+      var promise = Modal.open(
         'not-available', { loan : copy.lastLoan }
       );
 
@@ -174,7 +174,7 @@ angular
                   returnCopy(response.loan.id).
                   success(function() {
 
-                      modals.reject;
+                      Modal.reject;
 
                       window.alert('Book has returned to library.');
 

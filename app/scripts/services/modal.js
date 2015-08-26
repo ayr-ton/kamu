@@ -2,7 +2,7 @@
 
 angular
   .module('libraryUiApp')
-  .service('modals', function ($rootScope, $q) {
+  .service('Modal', function ($rootScope, $q) {
     var modal = {
       deferred: null,
       params: null
@@ -21,7 +21,7 @@ angular
         previousDeferred.reject();
       }
 
-      $rootScope.$emit('modals.open', type);
+      $rootScope.$emit('Modal.open', type);
 
       return modal.deferred.promise;
     }
@@ -42,7 +42,7 @@ angular
       modal.deferred.reject(reason);
       modal.deferred = modal.params = null;
 
-      $rootScope.$emit('modals.close');
+      $rootScope.$emit('Modal.close');
     }
 
     function resolve(response) {
@@ -53,7 +53,7 @@ angular
       modal.deferred.resolve(response);
       modal.deferred = modal.params = null;
 
-      $rootScope.$emit('modals.close');
+      $rootScope.$emit('Modal.close');
     }
 
     // Return the public API.
