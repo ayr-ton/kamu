@@ -56,6 +56,14 @@ module.exports = function (grunt) {
           }
         }
       },
+      qa: {
+        constants: {
+          ENV: {
+            name: 'qa',
+            apiEndpoint: 'http://qa-twlib-api.herokuapp.com'
+          }
+        }
+      },
       production: {
         constants: {
           ENV: {
