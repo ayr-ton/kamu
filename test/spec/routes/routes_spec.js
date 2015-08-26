@@ -22,7 +22,7 @@ describe('libraryUiApp routing', function () {
     var library = 'somelibrary';
 
     beforeEach(inject(function ($cookies, ENV) {
-      httpBackend.expectGET('views/book/add-book.html').respond(200)
+      httpBackend.expectGET('views/book/add-book.html').respond(200);
       httpBackend.when('GET', ENV.apiEndpoint + searchContextPath + library).respond(200, library);
     }));
 
@@ -64,7 +64,7 @@ describe('libraryUiApp routing', function () {
       cookies = $cookies;
       cookies.put(cookieKey, undefined);
 
-      route.pathParams = {'library': slug}
+      route.pathParams = { 'library': slug };
 
       location.path(function () {
         return '/library/' + slug;
@@ -74,7 +74,7 @@ describe('libraryUiApp routing', function () {
     }));
 
     it('does not set library cookie when pathParam is undefined', function () {
-        route.pathParams = {'library': undefined}
+        route.pathParams = { 'library': undefined };
 
         spyOn(cookies, 'put');
 
