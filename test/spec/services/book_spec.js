@@ -121,4 +121,16 @@ describe('BookService', function() {
       httpBackend.flush();
     });
   });
+
+
+
+  describe('#getLibraryBySlug', function() {
+    it('call backedn api to retrieve library by slug', function() {
+      httpBackend.expectGET(apiEndpoint.concat('/libraries/search/findBySlug?slug=quito')).respond(200);
+
+      bookService.getLibraryBySlug('quito');
+
+      httpBackend.flush();
+    });
+  });
 });
