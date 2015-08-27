@@ -34,7 +34,9 @@
                       <label for="user">{{ 'APP_USER' | translate }}</label>
                       <input type="text" ng-model="form.user" ng-trim="false" class="text-align-right input-no-margin"/>
                   </div>
-                  <div class="popup-col2 popup-col2-right"><span class="popup-donator-mail">@thoughtworks.com</span></div>
+                  <div class="popup-col2 popup-col2-right">
+                    <span class="popup-donator-mail">@thoughtworks.com</span>
+                  </div>
                 </div>
                 <div class="popup-margin-small">
                   <input type="submit" value="{{ 'APP_BORROW' | translate }}" ng-click="submit()" />
@@ -43,7 +45,7 @@
 
           <form ng-switch-when="not-available" class="" ng-submit="submit()" ng-controller="ReturnModalCtrl">
                 <div class="popup-margin popup-bottom-line" >
-                    <div class="popup-col2 popup-col2-left">
+                    <div class="popup-col1">
                           {{ loan.email }}, {{ 'RETURN_MESSAGE' | translate }}
                     </div>
                 </div>
