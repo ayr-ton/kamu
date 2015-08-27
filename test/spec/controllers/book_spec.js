@@ -174,20 +174,19 @@ describe('BookCtrl', function () {
       expect(scope.getCurrentLibraryPath()).toBe('#/libraries');
     });
 
-    it('routes to library path when library path param is set', inject(function ($location) {
+    it('routes to library path when library path param is set', function () {
       route.current = {'pathParams': {'library': 'random'}};
 
       expect(scope.getCurrentLibraryPath()).toBe('#/library/random');
-    }));
+    });
   });
 
   describe('#isInsideLibrary', function () {
-    it('returns true when current route is defined',
-      inject(function ($route) {
+    it('returns true when current route is defined', function () {
         route.current = {'pathParams': {'library': 'random'}};
 
         expect(scope.isInsideLibrary()).toBe(true);
-      }));
+      });
 
     it('returns false when current route is defined', function () {
       expect(scope.isInsideLibrary()).toBe(false);
@@ -419,7 +418,7 @@ describe('BookCtrl', function () {
       }
     };
 
-    beforeEach(function (ENV) { 
+    beforeEach(function () { 
       route.current = { 'pathParams': { 'library': slug } }; 
       searchUrl = apiEndpoint.concat('/libraries/search/findBySlug?slug=').concat(slug);
     });
@@ -492,13 +491,13 @@ describe('BookCtrl', function () {
     it('successfully borrows a book', inject(function  ($window, Modal) {
       var modal = Modal;
 
-      var ngElementFake = function(element) {
+      var ngElementFake = function() {
           return {
             scope: function() {
               return scope;
             }
-          }
-        }
+          };
+        };
 
       spyOn(modal, 'reject');
       spyOn($window, 'alert');
@@ -529,7 +528,7 @@ describe('BookCtrl', function () {
       angular.forEach(codes, function(item) {
         it('shows error message', inject(function  ($window, $translate, Modal) {
           spyOn($window, 'alert');
-          spyOn($translate, 'instant')
+          spyOn($translate, 'instant');
 
           httpBackend.expectPOST(apiEndpoint.concat('/loans')).respond(item.responseCode);
           httpBackend.expectGET(libraryIndexPage).respond(200);
@@ -543,7 +542,7 @@ describe('BookCtrl', function () {
           expect($window.alert).toHaveBeenCalled();
           expect($translate.instant).toHaveBeenCalledWith(item.errorCode);
         }));
-      })
+      });
     });
   });
 
@@ -552,13 +551,13 @@ describe('BookCtrl', function () {
     var copy = { 'id': '21', 'imageUrl': 'path/to/image', 'lastLoan': lastLoan };
     var loan = { 'id': '12', 'email': 'fakeuser@someemail.com', 'copy': copy };
 
-    var ngElementFake = function(element) {
+    var ngElementFake = function() {
         return {
           scope: function() {
             return scope;
           }
-        }
-      }
+        };
+      };
 
     it('successfully returns a book', inject(function ($window, Modal) {
       var modal = Modal;
@@ -608,7 +607,7 @@ describe('BookCtrl', function () {
           expect($translate.instant).toHaveBeenCalledWith(item.errorCode);
           expect(scope.loan).toEqual(lastLoan);
         }));
-      })
+      });
     });
   });
 });
