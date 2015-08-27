@@ -504,10 +504,11 @@ describe('BookCtrl', function () {
   });
 
   describe('#borrowBook', function(){
+    var copy = { 'id': '21', 'imageUrl': 'path/to/image' };
+    var loan = {'id': '12', 'email': 'fakeuser@someemail.com', 'copy': copy };
+
     it('successfully borrows a book', inject(function ($httpBackend, $window, Modal) {
       var httpBackend = $httpBackend
-      var copy = { 'id': '21', 'imageUrl': 'path/to/image' };
-      var loan = {'id': '12', 'email': 'fakeuser@someemail.com', 'copy': copy };
       var modal = Modal;
 
       var ngElementFake = function(element) {
@@ -539,8 +540,6 @@ describe('BookCtrl', function () {
     }));
 
     describe('fails to borrow a copy', function () {
-      var copy = { 'id': '21', 'imageUrl': 'path/to/image' };
-      var loan = { 'id': '12', 'email': 'fakeuser@someemail.com', 'copy': copy };
       var codes = 
         [{ 'responseCode': 412, 'errorCode': 'HTTP_CODE_412' },
         { 'responseCode': 409, 'errorCode': 'HTTP_CODE_409' },
@@ -564,6 +563,74 @@ describe('BookCtrl', function () {
 
           expect($window.alert).toHaveBeenCalled();
           expect($translate.instant).toHaveBeenCalledWith(item.errorCode);
+        }));
+      })
+    });
+  });
+
+  describe('#returnCopy', function(){
+    var lastLoan = { 'id': '1' };
+    var copy = { 'id': '21', 'imageUrl': 'path/to/image', 'lastLoan': lastLoan };
+    var loan = { 'id': '12', 'email': 'fakeuser@someemail.com', 'copy': copy };
+
+    var ngElementFake = function(element) {
+        return {
+          scope: function() {
+            return scope;
+          }
+        }
+      }
+
+    it('successfully returns a book', inject(function ($httpBackend, $window, Modal) {
+      var httpBackend = $httpBackend
+      var modal = Modal;
+
+      spyOn(modal, 'reject');
+      spyOn($window, 'alert');
+      spyOn(angular, 'element').andCallFake(ngElementFake);
+
+      httpBackend.expectPATCH(apiEndpoint.concat('/loans/12')).respond(200);
+      httpBackend.expectGET('views/library/index.html').respond(200);
+      httpBackend.expectGET(apiEndpoint.concat('/copies/').concat(copy.id).concat('?projection=copyWithBookInline')).respond(200, copy);
+
+      scope.returnCopy(copy);
+
+      modal.resolve({ 'loan': loan });
+
+      httpBackend.flush();
+
+      expect(scope.copy).toEqual(copy);
+      
+      expect($window.alert).toHaveBeenCalledWith('Book has returned to library.');
+      expect(modal.reject).toHaveBeenCalled();
+      expect(scope.copy.imageUrl).toEqual('path/to/image');
+    }));
+
+    describe('fails to return a copy', function () {
+      var codes = 
+        [{ 'responseCode': 428, 'errorCode': 'HTTP_CODE_428' },
+        { 'responseCode': 500, 'errorCode': 'HTTP_CODE_500' }];
+
+      angular.forEach(codes, function(item) {
+        it('successfully borrows a book', inject(function ($httpBackend, $window, $translate, Modal) {
+          var httpBackend = $httpBackend;
+
+          spyOn($window, 'alert');
+          spyOn($translate, 'instant');
+          spyOn(angular, 'element').andCallFake(ngElementFake);
+
+          httpBackend.expectPATCH(apiEndpoint.concat('/loans/12')).respond(item.responseCode);
+          httpBackend.expectGET('views/library/index.html').respond(200);
+
+          scope.returnCopy(copy);
+
+          Modal.resolve({ 'loan': loan });
+
+          httpBackend.flush();
+
+          expect($window.alert).toHaveBeenCalled();
+          expect($translate.instant).toHaveBeenCalledWith(item.errorCode);
+          expect(scope.loan).toEqual(lastLoan);
         }));
       })
     });
