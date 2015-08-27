@@ -50,7 +50,7 @@ describe('BookCtrl', function () {
         };
 
         $httpBackend
-          .expectGET(apiEndpoint + '/books/search/findByIsbn?isbn=' + scope.searchCriteria)
+          .expectGET(apiEndpoint.concat('/books/search/findByIsbn?isbn=').concat(scope.searchCriteria))
           .respond(200, data);
 
         $httpBackend.expectGET('views/library/index.html')
@@ -77,7 +77,7 @@ describe('BookCtrl', function () {
         scope.searchCriteria = '985693865986';
 
         $httpBackend
-          .expectGET(apiEndpoint + '/books/search/findByIsbn?isbn=' + scope.searchCriteria)
+          .expectGET(apiEndpoint.concat('/books/search/findByIsbn?isbn=').concat(scope.searchCriteria))
           .respond(500);
 
         $httpBackend.expectGET('views/library/index.html')
@@ -118,14 +118,14 @@ describe('BookCtrl', function () {
           };
 
           $httpBackend
-            .expectGET(apiEndpoint + '/books/search/findByIsbn?isbn=' + scope.searchCriteria)
+            .expectGET(apiEndpoint.concat('/books/search/findByIsbn?isbn=').concat(scope.searchCriteria))
             .respond(200, libraryData);
 
           $httpBackend.expectGET('views/library/index.html')
             .respond(200);
 
           $httpBackend
-            .expectGET('https://www.googleapis.com/books/v1/volumes?q=isbn:' + scope.searchCriteria)
+            .expectGET('https://www.googleapis.com/books/v1/volumes?q=isbn:'.concat(scope.searchCriteria))
             .respond(200, googleData);
 
           scope.findGoogleBooks();
@@ -151,14 +151,14 @@ describe('BookCtrl', function () {
           var googleData = {};
 
           $httpBackend
-            .expectGET(apiEndpoint + '/books/search/findByIsbn?isbn=' + scope.searchCriteria)
+            .expectGET(apiEndpoint.concat('/books/search/findByIsbn?isbn=').concat(scope.searchCriteria))
             .respond(200, libraryData);
 
           $httpBackend.expectGET('views/library/index.html')
             .respond(200);
 
           $httpBackend
-            .expectGET('https://www.googleapis.com/books/v1/volumes?q=isbn:' + scope.searchCriteria)
+            .expectGET('https://www.googleapis.com/books/v1/volumes?q=isbn:'.concat(scope.searchCriteria))
             .respond(200, googleData);
 
           scope.findGoogleBooks();
@@ -227,9 +227,9 @@ describe('BookCtrl', function () {
           httpBackend = $httpBackend;
           window = $window;
 
-          librarySearchEndpoint = apiEndpoint + '/libraries/search/findBySlug?slug=' + slug;
-          addBookEndpoint = apiEndpoint + '/books';
-          addCopyEndpoint = apiEndpoint + '/copies';
+          librarySearchEndpoint = apiEndpoint.concat('/libraries/search/findBySlug?slug=').concat(slug);
+          addBookEndpoint = apiEndpoint.concat('/books');
+          addCopyEndpoint = apiEndpoint.concat('/copies');
 
           library = {
             '_embedded': {
@@ -275,7 +275,7 @@ describe('BookCtrl', function () {
 
           expect(scope.addingBook).toBe(false);
           expect(window.alert).toHaveBeenCalledWith('Book has been added to library successfully.');
-          expect(window.location.replace).toHaveBeenCalledWith('/#/library/' + slug);
+          expect(window.location.replace).toHaveBeenCalledWith('/#/library/'.concat(slug));
         });
 
         it('throws error when atttempt to add existing book fails', inject(function () {
@@ -299,7 +299,7 @@ describe('BookCtrl', function () {
       describe('when library is not found', function () {
         it('shows alert when library is not found', inject(function ($translate, $httpBackend, $window, $route) {
           var library = {};
-          var librarySearchEndpoint = apiEndpoint + '/libraries/search/findBySlug?slug=bh';
+          var librarySearchEndpoint = apiEndpoint.concat('/libraries/search/findBySlug?slug=bh');
           var route = $route;
           route.current = {'pathParams': {'library': 'bh'}};
 
@@ -336,9 +336,9 @@ describe('BookCtrl', function () {
         route = $route;
         window = $window;
 
-        librarySearchEndpoint = apiEndpoint + '/libraries/search/findBySlug?slug=' + slug;
-        addBookEndpoint = apiEndpoint + '/books';
-        addCopyEndpoint = apiEndpoint + '/copies';
+        librarySearchEndpoint = apiEndpoint.concat('/libraries/search/findBySlug?slug=').concat(slug);
+        addBookEndpoint = apiEndpoint.concat('/books');
+        addCopyEndpoint = apiEndpoint.concat('/copies');
 
         library = {
           '_embedded': {
@@ -389,7 +389,7 @@ describe('BookCtrl', function () {
 
         expect(scope.addingBook).toBe(false);
         expect(window.alert).toHaveBeenCalledWith('Book has been added to library successfully.');
-        expect(window.location.replace).toHaveBeenCalledWith('/#/library/' + slug);
+        expect(window.location.replace).toHaveBeenCalledWith('/#/library/'.concat(slug));
       });
 
       it('throws error when atttempt to add copy fails', function () {
@@ -417,7 +417,7 @@ describe('BookCtrl', function () {
       route = $route;
       route.current = {'pathParams': {'library': slug}};
 
-      searchUrl = apiEndpoint + '/libraries/search/findBySlug?slug=' + slug;
+      searchUrl = apiEndpoint.concat('/libraries/search/findBySlug?slug=').concat(slug);
 
       library = {
         '_embedded': {
