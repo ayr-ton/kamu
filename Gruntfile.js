@@ -78,7 +78,7 @@ module.exports = function (grunt) {
     // Protractor settings
     protractor: {
       options: {
-        configFile: "test/protractor.conf.js", // Default config file
+        configFile: 'test/protractor.conf.js', // Default config file
         keepAlive: true, // If false, the grunt process stops when the test fails.
         noColor: false, // If true, protractor will not use colors in its output.
         debug: true,
@@ -88,7 +88,7 @@ module.exports = function (grunt) {
       },
       development: {   // Grunt requires at least one target to run so you can simply put 'all: {}' here too.
         options: {
-          configFile: "app/scripts/app.js", // Target-specific config file
+          configFile: 'app/scripts/app.js', // Target-specific config file
           args: {} // Target-specific arguments
         }
       },
