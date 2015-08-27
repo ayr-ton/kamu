@@ -123,7 +123,7 @@ angular
         HTTP_CODE_428:'Ops! Processo não realizado. Motivo: Este emprestimo não existe.',
         REQUIRED: '(Campo Obrigatório)',
         INVALID_LIBRARY_ERROR: 'Desculpe, você está adiconando um livro em uma biblioteca que não está regirstrada.' ,
-        RETURN_MESSAGE: 'você deseja realmente retornar este livro??'
+        RETURN_MESSAGE: 'você deseja realmente retornar este livro?'
       })
       .translations('es-EC', {
         APP_LIBRARY_TAB: 'Todos Los Libros',
