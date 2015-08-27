@@ -1,12 +1,13 @@
 'use strict';
 
 describe('BookCtrl', function () {
-  var scope, controller, apiEndpoint;
+  var scope, controller, httpBackend, apiEndpoint;
 
   beforeEach(module('libraryUiApp'));
 
-  beforeEach(inject(function ($controller, $rootScope, ENV) {
+  beforeEach(inject(function ($controller, $rootScope, $httpBackend, ENV) {
     scope = $rootScope;
+    httpBackend = $httpBackend;
     controller = $controller('BookCtrl', {'$scope': scope});
     apiEndpoint = ENV.apiEndpoint;
   }));
@@ -33,7 +34,7 @@ describe('BookCtrl', function () {
     });
 
     it('sets book properties correctly when book exists in library',
-      inject(function ($controller, $httpBackend) {
+      inject(function ($controller) {
         scope.searchCriteria = '985693865986';
 
         var data = {
@@ -49,16 +50,16 @@ describe('BookCtrl', function () {
           }
         };
 
-        $httpBackend
+        httpBackend
           .expectGET(apiEndpoint.concat('/books/search/findByIsbn?isbn=').concat(scope.searchCriteria))
           .respond(200, data);
 
-        $httpBackend.expectGET('views/library/index.html')
+        httpBackend.expectGET('views/library/index.html')
           .respond(200);
 
         scope.findGoogleBooks();
 
-        $httpBackend.flush();
+        httpBackend.flush();
 
         expect(scope.book.title).toEqual('How to enjoy pairing');
         expect(scope.book.subtitle).toEqual('The francieli-ekow way');
@@ -73,19 +74,19 @@ describe('BookCtrl', function () {
     );
 
     it('toggles error display when library search returns an error',
-      inject(function ($controller, $httpBackend) {
+      inject(function ($controller) {
         scope.searchCriteria = '985693865986';
 
-        $httpBackend
+        httpBackend
           .expectGET(apiEndpoint.concat('/books/search/findByIsbn?isbn=').concat(scope.searchCriteria))
           .respond(500);
 
-        $httpBackend.expectGET('views/library/index.html')
+        httpBackend.expectGET('views/library/index.html')
           .respond(200);
 
         scope.findGoogleBooks();
 
-        $httpBackend.flush();
+        httpBackend.flush();
 
         expect(scope.book).toEqual({});
 
@@ -96,7 +97,7 @@ describe('BookCtrl', function () {
 
     describe('when book does not exist in library', function () {
       it('calls google service and setup up book',
-        inject(function ($controller, $httpBackend) {
+        inject(function ($controller) {
           scope.searchCriteria = '985693865986';
 
           var libraryData = {};
@@ -117,20 +118,20 @@ describe('BookCtrl', function () {
             ]
           };
 
-          $httpBackend
+          httpBackend
             .expectGET(apiEndpoint.concat('/books/search/findByIsbn?isbn=').concat(scope.searchCriteria))
             .respond(200, libraryData);
 
-          $httpBackend.expectGET('views/library/index.html')
+          httpBackend.expectGET('views/library/index.html')
             .respond(200);
 
-          $httpBackend
+          httpBackend
             .expectGET('https://www.googleapis.com/books/v1/volumes?q=isbn:'.concat(scope.searchCriteria))
             .respond(200, googleData);
 
           scope.findGoogleBooks();
 
-          $httpBackend.flush();
+          httpBackend.flush();
 
           expect(scope.book.title).toEqual('How to enjoy pairing - 2nd Edition');
           expect(scope.book.subtitle).toEqual('The francieli-ekow way');
@@ -144,26 +145,26 @@ describe('BookCtrl', function () {
       );
 
       it('shows error message when no book in found in google',
-        inject(function ($controller, $httpBackend) {
+        inject(function ($controller) {
           scope.searchCriteria = '985693865986';
 
           var libraryData = {};
           var googleData = {};
 
-          $httpBackend
+          httpBackend
             .expectGET(apiEndpoint.concat('/books/search/findByIsbn?isbn=').concat(scope.searchCriteria))
             .respond(200, libraryData);
 
-          $httpBackend.expectGET('views/library/index.html')
+          httpBackend.expectGET('views/library/index.html')
             .respond(200);
 
-          $httpBackend
+          httpBackend
             .expectGET('https://www.googleapis.com/books/v1/volumes?q=isbn:'.concat(scope.searchCriteria))
             .respond(200, googleData);
 
           scope.findGoogleBooks();
 
-          $httpBackend.flush();
+          httpBackend.flush();
 
           expect(scope.book).toEqual({});
 
@@ -218,13 +219,12 @@ describe('BookCtrl', function () {
     describe('when book does not exist', function () {
       describe('when library is found', function () {
         var slug = 'bh';
-        var route, httpBackend, window, library, librarySearchEndpoint, addBookEndpoint, addCopyEndpoint;
+        var route, window, library, librarySearchEndpoint, addBookEndpoint, addCopyEndpoint;
 
-        beforeEach(inject(function ($route, $httpBackend, $window) {
+        beforeEach(inject(function ($route, $window) {
           route = $route;
           route.current = {'pathParams': {'library': 'bh'}};
 
-          httpBackend = $httpBackend;
           window = $window;
 
           librarySearchEndpoint = apiEndpoint.concat('/libraries/search/findBySlug?slug=').concat(slug);
@@ -245,7 +245,7 @@ describe('BookCtrl', function () {
             }
           };
 
-          spyOn($window, 'alert');
+          spyOn(window, 'alert');
 
           scope.book = {'title': 'How to increase test coverage'};
           scope.bookExistsInTheLibrary = false;
@@ -297,7 +297,7 @@ describe('BookCtrl', function () {
       });
 
       describe('when library is not found', function () {
-        it('shows alert when library is not found', inject(function ($translate, $httpBackend, $window, $route) {
+        it('shows alert when library is not found', inject(function ($translate, $window, $route) {
           var library = {};
           var librarySearchEndpoint = apiEndpoint.concat('/libraries/search/findBySlug?slug=bh');
           var route = $route;
@@ -306,11 +306,11 @@ describe('BookCtrl', function () {
           scope.book = {};
           scope.bookExistsInTheLibrary = false;
 
-          $httpBackend
+          httpBackend
             .expectGET(librarySearchEndpoint)
             .respond(200, library);
 
-          $httpBackend.expectGET('views/library/index.html')
+          httpBackend.expectGET('views/library/index.html')
             .respond(200);
 
           spyOn($translate, 'instant');
@@ -318,7 +318,7 @@ describe('BookCtrl', function () {
 
           scope.addBookToLibrary();
 
-          $httpBackend.flush();
+          httpBackend.flush();
 
           expect($translate.instant).toHaveBeenCalledWith('INVALID_LIBRARY_ERROR');
           expect($window.alert).toHaveBeenCalled();
@@ -329,10 +329,10 @@ describe('BookCtrl', function () {
 
     describe('when book already exists', function () {
       var slug = 'bh';
-      var library, route, window, httpBackend, librarySearchEndpoint, addBookEndpoint, addCopyEndpoint;
+      var library, route, window, librarySearchEndpoint, addBookEndpoint, addCopyEndpoint;
 
-      beforeEach(inject(function ($route, $httpBackend, $window) {
-        httpBackend = $httpBackend;
+      beforeEach(inject(function ($route, $window) {
+        
         route = $route;
         window = $window;
 
@@ -368,11 +368,11 @@ describe('BookCtrl', function () {
 
         spyOn(window, 'alert');
 
-        $httpBackend
+        httpBackend
           .expectGET(librarySearchEndpoint)
           .respond(200, library);
 
-        $httpBackend.expectGET('views/library/index.html')
+        httpBackend.expectGET('views/library/index.html')
           .respond(200);
       }));
 
@@ -408,12 +408,10 @@ describe('BookCtrl', function () {
   });
 
   describe('#listBooks', function () {
-    var route, searchUrl, httpBackend, library;
+    var route, searchUrl, library;
     var slug = 'bh';
 
-    beforeEach(inject(function ($httpBackend, $route) {
-      httpBackend = $httpBackend;
-
+    beforeEach(inject(function ($route) {
       route = $route;
       route.current = {'pathParams': {'library': slug}};
 
@@ -507,8 +505,7 @@ describe('BookCtrl', function () {
     var copy = { 'id': '21', 'imageUrl': 'path/to/image' };
     var loan = {'id': '12', 'email': 'fakeuser@someemail.com', 'copy': copy };
 
-    it('successfully borrows a book', inject(function ($httpBackend, $window, Modal) {
-      var httpBackend = $httpBackend
+    it('successfully borrows a book', inject(function  ($window, Modal) {
       var modal = Modal;
 
       var ngElementFake = function(element) {
@@ -546,9 +543,7 @@ describe('BookCtrl', function () {
         { 'responseCode': 500, 'errorCode': 'HTTP_CODE_500' }];
 
       angular.forEach(codes, function(item) {
-        it('shows error message', inject(function ($httpBackend, $window, $translate, Modal) {
-          var httpBackend = $httpBackend;
-
+        it('shows error message', inject(function  ($window, $translate, Modal) {
           spyOn($window, 'alert');
           spyOn($translate, 'instant')
 
@@ -581,8 +576,7 @@ describe('BookCtrl', function () {
         }
       }
 
-    it('successfully returns a book', inject(function ($httpBackend, $window, Modal) {
-      var httpBackend = $httpBackend
+    it('successfully returns a book', inject(function ($window, Modal) {
       var modal = Modal;
 
       spyOn(modal, 'reject');
@@ -612,9 +606,7 @@ describe('BookCtrl', function () {
         { 'responseCode': 500, 'errorCode': 'HTTP_CODE_500' }];
 
       angular.forEach(codes, function(item) {
-        it('shows an error', inject(function ($httpBackend, $window, $translate, Modal) {
-          var httpBackend = $httpBackend;
-
+        it('shows an error', inject(function ($window, $translate, Modal) {
           spyOn($window, 'alert');
           spyOn($translate, 'instant');
           spyOn(angular, 'element').andCallFake(ngElementFake);
