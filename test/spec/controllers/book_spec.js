@@ -539,14 +539,14 @@ describe('BookCtrl', function () {
       expect(modal.reject).toHaveBeenCalled();
     }));
 
-    describe('fails to borrow a copy', function () {
+    describe('copy borrow failure', function () {
       var codes = 
         [{ 'responseCode': 412, 'errorCode': 'HTTP_CODE_412' },
         { 'responseCode': 409, 'errorCode': 'HTTP_CODE_409' },
         { 'responseCode': 500, 'errorCode': 'HTTP_CODE_500' }];
 
       angular.forEach(codes, function(item) {
-        it('successfully borrows a book', inject(function ($httpBackend, $window, $translate, Modal) {
+        it('shows error message', inject(function ($httpBackend, $window, $translate, Modal) {
           var httpBackend = $httpBackend;
 
           spyOn($window, 'alert');
@@ -606,13 +606,13 @@ describe('BookCtrl', function () {
       expect(scope.copy.imageUrl).toEqual('path/to/image');
     }));
 
-    describe('fails to return a copy', function () {
+    describe('copy ret failure', function () {
       var codes = 
         [{ 'responseCode': 428, 'errorCode': 'HTTP_CODE_428' },
         { 'responseCode': 500, 'errorCode': 'HTTP_CODE_500' }];
 
       angular.forEach(codes, function(item) {
-        it('successfully borrows a book', inject(function ($httpBackend, $window, $translate, Modal) {
+        it('shows an error', inject(function ($httpBackend, $window, $translate, Modal) {
           var httpBackend = $httpBackend;
 
           spyOn($window, 'alert');
