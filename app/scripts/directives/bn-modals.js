@@ -23,6 +23,6 @@ angular
         });
     }
 
-    return(link);
+    return link;
   }
 );
