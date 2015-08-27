@@ -119,7 +119,7 @@ angular
                 .success(function(data) {
                   var scope = angular.element('#copy-'.concat(copy.id)).scope();
                   scope.copy = data;
-                  scope.copy.imageUrl = scope.copy.imageUrl || 'images/no-image.png';
+                  scope.copy.imageUrl = BookService.resolveBookImage(scope.copy.imageUrl);
                 });
             }).
             error(function (data, status) {
@@ -157,17 +157,17 @@ angular
           function handleResolve (response) {
             LoanService.
               returnCopy(response.loan.id).
-              success(function() {
-                Modal.reject;
+                success(function() {
+                  Modal.reject();
 
-                window.alert('Book has returned to library.');
+                  window.alert('Book has returned to library.');
 
-                BookService.getCopy(copy.id)
-                  .success(function(data) {
-                    var scope = angular.element('#copy-'.concat(copy.id)).scope();
-                    scope.copy = data;
-                    scope.copy.imageUrl = scope.copy.imageUrl || 'images/no-image.png';
-                  });
+                  BookService.getCopy(copy.id)
+                    .success(function(data) {
+                      var scope = angular.element('#copy-'.concat(copy.id)).scope();
+                      scope.copy = data;
+                      scope.copy.imageUrl = BookService.resolveBookImage(scope.copy.imageUrl);
+                    });
               }).
               error(function(data, status){
                 var errorMessage;
