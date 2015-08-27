@@ -57,12 +57,12 @@
               <label for="publication-date">{{ 'BOOK_PUBLICATION_DATE' | translate }}</label>
               <input type="text" name="" id="publication-date" ng-model="book.publicationDate" maxlength=255 />
               <label for="pages">{{ 'BOOK_NUMBER_OF_PAGES' | translate }}</label>
-              <input type="text" name="" id="pages" ng-model="book.numberOfPages" maxlength=4 ui-mask="9999"/>
+              <input type="text" name="" id="pages" ng-model="book.numberOfPages" maxlength=4 ui-mask="9999" ng-required="false"/>
             </div>
             <div class="popup-col2 popup-col2-right">
               <label for="about">{{ 'BOOK_COVER' | translate }}</label>
               <div class="popup-cover-container cover-image-container">
-                <img ng-src="{{ book.imageUrl }}" class="cover-image">
+                <img ng-src="{{ book.imageUrl || '//:0'}}" class="cover-image">
               </div>
             </div>
             <div class="popup-col1">
