@@ -21,7 +21,7 @@ angular
     'ngCookies',
     'ui.mask'
   ])
-  .config(function ($routeProvider, $translateProvider) {
+  .config(['$routeProvider', '$translateProvider', function ($routeProvider, $translateProvider) {
     var $cookies;
     angular.injector(['ngCookies']).invoke(['$cookies', function (_$cookies_) {
       $cookies = _$cookies_;
@@ -182,7 +182,7 @@ angular
 
       return language;
     });
-  }).
+  }]).
   run(['$rootScope', '$http', '$location', 'ENV', function ($rootScope, $http, $location, ENV) {
     $rootScope.$on('$routeChangeStart', function (event, next, current) {
       var slug = next.pathParams.library;

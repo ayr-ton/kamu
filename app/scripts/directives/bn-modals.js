@@ -2,7 +2,7 @@
 
 angular
   .module('libraryUiApp')
-  .directive('bnModals', function($rootScope, Modal) {
+  .directive('bnModals', ['$rootScope', 'Modal', function($rootScope, Modal) {
     function link(scope, element, attributes) {
       scope.subview = null;
 
@@ -24,5 +24,5 @@ angular
     }
 
     return link;
-  }
+  }]
 );
