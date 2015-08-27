@@ -113,9 +113,9 @@ angular
           LoanService.
                   borrowCopy(response.copy.id , response.email).
                   success(function() {
-                      Modal.reject;
+                      Modal.reject();
 
-                      window.alert('Book has loaned to '.concat(response.email).concat('.'));
+                      window.alert('Book has been loaned to '.concat(response.email).concat('.'));
                       BookService.getCopy(copy.id)
                         .success(function(data) {
 
@@ -127,84 +127,75 @@ angular
 
                         });
                   }).
-                  error(function(data, status){
+              error(function (data, status) {
+                var errorMessage;
 
-                      var errorMessage;
+                switch(status) {
+                    case 412:
+                        errorMessage = $translate.instant('HTTP_CODE_412');
+                        break;
+                    case 409:
+                        errorMessage = $translate.instant('HTTP_CODE_409');
+                        break;
+                    default:
+                        errorMessage = $translate.instant('HTTP_CODE_500');
+                        break;
+                }
 
-                      switch(status) {
-                          case 412:
-                              errorMessage = $translate.instant('HTTP_CODE_412');
-                              break;
-                          case 409:
-                              errorMessage = $translate.instant('HTTP_CODE_409');
-                              break;
-                          default:
-                              errorMessage = $translate.instant('HTTP_CODE_500');
-                              break;
-                      }
+                window.alert(errorMessage);
+              });
+          },
 
-                      window.alert(errorMessage);
-                  });
-        },
-        function handleReject( error ) {
+          function handleReject (error) { }
+        );
+      };
 
-            console.warn( 'Available rejected!' );
-        }
-      );
-    };
+      $scope.returnCopy = function(copy) {
+        var scope = angular.element('#modal-div').scope();
 
-    $scope.returnCopy = function(copy) {
-      var scope = angular.element('#modal-div').scope();
+        scope.loan = copy.lastLoan ;
 
-      scope.loan = copy.lastLoan ;
+        var promise = Modal.open(
+          'not-available', { loan : copy.lastLoan }
+        );
 
-      var promise = Modal.open(
-        'not-available', { loan : copy.lastLoan }
-      );
+        promise.then(
+          function handleResolve( response ) {
 
-      promise.then(
-        function handleResolve( response ) {
+            LoanService.
+                    returnCopy(response.loan.id).
+                    success(function() {
+                        Modal.reject;
 
-          LoanService.
-                  returnCopy(response.loan.id).
-                  success(function() {
+                        window.alert('Book has returned to library.');
 
-                      Modal.reject;
-
-                      window.alert('Book has returned to library.');
-
-                      BookService.getCopy(copy.id)
-                        .success(function(data) {
-
+                        BookService.getCopy(copy.id)
+                          .success(function(data) {
                             var scope = angular.element('#copy-'.concat(copy.id)).scope();
-
                             scope.copy = data;
-
                             scope.copy.imageUrl = scope.copy.imageUrl || 'images/no-image.png';
+                          });
+                    }).
+                    error(function(data, status){
+                        var errorMessage;
 
-                        });
-                  }).
-                  error(function(data, status){
+                        switch(status) {
+                            case 428:
+                                errorMessage = $translate.instant('HTTP_CODE_428');
+                                break;
+                            default:
+                                errorMessage = $translate.instant('HTTP_CODE_500');
+                                break;
+                        }
 
-                      var errorMessage;
+                        window.alert(errorMessage);
+                    });
+          },
 
-                      switch(status) {
-                          case 428:
-                              errorMessage = $translate.instant('HTTP_CODE_428');
-                              break;
-                          default:
-                              errorMessage = $translate.instant('HTTP_CODE_500');
-                              break;
-                      }
+          function handleReject(error) { }
+        );
+      };
 
-                      window.alert(errorMessage);
-                  });
-        },
-        function handleReject( error ) {
-          console.warn( 'Confirm rejected!' );
-        }
-      );
-    };
 
       $scope.gotoAddBook = function () {
         window.location.assign('/#/library/' + getLibrarySlug() + '/add_book');

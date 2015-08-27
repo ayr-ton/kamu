@@ -1,13 +1,14 @@
 'use strict';
 
 describe('BookCtrl', function () {
-  var scope, controller;
+  var scope, controller, apiEndpoint;
 
   beforeEach(module('libraryUiApp'));
 
-  beforeEach(inject(function ($controller, $rootScope) {
+  beforeEach(inject(function ($controller, $rootScope, ENV) {
     scope = $rootScope;
     controller = $controller('BookCtrl', {'$scope': scope});
+    apiEndpoint = ENV.apiEndpoint;
   }));
 
 
@@ -32,7 +33,7 @@ describe('BookCtrl', function () {
     });
 
     it('sets book properties correctly when book exists in library',
-      inject(function ($controller, $httpBackend, ENV) {
+      inject(function ($controller, $httpBackend) {
         scope.searchCriteria = '985693865986';
 
         var data = {
@@ -49,7 +50,7 @@ describe('BookCtrl', function () {
         };
 
         $httpBackend
-          .expectGET(ENV.apiEndpoint + '/books/search/findByIsbn?isbn=' + scope.searchCriteria)
+          .expectGET(apiEndpoint + '/books/search/findByIsbn?isbn=' + scope.searchCriteria)
           .respond(200, data);
 
         $httpBackend.expectGET('views/library/index.html')
@@ -72,11 +73,11 @@ describe('BookCtrl', function () {
     );
 
     it('toggles error display when library search returns an error',
-      inject(function ($controller, $httpBackend, ENV) {
+      inject(function ($controller, $httpBackend) {
         scope.searchCriteria = '985693865986';
 
         $httpBackend
-          .expectGET(ENV.apiEndpoint + '/books/search/findByIsbn?isbn=' + scope.searchCriteria)
+          .expectGET(apiEndpoint + '/books/search/findByIsbn?isbn=' + scope.searchCriteria)
           .respond(500);
 
         $httpBackend.expectGET('views/library/index.html')
@@ -95,7 +96,7 @@ describe('BookCtrl', function () {
 
     describe('when book does not exist in library', function () {
       it('calls google service and setup up book',
-        inject(function ($controller, $httpBackend, ENV) {
+        inject(function ($controller, $httpBackend) {
           scope.searchCriteria = '985693865986';
 
           var libraryData = {};
@@ -117,7 +118,7 @@ describe('BookCtrl', function () {
           };
 
           $httpBackend
-            .expectGET(ENV.apiEndpoint + '/books/search/findByIsbn?isbn=' + scope.searchCriteria)
+            .expectGET(apiEndpoint + '/books/search/findByIsbn?isbn=' + scope.searchCriteria)
             .respond(200, libraryData);
 
           $httpBackend.expectGET('views/library/index.html')
@@ -143,14 +144,14 @@ describe('BookCtrl', function () {
       );
 
       it('shows error message when no book in found in google',
-        inject(function ($controller, $httpBackend, ENV) {
+        inject(function ($controller, $httpBackend) {
           scope.searchCriteria = '985693865986';
 
           var libraryData = {};
           var googleData = {};
 
           $httpBackend
-            .expectGET(ENV.apiEndpoint + '/books/search/findByIsbn?isbn=' + scope.searchCriteria)
+            .expectGET(apiEndpoint + '/books/search/findByIsbn?isbn=' + scope.searchCriteria)
             .respond(200, libraryData);
 
           $httpBackend.expectGET('views/library/index.html')
@@ -219,16 +220,16 @@ describe('BookCtrl', function () {
         var slug = 'bh';
         var route, httpBackend, window, library, librarySearchEndpoint, addBookEndpoint, addCopyEndpoint;
 
-        beforeEach(inject(function ($route, $httpBackend, $window, ENV) {
+        beforeEach(inject(function ($route, $httpBackend, $window) {
           route = $route;
           route.current = {'pathParams': {'library': 'bh'}};
 
           httpBackend = $httpBackend;
           window = $window;
 
-          librarySearchEndpoint = ENV.apiEndpoint + '/libraries/search/findBySlug?slug=' + slug;
-          addBookEndpoint = ENV.apiEndpoint + '/books';
-          addCopyEndpoint = ENV.apiEndpoint + '/copies';
+          librarySearchEndpoint = apiEndpoint + '/libraries/search/findBySlug?slug=' + slug;
+          addBookEndpoint = apiEndpoint + '/books';
+          addCopyEndpoint = apiEndpoint + '/copies';
 
           library = {
             '_embedded': {
@@ -296,9 +297,9 @@ describe('BookCtrl', function () {
       });
 
       describe('when library is not found', function () {
-        it('shows alert when library is not found', inject(function ($translate, $httpBackend, $window, $route, ENV) {
+        it('shows alert when library is not found', inject(function ($translate, $httpBackend, $window, $route) {
           var library = {};
-          var librarySearchEndpoint = ENV.apiEndpoint + '/libraries/search/findBySlug?slug=bh';
+          var librarySearchEndpoint = apiEndpoint + '/libraries/search/findBySlug?slug=bh';
           var route = $route;
           route.current = {'pathParams': {'library': 'bh'}};
 
@@ -330,14 +331,14 @@ describe('BookCtrl', function () {
       var slug = 'bh';
       var library, route, window, httpBackend, librarySearchEndpoint, addBookEndpoint, addCopyEndpoint;
 
-      beforeEach(inject(function ($route, $httpBackend, $window, ENV) {
+      beforeEach(inject(function ($route, $httpBackend, $window) {
         httpBackend = $httpBackend;
         route = $route;
         window = $window;
 
-        librarySearchEndpoint = ENV.apiEndpoint + '/libraries/search/findBySlug?slug=' + slug;
-        addBookEndpoint = ENV.apiEndpoint + '/books';
-        addCopyEndpoint = ENV.apiEndpoint + '/copies';
+        librarySearchEndpoint = apiEndpoint + '/libraries/search/findBySlug?slug=' + slug;
+        addBookEndpoint = apiEndpoint + '/books';
+        addCopyEndpoint = apiEndpoint + '/copies';
 
         library = {
           '_embedded': {
@@ -410,13 +411,13 @@ describe('BookCtrl', function () {
     var route, searchUrl, httpBackend, library;
     var slug = 'bh';
 
-    beforeEach(inject(function ($httpBackend, $route, ENV) {
+    beforeEach(inject(function ($httpBackend, $route) {
       httpBackend = $httpBackend;
 
       route = $route;
       route.current = {'pathParams': {'library': slug}};
 
-      searchUrl = ENV.apiEndpoint + '/libraries/search/findBySlug?slug=' + slug;
+      searchUrl = apiEndpoint + '/libraries/search/findBySlug?slug=' + slug;
 
       library = {
         '_embedded': {
@@ -500,5 +501,71 @@ describe('BookCtrl', function () {
 
       expect($window.location.assign).toHaveBeenCalledWith('/#/library/quito/add_book');
     }));
+  });
+
+  describe('#borrowBook', function(){
+    it('successfully borrows a book', inject(function ($httpBackend, $window, Modal) {
+      var httpBackend = $httpBackend
+      var copy = { 'id': '21', 'imageUrl': 'path/to/image' };
+      var loan = {'id': '12', 'email': 'fakeuser@someemail.com', 'copy': copy };
+      var modal = Modal;
+
+      var ngElementFake = function(element) {
+          return {
+            scope: function() {
+              return scope;
+            }
+          }
+        }
+
+      spyOn(modal, 'reject');
+      spyOn($window, 'alert');
+      spyOn(angular, 'element').andCallFake(ngElementFake);
+
+      httpBackend.expectPOST(apiEndpoint.concat('/loans')).respond(200);
+      httpBackend.expectGET('views/library/index.html').respond(200);
+      httpBackend.expectGET(apiEndpoint.concat('/copies/').concat(copy.id).concat('?projection=copyWithBookInline')).respond(200, copy);
+
+      scope.borrowCopy(copy);
+
+      modal.resolve(loan);
+
+      httpBackend.flush();
+
+      expect(scope.copy).toEqual(copy);
+      expect(scope.copy.imageUrl).toEqual('path/to/image');
+      expect($window.alert).toHaveBeenCalledWith('Book has been loaned to fakeuser@someemail.com.');
+      expect(modal.reject).toHaveBeenCalled();
+    }));
+
+    describe('fails to borrow a copy', function () {
+      var copy = { 'id': '21', 'imageUrl': 'path/to/image' };
+      var loan = { 'id': '12', 'email': 'fakeuser@someemail.com', 'copy': copy };
+      var codes = 
+        [{ 'responseCode': 412, 'errorCode': 'HTTP_CODE_412' },
+        { 'responseCode': 409, 'errorCode': 'HTTP_CODE_409' },
+        { 'responseCode': 500, 'errorCode': 'HTTP_CODE_500' }];
+
+      angular.forEach(codes, function(item) {
+        it('successfully borrows a book', inject(function ($httpBackend, $window, $translate, Modal) {
+          var httpBackend = $httpBackend;
+
+          spyOn($window, 'alert');
+          spyOn($translate, 'instant')
+
+          httpBackend.expectPOST(apiEndpoint.concat('/loans')).respond(item.responseCode);
+          httpBackend.expectGET('views/library/index.html').respond(200);
+
+          scope.borrowCopy(copy);
+
+          Modal.resolve(loan);
+
+          httpBackend.flush();
+
+          expect($window.alert).toHaveBeenCalled();
+          expect($translate.instant).toHaveBeenCalledWith(item.errorCode);
+        }));
+      })
+    });
   });
 });
