@@ -159,7 +159,7 @@ angular
         HTTP_CODE_428:'Ops! Process was not realize. Cause: Este préstamo no existe.',
         REQUIRED: '(Campo Obligatorio)',
         INVALID_LIBRARY_ERROR: '¡Ups! La librería a la que intenta agregar un libro no está registrada.',
-        RETURN_MESSAGE: 'estas seguro de devolver este libro?'
+        RETURN_MESSAGE: '¿Estás seguro de devolver este libro?'
 
       });
 
