@@ -1,12 +1,14 @@
 'use strict';
 
 describe('BookCtrl', function () {
-  var scope, controller, httpBackend, apiEndpoint;
+  var scope, controller, httpBackend, route, apiEndpoint;
+  var libraryIndexPage = 'views/library/index.html';
 
   beforeEach(module('libraryUiApp'));
 
-  beforeEach(inject(function ($controller, $rootScope, $httpBackend, ENV) {
+  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $route, ENV) {
     scope = $rootScope;
+    route = $route;
     httpBackend = $httpBackend;
     controller = $controller('BookCtrl', {'$scope': scope});
     apiEndpoint = ENV.apiEndpoint;
@@ -53,7 +55,7 @@ describe('BookCtrl', function () {
         .expectGET(apiEndpoint.concat('/books/search/findByIsbn?isbn=').concat(scope.searchCriteria))
         .respond(200, data);
 
-      httpBackend.expectGET('views/library/index.html')
+      httpBackend.expectGET(libraryIndexPage)
         .respond(200);
 
       scope.findGoogleBooks();
@@ -78,7 +80,7 @@ describe('BookCtrl', function () {
         .expectGET(apiEndpoint.concat('/books/search/findByIsbn?isbn=').concat(scope.searchCriteria))
         .respond(500);
 
-      httpBackend.expectGET('views/library/index.html')
+      httpBackend.expectGET(libraryIndexPage)
         .respond(200);
 
       scope.findGoogleBooks();
@@ -117,7 +119,7 @@ describe('BookCtrl', function () {
           .expectGET(apiEndpoint.concat('/books/search/findByIsbn?isbn=').concat(scope.searchCriteria))
           .respond(200, libraryData);
 
-        httpBackend.expectGET('views/library/index.html')
+        httpBackend.expectGET(libraryIndexPage)
           .respond(200);
 
         httpBackend
@@ -148,7 +150,7 @@ describe('BookCtrl', function () {
           .expectGET(apiEndpoint.concat('/books/search/findByIsbn?isbn=').concat(scope.searchCriteria))
           .respond(200, libraryData);
 
-        httpBackend.expectGET('views/library/index.html')
+        httpBackend.expectGET(libraryIndexPage)
           .respond(200);
 
         httpBackend
@@ -172,8 +174,7 @@ describe('BookCtrl', function () {
       expect(scope.getCurrentLibraryPath()).toBe('#/libraries');
     });
 
-    it('routes to library path when library path param is set', inject(function ($location, $route) {
-      var route = $route;
+    it('routes to library path when library path param is set', inject(function ($location) {
       route.current = {'pathParams': {'library': 'random'}};
 
       expect(scope.getCurrentLibraryPath()).toBe('#/library/random');
@@ -183,7 +184,6 @@ describe('BookCtrl', function () {
   describe('#isInsideLibrary', function () {
     it('returns true when current route is defined',
       inject(function ($route) {
-        var route = $route;
         route.current = {'pathParams': {'library': 'random'}};
 
         expect(scope.isInsideLibrary()).toBe(true);
@@ -211,10 +211,9 @@ describe('BookCtrl', function () {
     describe('when book does not exist', function () {
       describe('when library is found', function () {
         var slug = 'bh';
-        var route, window, library, librarySearchEndpoint, addBookEndpoint, addCopyEndpoint;
+        var window, library, librarySearchEndpoint, addBookEndpoint, addCopyEndpoint;
 
-        beforeEach(inject(function ($route, $window) {
-          route = $route;
+        beforeEach(inject(function ($window) {
           route.current = {'pathParams': {'library': 'bh'}};
 
           window = $window;
@@ -246,7 +245,7 @@ describe('BookCtrl', function () {
             .expectGET(librarySearchEndpoint)
             .respond(200, library);
 
-          httpBackend.expectGET('views/library/index.html')
+          httpBackend.expectGET(libraryIndexPage)
             .respond(200);
         }));
 
@@ -289,10 +288,9 @@ describe('BookCtrl', function () {
       });
 
       describe('when library is not found', function () {
-        it('shows alert when library is not found', inject(function ($translate, $window, $route) {
+        it('shows alert when library is not found', inject(function ($translate, $window) {
           var library = {};
           var librarySearchEndpoint = apiEndpoint.concat('/libraries/search/findBySlug?slug=bh');
-          var route = $route;
           route.current = {'pathParams': {'library': 'bh'}};
 
           scope.book = {};
@@ -302,7 +300,7 @@ describe('BookCtrl', function () {
             .expectGET(librarySearchEndpoint)
             .respond(200, library);
 
-          httpBackend.expectGET('views/library/index.html')
+          httpBackend.expectGET(libraryIndexPage)
             .respond(200);
 
           spyOn($translate, 'instant');
@@ -321,11 +319,9 @@ describe('BookCtrl', function () {
 
     describe('when book already exists', function () {
       var slug = 'bh';
-      var library, route, window, librarySearchEndpoint, addBookEndpoint, addCopyEndpoint;
+      var library, window, librarySearchEndpoint, addBookEndpoint, addCopyEndpoint;
 
-      beforeEach(inject(function ($route, $window) {
-        
-        route = $route;
+      beforeEach(inject(function ($window) {
         window = $window;
 
         librarySearchEndpoint = apiEndpoint.concat('/libraries/search/findBySlug?slug=').concat(slug);
@@ -364,7 +360,7 @@ describe('BookCtrl', function () {
           .expectGET(librarySearchEndpoint)
           .respond(200, library);
 
-        httpBackend.expectGET('views/library/index.html')
+        httpBackend.expectGET(libraryIndexPage)
           .respond(200);
       }));
 
@@ -400,42 +396,39 @@ describe('BookCtrl', function () {
   });
 
   describe('#listBooks', function () {
-    var route, searchUrl, library;
+    var searchUrl;
     var slug = 'bh';
-
-    beforeEach(inject(function ($route) {
-      route = $route;
-      route.current = {'pathParams': {'library': slug}};
-
-      searchUrl = apiEndpoint.concat('/libraries/search/findBySlug?slug=').concat(slug);
-
-      library = {
-        '_embedded': {
-          'libraries': [
-            {
-              '_links': {
-                'self': {
-                  'href': 'link/to/library'
-                }
-              },
-              '_embedded': {
-                'copies': [
-                  {
-                    'title': 'Enjoying Fifa with your eyes closed.',
-                  }
-                ]
+    var library = {
+      '_embedded': {
+        'libraries': [
+          {
+            '_links': {
+              'self': {
+                'href': 'link/to/library'
               }
+            },
+            '_embedded': {
+              'copies': [
+                {
+                  'title': 'Enjoying Fifa with your eyes closed.',
+                }
+              ]
             }
-          ]
-        }
-      };
-    }));
+          }
+        ]
+      }
+    };
+
+    beforeEach(function (ENV) { 
+      route.current = { 'pathParams': { 'library': slug } }; 
+      searchUrl = apiEndpoint.concat('/libraries/search/findBySlug?slug=').concat(slug);
+    });
 
     it('sets copies to be empty when copies retrieval fails', function () {
       httpBackend.expectGET(searchUrl)
         .respond(500);
 
-      httpBackend.expectGET('views/library/index.html')
+      httpBackend.expectGET(libraryIndexPage)
         .respond(200);
 
       scope.listBooks();
@@ -449,7 +442,7 @@ describe('BookCtrl', function () {
       httpBackend.expectGET(searchUrl)
         .respond(200, library);
 
-      httpBackend.expectGET('views/library/index.html')
+      httpBackend.expectGET(libraryIndexPage)
         .respond(200);
 
       scope.listBooks();
@@ -467,7 +460,7 @@ describe('BookCtrl', function () {
       httpBackend.expectGET(searchUrl)
         .respond(200, library);
 
-      httpBackend.expectGET('views/library/index.html')
+      httpBackend.expectGET(libraryIndexPage)
         .respond(200);
 
       scope.listBooks();
@@ -481,8 +474,7 @@ describe('BookCtrl', function () {
   });
 
   describe('#gotoAddBook', function () {
-    it('redirects to add book page for current slug', inject(function ($window, $route) {
-      var route = $route;
+    it('redirects to add book page for current slug', inject(function ($window) {
       route.current = {'pathParams': {'library': 'quito'}};
 
       spyOn($window.location, 'assign');
@@ -513,7 +505,7 @@ describe('BookCtrl', function () {
       spyOn(angular, 'element').andCallFake(ngElementFake);
 
       httpBackend.expectPOST(apiEndpoint.concat('/loans')).respond(200);
-      httpBackend.expectGET('views/library/index.html').respond(200);
+      httpBackend.expectGET(libraryIndexPage).respond(200);
       httpBackend.expectGET(apiEndpoint.concat('/copies/').concat(copy.id).concat('?projection=copyWithBookInline')).respond(200, copy);
 
       scope.borrowCopy(copy);
@@ -540,7 +532,7 @@ describe('BookCtrl', function () {
           spyOn($translate, 'instant')
 
           httpBackend.expectPOST(apiEndpoint.concat('/loans')).respond(item.responseCode);
-          httpBackend.expectGET('views/library/index.html').respond(200);
+          httpBackend.expectGET(libraryIndexPage).respond(200);
 
           scope.borrowCopy(copy);
 
@@ -576,7 +568,7 @@ describe('BookCtrl', function () {
       spyOn(angular, 'element').andCallFake(ngElementFake);
 
       httpBackend.expectPATCH(apiEndpoint.concat('/loans/12')).respond(200);
-      httpBackend.expectGET('views/library/index.html').respond(200);
+      httpBackend.expectGET(libraryIndexPage).respond(200);
       httpBackend.expectGET(apiEndpoint.concat('/copies/').concat(copy.id).concat('?projection=copyWithBookInline')).respond(200, copy);
 
       scope.returnCopy(copy);
@@ -604,7 +596,7 @@ describe('BookCtrl', function () {
           spyOn(angular, 'element').andCallFake(ngElementFake);
 
           httpBackend.expectPATCH(apiEndpoint.concat('/loans/12')).respond(item.responseCode);
-          httpBackend.expectGET('views/library/index.html').respond(200);
+          httpBackend.expectGET(libraryIndexPage).respond(200);
 
           scope.returnCopy(copy);
 
