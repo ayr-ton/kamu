@@ -102,7 +102,7 @@ angular
       });
 
     $scope.borrowCopy = function(copy) {
-      
+
       var promise = Modal.open(
         'available', { copy: copy }
       );
@@ -110,7 +110,6 @@ angular
       promise.then(
         function handleResolve( response ) {
 
-          console.log( '%s borrowed the copy %s', response.email, response.copy.id  );
           LoanService.
                   borrowCopy(response.copy.id , response.email).
                   success(function() {
@@ -125,7 +124,7 @@ angular
                             scope.copy = data;
 
                             scope.copy.imageUrl = scope.copy.imageUrl || 'images/no-image.png';
-                        
+
                         });
                   }).
                   error(function(data, status){
@@ -142,7 +141,7 @@ angular
                           default:
                               errorMessage = $translate.instant('HTTP_CODE_500');
                               break;
-                      }                      
+                      }
 
                       window.alert(errorMessage);
                   });
@@ -182,7 +181,7 @@ angular
                             scope.copy = data;
 
                             scope.copy.imageUrl = scope.copy.imageUrl || 'images/no-image.png';
-                        
+
                         });
                   }).
                   error(function(data, status){
@@ -196,7 +195,7 @@ angular
                           default:
                               errorMessage = $translate.instant('HTTP_CODE_500');
                               break;
-                      }                      
+                      }
 
                       window.alert(errorMessage);
                   });
@@ -219,7 +218,6 @@ angular
           $scope.book.imageUrl = BookService.resolveBookImage($scope.book.imageUrl);
           $scope.bookExistsInTheLibrary = true;
           $scope.isGoogleBook = true;
-          console.log($scope.isGoogleBook);
 
           toggleFormDisplay(true);
         } else {
