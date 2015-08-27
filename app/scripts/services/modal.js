@@ -2,7 +2,7 @@
 
 angular
   .module('libraryUiApp')
-  .service('Modal', function ($rootScope, $q) {
+  .service('Modal', ['$rootScope', '$q', function ($rootScope, $q) {
     var modal = {
       deferred: null,
       params: null
@@ -64,5 +64,5 @@ angular
       reject: reject,
       resolve: resolve
     };
-  }
+  }]
 );

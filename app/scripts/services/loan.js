@@ -2,7 +2,7 @@
 
 angular
   .module('libraryUiApp')
-  .service('LoanService', function($http, ENV) {
+  .service('LoanService', ['$http', 'ENV', function($http, ENV) {
     var postConfiguration = { 'Content-Type': 'application/json; charset=utf-8' };
 
     this.borrowCopy = function (copy, email) {
@@ -22,4 +22,4 @@ angular
 
       return $http.patch(endPoint, loan, postConfiguration);
     };
-  });
+  }]);

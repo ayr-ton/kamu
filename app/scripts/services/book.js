@@ -2,7 +2,7 @@
 
 angular
   .module('libraryUiApp')
-  .service('BookService', function ($http, ENV) {
+  .service('BookService', ['$http', 'ENV', function ($http, ENV) {
     var postConfiguration = {'Content-Type': 'application/json; charset=utf-8'};
 
     this.findGoogleBooks = function (searchCriteria) {
@@ -88,4 +88,4 @@ angular
 
       return (imageUrl === null || imageUrl === undefined) ? defaultImageUrl : imageUrl ;
     }
-  });
+  }]);
