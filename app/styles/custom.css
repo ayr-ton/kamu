@@ -30,3 +30,11 @@
 .select-library {
   padding: 30px;
 }
+
+.popup-window label.required::after{
+  content: "*";
+  width: 8px;
+  position: absolute;
+  text-align: center;
+  color: #fe3e4d ;
+}

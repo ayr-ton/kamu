@@ -30,25 +30,18 @@
       <div id="book-form" ng-show="formShowable">
         <form name="newCopyForm">
           <div class="popup-margin popup-bottom-line">
-            <div class="error" ng-show="newCopyForm.title.$error.required"> {{ 'BOOK_TITLE' | translate }} {{ 'REQUIRED' | translate }} </div>
-            <div class="error" ng-show="newCopyForm.author.$error.required">{{ 'BOOK_AUTHORS' | translate }} {{ 'REQUIRED' | translate }} </div>
-
             <div class="popup-col1">
-              <label for="title">{{ 'BOOK_TITLE' | translate }}</label>
+              <label for="title" class="required">{{ 'BOOK_TITLE' | translate }}</label>
               <input type="text" name="title" id="title" ng-model="book.title" maxlength=255 required
               ng-disabled="isGoogleBook"/>
             </div>
-            
             <div class="popup-col1">
               <label for="subtitle">{{ 'BOOK_SUBTITLE' | translate }}</label>
               <input type="text" name="" id="subtitle" ng-model="book.subtitle" maxlength=255
               ng-disabled="isGoogleBook"/>
             </div>
             <div class="popup-col2 popup-col2-left">
-
-              <label for="author"> {{ 'BOOK_AUTHORS' | translate }}
-              </label>
-
+              <label for="author" class="required"> {{ 'BOOK_AUTHORS' | translate }}</label>
               <input type="text" name="author" id="author" ng-model="book.author" maxlength=255 required
               ng-disabled="isGoogleBook"/>
 
