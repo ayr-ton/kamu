@@ -31,6 +31,15 @@
   padding: 30px;
 }
 
+.logo{
+    height: 54px;
+    margin-left: 2px;
+    float: left;
+}
+
+.logo img{
+    height: 54px;
+}
 .popup-window label.required::after{
   content: "*";
   width: 8px;
