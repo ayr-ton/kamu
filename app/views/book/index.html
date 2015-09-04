@@ -4,8 +4,8 @@
       <div class="books-shelf-content">
         <div class="books-shelf-image-container">
           <a href="">
-            <div class="books-img">
-              <img ng-src="{{copy.imageUrl}}" alt="{{copy.title}}"/>
+            <div class="books-img" ng-click="openCopy(copy)">
+              <img ng-src="{{copy.imageUrl}}" alt="{{copy.title}}" />
             </div>
           </a>
         </div>

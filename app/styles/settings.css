@@ -1,0 +1,23 @@
+/*SETTINGS-----------------------------------------------------------------------------*/
+.settings-language{margin-top: 12px;}
+.settings-language, .settings-language ul, .settings-language ul li{
+	float: left;
+	width: 100%;
+}
+.settings-language ul li{
+	margin-top: 12px;
+	margin-bottom: 12px;
+}
+.settings-language-text-on, .settings-language-text-off{
+	line-height: 28px;
+	font-size: 11px;
+	text-transform: uppercase;
+	
+	-webkit-transition: all 0.2s ease;                  
+	-moz-transition: all 0.2s ease;                 
+	-o-transition: all 0.2s ease;   
+	-ms-transition: all 0.2s ease;          
+	transition: all 0.2s ease;
+}
+.settings-language-text-on{color: #333333;}
+.settings-language-text-off{color: #999999;}

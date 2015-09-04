@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" >
     <head>
     <meta charset="utf-8">
     <title>Kamu</title>
@@ -17,18 +17,32 @@
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/custom.css">
     <link rel="stylesheet" href="styles/font-awesome.css">
+    <link rel="stylesheet" href="styles/slide.css">
+    <link rel="stylesheet" href="styles/mobile.css">
+    <link rel="stylesheet" href="styles/settings.css">
     <!-- endbuild -->
+    <link rel="stylesheet" href="styles/library.css">
+    <link rel="stylesheet" href="styles/font-awesome.css">
     </head>
     <body ng-app="libraryUiApp">
         <!--[if lt IE 7]>
         <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-
+    <div id="window-container" class="container" >
+    <div id="window" data-asm-wrapper >
         <!-- Add your site or application content here -->
-        <header>
+       <header>
+            <div  data-asm-control="pushLeft">
+                    <div class="mobile-menu" id="showLeftPush"></div>
+            </div>
             <div class="logo"><img src="./images/logo.svg" alt="" /></div>
-            <div class='add_book' ng-show="isInsideLibrary()" ng-controller = "BookCtrl" ng-click="gotoAddBook()"></div>
-        </header>
+            <div class="search-mobile"></div>
+            <div class="search">
+                <div class="search-icon"></div>
+                <input type="text" name="" value="" placeholder="{{ 'APP_SEARCH' | translate }}"/>
+            </div>
+	   </header>
+
 
         <!-- build:js(.) scripts/vendor.js -->
         <!-- bower:js -->
@@ -57,25 +71,49 @@
         <script src="scripts/controllers/library.js"></script>
         <script src="scripts/controllers/translate.js"></script>
         <script src="scripts/controllers/modal.js"></script>
+        <script src="scripts/controllers/settings.js"></script>
         <script src="scripts/directives/bn-modals.js"></script>
         <!-- endbuild -->
 
         <nav class="main-nav">
-            <ul>
-                <li><a href="{{getCurrentLibraryPath()}}" ng-controller='BookCtrl' class="main-nav-active">{{ 'APP_LIBRARY_TAB' | translate }}</a></li>
-                <!-- <li><a href="#" class="main-nav-unactive">{{ 'APP_BORROWED_BOOKS_TAB' | translate }}</a></li> -->
-            </ul>
-        </nav>
+            <div class="nav-left">
+                <ul class="main-nav-left">
+                    <li><a href="{{getCurrentLibraryPath()}}" ng-controller='BookCtrl' class="main-nav-active">{{ 'APP_LIBRARY_TAB' | translate }}</a></li>
+                    <li><a href="" class="main-nav-unactive">{{ 'APP_WISHLIST_TAB' | translate }}</a></li>
+                    <li><a href="" class="main-nav-unactive">{{ 'APP_BORROWED_BOOKS_TAB' | translate }}</a></li>
+                </ul>
+            </div>
+            <div class="nav-right">
+                <ul>
+                    <li>
+                        <a class='main-nav-add-book' ng-show="isInsideLibrary()" ng-controller = "BookCtrl" ng-click="gotoAddBook()"></a>
+                    </li>
+                    <li>
+                        <a class='main-nav-settings' ng-show="isInsideLibrary()" ng-controller = "BookCtrl" ng-click="gotoSettings()"></a>
+                    </li>
 
-        <nav class="sub-nav">
-            <div ng-controller="TranslateCtrl" id="language-menu">
-                <img src="images/en-us.png" class="language" ng-click="changeLanguage('en-US')" />
-                <img src="images/pt-br.png" class="language" ng-click="changeLanguage('pt-BR')" />
-                <img src="images/es-ec.png" class="language" ng-click="changeLanguage('es-EC')" />
+                </ul>
             </div>
         </nav>
 
-        <div class="main-container" ng-view=""></div>
+             <div class="main-container" ng-view="">
 
+             </div>
+
+            </div>
+        </div><!--window-->
+        <!--
+        <nav  data-asm-push-left class="mobile-nav">
+        <div class="mobile-nav-container">
+            <ul>
+            <li><a href="http://" class="mobile-nav-active">all books</a></li>
+            <li><a href="http://" class="mobile-nav-unactive">wish list</a></li>
+            <li><a href="http://" class="mobile-nav-unactive">books i own</a></li>
+            <li><a href="add-book.html" class="mobile-nav-unactive">add book to library</a></li>
+            <li><a href="http://" class="mobile-nav-unactive">add book to wish list</a></li>
+            <li><a href="settings.html" class="mobile-nav-unactive">settings</a></li>
+            </ul>
+        </div>
+        </nav>-->
     </body>
 </html>

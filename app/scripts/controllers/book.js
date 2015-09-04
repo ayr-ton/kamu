@@ -13,6 +13,7 @@ angular
       $scope.searchCriteria = '';
       $scope.addingBook = false;
       $scope.isGoogleBook = false;
+      $scope.currentBook = BookService.currentBook;
 
       $scope.autoCompleteSearch = function () {
         $scope.formShowable = false;
@@ -101,7 +102,14 @@ angular
         $scope.listBooks();
       });
 
-    $scope.borrowCopy = function(copy) {
+      $scope.openCopy = function(copy) {
+        BookService.getBook(copy.reference).success(function(response) {
+        BookService.currentBook = response;
+        window.location.assign('/#/library/' + getLibrarySlug() + '/book_details');
+        });
+      }
+
+      $scope.borrowCopy = function(copy) {
 
       var promise = Modal.open(
         'available', { copy: copy }
@@ -192,6 +200,10 @@ angular
 
       $scope.gotoAddBook = function () {
         window.location.assign('/#/library/' + getLibrarySlug() + '/add_book');
+      };
+
+      $scope.gotoSettings = function () {
+        window.location.assign('/#/library/' + getLibrarySlug() + '/settings');
       };
 
       var populateBookFromLibraryApi = function (data) {

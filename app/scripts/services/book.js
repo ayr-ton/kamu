@@ -4,6 +4,7 @@ angular
   .module('libraryUiApp')
   .service('BookService', ['$http', 'ENV', function ($http, ENV) {
     var postConfiguration = {'Content-Type': 'application/json; charset=utf-8'};
+    this.currentBook = {};
 
     this.findGoogleBooks = function (searchCriteria) {
       var endPoint = 'https://www.googleapis.com/books/v1/volumes?q=isbn:'.concat(searchCriteria);
@@ -20,6 +21,12 @@ angular
 
     this.getCopy = function (copy) {
       var endPoint = ENV.apiEndpoint.concat('/copies/').concat(copy).concat('?projection=copyWithBookInline');
+
+      return $http.get(endPoint);
+    };
+
+   this.getBook = function (bookId) {
+      var endPoint = ENV.apiEndpoint.concat('/books/').concat(bookId);//.concat('?projection=copyWithBookInline');
 
       return $http.get(endPoint);
     };
