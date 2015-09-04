@@ -48,6 +48,14 @@ angular
         templateUrl: 'views/library/index.html',
         controller: 'LibraryCtrl'
       })
+      .when(rootUrl + '/book_details', {
+        templateUrl: 'views/book/book-details.html',
+        controller: 'BookCtrl'
+      })
+      .when(rootUrl + '/settings', {
+        templateUrl: 'views/settings/settings.html',
+        controller: 'SettingsCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
@@ -59,12 +67,13 @@ angular
         APP_WISHLIST_TAB: 'Wish List',
         APP_BOOK_BY: 'By',
         APP_BORROW: 'Borrow',
-        APP_SEARCH: 'Search',
+        APP_SEARCH: 'Search a book',
         APP_RETURN: 'Return',
         APP_ADD_BOOK: 'Add book to library',
         APP_ADD: 'Add',
         APP_MANUAL: 'Manual',
         APP_USER: 'User',
+        APP_LANGUAGE: 'Language',
         APP_WAIT: 'Please, wait ',
         APP_LIBRARY_BROWSE_PROMPT: 'Oops! The library you are looking for does not exist yet. Want to try out one of the following?',
         BOOK_BORROW_TITLE: 'Borrow Book',
@@ -95,12 +104,13 @@ angular
         APP_WISHLIST_TAB: 'Lista de Desejos',
         APP_BOOK_BY: 'De',
         APP_BORROW: 'Pegar Emprestado',
-        APP_SEARCH: 'Busca',
+        APP_SEARCH: 'Busca um livro',
         APP_RETURN: 'Devolver',
         APP_ADD_BOOK: 'Incluir livro na biblioteca',
         APP_MANUAL: 'Manual',
         APP_ADD: 'Incluir',
         APP_USER: 'Usuario',
+        APP_LANGUAGE: 'Language',
         APP_WAIT: 'Por favor aguarde ',
         APP_LIBRARY_BROWSE_PROMPT: 'Oops! A biblioteca que você esta procurando não existe ainda. Gostaria de tentar alguma das seguintes?',
         BOOK_BORROW_TITLE: 'Pegar O Livro Emprestado',
@@ -132,11 +142,12 @@ angular
         APP_BOOK_BY: 'De',
         APP_BORROW: 'Pedir Prestado',
         APP_RETURN: 'Devolver',
-        APP_SEARCH: 'Buscar',
+        APP_SEARCH: 'Buscar libro',
         APP_ADD_BOOK: 'Añadir libro a la biblioteca',
         APP_MANUAL: 'Manual',
         APP_ADD: 'Añadir',
         APP_USER: 'Usuario',
+        APP_LANGUAGE: 'Lenguaje',
         APP_WAIT: 'Gracias por esperar',
         APP_LIBRARY_BROWSE_PROMPT: '¡Ups! La librería que buscas no existe aún. ¿Te gustaría intentar una de las siguientes?',
         BOOK_BORROW_TITLE: 'Pedir prestado el libro',
