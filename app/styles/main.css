@@ -92,36 +92,6 @@ header::after{
 	background-color: #ffffff;
 	height: 40px;
 }
-.main-nav ul li{
-  float: left;
-  display: inline-block;
-}
-.main-nav ul li a{
-  line-height: 48px;
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-  float: left;
-  text-align: center;
-  width: 180px;
-  
-  -webkit-transition: all 0.2s ease;
-  -moz-transition: all 0.2s ease;
-  -o-transition: all 0.2s ease;
-  -ms-transition: all 0.2s ease;
-  transition: all 0.2s ease;
-}
-.main-nav .main-nav-active{
-  background-color: #ffffff;
-  color: #333333;
-}
-.main-nav .main-nav-unactive{
-  color: #999999;
-}
-.main-nav .main-nav-unactive:hover{
-  background-color: #e1e1e1;
-  color: #606060;
-}
 .main-nav::after{
 	content: "";
 	top: 40px;
@@ -132,10 +102,12 @@ header::after{
 	height: 8px;
 	opacity: 0.3;
 }
-
 .main-nav .nav-left, ul.main-nav-left{float: left;}
 .main-nav .nav-right, ul.main-nav-right{float: right;}
-
+.main-nav .nav-left ul li{
+	float: left;
+	display: inline-block;
+}
 .main-nav .nav-left ul li a{
 	line-height: 34px;
 	font-size: 11px;
@@ -149,10 +121,10 @@ header::after{
 	padding-left: 26px;
 	padding-top: 3px;
 	
-	-webkit-transition: all 0.2s ease;
-	-moz-transition: all 0.2s ease;
-	-o-transition: all 0.2s ease;
-	-ms-transition: all 0.2s ease;
+	-webkit-transition: all 0.2s ease;                  
+	-moz-transition: all 0.2s ease;                 
+	-o-transition: all 0.2s ease;   
+	-ms-transition: all 0.2s ease;          
 	transition: all 0.2s ease;
 	
 }
@@ -167,7 +139,6 @@ header::after{
 	border-bottom-color: #cecece;
 	color: #777777;
 }
-
 .main-nav .nav-right ul li{
 	float: left;
 	display: inline-block;
@@ -202,10 +173,10 @@ a.settings-active, a.settings-active:hover, a.add-book-active, a.add-book-active
 	float: left;
 	background: url("../images/back.svg") center top no-repeat;
 	
-	-webkit-transition: background-color 0.2s ease;
-	-moz-transition: background-color 0.2s ease;
-	-o-transition: background-color 0.2s ease;
-	-ms-transition: background-color 0.2s ease;
+	-webkit-transition: background-color 0.2s ease;                  
+	-moz-transition: background-color 0.2s ease;                 
+	-o-transition: background-color 0.2s ease;   
+	-ms-transition: background-color 0.2s ease;          
 	transition: background-color 0.2s ease;
 }
 .nav-back a:hover{background-position: 0 -40px;}
@@ -221,7 +192,6 @@ a.settings-active, a.settings-active:hover, a.add-book-active, a.add-book-active
 	display: block;
 	text-align: center;
 }
-
 /*SUB-NAVIGATION--------------------------------------------------------------------*/
 .sub-nav{
 	height: 52px;
