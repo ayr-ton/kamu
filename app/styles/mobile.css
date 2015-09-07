@@ -18,12 +18,8 @@
 		height: 50px;
 		position: relative;
 	}
-	.mobile-menu-active{
-		background-position: 0 -50px;
-	}
-	.mobile-menu:active{
-		background-position: 0 -50px;
-	}
+	.mobile-menu-active{background-position: 0 -50px;}
+	.mobile-menu:active{background-position: 0 -50px;}
 	.logo{
 		height: 50px;
 		z-index: 0;
@@ -85,7 +81,6 @@
 		float: left;
 		margin-top: 10px;
 	}
-	
 	.book-details-image-container{margin-right: 20px;}
 	.book-details-image-container img{width: 140px;}
 	.book-details-title{font-size: 21px;}
@@ -95,22 +90,23 @@
 		width: 100%;
 		border-bottom-style: none;
 	}
-	.book-details-data ul li:last-child{
-		border-bottom: 1px solid #ededed;
-	}
-	.main-container-window-nav ul li a{
+	.book-details-data ul li:last-child{border-bottom: 1px solid #ededed;}
+	.main-container-window-nav ul li a{width: 100%;}
+	.window-col1{display: block;}
+	.window-col2{width: 100%;}
+	.window-col2-left{padding-right: 0px;}
+	.window-col2-right{padding-left: 0px;}
+	.main-container-window input[type=submit]{width: 100%;}
+	.isbn-data{
 		width: 100%;
+		padding-right: 0;
+		display: block;
+		float: left;
 	}
-	.window-col2{
+	.isbn-search{
 		width: 100%;
-	}
-	.window-col2-left{
-		padding-right: 0px;
-	}
-	.window-col2-right{
-		padding-left: 0px;
-	}
-	.main-container-window input[type=submit]{
-		width: 100%;
+		margin-top: 18px;
+		display: block;
+		float: left;
 	}
 }
