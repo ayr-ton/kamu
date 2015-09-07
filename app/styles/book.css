@@ -447,6 +447,7 @@
 	float: left;
 	display: table;
 	color: #333333;
+	text-align: left;
 }
 .book-details-sub{
 	font-size: 12px;
