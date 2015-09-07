@@ -482,6 +482,7 @@
 .book-details-data ul li{
 	float: left;
 	width: 33.333333333333%;
+	height: 66px;
 	border-top: 1px solid #ededed;
 	border-bottom: 1px solid #ededed;
 	border-right: 1px solid #ededed;
