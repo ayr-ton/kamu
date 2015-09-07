@@ -431,6 +431,13 @@ label{
 	float: left;
 	margin-bottom: 6px;
 }
+.required::after{
+	content: "*";
+	display: block;
+	float: right;
+	color: #fe3e4d;
+	margin-left: 2px;
+}
 .isbn-search-container{
 	float: left;
 	width: 100%;
