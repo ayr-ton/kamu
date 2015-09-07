@@ -56,7 +56,7 @@
 		border-style: none;
 		width: 100%;
 	}
-	.main-container-window-divider{padding: 18px;}
+	.main-container-window-divider, .main-container-window-divider-big{padding: 18px;}
 	.main-nav{display: none;}
 	.sub-nav{height: 48px;}
 	.sub-nav:before{margin-top: 48px;}
