@@ -101,4 +101,16 @@
 	.main-container-window-nav ul li a{
 		width: 100%;
 	}
+	.window-col2{
+		width: 100%;
+	}
+	.window-col2-left{
+		padding-right: 0px;
+	}
+	.window-col2-right{
+		padding-left: 0px;
+	}
+	.main-container-window input[type=submit]{
+		width: 100%;
+	}
 }

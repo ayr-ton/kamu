@@ -458,6 +458,7 @@
 	float: left;
 	clear: both;
 	width: 100%;
+	text-align: left;
 }
 .small-title{
 	font-size: 11px;
@@ -470,10 +471,10 @@
 }
 .book-details-description{
 	font-size: 14px;
-	/*font-weight: 100;*/
 	color: #4d4d4d;
 	margin-top: 16px;
 	float: left;
+	text-align: left;
 }
 .book-details-data{
 	float: left;
