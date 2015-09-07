@@ -332,13 +332,13 @@ a.settings-active, a.settings-active:hover, a.add-book-active, a.add-book-active
 }
 .main-container-window-nav .window-nav-left{
 	float: right;
-	border-bottom-right-radius: 2px;
-	border-top-right-radius: 2px;
+	border-bottom-left-radius: 2px;
+	border-top-left-radius: 2px;
 }
 .main-container-window-nav .window-nav-right{
 	float: left;
-	border-bottom-left-radius: 2px;
-	border-top-left-radius: 2px;
+	border-bottom-right-radius: 2px;
+	border-top-right-radius: 2px;
 }
 .main-container-window-nav .window-nav-active{
 	background-color: #fe3e4d;
