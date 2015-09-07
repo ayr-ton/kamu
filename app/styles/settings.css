@@ -7,6 +7,7 @@
 .settings-language ul li{
 	margin-top: 12px;
 	margin-bottom: 12px;
+	text-align: left;
 }
 .settings-language-text-on, .settings-language-text-off{
 	line-height: 28px;
