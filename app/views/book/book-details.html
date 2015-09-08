@@ -1,25 +1,25 @@
 <div ng-controller="BookCtrl">
 	<div class="nav-back" >
-		<a href=""></a>
+		<a ng-href="{{ getCurrentLibraryPath() }}"></a>
 		<span class="nav-back-title">{{currentBook.title}}</span>
 	</div>
-	
+
 	<div class="main-container main-container-center">
 		<div class="main-container-window">
 			<div class="main-container-window-divider">
 				<div class="book-details-image-container">
 					<img ng-src="{{currentBook.imageUrl}}" alt="" />
 				</div>
-				
+
 				<div class="book-details-info">
-				
+
 					<p class="book-details-title">{{currentBook.title}}</p>
 					<span class="small-title">author</span>
 					<p class="book-details-sub">{{currentBook.author}}</p>
 				</div>
-				
+
 			</div>
-			
+
 			<div class="book-details-data">
 				<ul>
 					<li>
@@ -38,14 +38,14 @@
 					</li>
 				</ul>
 			</div>
-			
+
 			<div class="main-container-window-divider">
 				<span class="small-title">about this book</span>
 				<p class="book-details-description" >
 					{{currentBook.description}}
 				</p>
 			</div>
-			
+
 		</div>
 	</div>
 </div>
