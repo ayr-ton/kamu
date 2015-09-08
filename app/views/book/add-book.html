@@ -1,13 +1,13 @@
 <div>
 
 <div class="nav-back" >
-	<a href=""></a>
+	<a ng-href="{{ getCurrentLibraryPath() }}"></a>
 	<span class="nav-back-title">{{ 'APP_ADD_BOOK' | translate}}</span>
 </div>
 
   <div class="main-container main-container-center">
     <div class="main-container-window">
-      
+
       <div class="main-container-window-divider main-container-window-divider-line-bottom">
         <div class="main-container-window-nav">
           <ul>
@@ -16,9 +16,9 @@
           </ul>
         </div>
       </div>
-      
+
       <div id="not-found-message" class="window-error" ng-show="errorShowable">{{ 'BOOK_NOT_FOUND' | translate }}</div>
-      
+
       <div id="search" class="main-container-window-divider-big" ng-show="searchShowable">
         <form name="searchForm">
           <div class="window-col1">
@@ -78,19 +78,19 @@
               <textarea name="comment" id="about" ng-model="book.description"></textarea>
             </div>
           </div>
-          
+
           <div class="main-container-window-divider-big main-container-window-divider-line-bottom">
             <div class="window-col1">
               <label for="donator">{{ 'BOOK_DONATOR' | translate }}</label>
               <input type="text" name="" id="donator" ng-model="donator" class="input-no-margin" maxlength=255/>
             </div>
           </div>
-          
+
           <div class="main-container-window-divider">
               <input type="submit" name="" value="{{ 'APP_ADD' | translate }}" ng-click="addBookToLibrary()" ng-disabled="newCopyForm.$invalid || addingBook"/>
               <div data-ng-show="addingBook">{{ 'APP_WAIT' | translate }} <i class="fa fa-spinner fa-spin"></i></div>
           </div>
-          
+
         </form>
       </div>
     </div>
