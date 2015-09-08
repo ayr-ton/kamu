@@ -97,6 +97,7 @@
 	.window-col2-left{padding-right: 0px;}
 	.window-col2-right{padding-left: 0px;}
 	.main-container-window input[type=submit]{width: 100%;}
+	.main-container-window textarea{max-width: 100%;}
 	.isbn-data{
 		width: 100%;
 		padding-right: 0;

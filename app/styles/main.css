@@ -454,6 +454,7 @@ label{
 	float: right;
 }
 .main-container-window input[type=text], .main-container-window textarea{
+	font-family: 'Open Sans', sans-serif;
 	border-radius: 2px;
 	border: 1px solid #cccccc;
 	font-size: 14px;
@@ -474,6 +475,8 @@ label{
 	height: 80px;
 	max-width: 100%;
 	display:block;
+	max-width: 596px;
+	overflow-y: auto;
 }
 .main-container-window input[type=text]:focus, .main-container-window textarea:focus{
 	border-color: #333;
@@ -483,6 +486,7 @@ label{
 	color: #717171;
 }
 .main-container-window input[type=submit]{
+	font-family: 'Open Sans', sans-serif;
 	text-align: center;
 	color: #999999;
 	border-radius: 2px;
