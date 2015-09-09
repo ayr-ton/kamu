@@ -6,11 +6,15 @@ angular
     function ($scope ,$translate) {
 
     var $cookies;
-    $scope.languages = [ 
+    $scope.languages = [
       {name:"Español Ecuador" , code : "es-EC" },
       {name:"Portugués Brasil" , code : "pt-BR" },
       {name:"English USA" , code : "en-US" }
       ];
+
+      $scope.goBack = function() {
+        window.history.back();
+      };
     $scope.selectedIndex = 0;
     angular.injector(['ngCookies']).invoke(['$cookies', function (_$cookies_) {
       $cookies = _$cookies_;
@@ -35,4 +39,3 @@ angular
       $translate.use(language);
 	  };
   }]);
- 

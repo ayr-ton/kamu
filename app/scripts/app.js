@@ -96,7 +96,8 @@ angular
         HTTP_CODE_500:'Ops! Process was not completed. Cause: Internal error',
         REQUIRED: '(Required Field)',
         INVALID_LIBRARY_ERROR: 'Oops! The library you are adding a book to is not registered with us.',
-        RETURN_MESSAGE: 'are you returning this book?'
+        RETURN_MESSAGE: 'are you returning this book?',
+        APP_SETTINGS: 'Settings'
       })
       .translations('pt-BR', {
         APP_LIBRARY_TAB: 'Todos Os Livros',
@@ -133,7 +134,8 @@ angular
         HTTP_CODE_428:'Ops! Processo não realizado. Motivo: Este emprestimo não existe.',
         REQUIRED: '(Campo Obrigatório)',
         INVALID_LIBRARY_ERROR: 'Desculpe, você está adiconando um livro em uma biblioteca que não está regirstrada.' ,
-        RETURN_MESSAGE: 'você deseja realmente retornar este livro?'
+        RETURN_MESSAGE: 'você deseja realmente retornar este livro?',
+        APP_SETTINGS: 'Configuração'
       })
       .translations('es-EC', {
         APP_LIBRARY_TAB: 'Todos Los Libros',
@@ -158,7 +160,7 @@ angular
         BOOK_AUTHORS: 'Autor(es)',
         BOOK_DESCRIPTION: 'Descripción',
         BOOK_ISBN_13: 'ISBN 13',
-        BOOK_PUBLISHER: 'Publicador',
+        BOOK_PUBLISHER: 'Editorial',
         BOOK_PUBLICATION_DATE: 'Fecha de Publicación',
         BOOK_IMAGE_URL: 'URL de la Imagen',
         BOOK_COVER: 'Imagen',
@@ -170,7 +172,8 @@ angular
         HTTP_CODE_428:'¡Ups! Proceso no realizado. Causa: Este préstamo no existe.',
         REQUIRED: '(Campo Obligatorio)',
         INVALID_LIBRARY_ERROR: '¡Ups! La librería a la que intenta agregar un libro no está registrada.',
-        RETURN_MESSAGE: '¿Estás seguro de devolver este libro?'
+        RETURN_MESSAGE: '¿Estás seguro de devolver este libro?',
+        APP_SETTINGS: 'Configuración'
 
       });
 
