@@ -15,6 +15,10 @@ angular
       $scope.isGoogleBook = false;
       $scope.currentBook = BookService.currentBook;
 
+      $scope.goBack = function() {
+        window.history.back();
+      };
+
       $scope.autoCompleteSearch = function () {
         $scope.formShowable = false;
         $scope.errorShowable = false;
