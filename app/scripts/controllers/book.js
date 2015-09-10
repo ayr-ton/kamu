@@ -5,10 +5,11 @@ angular
   .controller('BookCtrl', ['$scope',
     'BookService',
     'LoanService',
+    'NavigationService',
     'Modal',
     '$translate',
     '$route',
-    function ($scope, BookService, LoanService, Modal, $translate, $route) {
+    function ($scope, BookService, LoanService, NavigationService, Modal, $translate, $route) {
 
       $scope.searchCriteria = '';
       $scope.addingBook = false;
@@ -16,7 +17,27 @@ angular
       $scope.currentBook = BookService.currentBook;
 
       $scope.goBack = function() {
-        window.history.back();
+        NavigationService.goBack();
+      };
+
+      $scope.isSettingsActive = function() {
+        return NavigationService.isSettingsActive();
+      };
+
+      $scope.isAddBookActive = function() {
+        return NavigationService.isAddBookActive();
+      };
+
+      $scope.isAllBooksActive = function() {
+        return NavigationService.isAllBooksActive();
+      };
+
+      $scope.isWishlistActive = function() {
+        return NavigationService.isWishlistActive();
+      };
+
+      $scope.isBorrowedBooksActive = function() {
+        return NavigationService.isBorrowedBooksActive();
       };
 
       $scope.autoCompleteSearch = function () {
@@ -201,6 +222,10 @@ angular
         );
       };
 
+
+      $scope.gotoAllBooks = function () {
+        window.location.assign('/#/library/' + getLibrarySlug());
+      };
 
       $scope.gotoAddBook = function () {
         window.location.assign('/#/library/' + getLibrarySlug() + '/add_book');
