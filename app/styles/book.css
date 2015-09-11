@@ -49,7 +49,7 @@
 	bottom: 0;
 	position: absolute;
 	display: block;
-	
+
 	-webkit-transition: all 0.2s ease;
 	-moz-transition: all 0.2s ease;
 	-o-transition: all 0.2s ease;
@@ -70,7 +70,7 @@
   position: relative;
   height: 246px;
   float: left;
-  
+
 }
 .books-shelf-image-container .books-img{
   width: 100%;
@@ -94,11 +94,11 @@
   border-radius: 2px;
   display: block;
   position: relative;
-  
-  -webkit-transition: all 0.2s ease;                  
-  -moz-transition: all 0.2s ease;                 
-  -o-transition: all 0.2s ease;   
-  -ms-transition: all 0.2s ease;          
+
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
+  -ms-transition: all 0.2s ease;
   transition: all 0.2s ease;
 }
 .books-shelf-image-container a:hover .books-img::after{
@@ -154,10 +154,10 @@
 	position: absolute;
 	bottom: -50px;
 	width: 138px;
-	background-color: #ffffff;	
+	background-color: #ffffff;
 	padding-top: 9px;
 	padding-bottom: 9px;
-	
+
 	-webkit-transition: all 0.1s ease;
 	-moz-transition: all 0.1s ease;
 	-o-transition: all 0.1s ease;
@@ -252,7 +252,7 @@
 .popup-nav-left{
   float: right;
   border-top-left-radius: 17px;
-  border-bottom-left-radius: 17px;  
+  border-bottom-left-radius: 17px;
 }
 .popup-nav-right{
   float: left;
@@ -266,10 +266,10 @@
 }
 .popup-nav .popup-nav-unactive{color: #999999;border: 1px solid #dcdcdc;}
 .popup-nav .popup-nav-active, .popup-nav .popup-nav-unactive{
-  -webkit-transition: all 0.2s ease;                  
-  -moz-transition: all 0.2s ease;                 
-  -o-transition: all 0.2s ease;   
-  -ms-transition: all 0.2s ease;          
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
+  -ms-transition: all 0.2s ease;
   transition: all 0.2s ease;
 }
 .popup-nav .popup-nav-unactive:hover{
@@ -311,11 +311,11 @@
   padding: 6px 8px;
   background-color: #f5f5f5;
   margin-bottom: 18px;
-  
-  -webkit-transition: all 0.2s ease;                  
-  -moz-transition: all 0.2s ease;                 
-  -o-transition: all 0.2s ease;   
-  -ms-transition: all 0.2s ease;          
+
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
+  -ms-transition: all 0.2s ease;
   transition: all 0.2s ease;
   line-height: 20px;
 }
@@ -355,11 +355,11 @@
   color: #999999;
   height: 34px;
   letter-spacing: 0.04em;
-  
-  -webkit-transition: all 0.2s ease;                  
-  -moz-transition: all 0.2s ease;                 
-  -o-transition: all 0.2s ease;   
-  -ms-transition: all 0.2s ease;          
+
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
+  -ms-transition: all 0.2s ease;
   transition: all 0.2s ease;
 }
 .popup-window input[type=button]:hover, .popup-window input[type=submit]:hover{
