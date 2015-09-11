@@ -79,6 +79,7 @@
 	.book-details-image-container{margin-right: 20px;}
 	.book-details-image-container img{width: 140px;}
 	.book-details-title{font-size: 21px;}
+	.book-details-sub{clear: none; white-space: normal;}
 	.book-details-data ul li{
 		padding-left: 18px;
 		padding-right: 18px;
