@@ -34,11 +34,6 @@ h2{
 	text-align: left;
 }
 
-.container{
-	overflow-x: hidden important;
-	overflow-y: hidden !important;
-}
-
 /*HEADER----------------------------------------------------------------------------*/
 header{
 	height: 54px;
@@ -70,7 +65,7 @@ header::after{
 }
 
 #window-container{
-	width: 100%;
+	/*width: 100%;*/
 	/*overflow-x: hidden;*/
 	overflow: visible;
 }
@@ -121,13 +116,13 @@ header::after{
 	padding-right: 26px;
 	padding-left: 26px;
 	padding-top: 3px;
-	
-	-webkit-transition: all 0.2s ease;                  
-	-moz-transition: all 0.2s ease;                 
-	-o-transition: all 0.2s ease;   
-	-ms-transition: all 0.2s ease;          
+
+	-webkit-transition: all 0.2s ease;
+	-moz-transition: all 0.2s ease;
+	-o-transition: all 0.2s ease;
+	-ms-transition: all 0.2s ease;
 	transition: all 0.2s ease;
-	
+
 }
 .main-nav .nav-left .main-nav-active{
 	color: #333333;
@@ -174,11 +169,11 @@ a.settings-active, a.settings-active:hover, a.add-book-active, a.add-book-active
 	background-color: #f24545;
 	float: left;
 	background: url("../images/back.svg") center top no-repeat;
-	
-	-webkit-transition: background-color 0.2s ease;                  
-	-moz-transition: background-color 0.2s ease;                 
-	-o-transition: background-color 0.2s ease;   
-	-ms-transition: background-color 0.2s ease;          
+
+	-webkit-transition: background-color 0.2s ease;
+	-moz-transition: background-color 0.2s ease;
+	-o-transition: background-color 0.2s ease;
+	-ms-transition: background-color 0.2s ease;
 	transition: background-color 0.2s ease;
 }
 .nav-back a:hover{background-position: 0 -40px;}
@@ -230,13 +225,13 @@ a.settings-active, a.settings-active:hover, a.add-book-active, a.add-book-active
 	font-family: 'Open Sans', sans-serif;
 	float: right;
 	display: block;
-	
+
 	-webkit-transition: all 0.2s ease;
 	-moz-transition: all 0.2s ease;
 	-o-transition: all 0.2s ease;
 	-ms-transition: all 0.2s ease;
 	transition: all 0.2s ease;
-	
+
 }
 .search input[type=text]:focus{
 	width: 220px;
@@ -396,7 +391,7 @@ a.settings-active, a.settings-active:hover, a.add-book-active, a.add-book-active
 	width: 56px;
 	height: 28px;
 	border-radius: 16px;
-	
+
 	-webkit-transition: all 0.2s ease;
 	-moz-transition: all 0.2s ease;
 	-o-transition: all 0.2s ease;
@@ -410,7 +405,7 @@ a.settings-active, a.settings-active:hover, a.add-book-active, a.add-book-active
 	height: 24px;
 	background-color: #ffffff;
 	border-radius: 12px;
-	
+
 	-webkit-transition: all 0.2s ease;
 	-moz-transition: all 0.2s ease;
 	-o-transition: all 0.2s ease;
@@ -464,11 +459,11 @@ label{
 	float: left;
 	width: 100%;
 	color: #333;
-	
-	-webkit-transition: all 0.1s ease;                  
-	-moz-transition: all 0.1s ease;                 
-	-o-transition: all 0.1s ease;   
-	-ms-transition: all 0.1s ease;          
+
+	-webkit-transition: all 0.1s ease;
+	-moz-transition: all 0.1s ease;
+	-o-transition: all 0.1s ease;
+	-ms-transition: all 0.1s ease;
 	transition: all 0.1s ease;
 }
 .main-container-window textarea{
@@ -496,11 +491,11 @@ label{
 	border: 1px solid #cccccc;
 	background-color: #ffffff;
 	padding: 9px 34px;
-	
-	-webkit-transition: all 0.1s ease;                  
-	-moz-transition: all 0.1s ease;                 
-	-o-transition: all 0.1s ease;   
-	-ms-transition: all 0.1s ease;          
+
+	-webkit-transition: all 0.1s ease;
+	-moz-transition: all 0.1s ease;
+	-o-transition: all 0.1s ease;
+	-ms-transition: all 0.1s ease;
 	transition: all 0.1s ease;
 }
 .main-container-window input[type=submit]:hover{
@@ -520,4 +515,108 @@ label{
 }
 .main-container-window .cover-container img{
 	height: 100%;
+}
+
+/** SLIDE MENU **/
+.noScroll {
+  overflow : hidden !important;
+}
+
+.viewport {
+  width    : 100%;
+  height   : 100%;
+  min-height: 500px;
+  overflow : hidden;
+  display  : block;
+  position : relative;
+}
+
+.containerSlider {
+  position           : absolute;
+  overflow           : hidden;
+  width              : calc(200% - 50px);
+
+  -webkit-transition : all 0.2s ease-in-out;
+  -moz-transition    : all 0.2s ease-in-out;
+  -ms-transition     : all 0.2s ease-in-out;
+  -o-transition      : all 0.2s ease-in-out;
+  transition         : all 0.2s ease-in-out;
+}
+
+.containerSlider-closed {
+  left : calc(50px - 100%);
+}
+
+.containerSlider-open {
+  left : 0;
+}
+
+.container {
+  overflow-x : hidden !important;
+  overflow-y : hidden !important;
+
+  width      : calc(50% + 25px);
+  float      : left;
+}
+
+.mobile-nav {
+  background : #e6e6e6;
+  /*height     : 100%;*/
+  width      : calc(50% - 25px);
+  float      : left;
+  position: relative;
+}
+
+.mobile-nav-container {
+  height   : 100%;
+  overflow : auto;
+  background : #e6e6e6;
+}
+
+.mobile-nav-container::after {
+  content         : "";
+  background      : url("../images/mobile-menu-shadow.png");
+  background-size : 8px;
+  display         : block;
+  position        : absolute;
+  width           : 8px;
+  height          : 100%;
+  right           : 0;
+}
+
+.mobile-nav ul li {
+  width : 100%;
+}
+
+.mobile-nav ul li a {
+  font-size          : 11px;
+  text-transform     : uppercase;
+  letter-spacing     : 0.04em;
+  box-sizing         : border-box;
+  padding            : 18px 24px;
+  float              : left;
+  width              : 100%;
+  border-bottom      : 1px solid #d5d5d5;
+  line-height        : 14px;
+  border-right-style : solid;
+  border-right-width : 3px;
+}
+
+a.mobile-nav-active {
+  color        : #101010;
+  border-color : #fe3e4d;
+}
+
+a.mobile-nav-active:active {
+  background-color : #d5d5d5;
+}
+
+a.mobile-nav-unactive {
+  color        : #838383;
+  border-color : #e6e6e6;
+}
+
+a.mobile-nav-unactive:active {
+  background-color : #d5d5d5;
+  border-color     : #d5d5d5;
 }
