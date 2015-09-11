@@ -75,12 +75,7 @@
 	}
 	.search{margin: 9px;}
 	.search .search-icon{margin-left: 0px;}
-	.book-details-info{
-		box-sizing: border-box;
-		display: block;
-		float: left;
-		margin-top: 10px;
-	}
+	.book-details-info{display: table-row;}
 	.book-details-image-container{margin-right: 20px;}
 	.book-details-image-container img{width: 140px;}
 	.book-details-title{font-size: 21px;}
