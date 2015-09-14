@@ -2,7 +2,6 @@
 .idea/
 public/
 views/
-auth/
 node_modules
 dist
 .tmp
