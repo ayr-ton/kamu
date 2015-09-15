@@ -213,7 +213,16 @@ module.exports = function (grunt) {
           src: [
             '.tmp',
             '<%= yeoman.dist %>/{,*/}*',
+            '<%= yeoman.views %>/{,*/}*',
             '!<%= yeoman.dist %>/.git{,*/}*'
+          ]
+        }]
+      },
+      html: {
+        files: [{
+          dot: true,
+          src: [
+            '<%= yeoman.dist %>/*.html',
           ]
         }]
       },
@@ -520,7 +529,8 @@ module.exports = function (grunt) {
     'uglify',
     'filerev',
     'usemin',
-    'htmlmin'
+    'htmlmin',
+    'clean:html',
   ]);
 
   grunt.registerTask('default', [
