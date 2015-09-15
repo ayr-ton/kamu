@@ -24,7 +24,8 @@ module.exports = function (grunt) {
   // Configurable paths for the application
   var appConfig = {
     app: require('./bower.json').appPath || 'app',
-    dist: 'dist'
+    dist: 'public',
+    views: 'views'
   };
 
   grunt.loadNpmTasks('grunt-karma');
@@ -377,7 +378,7 @@ module.exports = function (grunt) {
           expand: true,
           cwd: '<%= yeoman.dist %>',
           src: ['*.html'],
-          dest: '<%= yeoman.dist %>'
+          dest: '<%= yeoman.views %>'
         }]
       }
     },

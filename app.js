@@ -32,7 +32,6 @@ app.set('view engine', 'html');
 
 // apllication routes
 app.get('/', auth.protected, function (req, res){
-  console.log(res);
   res.render('index', { title: 'Express' });
 });
 
