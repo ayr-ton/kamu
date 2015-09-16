@@ -1,0 +1,118 @@
+.main-nav {
+  background-color: #ffffff;
+  height: 40px;
+
+  -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+.main-nav .nav-left, ul.main-nav-left {
+  float: left;
+}
+
+.main-nav .nav-right, ul.main-nav-right {
+  float: right;
+}
+
+.main-nav .nav-left ul li {
+  float: left;
+  display: inline-block;
+}
+
+.main-nav .nav-left ul li a {
+  line-height: 34px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  float: left;
+  text-align: center;
+  box-sizing: border-box;
+  border-bottom: 3px solid #ffffff;
+  padding-right: 26px;
+  padding-left: 26px;
+  padding-top: 3px;
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
+  -ms-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+}
+
+.main-nav .nav-left .main-nav-active {
+  color: #333333;
+  border-bottom-color: #fe3e4d;
+}
+
+.main-nav .nav-left .main-nav-unactive {
+  color: #999999;
+}
+
+.main-nav .nav-left .main-nav-unactive:hover {
+  border-bottom-color: #cecece;
+  color: #777777;
+}
+
+.main-nav .nav-right ul li {
+  float: left;
+  display: inline-block;
+  margin-right: 4px;
+}
+
+.main-nav .nav-right ul li a {
+  width: 40px;
+  height: 40px;
+  float: right;
+  cursor: pointer;
+}
+
+a.main-nav-settings {
+  background: url("../../images/settings.svg") center top no-repeat;
+}
+
+a.main-nav-add-book {
+  background: url("../../images/add-book.svg") center top no-repeat;
+}
+
+a.main-nav-settings:hover, a.main-nav-add-book:hover {
+  background-position: 0 -40px;
+}
+
+a.settings-active, a.settings-active:hover, a.add-book-active, a.add-book-active:hover {
+  background-position: 0 -80px;
+}
+
+.nav-back {
+  background-color: #e6e6e6;
+  width: 100%;
+  height: 40px;
+}
+
+.nav-back a {
+  height: 40px;
+  width: 40px;
+  background-color: #f24545;
+  float: left;
+  background: url("../../images/back.svg") center top no-repeat;
+  -webkit-transition: background-color 0.2s ease;
+  -moz-transition: background-color 0.2s ease;
+  -o-transition: background-color 0.2s ease;
+  -ms-transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease;
+}
+
+.nav-back a:hover {
+  background-position: 0 -40px;
+}
+
+.nav-back-title {
+  line-height: 40px;
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  color: #707070;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-right: 40px;
+  display: block;
+  text-align: center;
+}
