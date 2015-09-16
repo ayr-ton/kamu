@@ -1,0 +1,699 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for app/scripts/app.js</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../../prettify.css">
+    <link rel="stylesheet" href="../../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header high">
+    <h1>Code coverage report for <span class="entity">app/scripts/app.js</span></h1>
+    <h2>
+        Statements: <span class="metric">86.11% <small>(31 / 36)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">57.14% <small>(8 / 14)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">100% <small>(7 / 7)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">86.11% <small>(31 / 36)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../../index.html">All files</a> &#187; <a href="index.html">app/scripts/</a> &#187; app.js</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">62</span>
+<span class="cline-any cline-yes">62</span>
+<span class="cline-any cline-yes">62</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">62</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">62</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">62</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">62</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">62</span>
+<span class="cline-any cline-yes">62</span>
+<span class="cline-any cline-yes">62</span>
+<span class="cline-any cline-yes">62</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">62</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">62</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">62</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">62</span>
+<span class="cline-any cline-yes">35</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">35</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
+&nbsp;
+/**
+ * @ngdoc overview
+ * @name libraryUiApp
+ * @description
+ * # libraryUiApp
+ *
+ * Main module of the application.
+ */
+angular
+  .module('libraryUiApp', [
+    'config',
+    'ngAnimate',
+    'ngCookies',
+    'ngResource',
+    'ngRoute',
+    'ngSanitize',
+    'ngTouch',
+    'pascalprecht.translate',
+    'ngCookies',
+    'ui.mask'
+  ])
+  .config(function ($routeProvider, $translateProvider) {
+    var $cookies;
+    angular.injector(['ngCookies']).invoke(['$cookies', function (_$cookies_) {
+      $cookies = _$cookies_;
+    }]);
+&nbsp;
+    var rootUrl = '/library/:library';
+&nbsp;
+    $routeProvider.caseInsensitiveMatch = true;
+&nbsp;
+    $routeProvider
+      .when(rootUrl, {
+        templateUrl: 'views/book/index.html',
+        controller: 'BookCtrl'
+      })
+      .when(rootUrl + '/add_book', {
+        templateUrl: 'views/book/add-book.html',
+        controller: 'BookCtrl'
+      })
+      .when('/libraries', {
+        templateUrl: 'views/library/index.html',
+        controller: 'LibraryCtrl'
+      })
+      .when('/', {
+        templateUrl: 'views/library/index.html',
+        controller: 'LibraryCtrl'
+      })
+      .otherwise({
+        redirectTo: '/'
+      });
+&nbsp;
+    $translateProvider
+      .translations('en-US', {
+        APP_LIBRARY_TAB: 'All Books',
+        APP_BORROWED_BOOKS_TAB: 'Borrowed Books',
+        APP_WISHLIST_TAB: 'Wish List',
+        APP_BOOK_BY: 'By',
+        APP_BORROW: 'Borrow',
+        APP_SEARCH: 'Search',
+        APP_RETURN: 'Return',
+        APP_ADD_BOOK: 'Add book to library',
+        APP_ADD: 'Add',
+        APP_MANUAL: 'Manual',
+        APP_USER: 'User',
+        APP_WAIT: 'Please, wait ',
+        APP_LIBRARY_BROWSE_PROMPT: 'Oops! The library you are looking for does not exist yet. Want to try out one of the following?',
+        BOOK_BORROW_TITLE: 'Borrow Book',
+        BOOK_RETURN_TITLE: 'Return Book',
+        BOOK_NOT_FOUND: 'Sorry we can\'t find any match. Please enter book details manually.',
+        BOOK_TITLE: 'Title',
+        BOOK_SUBTITLE: 'Subtitle',
+        BOOK_AUTHORS: 'Author(s)',
+        BOOK_DESCRIPTION: 'About this book',
+        BOOK_ISBN_13: 'ISBN 13',
+        BOOK_PUBLISHER: 'Publisher',
+        BOOK_PUBLICATION_DATE: 'Publication Date',
+        BOOK_IMAGE_URL: 'Cover URL',
+        BOOK_COVER: 'Cover',
+        BOOK_NUMBER_OF_PAGES: 'Pages',
+        BOOK_DONATOR: 'Donator',
+        HTTP_CODE_409:'Ops! Process was not realize. Cause: Book requested is not available for do that.',
+        HTTP_CODE_412:'Ops! Process was not realize. Cause: Email is required to make a loan',
+        HTTP_CODE_428:'Ops! Process was not realize. Cause: This loan does not exists.',
+        HTTP_CODE_500:'Ops! Process was not realize. Cause: Internal error', 
+        REQUIRED: '(Required Field)',
+        INVALID_LIBRARY_ERROR: 'Oops! The library you are adding a book to is not registered with us.',
+        RETURN_MESSAGE: 'are you returning this book?'
+      })
+      .translations('pt-BR', {
+        APP_LIBRARY_TAB: 'Todos Os Livros',
+        APP_BORROWED_BOOKS_TAB: 'Livros Emprestados',
+        APP_WISHLIST_TAB: 'Lista de Desejos',
+        APP_BOOK_BY: 'De',
+        APP_BORROW: 'Pegar Emprestado',
+        APP_SEARCH: 'Busca',
+        APP_RETURN: 'Devolver',
+        APP_ADD_BOOK: 'Incluir livro na biblioteca',
+        APP_MANUAL: 'Manual',
+        APP_ADD: 'Incluir',
+        APP_USER: 'Usuario',
+        APP_WAIT: 'Por favor aguarde ',
+        APP_LIBRARY_BROWSE_PROMPT: 'Oops! A biblioteca que você esta procurando não existe ainda. Gostaria de tentar alguma das seguintes?',
+        BOOK_BORROW_TITLE: 'Pegar O Livro Emprestado',
+        BOOK_RETURN_TITLE: 'Devolver O Livro',
+        BOOK_NOT_FOUND: 'Livro não encontrado. Por favor insira os dados manualmente.',
+        BOOK_TITLE: 'Título',
+        BOOK_SUBTITLE: 'Subtítulo',
+        BOOK_AUTHORS: 'Autor(es)',
+        BOOK_DESCRIPTION: 'Sobre este livro',
+        BOOK_ISBN_13: 'ISBN 13',
+        BOOK_PUBLISHER: 'Editora',
+        BOOK_PUBLICATION_DATE: 'Data de Publicação',
+        BOOK_IMAGE_URL: 'URL da Capa',
+        BOOK_COVER: 'Capa',
+        BOOK_NUMBER_OF_PAGES: 'Páginas',
+        BOOK_DONATOR: 'Doador',
+        HTTP_CODE_409:'Ops! Processo não realizado. Motivo: Livro solicitado está indisponível para o empréstimo.',
+        HTTP_CODE_412:'Ops! Processo não realizado. Motivo: Email é obrigatório',
+        HTTP_CODE_500:'Ops! Processo não realizado. Motivo: Problema interno',
+        HTTP_CODE_428:'Ops! Processo não realizado. Motivo: Este emprestimo não existe.',
+        REQUIRED: '(Campo Obrigatório)',
+        INVALID_LIBRARY_ERROR: 'Desculpe, você está adiconando um livro em uma biblioteca que não está regirstrada.' ,
+        RETURN_MESSAGE: 'você deseja realmente retornar este livro??'
+      })
+      .translations('es-EC', {
+        APP_LIBRARY_TAB: 'Todos Los Libros',
+        APP_BORROWED_BOOKS_TAB: 'Libros Prestados',
+        APP_WISHLIST_TAB: 'Lista de Deseos',
+        APP_BOOK_BY: 'De',
+        APP_BORROW: 'Pedir Prestado',
+        APP_RETURN: 'Devolver',
+        APP_SEARCH: 'Buscar',
+        APP_ADD_BOOK: 'Añadir libro a la biblioteca',
+        APP_MANUAL: 'Manual',
+        APP_ADD: 'Añadir',
+        APP_USER: 'Usuario',
+        APP_WAIT: 'Gracias por esperar',
+        APP_LIBRARY_BROWSE_PROMPT: '¡Ups! La librería que buscas no existe aún. ¿Te gustaría intentar una de las siguientes?',
+        BOOK_BORROW_TITLE: 'Pedir préstamo de libro',
+        BOOK_RETURN_TITLE: 'Devolver Libro',
+        BOOK_NOT_FOUND: 'Lo sentimos, no podemos encontrar coincidencias. Por favor ingresar los detalles manualmente.',
+        BOOK_TITLE: 'Título',
+        BOOK_SUBTITLE: 'Subtítulo',
+        BOOK_AUTHORS: 'Autor(es)',
+        BOOK_DESCRIPTION: 'Descripción',
+        BOOK_ISBN_13: 'ISBN 13',
+        BOOK_PUBLISHER: 'Publicador',
+        BOOK_PUBLICATION_DATE: 'Fecha de Publicación',
+        BOOK_IMAGE_URL: 'URL de la Imagen',
+        BOOK_COVER: 'Imagen',
+        BOOK_NUMBER_OF_PAGES: 'Páginas',
+        BOOK_DONATOR: 'Donante',
+        HTTP_CODE_409:'Ops! Process was not realize. Cause: El libro solicitado no está disponible para el préstamo.',
+        HTTP_CODE_412:'Ops! Process was not realize. Cause: Es necesario su correo electrónico para el préstamo.',
+        HTTP_CODE_500:'Ops! Process was not realize. Cause: Problema interno.' ,
+        HTTP_CODE_428:'Ops! Process was not realize. Cause: Este préstamo no existe.',
+        REQUIRED: '(Campo Obligatorio)',
+        INVALID_LIBRARY_ERROR: '¡Ups! La librería a la que intenta agregar un libro no está registrada.',
+        RETURN_MESSAGE: 'estas seguro de devolver este libro?'
+&nbsp;
+      });
+&nbsp;
+    $translateProvider.determinePreferredLanguage(function () {
+      var language = $cookies.get('language');
+      var defaultLanguage = 'en-US';
+      var supportedLanguages = ['en-US', 'pt-BR', 'es-EC'];
+&nbsp;
+      <span class="missing-if-branch" title="if path not taken" >I</span>if (language === null) {
+<span class="cstat-no" title="statement not covered" >        language = navigator.language || navigator.userLanguage;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        var cookieLifespan = 365;</span>
+<span class="cstat-no" title="statement not covered" >        var expireDate = new Date();</span>
+<span class="cstat-no" title="statement not covered" >        expireDate.setDate(expireDate.getDate() + cookieLifespan);</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >        $cookies.put('language', language, {'expires': expireDate});</span>
+      }
+&nbsp;
+      language = supportedLanguages.indexOf(language) === -1 ? defaultLanguage : <span class="branch-1 cbranch-no" title="branch not covered" >language;</span>
+&nbsp;
+      return language;
+    });
+  }).
+  run(['$rootScope', '$http', '$location', 'ENV', function ($rootScope, $http, $location, ENV) {
+    $rootScope.$on('$routeChangeStart', function (event, next, current) {
+      var slug = next.pathParams.library;
+&nbsp;
+      if (angular.isDefined(slug)) {
+        var $cookies;
+&nbsp;
+        angular.injector(['ngCookies']).invoke(['$cookies', function (_$cookies_) {
+          $cookies = _$cookies_;
+        }]);
+&nbsp;
+        var cookieKey = 'libraries';
+        var cookies = angular.isDefined($cookies.get(cookieKey)) ? <span class="branch-0 cbranch-no" title="branch not covered" >$cookies.get(cookieKey).split(',') </span>: [];
+&nbsp;
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (cookies.indexOf(slug) === -1) {
+          var endPoint = ENV.apiEndpoint + '/libraries/search/findBySlug?slug=' + slug;
+&nbsp;
+          $http.get(endPoint).
+            success(function (data) {
+              if (angular.isDefined(data._embedded)) {
+                cookies.push(data._embedded.libraries[0].slug);
+&nbsp;
+                $cookies.put(cookieKey, cookies);
+              } else {
+                event.preventDefault();
+&nbsp;
+                $location.path('/libraries');
+              }
+            });
+        }
+      }
+    });
+  }]);
+&nbsp;</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Sep 16 2015 14:39:19 GMT-0300 (BRT)</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

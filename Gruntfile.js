@@ -466,8 +466,20 @@ module.exports = function (grunt) {
         configFile: 'test/karma.conf.js',
         singleRun: true
       }
+    },
+
+    coveralls: {
+      options: {
+        debug: true,
+        coverageDir: 'coverage',
+        dryRun: true,
+        force: true,
+        recursive: true
+      }
     }
   });
+
+  grunt.loadNpmTasks('grunt-karma-coveralls');
 
 
   grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
@@ -482,7 +494,8 @@ module.exports = function (grunt) {
       'concurrent:server',
       'autoprefixer:server',
       'connect:livereload',
-      'watch'
+      'watch',
+      'coveralls'
     ]);
   });
 

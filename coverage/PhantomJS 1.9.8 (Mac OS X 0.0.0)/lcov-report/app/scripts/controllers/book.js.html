@@ -1,0 +1,900 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for app/scripts/controllers/book.js</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../../../prettify.css">
+    <link rel="stylesheet" href="../../../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header medium">
+    <h1>Code coverage report for <span class="entity">app/scripts/controllers/book.js</span></h1>
+    <h2>
+        Statements: <span class="metric">67.67% <small>(90 / 133)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">65.52% <small>(19 / 29)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">61.54% <small>(24 / 39)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">67.67% <small>(90 / 133)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../../../index.html">All files</a> &#187; <a href="index.html">app/scripts/controllers/</a> &#187; book.js</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20</span>
+<span class="cline-any cline-yes">20</span>
+<span class="cline-any cline-yes">20</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20</span>
+<span class="cline-any cline-yes">21</span>
+<span class="cline-any cline-yes">21</span>
+<span class="cline-any cline-yes">21</span>
+<span class="cline-any cline-yes">21</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">20</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">12</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
+&nbsp;
+angular
+  .module('libraryUiApp')
+  .controller('BookCtrl', ['$scope',
+    'BookService',
+    'LoanService',
+    'Modal',
+    '$translate',
+    '$route',
+    function ($scope, BookService, LoanService, Modal, $translate, $route) {
+&nbsp;
+      $scope.searchCriteria = '';
+      $scope.addingBook = false;
+      $scope.isGoogleBook = false;
+&nbsp;
+      $scope.autoCompleteSearch = function () {
+        $scope.formShowable = false;
+        $scope.errorShowable = false;
+        $scope.searchShowable = true;
+        $scope.isbnSearch = true;
+      };
+      $scope.autoCompleteSearch();
+&nbsp;
+      $scope.getCurrentLibraryPath = function () {
+        return $scope.isInsideLibrary() ? '#/library/' + getLibrarySlug() : '#/libraries';
+      };
+&nbsp;
+      $scope.findGoogleBooks = function () {
+        var searchCriteria = $scope.searchCriteria.toString();
+&nbsp;
+        $scope.book = {};
+&nbsp;
+        if (searchCriteria !== '') {
+          BookService.findLibraryBook(searchCriteria).
+            success(populateBookFromLibraryApi).
+            error(function () {
+              toggleFormDisplay(false);
+            });
+        }
+      };
+&nbsp;
+      $scope.isInsideLibrary = function () {
+        return angular.isDefined($route.current) ? angular.isDefined(getLibrarySlug()) : false;
+      };
+&nbsp;
+      $scope.addManually = function () {
+        $scope.book = {};
+        $scope.searchShowable = false;
+        $scope.isbnSearch = false;
+        $scope.isGoogleBook = false;
+&nbsp;
+        toggleFormDisplay(true);
+      };
+&nbsp;
+      $scope.addBookToLibrary = function () {
+        var slug = getLibrarySlug();
+        $scope.addingBook = true;
+&nbsp;
+        BookService.getLibraryBySlug(slug).
+          success(function (data) {
+            if (angular.isDefined(data._embedded)) {
+              var library = data._embedded.libraries[0]._links.self.href;
+&nbsp;
+              if (!$scope.bookExistsInTheLibrary) {
+                addBook(library, slug);
+              } else {
+                var book = $scope.book._links.self.href;
+                addCopy(library, slug, book);
+              }
+            } else {
+              window.alert($translate.instant('INVALID_LIBRARY_ERROR'));
+            }
+          });
+      };
+&nbsp;
+      $scope.listBooks = function () {
+        $scope.copies = [];
+&nbsp;
+        BookService.getLibraryBySlug(getLibrarySlug()).
+          success(function (data) {
+            <span class="missing-if-branch" title="else path not taken" >E</span>if (angular.isDefined(data._embedded) &amp;&amp; data._embedded.libraries[0]._embedded) {
+              $scope.copies = data._embedded.libraries[0]._embedded.copies;
+&nbsp;
+              angular.forEach($scope.copies, function (copy) {
+                copy = initializeCopy(copy);
+              });
+            }
+          });
+      };
+&nbsp;
+      function initializeCopy(copy) {
+        if (copy.imageUrl === undefined || copy.imageUrl === null) {
+          copy.imageUrl = 'images/no-image.png';
+        }
+&nbsp;
+        return copy;
+      }
+&nbsp;
+      $scope.$on('$viewContentLoaded', <span class="fstat-no" title="function not covered" >function () {</span>
+<span class="cstat-no" title="statement not covered" >        $scope.listBooks();</span>
+      });
+&nbsp;
+    $scope.borrowCopy = <span class="fstat-no" title="function not covered" >function(copy) {</span>
+      
+<span class="cstat-no" title="statement not covered" >      var promise = Modal.open(</span>
+        'available', { copy: copy }
+      );
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      promise.then(</span>
+<span class="fstat-no" title="function not covered" >        function handleResolve( response ) {</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >          console.log( '%s borrowed the copy %s', response.email, response.copy.id  );</span>
+<span class="cstat-no" title="statement not covered" >          LoanService.</span>
+                  borrowCopy(response.copy.id , response.email).
+                  success(<span class="fstat-no" title="function not covered" >function() {</span>
+<span class="cstat-no" title="statement not covered" >                      Modal.reject;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                      window.alert('Book has loaned to '.concat(response.email).concat('.'));</span>
+<span class="cstat-no" title="statement not covered" >                      BookService.getCopy(copy.id)</span>
+                        .success(<span class="fstat-no" title="function not covered" >function(data) {</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                            var scope = angular.element('#copy-'.concat(copy.id)).scope();</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                            scope.copy = data;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                            scope.copy.imageUrl = scope.copy.imageUrl || 'images/no-image.png';</span>
+                        
+                        });
+                  }).
+                  error(<span class="fstat-no" title="function not covered" >function(data, status){</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                      var errorMessage;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                      switch(status) {</span>
+                          case 412:
+<span class="cstat-no" title="statement not covered" >                              errorMessage = $translate.instant('HTTP_CODE_412');</span>
+<span class="cstat-no" title="statement not covered" >                              break;</span>
+                          case 409:
+<span class="cstat-no" title="statement not covered" >                              errorMessage = $translate.instant('HTTP_CODE_409');</span>
+<span class="cstat-no" title="statement not covered" >                              break;</span>
+                          default:
+<span class="cstat-no" title="statement not covered" >                              errorMessage = $translate.instant('HTTP_CODE_500');</span>
+<span class="cstat-no" title="statement not covered" >                              break;</span>
+                      }                      
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                      window.alert(errorMessage);</span>
+                  });
+        },
+<span class="fstat-no" title="function not covered" >        function handleReject( error ) {</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            console.warn( 'Available rejected!' );</span>
+        }
+      );
+    };
+&nbsp;
+    $scope.returnCopy = <span class="fstat-no" title="function not covered" >function(copy) {</span>
+<span class="cstat-no" title="statement not covered" >      var scope = angular.element('#modal-div').scope();</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      scope.loan = copy.lastLoan ;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      var promise = Modal.open(</span>
+        'not-available', { loan : copy.lastLoan }
+      );
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      promise.then(</span>
+<span class="fstat-no" title="function not covered" >        function handleResolve( response ) {</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >          LoanService.</span>
+                  returnCopy(response.loan.id).
+                  success(<span class="fstat-no" title="function not covered" >function() {</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                      Modal.reject;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                      window.alert('Book has returned to library.');</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                      BookService.getCopy(copy.id)</span>
+                        .success(<span class="fstat-no" title="function not covered" >function(data) {</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                            var scope = angular.element('#copy-'.concat(copy.id)).scope();</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                            scope.copy = data;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                            scope.copy.imageUrl = scope.copy.imageUrl || 'images/no-image.png';</span>
+                        
+                        });
+                  }).
+                  error(<span class="fstat-no" title="function not covered" >function(data, status){</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                      var errorMessage;</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                      switch(status) {</span>
+                          case 428:
+<span class="cstat-no" title="statement not covered" >                              errorMessage = $translate.instant('HTTP_CODE_428');</span>
+<span class="cstat-no" title="statement not covered" >                              break;</span>
+                          default:
+<span class="cstat-no" title="statement not covered" >                              errorMessage = $translate.instant('HTTP_CODE_500');</span>
+<span class="cstat-no" title="statement not covered" >                              break;</span>
+                      }                      
+&nbsp;
+<span class="cstat-no" title="statement not covered" >                      window.alert(errorMessage);</span>
+                  });
+        },
+<span class="fstat-no" title="function not covered" >        function handleReject( error ) {</span>
+<span class="cstat-no" title="statement not covered" >          console.warn( 'Confirm rejected!' );</span>
+        }
+      );
+    };
+&nbsp;
+      $scope.gotoAddBook = function () {
+        window.location.assign('/#/library/' + getLibrarySlug() + '/add_book');
+      };
+&nbsp;
+      var populateBookFromLibraryApi = function (data) {
+        $scope.bookExistsInTheLibrary = false;
+&nbsp;
+        if (data._embedded !== undefined) {
+          $scope.book = data._embedded.books[0];
+          $scope.book.imageUrl = BookService.resolveBookImage($scope.book.imageUrl);
+          $scope.bookExistsInTheLibrary = true;
+          $scope.isGoogleBook = true;
+          console.log($scope.isGoogleBook);
+&nbsp;
+          toggleFormDisplay(true);
+        } else {
+          BookService.findGoogleBooks($scope.searchCriteria).
+            success(populateBookFromGoogleApi).
+            error(<span class="fstat-no" title="function not covered" >function () {</span>
+<span class="cstat-no" title="statement not covered" >              toggleFormDisplay(false);</span>
+            });
+        }
+      };
+&nbsp;
+      var populateBookFromGoogleApi = function (data) {
+        angular.forEach(data.items, function (item) {
+          $scope.book = BookService.extractBookInformation(item.volumeInfo, $scope.searchCriteria);
+          $scope.isGoogleBook = true;
+        });
+&nbsp;
+        $scope.formShowable = $scope.book.title !== undefined;
+        $scope.errorShowable = !$scope.formShowable;
+      };
+&nbsp;
+      function getLibrarySlug() {
+        return $route.current.pathParams.library;
+      }
+&nbsp;
+      function addCopy(library, slug, book) {
+        var addCopyRequest = {};
+        addCopyRequest.status = 'AVAILABLE';
+        addCopyRequest.library = library;
+        addCopyRequest.book = book;
+        addCopyRequest.donator = $scope.donator;
+&nbsp;
+        BookService.addCopy(addCopyRequest).
+          success(function () {
+            $scope.addingBook = false;
+&nbsp;
+            window.alert('Book has been added to library successfully.');
+            window.location.replace('/#/library/' + slug);
+          }).
+          error(function () {
+            window.alert('Error occurred while adding ' + $scope.book.title + '.');
+            $scope.addingBook = false;
+          });
+      }
+&nbsp;
+      function addBook(library, slug) {
+        BookService.addBook($scope.book).
+          success(function (data, status, headers, config) {
+            var book = headers('Location');
+            addCopy(library, slug, book);
+          }).
+          error(<span class="fstat-no" title="function not covered" >function () {</span>
+<span class="cstat-no" title="statement not covered" >            window.alert('Error occurred while adding ' + $scope.book.title + '.');</span>
+<span class="cstat-no" title="statement not covered" >            $scope.addingBook = false;</span>
+          });
+      }
+&nbsp;
+      function toggleFormDisplay(displayable) {
+        $scope.formShowable = displayable;
+        $scope.errorShowable = !displayable;
+      }
+    }]
+);
+&nbsp;</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Sep 16 2015 14:39:19 GMT-0300 (BRT)</div>
+</div>
+<script src="../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../sorter.js"></script>
+</body>
+</html>

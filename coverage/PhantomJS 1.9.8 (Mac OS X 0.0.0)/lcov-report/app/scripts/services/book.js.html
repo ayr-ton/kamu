@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for app/scripts/services/book.js</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../../../prettify.css">
+    <link rel="stylesheet" href="../../../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header high">
+    <h1>Code coverage report for <span class="entity">app/scripts/services/book.js</span></h1>
+    <h2>
+        Statements: <span class="metric">97.92% <small>(47 / 48)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">83.33% <small>(10 / 12)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">100% <small>(13 / 13)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">97.92% <small>(47 / 48)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../../../index.html">All files</a> &#187; <a href="index.html">app/scripts/services/</a> &#187; book.js</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">33</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">33</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">33</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">33</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">33</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">33</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">33</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">33</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">33</span>
+<span class="cline-any cline-yes">9</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">33</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
+&nbsp;
+angular
+  .module('libraryUiApp')
+  .service('BookService', function ($http, ENV) {
+    var postConfiguration = {'Content-Type': 'application/json; charset=utf-8'};
+&nbsp;
+    this.findGoogleBooks = function (searchCriteria) {
+      var endPoint = 'https://www.googleapis.com/books/v1/volumes?q=isbn:'.concat(searchCriteria);
+&nbsp;
+      return $http.get(endPoint);
+    };
+&nbsp;
+    this.findLibraryBook = function (searchCriteria) {
+      var endPoint = ENV.apiEndpoint.concat('/books/search/findByIsbn?isbn=').concat(searchCriteria);
+&nbsp;
+      return $http.get(endPoint);
+    };
+&nbsp;
+&nbsp;
+    this.getCopy = function (copy) {
+      var endPoint = ENV.apiEndpoint.concat('/copies/').concat(copy).concat('?projection=copyWithBookInline');
+&nbsp;
+      return $http.get(endPoint);
+    };
+&nbsp;
+    this.extractBookInformation = function (bookInfo, searchCriteria) {
+      var targetBookIdentifier = 'ISBN_13';
+&nbsp;
+      var book = {};
+&nbsp;
+      angular.forEach(bookInfo.industryIdentifiers, function (isbn) {
+        if (isbn.type === targetBookIdentifier &amp;&amp; isbn.identifier === searchCriteria) {
+          book = buildBook(bookInfo, isbn);
+        }
+      });
+&nbsp;
+      return book;
+    };
+&nbsp;
+    this.resolveBookImage = function (imageUrl) {
+      return resolveBookImage(imageUrl);
+    };
+&nbsp;
+    this.addBook = function (book) {
+      var endPoint = ENV.apiEndpoint.concat('/books');
+&nbsp;
+      return $http.post(endPoint, book, postConfiguration);
+    };
+&nbsp;
+    this.addCopy = function (copy) {
+      var endPoint = ENV.apiEndpoint.concat('/copies');
+&nbsp;
+      return $http.post(endPoint, copy, postConfiguration);
+    };
+&nbsp;
+    this.getLibraryBySlug = function (slug) {
+      var endPoint = ENV.apiEndpoint.concat('/libraries/search/findBySlug?slug=').concat(slug);
+&nbsp;
+      return $http.get(endPoint);
+    };
+&nbsp;
+    this.getCopies = function (copiesUrl) {
+      return $http.get(copiesUrl);
+    };
+&nbsp;
+    function buildBook(bookInfo, isbn) {
+      var book = {};
+&nbsp;
+      book.title = bookInfo.title;
+      <span class="missing-if-branch" title="if path not taken" >I</span>if (bookInfo.authors !== undefined) {
+<span class="cstat-no" title="statement not covered" >        book.author = bookInfo.authors.join();</span>
+      }
+      book.subtitle = bookInfo.subtitle;
+      book.description = bookInfo.description;
+      book.isbn = isbn.identifier;
+      book.publisher = bookInfo.publisher;
+      book.publicationDate = bookInfo.publishedDate;
+      book.numberOfPages = bookInfo.pageCount;
+      var imageUrl = bookInfo.imageLinks === undefined ? null : <span class="branch-1 cbranch-no" title="branch not covered" >bookInfo.imageLinks.thumbnail;</span>
+      book.imageUrl = resolveBookImage(imageUrl);
+&nbsp;
+      return book;
+    }
+&nbsp;
+    function resolveBookImage(imageUrl) {
+      var defaultImageUrl = 'images\\no-image.png';
+&nbsp;
+      return (imageUrl === null || imageUrl === undefined) ? defaultImageUrl : imageUrl ;
+    }
+  });
+&nbsp;</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Sep 16 2015 14:39:19 GMT-0300 (BRT)</div>
+</div>
+<script src="../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../sorter.js"></script>
+</body>
+</html>
