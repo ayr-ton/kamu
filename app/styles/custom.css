@@ -1,5 +1,5 @@
 .language {
-  width: 20px;   
+  width: 20px;
   cursor: pointer;
   display: inline-block;
   vertical-align: middle;
@@ -7,7 +7,7 @@
 }
 
 #language-menu {
-  vertical-align: center;
+  /*vertical-align: center;*/
   float: right;
   margin-right: 16px;
   height: 48px;

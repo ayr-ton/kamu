@@ -1,0 +1,17 @@
+.sub-nav {
+  height: 52px;
+  background-color: #2d2d2d;
+  box-sizing: border-box;
+}
+
+.sub-nav:before {
+  content: "";
+  background: url("../../images/shelf-bg.png") repeat-x;
+  background-size: 5px;
+  height: 10px;
+  width: 100%;
+  z-index: 10;
+  display: block;
+  position: absolute;
+  margin-top: 52px;
+}
