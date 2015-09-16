@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for test/spec/services/book_spec.js</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../../../prettify.css">
+    <link rel="stylesheet" href="../../../base.css">
+    <style type='text/css'>
+        div.coverage-summary .sorter {
+            background-image: url(../../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class="header high">
+    <h1>Code coverage report for <span class="entity">test/spec/services/book_spec.js</span></h1>
+    <h2>
+        Statements: <span class="metric">100% <small>(66 / 66)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">100% <small>(0 / 0)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">100% <small>(24 / 24)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">100% <small>(66 / 66)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
+    </h2>
+    <div class="path"><a href="../../../index.html">All files</a> &#187; <a href="index.html">test/spec/services/</a> &#187; book_spec.js</div>
+</div>
+<div class="body">
+<pre><table class="coverage">
+<tr><td class="line-count">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">13</span>
+<span class="cline-any cline-yes">13</span>
+<span class="cline-any cline-yes">13</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use strict';
+&nbsp;
+describe('BookService', function() {
+  var apiEndpoint, bookService, httpBackend;
+&nbsp;
+  beforeEach(module('libraryUiApp'));
+&nbsp;
+  beforeEach(inject(function(_$httpBackend_, BookService, ENV){
+    bookService = BookService;
+    httpBackend = _$httpBackend_;
+    apiEndpoint = ENV.apiEndpoint;
+  }));
+&nbsp;
+  describe('#findGoogleBooks', function() {
+    it('calls the google books api with search criteria', function() {
+      httpBackend.expectGET('https://www.googleapis.com/books/v1/volumes?q=isbn:84698439325325').respond(200);
+&nbsp;
+      bookService.findGoogleBooks('84698439325325');
+&nbsp;
+      httpBackend.flush();
+    });
+  });
+&nbsp;
+  describe('#findLibraryBook', function() {
+    it('invokes backend findBookByIsbn endpoint', function() {
+      httpBackend.expectGET(apiEndpoint.concat('/books/search/findByIsbn?isbn=8964869863')).respond(200);
+&nbsp;
+      bookService.findLibraryBook('8964869863');
+&nbsp;
+      httpBackend.flush();
+    });
+  });
+&nbsp;
+  describe('#getCopy', function() {
+    it('retrieves copies using the inline projection', function() {
+      httpBackend.expectGET(apiEndpoint.concat('/copies/34?projection=copyWithBookInline')).respond(200);
+&nbsp;
+      bookService.getCopy('34');
+&nbsp;
+      httpBackend.flush();
+    });
+  });
+&nbsp;
+  describe('#extractBookInformation', function() {
+    var searchCriteria = '8963476989';
+&nbsp;
+    it('returns an empty book when bookInfo is empty', function() {
+      expect(bookService.extractBookInformation({}, searchCriteria)).toEqual({});
+    });
+&nbsp;
+    it('returns an empty book when bookInfo is present but with no matching isbn13', function() {
+      var googleBook = {
+          'title': 'How to enjoy pairing - 2nd Edition',
+          'subtitle': 'The francieli-ekow way',
+          'industryIdentifiers': [
+            {
+              'type': 'ISBN_13',
+              'identifier': '0000000000000'
+            }
+          ]
+        };
+&nbsp;
+      expect(bookService.extractBookInformation(googleBook, searchCriteria)).toEqual({});
+    });
+&nbsp;
+    it('correctly initializes book when bookInfo is present', function() {
+      var googleBook = {
+          'title': 'How to enjoy pairing - 2nd Edition',
+          'subtitle': 'The francieli-ekow way',
+          'industryIdentifiers': [
+            {
+              'type': 'ISBN_13',
+              'identifier': searchCriteria
+            }
+          ]
+        };
+&nbsp;
+      var book = bookService.extractBookInformation(googleBook, searchCriteria);
+&nbsp;
+      expect(book.title).toEqual('How to enjoy pairing - 2nd Edition');
+      expect(book.subtitle).toEqual('The francieli-ekow way');
+      expect(book.isbn).toEqual(searchCriteria);
+      expect(book.imageUrl).toEqual('images\\no-image.png');
+    });
+  });
+&nbsp;
+  describe('#resolveBookImage', function() {
+    it('returns default url when imageUrl is null', function() {
+      expect(bookService.resolveBookImage(null)).toBe('images\\no-image.png');
+    });
+&nbsp;
+    it('returns default url when imageUrl is undefined', function() {
+      expect(bookService.resolveBookImage(undefined)).toBe('images\\no-image.png');
+    });
+&nbsp;
+    it('returns passed imageUrl when it is neither null or undefined', function() {
+      expect(bookService.resolveBookImage('path/to/image')).toBe('path/to/image');
+    });
+  });
+&nbsp;
+  describe('#addBook', function() {
+    it('calls backend api to add book', function() {
+      var book = { 'title': 'Some wicked title' };
+&nbsp;
+      httpBackend.expectPOST(apiEndpoint.concat('/books'), book).respond(200);
+&nbsp;
+      bookService.addBook(book);
+&nbsp;
+      httpBackend.flush();
+    });
+  });
+&nbsp;
+  describe('#addCopy', function() {
+    it('calls backend api to add a copy', function() {
+      var copy = { 'title': 'Some wicked title' };
+&nbsp;
+      httpBackend.expectPOST(apiEndpoint.concat('/copies'), copy).respond(200);
+&nbsp;
+      bookService.addCopy(copy);
+&nbsp;
+      httpBackend.flush();
+    });
+  });
+&nbsp;
+  describe('#getLibraryBySlug', function() {
+    it('calls backend api to retrieve library by slug', function() {
+      httpBackend.expectGET(apiEndpoint.concat('/libraries/search/findBySlug?slug=quito')).respond(200);
+&nbsp;
+      bookService.getLibraryBySlug('quito');
+&nbsp;
+      httpBackend.flush();
+    });
+  });
+&nbsp;
+  describe('#getCopies', function() {
+    it('fires url endpoint that is passed', function() {
+      var url = 'some/really/cool/endpoint';
+&nbsp;
+      httpBackend.expectGET(url).respond(200);
+&nbsp;
+      bookService.getCopies(url);
+&nbsp;
+      httpBackend.flush();
+    });
+  });
+});</pre></td></tr>
+</table></pre>
+
+</div>
+<div class="footer">
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Wed Sep 16 2015 14:39:19 GMT-0300 (BRT)</div>
+</div>
+<script src="../../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../../sorter.js"></script>
+</body>
+</html>
