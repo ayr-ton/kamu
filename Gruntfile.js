@@ -24,8 +24,7 @@ module.exports = function (grunt) {
   // Configurable paths for the application
   var appConfig = {
     app: require('./bower.json').appPath || 'app',
-    dist: 'public',
-    views: 'views'
+    dist: 'dist'
   };
 
   grunt.loadNpmTasks('grunt-karma');
@@ -213,16 +212,7 @@ module.exports = function (grunt) {
           src: [
             '.tmp',
             '<%= yeoman.dist %>/{,*/}*',
-            '<%= yeoman.views %>/{,*/}*',
             '!<%= yeoman.dist %>/.git{,*/}*'
-          ]
-        }]
-      },
-      html: {
-        files: [{
-          dot: true,
-          src: [
-            '<%= yeoman.dist %>/*.html',
           ]
         }]
       },
@@ -387,7 +377,7 @@ module.exports = function (grunt) {
           expand: true,
           cwd: '<%= yeoman.dist %>',
           src: ['*.html'],
-          dest: '<%= yeoman.views %>'
+          dest: '<%= yeoman.dist %>'
         }]
       }
     },
@@ -529,8 +519,7 @@ module.exports = function (grunt) {
     'uglify',
     'filerev',
     'usemin',
-    'htmlmin',
-    'clean:html',
+    'htmlmin'
   ]);
 
   grunt.registerTask('default', [
