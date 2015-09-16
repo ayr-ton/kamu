@@ -28,7 +28,7 @@
       your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <div class="viewport" resize>
+    <div>
       <div class="containerSlider containerSlider-closed" data-asm-container-slider>
         <nav class="mobile-nav">
           <div class="mobile-nav-container">
@@ -189,5 +189,9 @@
     <script src="scripts/directives/bn-modals.js"></script>
     <!-- endbuild -->
 
+  <script type="text/javascript">
+      window.sessionStorage.name = '<%= name %>';
+      window.sessionStorage.email = '<%= email %>';
+  </script>
   </body>
 </html>

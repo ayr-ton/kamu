@@ -39,7 +39,8 @@ app.get('/login', auth.authenticate('saml', { failureRedirect: '/', failureFlash
 );
 
 app.get('/', auth.protected, function (req, res, next)  {
-  return res.render('index', { token: token  });
+  var username = req.user.firstName.concat(' ').concat(req.user.lastName);
+  return res.render('index', { name: username, email: req.user.nameID });
 });
 
 app.use(express.static(path.join(__dirname, 'dist')));
