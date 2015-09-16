@@ -19,6 +19,13 @@ module.exports = function(config) {
       "jasmine"
     ],
 
+    coverageReporter: { type : 'lcov', dir : 'coverage/' },
+    reporters: ['progress', 'coverage'],
+
+    preprocessors: {
+      '**/*.js': ['coverage']
+    },
+
     // list of files / patterns to load in the browser
     files: [
       // bower:js
@@ -62,7 +69,8 @@ module.exports = function(config) {
     // Which plugins to enable
     plugins: [
       "karma-phantomjs-launcher",
-      "karma-jasmine"
+      "karma-jasmine",
+      "karma-coverage"
     ],
 
     // Continuous Integration mode
