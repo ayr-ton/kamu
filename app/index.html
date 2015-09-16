@@ -12,14 +12,27 @@
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
-    <link rel="stylesheet" href="styles/book.css">
-    <link rel="stylesheet" href="styles/modal.css">
-    <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/custom.css">
-    <link rel="stylesheet" href="styles/font-awesome.css">
-    <link rel="stylesheet" href="styles/slide.css">
-    <link rel="stylesheet" href="styles/mobile.css">
-    <link rel="stylesheet" href="styles/settings.css">
+
+    <link rel="stylesheet" href="styles/book.css"/>
+    <link rel="stylesheet" href="styles/modal.css"/>
+    <link rel="stylesheet" href="styles/custom.css"/>
+    <link rel="stylesheet" href="styles/font-awesome.css"/>
+    <link rel="stylesheet" href="styles/slide.css"/>
+    <link rel="stylesheet" href="styles/mobile.css"/>
+    <link rel="stylesheet" href="styles/settings.css"/>
+    <link rel="stylesheet" href="styles/angular-csp.css"/>
+
+
+    <link rel="stylesheet" href="styles/newStyles/main.css"/>
+    <link rel="stylesheet" href="styles/newStyles/containers.css"/>
+    <link rel="stylesheet" href="styles/newStyles/inputs.css"/>
+    <link rel="stylesheet" href="styles/newStyles/search.css"/>
+    <link rel="stylesheet" href="styles/newStyles/switch.css"/>
+    <link rel="stylesheet" href="styles/newStyles/header.css"/>
+    <link rel="stylesheet" href="styles/newStyles/slideMenu.css"/>
+    <link rel="stylesheet" href="styles/newStyles/subnavigation.css"/>
+    <link rel="stylesheet" href="styles/newStyles/mainNavigation.css"/>
+
     <!-- endbuild -->
   </head>
   <body ng-app="libraryUiApp">
@@ -105,7 +118,7 @@
                     <a href=""
                        ng-click="gotoAllBooks()"
                        ng-controller='BookCtrl'
-                       ng-class="isAllBooksActive()? 'main-nav-active' : 'main-nav-unactive'">
+                       ng-class="isAllBooksActive() ? 'main-nav-active' : 'main-nav-unactive'">
                       {{'APP_LIBRARY_TAB' | translate }}
                     </a>
                   </li>

@@ -1,0 +1,102 @@
+.noScroll {
+  overflow : hidden !important;
+}
+
+.viewport {
+  width    : 100%;
+  height   : 100%;
+  min-height: 500px;
+  overflow : hidden;
+  display  : block;
+  position : relative;
+}
+
+.containerSlider {
+  position           : absolute;
+  overflow           : hidden;
+  width              : calc(200% - 50px);
+
+  -webkit-transition : all 0.2s ease-in-out;
+  -moz-transition    : all 0.2s ease-in-out;
+  -ms-transition     : all 0.2s ease-in-out;
+  -o-transition      : all 0.2s ease-in-out;
+  transition         : all 0.2s ease-in-out;
+}
+
+.containerSlider-closed {
+  left : calc(50px - 100%);
+}
+
+.containerSlider-open {
+  left : 0;
+}
+
+.container {
+  overflow-x : hidden !important;
+  overflow-y : hidden !important;
+
+  width      : calc(50% + 25px);
+  float      : left;
+}
+
+.mobile-nav {
+  background : #e6e6e6;
+  /*height     : 100%;*/
+  width      : calc(50% - 25px);
+  float      : left;
+  position: relative;
+}
+
+.mobile-nav-container {
+  height   : 100%;
+  overflow : auto;
+  background : #e6e6e6;
+}
+
+.mobile-nav-container::after {
+  content         : "";
+  background      : url("../../images/mobile-menu-shadow.png");
+  background-size : 8px;
+  display         : block;
+  position        : absolute;
+  width           : 8px;
+  height          : 100%;
+  right           : 0;
+}
+
+.mobile-nav ul li {
+  width : 100%;
+}
+
+.mobile-nav ul li a {
+  font-size          : 11px;
+  text-transform     : uppercase;
+  letter-spacing     : 0.04em;
+  box-sizing         : border-box;
+  padding            : 18px 24px;
+  float              : left;
+  width              : 100%;
+  border-bottom      : 1px solid #d5d5d5;
+  line-height        : 14px;
+  border-right-style : solid;
+  border-right-width : 3px;
+}
+
+a.mobile-nav-active {
+  color        : #101010;
+  border-color : #fe3e4d;
+}
+
+a.mobile-nav-active:active {
+  background-color : #d5d5d5;
+}
+
+a.mobile-nav-unactive {
+  color        : #838383;
+  border-color : #e6e6e6;
+}
+
+a.mobile-nav-unactive:active {
+  background-color : #d5d5d5;
+  border-color     : #d5d5d5;
+}
