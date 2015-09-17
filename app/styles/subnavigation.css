@@ -6,7 +6,7 @@
 
 .sub-nav:before {
   content: "";
-  background: url("../images/shelf-bg.png") repeat-x;
+  background: url("/images/shelf-bg.png") repeat-x;
   background-size: 5px;
   height: 10px;
   width: 100%;

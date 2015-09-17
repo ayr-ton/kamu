@@ -106,7 +106,7 @@
   margin-top: 8px;
 }
 .books-new{
-  background: url("../images/ind-new.png") no-repeat;
+  background: url("/images/ind-new.png") no-repeat;
   background-size: 72px;
   width: 72px;
   height: 72px;
@@ -209,7 +209,7 @@
   z-index: 999;
   margin-left: 604px;
   margin-top: -16px;
-  background: url("../images/close.svg");
+  background: url("/images/close.svg");
 }
 .popup-close:hover{
   cursor: pointer;
@@ -337,7 +337,7 @@
   margin: 94px auto;
   display: block;
   width: 52px;
-  background: url("../images/add-cover.svg");
+  background: url("/images/add-cover.svg");
 }
 .popup-cover-add:hover{
   cursor: pointer;
