@@ -16,27 +16,36 @@ angular
       $scope.isGoogleBook = false;
       $scope.currentBook = BookService.currentBook;
 
-      $scope.goBack = function() {
+      $scope.currentUserEmail = window.sessionStorage.email;
+
+      $scope.borrowerIsCurrentUser = function (copy) {
+        if(copy.lastLoan) {
+          return copy.lastLoan.email.toLowerCase() == $scope.currentUserEmail.toLowerCase();
+        }
+        return false
+      };
+
+      $scope.goBack = function () {
         NavigationService.goBack();
       };
 
-      $scope.isSettingsActive = function() {
+      $scope.isSettingsActive = function () {
         return NavigationService.isSettingsActive();
       };
 
-      $scope.isAddBookActive = function() {
+      $scope.isAddBookActive = function () {
         return NavigationService.isAddBookActive();
       };
 
-      $scope.isAllBooksActive = function() {
+      $scope.isAllBooksActive = function () {
         return NavigationService.isAllBooksActive();
       };
 
-      $scope.isWishlistActive = function() {
+      $scope.isWishlistActive = function () {
         return NavigationService.isWishlistActive();
       };
 
-      $scope.isBorrowedBooksActive = function() {
+      $scope.isBorrowedBooksActive = function () {
         return NavigationService.isBorrowedBooksActive();
       };
 
@@ -127,101 +136,102 @@ angular
         $scope.listBooks();
       });
 
-      $scope.openCopy = function(copy) {
-        BookService.getBook(copy.reference).success(function(response) {
-        BookService.currentBook = response;
-        window.location.assign('/#/library/' + getLibrarySlug() + '/book_details');
+      $scope.openCopy = function (copy) {
+        BookService.getBook(copy.reference).success(function (response) {
+          BookService.currentBook = response;
+          window.location.assign('/#/library/' + getLibrarySlug() + '/book_details');
         });
-      }
-
-      $scope.borrowCopy = function(copy) {
-
-      var promise = Modal.open(
-        'available', { copy: copy }
-      );
-
-      promise.then(
-        function handleResolve (response) {
-          LoanService.
-            borrowCopy(response.copy.id , response.email).
-            success(function() {
-              Modal.reject();
-
-              window.alert('Book has been loaned to '.concat(response.email).concat('.'));
-              BookService.getCopy(copy.id)
-                .success(function(data) {
-                  var scope = angular.element('#copy-'.concat(copy.id)).scope();
-                  scope.copy = data;
-                  scope.copy.imageUrl = BookService.resolveBookImage(scope.copy.imageUrl);
-                });
-            }).
-            error(function (data, status) {
-              var errorMessage;
-
-              switch(status) {
-                  case 412:
-                      errorMessage = $translate.instant('HTTP_CODE_412');
-                      break;
-                  case 409:
-                      errorMessage = $translate.instant('HTTP_CODE_409');
-                      break;
-                  default:
-                      errorMessage = $translate.instant('HTTP_CODE_500');
-                      break;
-              }
-
-              window.alert(errorMessage);
-            });
-          },
-
-          function handleReject (error) { }
-        );
       };
 
-      $scope.returnCopy = function(copy) {
-        var scope = angular.element('#modal-div').scope();
-        scope.loan = copy.lastLoan ;
+      $scope.borrowCopy = function (copy) {
 
         var promise = Modal.open(
-          'not-available', { loan : copy.lastLoan }
+          'available', {copy : copy}
         );
 
         promise.then(
-          function handleResolve (response) {
+          function handleResolve(response) {
             LoanService.
-              returnCopy(response.loan.id).
-                success(function() {
-                  Modal.reject();
+              borrowCopy(response.copy.id, response.email).
+              success(function () {
+                Modal.reject();
 
-                  window.alert('Book has returned to library.');
-
-                  BookService.getCopy(copy.id)
-                    .success(function(data) {
-                      var scope = angular.element('#copy-'.concat(copy.id)).scope();
-                      scope.copy = data;
-                      scope.copy.imageUrl = BookService.resolveBookImage(scope.copy.imageUrl);
-                    });
+                window.alert('Book has been loaned to '.concat(response.email).concat('.'));
+                BookService.getCopy(copy.id)
+                  .success(function (data) {
+                    var scope = angular.element('#copy-'.concat(copy.id)).scope();
+                    scope.copy = data;
+                    scope.copy.imageUrl = BookService.resolveBookImage(scope.copy.imageUrl);
+                  });
               }).
-              error(function(data, status){
+              error(function (data, status) {
                 var errorMessage;
 
-                switch(status) {
-                    case 428:
-                        errorMessage = $translate.instant('HTTP_CODE_428');
-                        break;
-                    default:
-                        errorMessage = $translate.instant('HTTP_CODE_500');
-                        break;
+                switch (status) {
+                  case 412:
+                    errorMessage = $translate.instant('HTTP_CODE_412');
+                    break;
+                  case 409:
+                    errorMessage = $translate.instant('HTTP_CODE_409');
+                    break;
+                  default:
+                    errorMessage = $translate.instant('HTTP_CODE_500');
+                    break;
                 }
 
                 window.alert(errorMessage);
               });
           },
 
-          function handleReject(error) { }
+          function handleReject(error) {
+          }
         );
       };
 
+      $scope.returnCopy = function (copy) {
+        var scope = angular.element('#modal-div').scope();
+        scope.loan = copy.lastLoan;
+
+        var promise = Modal.open(
+          'not-available', {loan : copy.lastLoan}
+        );
+
+        promise.then(
+          function handleResolve(response) {
+            LoanService.
+              returnCopy(response.loan.id).
+              success(function () {
+                Modal.reject();
+
+                window.alert('Book has returned to library.');
+
+                BookService.getCopy(copy.id)
+                  .success(function (data) {
+                    var scope = angular.element('#copy-'.concat(copy.id)).scope();
+                    scope.copy = data;
+                    scope.copy.imageUrl = BookService.resolveBookImage(scope.copy.imageUrl);
+                  });
+              }).
+              error(function (data, status) {
+                var errorMessage;
+
+                switch (status) {
+                  case 428:
+                    errorMessage = $translate.instant('HTTP_CODE_428');
+                    break;
+                  default:
+                    errorMessage = $translate.instant('HTTP_CODE_500');
+                    break;
+                }
+
+                window.alert(errorMessage);
+              });
+          },
+
+          function handleReject(error) {
+          }
+        );
+      };
 
       $scope.gotoAllBooks = function () {
         window.location.assign('/#/library/' + getLibrarySlug());
