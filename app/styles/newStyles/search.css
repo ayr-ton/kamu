@@ -31,7 +31,7 @@
 .search .search-icon{
   width: 32px;
   height: 32px;
-  background: url("../../images/search_new.svg") center top no-repeat;
+  background: url("../images/search.svg") center top no-repeat;
   background-size: 30px;
   z-index: 999;
   float: right;
