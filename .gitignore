@@ -8,5 +8,6 @@ dist
 .tmp
 .sass-cache
 bower_components
+coverage
 app/scripts/config.js
 npm-debug.log
