@@ -60,6 +60,6 @@
   "scripts": {
     "test": "grunt test",
     "postinstall": "bower install && grunt build",
-    "start": "node ./bin/www"
+    "start": "node ./web"
   }
 }
