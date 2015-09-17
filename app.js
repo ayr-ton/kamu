@@ -10,6 +10,9 @@ var auth = require('./auth/passport');
 
 var app = express();
 
+var environment = process.env.NODE_ENV || 'development';
+var APP_DIRECTORY =  environment === 'development' ? 'app' : 'dist';
+
 app.use(logger('dev'));
 app.use(connect.compress());
 app.use(session({
@@ -22,10 +25,10 @@ app.use(auth.session());
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(favicon(path.join(__dirname, 'dist', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, APP_DIRECTORY, 'favicon.ico')));
 
 app.engine('html', require('ejs').renderFile);
-app.set('views', path.join(__dirname, 'dist'));
+app.set('views', path.join(__dirname, APP_DIRECTORY));
 app.set('view engine', 'html');
 
 app.post('/login/callback', auth.authenticate('saml', { failureRedirect: '/', failureFlash: true }), function (req, res) {
@@ -43,7 +46,10 @@ app.get('/', auth.protected, function (req, res, next)  {
   return res.render('index', { name: username, email: req.user.nameID });
 });
 
-app.use(express.static(path.join(__dirname, 'dist')));
+app.use(express.static(path.join(__dirname, APP_DIRECTORY)));
+if (environment !== 'production') {
+  app.use('/bower_components', express.static(path.join(__dirname, 'bower_components')));
+}
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
