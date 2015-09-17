@@ -23,7 +23,7 @@ module.exports = function(config) {
     reporters: ['progress', 'coverage'],
 
     preprocessors: {
-      '**/*.js': ['coverage']
+      'app/**/*.js': ['coverage']
     },
 
     // list of files / patterns to load in the browser
