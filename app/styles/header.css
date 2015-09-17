@@ -8,7 +8,7 @@ header::after{
   content: "";
   height: 8px;
   top: 54px;
-  background: url("../../images/header-shadow.png");
+  background: url("../images/header-shadow.png");
   background-size: 8px;
   display: block;
   position: relative;
@@ -17,14 +17,14 @@ header::after{
 }
 .add_book{
   float: right;
-  background: url(../../images/add_book_button.svg) left top no-repeat;
+  background: url(../images/add_book_button.svg) left top no-repeat;
   width: 34px;
   height: 34px;
   margin: 10px 12px 10px 10px;
 }
 .add_book:hover{
   cursor: pointer;
-  background: url(../../images/add_book_button.svg) 0 bottom no-repeat;
+  background: url(../images/add_book_button.svg) 0 bottom no-repeat;
 }
 
 #window-container{
