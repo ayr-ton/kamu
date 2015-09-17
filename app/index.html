@@ -6,13 +6,6 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <!-- build:css(.) styles/vendor.css -->
-    <!-- bower:css -->
-    <!-- endbower -->
-    <!-- endbuild -->
-    <!-- build:css(.tmp) styles/main.css -->
-
     <link rel="stylesheet" href="styles/book.css"/>
     <link rel="stylesheet" href="styles/modal.css"/>
 
@@ -22,7 +15,6 @@
     <link rel="stylesheet" href="styles/subnavigation.css"/>
     <link rel="stylesheet" href="styles/search.css"/>
     <link rel="stylesheet" href="styles/containers.css"/>
-    <link rel="stylesheet" href="styles/switch.css"/>
     <link rel="stylesheet" href="styles/settings.css"/>
     <link rel="stylesheet" href="styles/inputs.css"/>
     <link rel="stylesheet" href="styles/slideMenu.css"/>
@@ -33,7 +25,6 @@
     <link rel="stylesheet" href="styles/mobile.css"/>
     <link rel="stylesheet" href="styles/angular-csp.css"/>
 
-    <!-- endbuild -->
   </head>
   <body ng-app="libraryUiApp">
     <!--[if lt IE 7]>
@@ -166,12 +157,9 @@
 
           </div>
         </div>
-        <!--window-->
       </div>
     </div>
 
-    <!-- build:js(.) scripts/vendor.js -->
-    <!-- bower:js -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
@@ -183,28 +171,8 @@
     <script src="bower_components/angular-touch/angular-touch.js"></script>
     <script src="bower_components/angular-translate/angular-translate.js"></script>
     <script src="bower_components/angular-ui-mask/dist/mask.js"></script>
-    <!-- endbower -->
-    <!-- endbuild -->
 
-    <!-- build:js({.tmp,app}) scripts/scripts.js -->
-    <script src="scripts/config.js"></script>
-    <script src="scripts/app.js"></script>
-    <script src="scripts/services/book.js"></script>
-    <script src="scripts/services/loan.js"></script>
-    <script src="scripts/services/modal.js"></script>
-    <script src="scripts/services/library.js"></script>
-    <script src="scripts/services/navigation.js"></script>
-    <!--<script src="scripts/services/slideMenu.js"></script>-->
-    <script src="scripts/controllers/book.js"></script>
-    <script src="scripts/controllers/library.js"></script>
-    <script src="scripts/controllers/translate.js"></script>
-    <script src="scripts/controllers/modal.js"></script>
-    <script src="scripts/controllers/settings.js"></script>
-    <script src="scripts/directives/bn-modals.js"></script>
-
-    <script src="scripts/controllers/slidingMenu.js"></script>
-    <!-- endbuild -->
-
+    <script src="scripts/app.min.js"></script>
     <script type="text/javascript">
       window.sessionStorage.name = '<%= name %>';
       window.sessionStorage.email = '<%= email %>';
