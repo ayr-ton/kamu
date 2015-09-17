@@ -1,9 +1,12 @@
 .DS_Store
 .idea/
+public/
+views/
 node_modules
 dist
 .tmp
 .sass-cache
 bower_components
+coverage
 app/scripts/config.js
 npm-debug.log
