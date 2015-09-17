@@ -202,6 +202,15 @@ angular
     $rootScope.$on('$routeChangeStart', function (event, next, current) {
       var slug = next.pathParams.library;
 
+      document.addEventListener("keyup", function(e) {
+        if (e.keyCode === 27)
+          $rootScope.$broadcast("escapePressed", e.target);
+      });
+
+      document.addEventListener("click", function(e) {
+        $rootScope.$broadcast("documentClicked", e.target);
+      });
+
       if (angular.isDefined(slug)) {
         var $cookies;
 
