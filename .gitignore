@@ -10,3 +10,6 @@ bower_components
 coverage
 app/scripts/config.js
 npm-debug.log
+*.swp
+*.swa
+*.swo
