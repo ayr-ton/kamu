@@ -9,22 +9,30 @@
     <link rel="stylesheet" href="styles/book.css"/>
     <link rel="stylesheet" href="styles/modal.css"/>
 
-    <link rel="stylesheet" href="styles/main.css"/>
-    <link rel="stylesheet" href="styles/header.css"/>
-    <link rel="stylesheet" href="styles/mainNavigation.css"/>
-    <link rel="stylesheet" href="styles/subnavigation.css"/>
-    <link rel="stylesheet" href="styles/search.css"/>
-    <link rel="stylesheet" href="styles/containers.css"/>
-    <link rel="stylesheet" href="styles/settings.css"/>
-    <link rel="stylesheet" href="styles/inputs.css"/>
-    <link rel="stylesheet" href="styles/slideMenu.css"/>
+    <!-- build:css(.) styles/vendor.css -->
+    <!-- bower:css -->
+    <!-- endbower -->
+    <!-- endbuild -->
 
-    <link rel="stylesheet" href="styles/custom.css"/>
-    <link rel="stylesheet" href="styles/font-awesome.css"/>
-    <link rel="stylesheet" href="styles/slide.css"/>
-    <link rel="stylesheet" href="styles/mobile.css"/>
-    <link rel="stylesheet" href="styles/angular-csp.css"/>
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/newStyles/main.css"/>
+    <link rel="stylesheet" href="styles/newStyles/containers.css"/>
+    <link rel="stylesheet" href="styles/newStyles/inputs.css"/>
+    <link rel="stylesheet" href="styles/newStyles/search.css"/>
+    <link rel="stylesheet" href="styles/newStyles/switch.css"/>
+    <link rel="stylesheet" href="styles/newStyles/header.css"/>
+    <link rel="stylesheet" href="styles/newStyles/slideMenu.css"/>
+    <link rel="stylesheet" href="styles/newStyles/subnavigation.css"/>
+    <link rel="stylesheet" href="styles/newStyles/mainNavigation.css"/>
 
+    <link rel="stylesheet" href="styles/book.css">
+    <link rel="stylesheet" href="styles/modal.css">
+    <link rel="stylesheet" href="styles/custom.css">
+    <link rel="stylesheet" href="styles/font-awesome.css">
+    <link rel="stylesheet" href="styles/slide.css">
+    <link rel="stylesheet" href="styles/mobile.css">
+    <link rel="stylesheet" href="styles/settings.css">
+    <!-- endbuild -->
   </head>
   <body ng-app="libraryUiApp">
     <!--[if lt IE 7]>
@@ -160,19 +168,38 @@
       </div>
     </div>
 
-    <script src="bower_components/jquery/dist/jquery.js"></script>
-    <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="bower_components/angular-animate/angular-animate.js"></script>
-    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
-    <script src="bower_components/angular-resource/angular-resource.js"></script>
-    <script src="bower_components/angular-route/angular-route.js"></script>
-    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-    <script src="bower_components/angular-touch/angular-touch.js"></script>
-    <script src="bower_components/angular-translate/angular-translate.js"></script>
-    <script src="bower_components/angular-ui-mask/dist/mask.js"></script>
+    <!-- build:js(.) scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../bower_components/angular/angular.js"></script>
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="../bower_components/angular-animate/angular-animate.js"></script>
+    <script src="../bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="../bower_components/angular-resource/angular-resource.js"></script>
+    <script src="../bower_components/angular-route/angular-route.js"></script>
+    <script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="../bower_components/angular-touch/angular-touch.js"></script>
+    <script src="../bower_components/angular-translate/angular-translate.js"></script>
+    <script src="../bower_components/angular-ui-mask/dist/mask.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
 
-    <script src="scripts/app.min.js"></script>
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="scripts/config.js"></script>
+    <script src="scripts/app.js"></script>
+    <script src="scripts/services/book.js"></script>
+    <script src="scripts/services/loan.js"></script>
+    <script src="scripts/services/modal.js"></script>
+    <script src="scripts/services/library.js"></script>
+    <script src="scripts/services/navigation.js"></script>
+    <script src="scripts/controllers/book.js"></script>
+    <script src="scripts/controllers/library.js"></script>
+    <script src="scripts/controllers/translate.js"></script>
+    <script src="scripts/controllers/modal.js"></script>
+    <script src="scripts/controllers/settings.js"></script>
+    <script src="scripts/directives/bn-modals.js"></script>
+    <!-- endbuild -->
+
     <script type="text/javascript">
       window.sessionStorage.name = '<%= name %>';
       window.sessionStorage.email = '<%= email %>';
