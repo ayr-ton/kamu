@@ -13,11 +13,14 @@ Run `npm install` to install node dependencies.
 
 Run `bower install` to install bower dependencies.
 
-## Build & development
+## Development
 
-Run `grunt` for building and `grunt serve` for preview.
+Run `npm start` will serve files on [http://localhost:9000](http://localhost:9000) with livereload.
+Run `npm run build` to build the application, this will output to the `dist` folder the app with minified resources.
+
 
 ## Testing
 
-Running `grunt test` will run the unit tests with karma.
+Running `npm test` will run the unit tests with karma.
 
+You can also run `npm run test:watch` to run the tests everytime you modify a test or source file.
