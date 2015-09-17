@@ -15,23 +15,23 @@
 
     <link rel="stylesheet" href="styles/book.css"/>
     <link rel="stylesheet" href="styles/modal.css"/>
+
+    <link rel="stylesheet" href="styles/main.css"/>
+    <link rel="stylesheet" href="styles/header.css"/>
+    <link rel="stylesheet" href="styles/mainNavigation.css"/>
+    <link rel="stylesheet" href="styles/subnavigation.css"/>
+    <link rel="stylesheet" href="styles/search.css"/>
+    <link rel="stylesheet" href="styles/containers.css"/>
+    <link rel="stylesheet" href="styles/switch.css"/>
+    <link rel="stylesheet" href="styles/settings.css"/>
+    <link rel="stylesheet" href="styles/inputs.css"/>
+    <link rel="stylesheet" href="styles/slideMenu.css"/>
+
     <link rel="stylesheet" href="styles/custom.css"/>
     <link rel="stylesheet" href="styles/font-awesome.css"/>
     <link rel="stylesheet" href="styles/slide.css"/>
     <link rel="stylesheet" href="styles/mobile.css"/>
-    <link rel="stylesheet" href="styles/settings.css"/>
     <link rel="stylesheet" href="styles/angular-csp.css"/>
-
-
-    <link rel="stylesheet" href="styles/main.css"/>
-    <link rel="stylesheet" href="styles/containers.css"/>
-    <link rel="stylesheet" href="styles/inputs.css"/>
-    <link rel="stylesheet" href="styles/search.css"/>
-    <link rel="stylesheet" href="styles/switch.css"/>
-    <link rel="stylesheet" href="styles/header.css"/>
-    <link rel="stylesheet" href="styles/slideMenu.css"/>
-    <link rel="stylesheet" href="styles/subnavigation.css"/>
-    <link rel="stylesheet" href="styles/mainNavigation.css"/>
 
     <!-- endbuild -->
   </head>
@@ -41,13 +41,14 @@
       your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <div>
-      <div class="containerSlider containerSlider-closed" data-asm-container-slider>
+    <div class="viewport" ng-class="{ 'noScroll' : menuVisible }" ng-controller="slidingMenu">
+      <div class="containerSlider" ng-class="menuVisible ? 'containerSlider-open' : 'containerSlider-closed'">
+
         <nav class="mobile-nav">
           <div class="mobile-nav-container">
             <ul>
               <li>
-                <a href="" data-asm-control="pushLeft"
+                <a href=""
                    ng-click="gotoAllBooks()"
                    ng-controller='BookCtrl'
                    ng-class="isAllBooksActive()? 'mobile-nav-active' : 'mobile-nav-unactive'">
@@ -55,13 +56,13 @@
                 </a>
               </li>
               <li>
-                <a href="" data-asm-control="pushLeft"
+                <a href=""
                    ng-class="isWishlistActive()? 'mobile-nav-active' : 'mobile-nav-unactive'">
                   {{ 'APP_WISHLIST_TAB' | translate }}
                 </a>
               </li>
               <li>
-                <a href="" data-asm-control="pushLeft"
+                <a href=""
                    ng-class="isBorrowedBooksActive()? 'mobile-nav-active' : 'mobile-nav-unactive'">
                   {{ 'APP_BORROWED_BOOKS_TAB' | translate }}
                 </a>
@@ -70,7 +71,7 @@
               <!--<a href="http://" class="mobile-nav-unactive">books i own</a>-->
               <!--</li>-->
               <li>
-                <a href="" data-asm-control="pushLeft"
+                <a href=""
                    ng-class="isAddBookActive() ? 'mobile-nav-active' : 'mobile-nav-unactive'"
                    ng-show="isInsideLibrary()"
                    ng-controller="BookCtrl"
@@ -82,7 +83,7 @@
               <!--<a href="http://" class="mobile-nav-unactive">add book to wish list</a>-->
               <!--</li>-->
               <li>
-                <a href="" data-asm-control="pushLeft"
+                <a href=""
                    ng-class="isSettingsActive() ? 'mobile-nav-active' : 'mobile-nav-unactive'"
                    ng-show="isInsideLibrary()"
                    ng-controller="BookCtrl"
@@ -98,7 +99,7 @@
           <div id="window">
             <!-- Add your site or application content here -->
             <header>
-              <div data-asm-control="pushLeft">
+              <div ng-click="showMenu($event)">
                 <a href="">
                   <div class="mobile-menu" id="showLeftPush"></div>
                 </a>
@@ -193,17 +194,20 @@
     <script src="scripts/services/modal.js"></script>
     <script src="scripts/services/library.js"></script>
     <script src="scripts/services/navigation.js"></script>
+    <!--<script src="scripts/services/slideMenu.js"></script>-->
     <script src="scripts/controllers/book.js"></script>
     <script src="scripts/controllers/library.js"></script>
     <script src="scripts/controllers/translate.js"></script>
     <script src="scripts/controllers/modal.js"></script>
     <script src="scripts/controllers/settings.js"></script>
     <script src="scripts/directives/bn-modals.js"></script>
+
+    <script src="scripts/controllers/slidingMenu.js"></script>
     <!-- endbuild -->
 
-  <script type="text/javascript">
+    <script type="text/javascript">
       window.sessionStorage.name = '<%= name %>';
       window.sessionStorage.email = '<%= email %>';
-  </script>
+    </script>
   </body>
 </html>
