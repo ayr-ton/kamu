@@ -10,7 +10,7 @@
     "build": "npm run build:clean && npm run build:env && npm run build:wiredep && npm run build:minify && npm run build:copy",
     "test:karma": "karma start test/karma.conf.js --single-run",
     "test:watch": "watch 'npm run test:karma' ./app ./test",
-    "test": "npm run build && npm run test:karma",
+    "test": "npm run test:karma",
     "livereload": "live-reload --port 9091 ./app",
     "start": "parallelshell 'node ./web' 'npm run livereload'",
     "postinstall": "bower install && npm run build"
