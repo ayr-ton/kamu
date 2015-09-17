@@ -1,6 +1,17 @@
 {
   "name": "library-ui",
   "private": true,
+  "scripts": {
+    "build:clean": "rm -rf ./dist/* && rm -rf ./.tmp/* && mkdir ./dist/scripts",
+    "build:env": "node ./scripts/environment.js",
+    "build:uglify": "./scripts/uglify.sh",
+    "build:copy": "cp -rf ./app/{images,styles,views} ./dist/ && cp ./app/*.{ico,html,txt} ./dist/",
+    "build": "./scripts/build.sh",
+
+    "test": "grunt test",
+    "postinstall": "bower install && grunt build",
+    "start": "node ./web"
+  },
   "dependencies": {
     "bower": "1.4.1",
     "compression": "1.5.2",
@@ -52,14 +63,12 @@
     "ejs": "~2.3.3",
     "morgan": "~1.6.1",
     "serve-favicon": "~2.3.0"
+    "ng-annotate": "^1.0.2",
+    "time-grunt": "^1.0.0",
+    "wiredep": "^2.2.2"
   },
   "engines": {
     "node": "0.12.7",
     "npm": "2.13.5"
-  },
-  "scripts": {
-    "test": "grunt test",
-    "postinstall": "bower install && grunt build",
-    "start": "node ./web"
   }
 }
