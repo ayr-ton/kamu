@@ -13,7 +13,7 @@
 	.mobile-menu, .mobile-menu-active{
 		width: 50px;
 		background-color: #e95454;
-		background: url("../images/mobile-menu.svg") no-repeat;
+		background: url("/images/mobile-menu.svg") no-repeat;
 		z-index: 999;
 		height: 50px;
 		position: relative;
@@ -38,7 +38,7 @@
 	.search-mobile{
 		width: 32px;
 		height: 32px;
-		background: url("../images/search.svg") center top no-repeat;
+		background: url("/images/search.svg") center top no-repeat;
 		float: right;
 		display: block;
 		margin: -41px 9px 9px;
@@ -57,10 +57,10 @@
 	.sub-nav{height: 48px;}
 	.sub-nav:before{margin-top: 48px;}
 	.go-back a{margin: 8px;}
-	
+
 	/*LOOK*/
 	.main-container-window-divider h2{margin-top: 8px;}
-	
+
 	.books-shelf ul{padding-right: 0px;padding-left: 0px;}
 	.books-shelf ul li{padding: 0;}
 	.books-shelf-image-container a:hover .books-img::after{margin-top: 0px;}
