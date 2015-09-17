@@ -29,7 +29,7 @@ angular
 
     var rootUrl = '/library/:library';
 
-    $translateProvider.useSanitizeValueStrategy('sanitize');
+    $translateProvider.useSanitizeValueStrategy('escape');
     $routeProvider.caseInsensitiveMatch = true;
 
     $routeProvider
