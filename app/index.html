@@ -6,13 +6,15 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <link rel="stylesheet" href="styles/book.css"/>
+    <link rel="stylesheet" href="styles/modal.css"/>
+
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
     <!-- endbower -->
     <!-- endbuild -->
-    <!-- build:css(.tmp) styles/main.css -->
 
+    <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/book.css"/>
     <link rel="stylesheet" href="styles/modal.css"/>
 
@@ -32,7 +34,6 @@
     <link rel="stylesheet" href="styles/slide.css"/>
     <link rel="stylesheet" href="styles/mobile.css"/>
     <link rel="stylesheet" href="styles/angular-csp.css"/>
-
     <!-- endbuild -->
   </head>
   <body ng-app="libraryUiApp">
@@ -166,23 +167,26 @@
 
           </div>
         </div>
-        <!--window-->
       </div>
     </div>
 
+    <!-- build:livereload(.) -->
+    <script src="//localhost:9091"></script>
+    <!-- endbuild -->
+
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
-    <script src="bower_components/jquery/dist/jquery.js"></script>
-    <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="bower_components/angular-animate/angular-animate.js"></script>
-    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
-    <script src="bower_components/angular-resource/angular-resource.js"></script>
-    <script src="bower_components/angular-route/angular-route.js"></script>
-    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-    <script src="bower_components/angular-touch/angular-touch.js"></script>
-    <script src="bower_components/angular-translate/angular-translate.js"></script>
-    <script src="bower_components/angular-ui-mask/dist/mask.js"></script>
+    <script src="../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../bower_components/angular/angular.js"></script>
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="../bower_components/angular-animate/angular-animate.js"></script>
+    <script src="../bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="../bower_components/angular-resource/angular-resource.js"></script>
+    <script src="../bower_components/angular-route/angular-route.js"></script>
+    <script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="../bower_components/angular-touch/angular-touch.js"></script>
+    <script src="../bower_components/angular-translate/angular-translate.js"></script>
+    <script src="../bower_components/angular-ui-mask/dist/mask.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -194,14 +198,12 @@
     <script src="scripts/services/modal.js"></script>
     <script src="scripts/services/library.js"></script>
     <script src="scripts/services/navigation.js"></script>
-    <!--<script src="scripts/services/slideMenu.js"></script>-->
     <script src="scripts/controllers/book.js"></script>
     <script src="scripts/controllers/library.js"></script>
     <script src="scripts/controllers/translate.js"></script>
     <script src="scripts/controllers/modal.js"></script>
     <script src="scripts/controllers/settings.js"></script>
     <script src="scripts/directives/bn-modals.js"></script>
-
     <script src="scripts/controllers/slidingMenu.js"></script>
     <!-- endbuild -->
 
