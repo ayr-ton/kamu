@@ -1,11 +1,9 @@
-<div class='select-library'>
-  <p>
-    {{ 'APP_LIBRARY_BROWSE_PROMPT' | translate }}
-  </p>
-  <br>
-  <ul>
-    <li ng-repeat='library in libraries'>
-      <a href='/#/library/{{ library.slug }}'>{{ library.name }}</a>
-    </li>
-  </ul>
+<div class="intro-container">
+  <div class="">
+    <img src="images/logo-intro.svg" alt=""/>
+
+    <div class="intro-window">
+      <a ng-repeat='library in libraries' href='/#/library/{{ library.slug }}'>{{ library.name }}</a>
+    </div>
+  </div>
 </div>
