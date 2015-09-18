@@ -9,17 +9,20 @@ angular
     'Modal',
     '$translate',
     '$route',
-    function ($scope, BookService, LoanService, NavigationService, Modal, $translate, $route) {
+    '$routeParams',
+    function ($scope, BookService, LoanService, NavigationService, Modal, $translate, $route, $routeParams) {
 
       $scope.searchCriteria = '';
       $scope.addingBook = false;
       $scope.isGoogleBook = false;
       $scope.currentBook = BookService.currentBook;
 
+      var isInBookDetails = NavigationService.isBookDetails();
+
       $scope.currentUserEmail = window.sessionStorage.email;
 
       $scope.borrowerIsCurrentUser = function (copy) {
-        if(copy.lastLoan) {
+        if (copy.lastLoan) {
           return copy.lastLoan.email.toLowerCase() == $scope.currentUserEmail.toLowerCase();
         }
         return false
@@ -35,6 +38,10 @@ angular
 
       $scope.isAddBookActive = function () {
         return NavigationService.isAddBookActive();
+      };
+
+      $scope.isAddWishActive = function () {
+        return NavigationService.isAddWishActive();
       };
 
       $scope.isAllBooksActive = function () {
@@ -139,7 +146,17 @@ angular
       $scope.openCopy = function (copy) {
         BookService.getBook(copy.reference).success(function (response) {
           BookService.currentBook = response;
-          window.location.assign('/#/library/' + getLibrarySlug() + '/book_details');
+          $scope.currentBook = BookService.currentBook;
+          var url = '#/library/' + getLibrarySlug() + '/book_details';
+          window.location.assign(url);
+        });
+      };
+
+      $scope.loadCopy = function (copyReference) {
+        BookService.getBook(copyReference).success(function (response) {
+          BookService.currentBook = response;
+          $scope.currentBook = BookService.currentBook;
+          console.log("COPY LOADED");
         });
       };
 
@@ -241,6 +258,10 @@ angular
         window.location.assign('/#/library/' + getLibrarySlug() + '/add_book');
       };
 
+      $scope.gotoAddWish = function () {
+        window.location.assign('/#/library/' + getLibrarySlug() + '/add_wish');
+      };
+
       $scope.gotoSettings = function () {
         window.location.assign('/#/library/' + getLibrarySlug() + '/settings');
       };
@@ -314,5 +335,17 @@ angular
         $scope.formShowable = displayable;
         $scope.errorShowable = !displayable;
       }
+
+      //if (isInBookDetails) {
+      //  $scope.loadCopy($routeParams.bookId);
+      //  console.log(
+      //    "current book: ",
+      //    $scope.currentBook.title,
+      //    "is book details: ",
+      //    isInBookDetails,
+      //    "params: ",
+      //    $routeParams
+      //  );
+      //}
     }]
 );

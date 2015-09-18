@@ -1,10 +1,11 @@
-header{
+header {
   height: 54px;
   background-color: #ffffff;
   border-bottom: 1px solid #e6e6e6;
   box-sizing: border-box;
 }
-header::after{
+
+header::after {
   content: "";
   height: 8px;
   top: 54px;
@@ -15,33 +16,51 @@ header::after{
   visibility: hidden;
   opacity: 0.3;
 }
-.add_book{
+
+.add_book {
   float: right;
   background: url("/images/add_book_button.svg") left top no-repeat;
   width: 34px;
   height: 34px;
   margin: 10px 12px 10px 10px;
 }
-.add_book:hover{
+
+.add_book:hover {
   cursor: pointer;
   background: url("/images/add_book_button.svg") 0 bottom no-repeat;
 }
 
-#window-container{
+#window-container {
   /*width: 100%;*/
   /*overflow-x: hidden;*/
   overflow: visible;
 }
-#window{
+
+#window {
   float: left;
   width: 100%;
   overflow-x: hidden;
 }
-.logo{
+
+.logo {
   height: 54px;
   margin-left: 2px;
   float: left;
 }
-.logo img{
+
+.logo img {
   height: 54px;
+}
+
+.user-container {
+  float: right;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 10px 10px 10px 4px;
+}
+
+.user-container img {
+  width: 34px;
 }
