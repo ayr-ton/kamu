@@ -98,7 +98,8 @@ angular
         REQUIRED: '(Required Field)',
         INVALID_LIBRARY_ERROR: 'Oops! The library you are adding a book to is not registered with us.',
         RETURN_MESSAGE: 'are you returning this book?',
-        APP_SETTINGS: 'Settings'
+        APP_SETTINGS: 'Settings',
+        APP_ADD_WISH: 'Add book to wishlist'
       })
       .translations('pt-BR', {
         APP_LIBRARY_TAB: 'Todos Os Livros',
@@ -136,7 +137,8 @@ angular
         REQUIRED: '(Campo Obrigatório)',
         INVALID_LIBRARY_ERROR: 'Desculpe, você está adiconando um livro em uma biblioteca que não está regirstrada.' ,
         RETURN_MESSAGE: 'você deseja realmente retornar este livro?',
-        APP_SETTINGS: 'Configuração'
+        APP_SETTINGS: 'Configuração',
+        APP_ADD_WISH: 'Incluir livro na lista de desejos'
       })
       .translations('es-EC', {
         APP_LIBRARY_TAB: 'Todos Los Libros',
@@ -174,7 +176,8 @@ angular
         REQUIRED: '(Campo Obligatorio)',
         INVALID_LIBRARY_ERROR: '¡Ups! La librería a la que intenta agregar un libro no está registrada.',
         RETURN_MESSAGE: '¿Estás seguro de devolver este libro?',
-        APP_SETTINGS: 'Configuración'
+        APP_SETTINGS: 'Configuración',
+        APP_ADD_WISH: 'Añadir libro a la lista de deseos'
 
       });
 
