@@ -49,7 +49,7 @@ angular
         templateUrl: 'views/library/index.html',
         controller: 'LibraryCtrl'
       })
-      .when(rootUrl + '/book_details', {
+      .when(rootUrl + '/book_details/:bookId', {
         templateUrl: 'views/book/book-details.html',
         controller: 'BookCtrl'
       })

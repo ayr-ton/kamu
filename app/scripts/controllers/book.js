@@ -147,7 +147,7 @@ angular
         BookService.getBook(copy.reference).success(function (response) {
           BookService.currentBook = response;
           $scope.currentBook = BookService.currentBook;
-          var url = '#/library/' + getLibrarySlug() + '/book_details';
+          var url = '#/library/' + getLibrarySlug() + '/book_details/' + copy.reference;
           window.location.assign(url);
         });
       };
@@ -156,7 +156,6 @@ angular
         BookService.getBook(copyReference).success(function (response) {
           BookService.currentBook = response;
           $scope.currentBook = BookService.currentBook;
-          console.log("COPY LOADED");
         });
       };
 
@@ -336,16 +335,8 @@ angular
         $scope.errorShowable = !displayable;
       }
 
-      //if (isInBookDetails) {
-      //  $scope.loadCopy($routeParams.bookId);
-      //  console.log(
-      //    "current book: ",
-      //    $scope.currentBook.title,
-      //    "is book details: ",
-      //    isInBookDetails,
-      //    "params: ",
-      //    $routeParams
-      //  );
-      //}
+      if (isInBookDetails) {
+        $scope.loadCopy($routeParams.bookId);
+      }
     }]
 );
