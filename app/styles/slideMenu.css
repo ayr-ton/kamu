@@ -54,7 +54,7 @@
 
 .mobile-nav-container::after {
   content         : "";
-  background      : url("../images/mobile-menu-shadow.png");
+  background      : url("/images/mobile-menu-shadow.png");
   background-size : 8px;
   display         : block;
   position        : absolute;

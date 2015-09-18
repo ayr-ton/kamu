@@ -66,11 +66,11 @@
 }
 
 a.main-nav-settings {
-  background: url("../images/settings.svg") center top no-repeat;
+  background: url("/images/settings.svg") center top no-repeat;
 }
 
 a.main-nav-add-book {
-  background: url("../images/add-book.svg") center top no-repeat;
+  background: url("/images/add-book.svg") center top no-repeat;
 }
 
 a.main-nav-settings:hover, a.main-nav-add-book:hover {
@@ -92,7 +92,7 @@ a.settings-active, a.settings-active:hover, a.add-book-active, a.add-book-active
   width: 40px;
   background-color: #f24545;
   float: left;
-  background: url("../images/back.svg") center top no-repeat;
+  background: url("/images/back.svg") center top no-repeat;
   -webkit-transition: background-color 0.2s ease;
   -moz-transition: background-color 0.2s ease;
   -o-transition: background-color 0.2s ease;
