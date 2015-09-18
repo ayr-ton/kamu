@@ -15,9 +15,15 @@ module.exports = function(config) {
 
     // testing framework to use (jasmine/mocha/qunit/...)
     // as well as any additional frameworks (requirejs/chai/sinon/...)
-    frameworks: [
+    frameworks: [ 
+      "wiredep",
       "jasmine"
     ],
+
+    wiredep: {
+      dependencies:true,
+      devDependencies:true
+    },
 
     coverageReporter: { type : 'lcov', dir : 'coverage/' },
     reporters: ['progress', 'coverage'],
@@ -28,21 +34,6 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      // bower:js
-      'bower_components/jquery/dist/jquery.js',
-      'bower_components/angular/angular.js',
-      'bower_components/bootstrap/dist/js/bootstrap.js',
-      'bower_components/angular-animate/angular-animate.js',
-      'bower_components/angular-cookies/angular-cookies.js',
-      'bower_components/angular-resource/angular-resource.js',
-      'bower_components/angular-route/angular-route.js',
-      'bower_components/angular-sanitize/angular-sanitize.js',
-      'bower_components/angular-touch/angular-touch.js',
-      'bower_components/angular-translate/angular-translate.js',
-      'bower_components/angular-ui-mask/dist/mask.js',
-      'bower_components/angular-md5/angular-md5.js',
-      'bower_components/angular-mocks/angular-mocks.js',
-      // endbower
       "app/scripts/**/*.js",
       "test/mock/**/*.js",
       "test/spec/!(features)/*.js"
@@ -69,6 +60,7 @@ module.exports = function(config) {
 
     // Which plugins to enable
     plugins: [
+      "karma-wiredep",
       "karma-phantomjs-launcher",
       "karma-jasmine",
       "karma-coverage"
