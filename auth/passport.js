@@ -12,6 +12,7 @@ if (environment === 'development') {
 } else {
   config = allEnvironments.staging;
 }
+config.auth.cert = process.env.OKTA_CERT;
 
 function findByEmail(nameID, fn) {
   for (var i = 0, len = users.length; i < len; i++) {
