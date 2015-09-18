@@ -1,8 +1,17 @@
 var passport = require('passport'),
   SamlStrategy = require('passport-saml').Strategy,
-  config = require('./config.json');
+  allEnvironments = require('./auth-environments.json'),
+  config, environment;
 
 var users = [];
+
+environment = process.env.NODE_ENV || 'development';
+
+if (environment === 'development') {
+  config = allEnvironments.local;
+} else {
+  config = allEnvironments.staging;
+}
 
 function findByEmail(nameID, fn) {
   for (var i = 0, len = users.length; i < len; i++) {
