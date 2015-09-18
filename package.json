@@ -2,7 +2,7 @@
   "name": "library-ui",
   "private": true,
   "scripts": {
-    "build:clean": "rm -rf ./dist/* && rm -rf ./.tmp/* && mkdir ./dist/scripts",
+    "build:clean": "rm -rf ./dist/* && rm -rf ./.tmp/* && mkdir -p ./dist && mkdir -p ./dist/scripts",
     "build:env": "node ./scripts/environment.js",
     "build:wiredep": "wiredep -s ./app/index.html",
     "build:minify": "usemin ./app/index.html --dest ./dist/ --output ./dist/index.html --rmlr true",
