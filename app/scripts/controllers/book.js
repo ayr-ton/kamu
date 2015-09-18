@@ -10,7 +10,8 @@ angular
     '$translate',
     '$route',
     '$routeParams',
-    function ($scope, BookService, LoanService, NavigationService, Modal, $translate, $route, $routeParams) {
+    'md5',
+    function ($scope, BookService, LoanService, NavigationService, Modal, $translate, $route, $routeParams, md5) {
 
       $scope.searchCriteria = '';
       $scope.addingBook = false;
@@ -117,6 +118,7 @@ angular
       };
 
       $scope.listBooks = function () {
+
         $scope.copies = [];
 
         BookService.getLibraryBySlug(getLibrarySlug()).
@@ -136,7 +138,17 @@ angular
           copy.imageUrl = 'images/no-image.png';
         }
 
+        if (copy.lastLoan  !== undefined) {
+          copy.lastLoan.user.imageUrl = getGravatar(copy.lastLoan.user.email);
+        }
+
         return copy;
+      }
+
+      function getGravatar(email){
+        var hashedEmail = md5.createHash(email);
+        return 'http://www.gravatar.com/avatar/' + hashedEmail;
+
       }
 
       $scope.$on('$viewContentLoaded', function () {

@@ -395,6 +395,7 @@ describe('BookCtrl', function () {
   });
 
   describe('#listBooks', function () {
+
     var searchUrl;
     var slug = 'bh';
     var library = {
@@ -470,6 +471,38 @@ describe('BookCtrl', function () {
       expect(scope.copies[0].title).toEqual('Enjoying Fifa with your eyes closed.');
       expect(scope.copies[0].imageUrl).toEqual('path/to/image');
     });
+
+  it('check correct user image url that has borrowed the book', function () {
+
+      var imageUrl =  'http://www.gravatar.com/avatar/5c710e48e871d4d4c2a66f7b69a19150';
+      
+      var lastLoan = {
+          "id"    : 1,
+          "user"  : 
+          { 
+            'id': '21', 
+            'email': "tuliolucas.silva@gmail.com"
+        }
+
+      }
+
+      library._embedded.libraries[0]._embedded.copies[0].lastLoan = lastLoan;
+
+      httpBackend.expectGET(searchUrl)
+        .respond(200, library);
+
+      httpBackend.expectGET(libraryIndexPage)
+        .respond(200);
+
+      scope.listBooks();
+
+      httpBackend.flush();
+
+      expect(scope.copies[0].lastLoan.user.imageUrl).not.toBeUndefined();
+      expect(scope.copies[0].lastLoan.user.imageUrl).toEqual(imageUrl);
+
+    });
+
   });
 
   describe('#gotoAddBook', function () {
