@@ -10,7 +10,7 @@ angular
       var $cookies;
       $scope.languages = [
         {name : "Español Ecuador", code : "es-EC"},
-        {name : "Portugués Brasil", code : "pt-BR"},
+        {name : "Português Brasil", code : "pt-BR"},
         {name : "English USA", code : "en-US"}
       ];
 
