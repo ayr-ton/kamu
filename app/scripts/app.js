@@ -19,7 +19,8 @@ angular
     'ngTouch',
     'pascalprecht.translate',
     'ngCookies',
-    'ui.mask'
+    'ui.mask', 
+    'ngMd5'
   ])
   .config(['$routeProvider', '$translateProvider', function ($routeProvider, $translateProvider) {
     var $cookies;
