@@ -6,7 +6,7 @@
     "build:env": "node ./scripts/environment.js",
     "build:wiredep": "wiredep -s ./app/index.html",
     "build:minify": "usemin ./app/index.html --dest ./dist/ --output ./dist/index.html --rmlr true",
-    "build:copy": "cp -rf ./app/images/ ./dist/ && cp -rf ./app/views/ ./dist/ && cp ./app/*.{ico,txt} ./dist/",
+    "build:copy": "cp -rf ./app/images/ ./dist/ && cp -rf ./app/views/ ./dist/ && cp ./app/*.ico ./dist/ && cp ./app/*.txt ./dist/",
     "build": "npm run build:clean && npm run build:env && npm run build:wiredep && npm run build:minify && npm run build:copy",
     "test:karma": "karma start test/karma.conf.js --single-run",
     "test:watch": "watch 'npm run test:karma' ./app ./test",
