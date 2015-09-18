@@ -4,7 +4,7 @@
 
 angular
   .module('libraryUiApp')
-  .controller("slidingMenu", function ($scope, $rootScope) {
+  .controller("slidingMenu", ['$scope', '$rootScope', function ($scope, $rootScope) {
     $scope.menuVisible = false;
 
     $scope.closeMenu = function () {
@@ -24,4 +24,4 @@ angular
 
     $rootScope.$on("documentClicked", _close);
     $rootScope.$on("escapePressed", _close);
-  });
+  }]);
