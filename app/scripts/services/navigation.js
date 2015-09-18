@@ -9,6 +9,7 @@ angular
     this.allBooks = "views/book/index.html";
     this.wishlist = "views/book/wishlist.html";
     this.borrowedBooks = "views/book/borrowed-books.html";
+    this.addWish = "views/book/add-wish.html";
 
     this.bookDetails = "views/book/book-details.html";
     this.currentBookList = this.allBooks;
@@ -22,9 +23,14 @@ angular
       if ($route && $route.current) {
         page = $route.current.loadedTemplateUrl;
         this.setCurrentBookList(page);
-        if (page == this.bookDetails) {
-          page = this.currentBookList;
-        }
+      }
+      return page;
+    };
+
+    this.getCurrentSelectedPage = function () {
+      var page = this.getCurrentPage();
+      if (page == this.bookDetails) {
+        page = this.currentBookList;
       }
       return page;
     };
@@ -40,23 +46,31 @@ angular
     };
 
     this.isSettingsActive = function () {
-      return this.getCurrentPage() == this.settings;
+      return this.getCurrentSelectedPage() == this.settings;
     };
 
     this.isAddBookActive = function () {
-      return this.getCurrentPage() == this.addBook;
+      return this.getCurrentSelectedPage() == this.addBook;
+    };
+
+    this.isAddWishActive = function () {
+      return this.getCurrentSelectedPage() == this.addWish;
     };
 
     this.isAllBooksActive = function () {
-      return this.getCurrentPage() == this.allBooks;
+      return this.getCurrentSelectedPage() == this.allBooks;
     };
 
     this.isWishlistActive = function () {
-      return this.getCurrentPage() == this.wishlist;
+      return this.getCurrentSelectedPage() == this.wishlist;
     };
 
     this.isBorrowedBooksActive = function () {
-      return this.getCurrentPage() == this.borrowedBooks;
+      return this.getCurrentSelectedPage() == this.borrowedBooks;
     };
+
+    this.isBookDetails = function () {
+      return this.getCurrentPage() == this.bookDetails;
+    }
 
   }]);
