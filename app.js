@@ -7,6 +7,9 @@ var bodyParser = require('body-parser');
 var favicon = require('serve-favicon');
 var session = require('express-session');
 var auth = require('./auth/passport');
+var config = require('./config');
+
+var request = require('request');
 
 var app = express();
 
@@ -20,6 +23,7 @@ app.use(session({
   resave: true,
   saveUninitialized: true
 }));
+
 app.use(auth.initialize());
 app.use(auth.session());
 app.use(cookieParser());
@@ -32,18 +36,68 @@ app.set('views', path.join(__dirname, APP_DIRECTORY));
 app.set('view engine', 'html');
 
 app.post('/login/callback', auth.authenticate('saml', { failureRedirect: '/', failureFlash: true }), function (req, res) {
-    res.redirect('/');
+
+    var username = req.user.firstName.concat(' ').concat(req.user.lastName);
+    var email = req.user.nameID;
+
+    var usersApiEndPoint = config.environments[environment].apiEndpoint + "/users";
+
+    var apiUser = { } ;
+    apiUser.name = username;
+    apiUser.email = email;
+
+    var options = {
+      uri: usersApiEndPoint,
+      method: 'POST',
+      json: apiUser
+    };
+
+    request(options, function (error, response, body) {
+
+      console.log("calling API to persist user " + email)
+
+      if(error === null) {
+
+       if(response.statusCode == 201) {
+
+          console.log("User successfully persisted (Status code 201)");
+        
+        } else if (response.statusCode == 409) {
+        
+          console.log("User already exists, will not persist (Status code 409)");
+        
+        } else{
+        
+          console.log("Internal Error, Status code: " + response.statusCode);
+
+        }
+
+        res.redirect('/');
+
+      } else {
+        return res.render('error', {
+          message: 'Server error. Maybe API is down?',
+          error: error
+         });
+      }
+      
+    });
+
   }
 );
 
 app.get('/login', auth.authenticate('saml', { failureRedirect: '/', failureFlash: true }), function (req, res) {
-    res.redirect('/');
+
+  res.redirect('/');
   }
 );
 
 app.get('/', auth.protected, function (req, res, next)  {
+  
   var username = req.user.firstName.concat(' ').concat(req.user.lastName);
-  return res.render('index', { name: username, email: req.user.nameID });
+  var email = req.user.nameID;
+
+  return res.render('index', { name: username, email: email });
 });
 
 app.use(express.static(path.join(__dirname, APP_DIRECTORY)));

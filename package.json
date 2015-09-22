@@ -27,6 +27,7 @@
     "morgan": "~1.6.1",
     "passport": "^0.2.0",
     "passport-saml": "git://github.com/bergie/passport-saml.git",
+    "request": "^2.63.0",
     "serve-favicon": "~2.3.0"
   },
   "devDependencies": {
