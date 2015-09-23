@@ -47,3 +47,16 @@
   text-align: center;
   color: #fe3e4d ;
 }
+
+.book-borrower{
+  
+  position: absolute;
+  top: -20px;
+  right: -25px;
+  float: right;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  overflow: hidden;
+    /* margin: 10px 10px 10px 4px; */
+}
