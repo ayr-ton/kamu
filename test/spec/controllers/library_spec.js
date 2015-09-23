@@ -47,4 +47,15 @@ describe('LibraryCtrl', function () {
       expect($scope.libraries).toEqual({});
     }));
   });
+
+  describe('gravatar', function () {
+    it('should returns user gravatar url', inject(function ($injector) {
+      var $scope = {};
+      var $window = $injector.get('$window');
+      $window.sessionStorage.email = 'alisboa@thoughtworks.com';
+
+      $controller('LibraryCtrl', {$scope: $scope});
+      expect($scope.getGravatarFromSession()).toEqual('http://www.gravatar.com/avatar/7aff7feba043b2651b7b0c099552c835');
+    }));
+  });
 });
