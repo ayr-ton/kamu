@@ -138,8 +138,9 @@ angular
           copy.imageUrl = 'images/no-image.png';
         }
 
-        if (copy.lastLoan  !== undefined) {
-          copy.lastLoan.user.imageUrl = UserService.getGravatarFromUserEmail(copy.lastLoan.user.email);
+        if (copy.lastLoan !== undefined && copy.lastLoan !== null) {
+          copy.lastLoan.user = {};       
+          copy.lastLoan.user.imageUrl = UserService.getGravatarFromUserEmail(copy.lastLoan.email);
         }
 
         return copy;

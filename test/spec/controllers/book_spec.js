@@ -478,12 +478,7 @@ describe('BookCtrl', function () {
       
       var lastLoan = {
           "id"    : 1,
-          "user"  : 
-          { 
-            'id': '21', 
-            'email': "tuliolucas.silva@gmail.com"
-        }
-
+          'email': "tuliolucas.silva@gmail.com"
       }
 
       library._embedded.libraries[0]._embedded.copies[0].lastLoan = lastLoan;
