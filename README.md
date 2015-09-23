@@ -5,6 +5,11 @@ Available at: http://tw-library-ui.herokuapp.com/
 This project was generated with [yo angular generator](https://github.com/yeoman/generator-angular)
 version 0.11.1.
 
+## Setup development environment
+
+Goes to the library-app repository and follow the instructions to setup your environment.
+Ps: It is not required, but will do most of the things automatically.
+
 ## Install dependencies
 
 After clone the repository you need to install some dependencies. You should run the following commands on terminal:
