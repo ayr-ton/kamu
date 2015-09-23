@@ -2,7 +2,7 @@
 
 angular
   .module('libraryUiApp')
-  .controller('LibraryCtrl', ['$scope', '$http', 'LibraryService', function ($scope, $http, LibraryService) {
+  .controller('LibraryCtrl', ['$scope', '$http', 'LibraryService', 'UserService', function ($scope, $http, LibraryService, UserService) {
     $scope.libraries = {};
 
     var listLibraries = function () {
@@ -10,6 +10,10 @@ angular
         success(function (data) {
           $scope.libraries = angular.isDefined(data._embedded) ? data._embedded.libraries : {};
         });
+    };
+
+    $scope.getGravatarFromSession = function(){
+      return UserService.getGravatarFromSession();
     };
 
     listLibraries();

@@ -110,10 +110,10 @@
                     <div class="mobile-menu" id="showLeftPush"></div>
                   </a>
                 </div>
-                <div class="logo"><img src="./images/logo.svg" alt=""/></div>
+                <div class="logo"><img src="./images/logo.svg" alt="Kamu" title="Kamu" /></div>
 
                 <div class="user-container">
-                  <img src="http://organicthemes.com/demo/profile/files/2012/12/profile_img.png" alt=""/>
+                  <img ng-controller="LibraryCtrl" ng-src="{{ getGravatarFromSession() }}"/>
                 </div>
 
                 <div class="search-mobile"></div>
@@ -196,9 +196,6 @@
     <!-- bower:js -->
     <script src="../bower_components/jquery/dist/jquery.js"></script>
     <script src="../bower_components/angular/angular.js"></script>
-    <script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="../bower_components/angular-animate/angular-animate.js"></script>
-    <script src="../bower_components/angular-cookies/angular-cookies.js"></script>
     <script src="../bower_components/angular-animate/angular-animate.js"></script>
     <script src="../bower_components/angular-cookies/angular-cookies.js"></script>
     <script src="../bower_components/angular-md5/angular-md5.js"></script>
@@ -208,6 +205,7 @@
     <script src="../bower_components/angular-touch/angular-touch.js"></script>
     <script src="../bower_components/angular-translate/angular-translate.js"></script>
     <script src="../bower_components/angular-ui-mask/dist/mask.js"></script>
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -219,6 +217,7 @@
     <script src="scripts/services/modal.js"></script>
     <script src="scripts/services/library.js"></script>
     <script src="scripts/services/navigation.js"></script>
+    <script src="scripts/services/user.js"></script>
     <script src="scripts/controllers/slidingMenu.js"></script>
     <script src="scripts/controllers/book.js"></script>
     <script src="scripts/controllers/library.js"></script>
@@ -231,7 +230,6 @@
     <script type="text/javascript">
       window.sessionStorage.name = '<%= name %>';
       window.sessionStorage.email = '<%= email %>';
-
     </script>
   </body>
 </html>
