@@ -7,7 +7,10 @@
             <div class="books-img" ng-click="openCopy(copy)">
               <img ng-src="{{copy.imageUrl}}" alt="{{copy.title}}" />
             </div>
+              <img class="book-borrower" ng-show="copy.status !== 'AVAILABLE'" ng-src="{{copy.lastLoan.user.imageUrl}}" alt="{{copy.title}}" />
+
           </a>
+
         </div>
       </div>
       <div class="book-shelf-info">

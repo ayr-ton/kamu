@@ -479,12 +479,7 @@ describe('BookCtrl', function () {
       
       var lastLoan = {
           "id"    : 1,
-          "user"  : 
-          { 
-            'id': '21', 
-            'email': "tuliolucas.silva@gmail.com"
-        }
-
+          'email': "tuliolucas.silva@gmail.com"
       }
 
       library._embedded.libraries[0]._embedded.copies[0].lastLoan = lastLoan;
@@ -522,9 +517,9 @@ describe('BookCtrl', function () {
 
     var currentUser = 'fakeuser@someemail.com';
 
-    var copy = { 'id': '21', 'imageUrl': 'path/to/image' };
-    var loan = {'id': '12', 'email': currentUser, 'copy': copy };
-
+    var copy = { 'id': '21', 'imageUrl': 'path/to/image' };    
+    var user = { 'imageUrl' : 'http://www.gravatar.com/avatar/1dbd3e934b5d9a64f15826f7e9e23e16' };
+    var loan = {'id': '12', 'email': currentUser, 'copy': copy, 'user': user };
     var copyAfterBorrow = { 'id': '21', 'imageUrl': 'path/to/image', 'lastLoan': loan};
 
     it('successfully borrows a book', inject(function ($window) {
@@ -544,7 +539,9 @@ describe('BookCtrl', function () {
 
       httpBackend.expectPOST(apiEndpoint.concat('/loans')).respond(200);
       httpBackend.expectGET(libraryIndexPage).respond(200);
-      httpBackend.expectGET(apiEndpoint.concat('/copies/').concat(copy.id).concat('?projection=copyWithBookInline')).respond(200, copyAfterBorrow);
+      httpBackend.expectGET(apiEndpoint
+        .concat('/copies/')
+        .concat(copy.id).concat('?projection=copyWithBookInline')).respond(200, copyAfterBorrow);
 
       scope.borrowCopy(copy);
 
