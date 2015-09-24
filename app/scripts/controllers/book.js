@@ -11,7 +11,8 @@ angular
     '$route',
     '$routeParams',
     'UserService',
-    function ($scope, BookService, LoanService, NavigationService, Modal, $translate, $route, $routeParams, UserService) {
+    'toastr',
+    function ($scope, BookService, LoanService, NavigationService, Modal, $translate, $route, $routeParams, UserService, toastr) {
 
       $scope.searchCriteria = '';
       $scope.addingBook = false;
@@ -115,7 +116,7 @@ angular
                 addCopy(library, slug, book);
               }
             } else {
-              window.alert($translate.instant('INVALID_LIBRARY_ERROR'));
+              toastr.error($translate.instant('INVALID_LIBRARY_ERROR'));
             }
           });
       };
@@ -190,6 +191,7 @@ angular
                   imageUrl: UserService.getGravatarFromUserEmail(scope.copy.lastLoan.email) 
                 };                    
               });
+              toastr.success('Book has been loaned to '.concat(currentUser).concat('.'));
           }).
           error(function (data, status) {
             var errorMessage;
@@ -205,7 +207,7 @@ angular
                 errorMessage = $translate.instant('HTTP_CODE_500');
                 break;
             }
-            window.alert(errorMessage);
+            toastr.error(errorMessage);
           });
       };
 
@@ -224,7 +226,7 @@ angular
               success(function () {
                 Modal.reject();
 
-                window.alert('Book has returned to library.');
+                toastr.success('Book has returned to library.');
 
                 BookService.getCopy(copy.id)
                   .success(function (data) {
@@ -246,7 +248,7 @@ angular
                     break;
                 }
 
-                window.alert(errorMessage);
+                toastr.error(errorMessage);
               });
           },
 
@@ -315,11 +317,11 @@ angular
           success(function () {
             $scope.addingBook = false;
 
-            window.alert('Book has been added to library successfully.');
+            toastr.success('Book has been added to library successfully.');
             window.location.replace('/#/library/' + slug);
           }).
           error(function () {
-            window.alert('Error occurred while adding ' + $scope.book.title + '.');
+            toastr.error('Error occurred while adding ' + $scope.book.title + '.');
             $scope.addingBook = false;
           });
       }
@@ -331,7 +333,7 @@ angular
             addCopy(library, slug, book);
           }).
           error(function () {
-            window.alert('Error occurred while adding ' + $scope.book.title + '.');
+            toastr.error('Error occurred while adding ' + $scope.book.title + '.');
             $scope.addingBook = false;
           });
       }
