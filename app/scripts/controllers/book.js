@@ -23,7 +23,7 @@ angular
       $scope.currentUserEmail = window.sessionStorage.email;
 
       $scope.borrowerIsCurrentUser = function (copy) {
-        if (copy.lastLoan) {
+        if (copy.lastLoan && $scope.currentUserEmail) {
           return copy.lastLoan.email.toLowerCase() == $scope.currentUserEmail.toLowerCase();
         }
         return false
