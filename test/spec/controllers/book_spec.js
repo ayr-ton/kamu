@@ -1,17 +1,18 @@
 'use strict';
 
 describe('BookCtrl', function () {
-  var scope, controller, httpBackend, route, apiEndpoint;
+  var scope, controller, httpBackend, route, apiEndpoint, loanService;
   var libraryIndexPage = 'views/library/index.html';
 
   beforeEach(module('libraryUiApp'));
 
-  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $route, ENV) {
+  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $route, ENV, LoanService) {
     scope = $rootScope;
     route = $route;
     httpBackend = $httpBackend;
     controller = $controller('BookCtrl', {'$scope': scope});
     apiEndpoint = ENV.apiEndpoint;
+    loanService = LoanService;
   }));
 
 
@@ -518,11 +519,17 @@ describe('BookCtrl', function () {
   });
 
   describe('#borrowBook', function(){
-    var copy = { 'id': '21', 'imageUrl': 'path/to/image' };
-    var loan = {'id': '12', 'email': 'fakeuser@someemail.com', 'copy': copy };
 
-    it('successfully borrows a book', inject(function  ($window, Modal) {
-      var modal = Modal;
+    var currentUser = 'fakeuser@someemail.com';
+
+    var copy = { 'id': '21', 'imageUrl': 'path/to/image' };
+    var loan = {'id': '12', 'email': currentUser, 'copy': copy };
+
+    var copyAfterBorrow = { 'id': '21', 'imageUrl': 'path/to/image', 'lastLoan': loan};
+
+    it('successfully borrows a book', inject(function ($window) {
+
+      $window.sessionStorage.email = currentUser;
 
       var ngElementFake = function() {
           return {
@@ -532,24 +539,19 @@ describe('BookCtrl', function () {
           };
         };
 
-      spyOn(modal, 'reject');
-      spyOn($window, 'alert');
       spyOn(angular, 'element').andCallFake(ngElementFake);
+      spyOn(loanService, 'borrowCopy').andCallThrough();
 
       httpBackend.expectPOST(apiEndpoint.concat('/loans')).respond(200);
       httpBackend.expectGET(libraryIndexPage).respond(200);
-      httpBackend.expectGET(apiEndpoint.concat('/copies/').concat(copy.id).concat('?projection=copyWithBookInline')).respond(200, copy);
+      httpBackend.expectGET(apiEndpoint.concat('/copies/').concat(copy.id).concat('?projection=copyWithBookInline')).respond(200, copyAfterBorrow);
 
       scope.borrowCopy(copy);
 
-      modal.resolve(loan);
-
       httpBackend.flush();
 
-      expect(scope.copy).toEqual(copy);
-      expect(scope.copy.imageUrl).toEqual('path/to/image');
-      expect($window.alert).toHaveBeenCalledWith('Book has been loaned to fakeuser@someemail.com.');
-      expect(modal.reject).toHaveBeenCalled();
+      expect(loanService.borrowCopy).toHaveBeenCalledWith('21', 'fakeuser@someemail.com');
+      expect(scope.copy).toEqual(copyAfterBorrow);
     }));
 
     describe('copy borrow failure', function () {
@@ -559,7 +561,7 @@ describe('BookCtrl', function () {
         { 'responseCode': 500, 'errorCode': 'HTTP_CODE_500' }];
 
       angular.forEach(codes, function(item) {
-        it('shows error message', inject(function  ($window, $translate, Modal) {
+        it('shows error message', inject(function  ($window, $translate) {
           spyOn($window, 'alert');
           spyOn($translate, 'instant');
 
@@ -567,8 +569,6 @@ describe('BookCtrl', function () {
           httpBackend.expectGET(libraryIndexPage).respond(200);
 
           scope.borrowCopy(copy);
-
-          Modal.resolve(loan);
 
           httpBackend.flush();
 

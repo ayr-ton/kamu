@@ -27,29 +27,6 @@ describe('Modal Controllers', function () {
     });
   });  
 
-  describe('BorrowModalCtrl', function () {
-    it('initizes scope correctly', function () {
-      controller('BorrowModalCtrl', {'$scope': scope, 'Modal': modal});
-
-      expect(scope.copy).toBe(modal.params().copy);
-    });
-
-    describe('#submit', function() {
-      it('resolves modal with loan', function () {
-        controller('BorrowModalCtrl', {'$scope': scope, 'Modal': modal});
-
-        scope.copy = '/path/to/copy/3';
-        scope.form = { 'user': 'fakeuser' };
-
-        spyOn(modal, 'resolve');
-
-        scope.submit();
-
-        expect(modal.resolve).toHaveBeenCalledWith({copy: '/path/to/copy/3', email: 'fakeuser@thoughtworks.com' });
-      });
-    });
-  });
-
   describe('ReturnModalCtrl', function () {
     it('initizes scope correctly', function () {
       controller('ReturnModalCtrl', {'$scope': scope, 'Modal': modal});

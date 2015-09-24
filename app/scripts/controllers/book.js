@@ -167,47 +167,34 @@ angular
 
       $scope.borrowCopy = function (copy) {
 
-        var promise = Modal.open(
-          'available', {copy : copy}
-        );
+        var currentUser = window.sessionStorage.email;
 
-        promise.then(
-          function handleResolve(response) {
-            LoanService.
-              borrowCopy(response.copy.id, response.email).
-              success(function () {
-                Modal.reject();
-
-                window.alert('Book has been loaned to '.concat(response.email).concat('.'));
-                BookService.getCopy(copy.id)
-                  .success(function (data) {
-                    var scope = angular.element('#copy-'.concat(copy.id)).scope();
-                    scope.copy = data;
-                    scope.copy.imageUrl = BookService.resolveBookImage(scope.copy.imageUrl);
-                  });
-              }).
-              error(function (data, status) {
-                var errorMessage;
-
-                switch (status) {
-                  case 412:
-                    errorMessage = $translate.instant('HTTP_CODE_412');
-                    break;
-                  case 409:
-                    errorMessage = $translate.instant('HTTP_CODE_409');
-                    break;
-                  default:
-                    errorMessage = $translate.instant('HTTP_CODE_500');
-                    break;
-                }
-
-                window.alert(errorMessage);
+        LoanService.
+          borrowCopy(copy.id, currentUser).
+          success(function () {
+            BookService.getCopy(copy.id)
+              .success(function (data) {
+                var scope = angular.element('#copy-'.concat(copy.id)).scope();
+                scope.copy = data;
+                scope.copy.imageUrl = BookService.resolveBookImage(scope.copy.imageUrl);
               });
-          },
+          }).
+          error(function (data, status) {
+            var errorMessage;
 
-          function handleReject(error) {
-          }
-        );
+            switch (status) {
+              case 412:
+                errorMessage = $translate.instant('HTTP_CODE_412');
+                break;
+              case 409:
+                errorMessage = $translate.instant('HTTP_CODE_409');
+                break;
+              default:
+                errorMessage = $translate.instant('HTTP_CODE_500');
+                break;
+            }
+            window.alert(errorMessage);
+          });
       };
 
       $scope.returnCopy = function (copy) {
