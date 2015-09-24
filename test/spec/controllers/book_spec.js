@@ -1,18 +1,19 @@
 'use strict';
 
 describe('BookCtrl', function () {
-  var scope, controller, httpBackend, route, apiEndpoint, loanService;
+  var scope, controller, httpBackend, route, apiEndpoint, loanService, toastrLocal;
   var libraryIndexPage = 'views/library/index.html';
 
   beforeEach(module('libraryUiApp'));
 
-  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $route, ENV, LoanService) {
+  beforeEach(inject(function ($controller, $rootScope, $httpBackend, $route, ENV, LoanService, toastr) {
     scope = $rootScope;
     route = $route;
     httpBackend = $httpBackend;
     controller = $controller('BookCtrl', {'$scope': scope});
     apiEndpoint = ENV.apiEndpoint;
     loanService = LoanService;
+    toastrLocal = toastr;
   }));
 
 
@@ -311,7 +312,8 @@ describe('BookCtrl', function () {
             }
           };
 
-          spyOn(window, 'alert');
+          spyOn(toastrLocal, 'success');
+          spyOn(toastrLocal, 'error');
 
           scope.book = {'title': 'How to increase test coverage'};
           scope.bookExistsInTheLibrary = false;
@@ -340,7 +342,7 @@ describe('BookCtrl', function () {
           httpBackend.flush();
 
           expect(scope.addingBook).toBe(false);
-          expect(window.alert).toHaveBeenCalledWith('Book has been added to library successfully.');
+          expect(toastrLocal.success).toHaveBeenCalledWith('Book has been added to library successfully.');
           expect(window.location.replace).toHaveBeenCalledWith('/#/library/'.concat(slug));
         });
 
@@ -358,12 +360,12 @@ describe('BookCtrl', function () {
           httpBackend.flush();
 
           expect(scope.addingBook).toBe(false);
-          expect(window.alert).toHaveBeenCalledWith('Error occurred while adding How to increase test coverage.');
+          expect(toastrLocal.error).toHaveBeenCalledWith('Error occurred while adding How to increase test coverage.');
         }));
       });
 
       describe('when library is not found', function () {
-        it('shows alert when library is not found', inject(function ($translate, $window) {
+        it('shows alert when library is not found', inject(function ($translate) {
           var library = {};
           var librarySearchEndpoint = apiEndpoint.concat('/libraries/search/findBySlug?slug=bh');
           route.current = {'pathParams': {'library': 'bh'}};
@@ -379,14 +381,14 @@ describe('BookCtrl', function () {
             .respond(200);
 
           spyOn($translate, 'instant');
-          spyOn($window, 'alert');
+          spyOn(toastrLocal, 'error');
 
           scope.addBookToLibrary();
 
           httpBackend.flush();
 
           expect($translate.instant).toHaveBeenCalledWith('INVALID_LIBRARY_ERROR');
-          expect($window.alert).toHaveBeenCalled();
+          expect(toastrLocal.error).toHaveBeenCalled();
           expect(scope.addingBook).toBe(true);
         }));
       });
@@ -429,7 +431,8 @@ describe('BookCtrl', function () {
           }
         };
 
-        spyOn(window, 'alert');
+        spyOn(toastrLocal, 'success');
+        spyOn(toastrLocal, 'error');
 
         httpBackend
           .expectGET(librarySearchEndpoint)
@@ -451,7 +454,7 @@ describe('BookCtrl', function () {
         httpBackend.flush();
 
         expect(scope.addingBook).toBe(false);
-        expect(window.alert).toHaveBeenCalledWith('Book has been added to library successfully.');
+        expect(toastrLocal.success).toHaveBeenCalledWith('Book has been added to library successfully.');
         expect(window.location.replace).toHaveBeenCalledWith('/#/library/'.concat(slug));
       });
 
@@ -465,7 +468,7 @@ describe('BookCtrl', function () {
         httpBackend.flush();
 
         expect(scope.addingBook).toBe(false);
-        expect(window.alert).toHaveBeenCalledWith('Error occurred while adding How to increase test coverage.');
+        expect(toastrLocal.error).toHaveBeenCalledWith('Error occurred while adding How to increase test coverage.');
       });
     });
   });
@@ -611,6 +614,7 @@ describe('BookCtrl', function () {
 
       spyOn(angular, 'element').andCallFake(ngElementFake);
       spyOn(loanService, 'borrowCopy').andCallThrough();
+      spyOn(toastrLocal, 'success');
 
       httpBackend.expectPOST(apiEndpoint.concat('/loans')).respond(200);
       httpBackend.expectGET(libraryIndexPage).respond(200);
@@ -624,6 +628,7 @@ describe('BookCtrl', function () {
 
       expect(loanService.borrowCopy).toHaveBeenCalledWith('21', 'fakeuser@someemail.com');
       expect(scope.copy).toEqual(copyAfterBorrow);
+      expect(toastrLocal.success).toHaveBeenCalled();
     }));
 
     describe('copy borrow failure', function () {
@@ -634,7 +639,7 @@ describe('BookCtrl', function () {
 
       angular.forEach(codes, function(item) {
         it('shows error message', inject(function  ($window, $translate) {
-          spyOn($window, 'alert');
+          spyOn(toastrLocal, 'error');
           spyOn($translate, 'instant');
 
           httpBackend.expectPOST(apiEndpoint.concat('/loans')).respond(item.responseCode);
@@ -644,7 +649,7 @@ describe('BookCtrl', function () {
 
           httpBackend.flush();
 
-          expect($window.alert).toHaveBeenCalled();
+          expect(toastrLocal.error).toHaveBeenCalled();
           expect($translate.instant).toHaveBeenCalledWith(item.errorCode);
         }));
       });
@@ -668,7 +673,7 @@ describe('BookCtrl', function () {
       var modal = Modal;
 
       spyOn(modal, 'reject');
-      spyOn($window, 'alert');
+      spyOn(toastrLocal, 'success');
       spyOn(angular, 'element').andCallFake(ngElementFake);
 
       httpBackend.expectPATCH(apiEndpoint.concat('/loans/12')).respond(200);
@@ -683,7 +688,7 @@ describe('BookCtrl', function () {
 
       expect(scope.copy).toEqual(copy);
       
-      expect($window.alert).toHaveBeenCalledWith('Book has returned to library.');
+      expect(toastrLocal.success).toHaveBeenCalledWith('Book has returned to library.');
       expect(modal.reject).toHaveBeenCalled();
       expect(scope.copy.imageUrl).toEqual('path/to/image');
     }));
@@ -695,7 +700,7 @@ describe('BookCtrl', function () {
 
       angular.forEach(codes, function(item) {
         it('shows an error', inject(function ($window, $translate, Modal) {
-          spyOn($window, 'alert');
+          spyOn(toastrLocal, 'error');
           spyOn($translate, 'instant');
           spyOn(angular, 'element').andCallFake(ngElementFake);
 
@@ -708,7 +713,7 @@ describe('BookCtrl', function () {
 
           httpBackend.flush();
 
-          expect($window.alert).toHaveBeenCalled();
+          expect(toastrLocal.error).toHaveBeenCalled();
           expect($translate.instant).toHaveBeenCalledWith(item.errorCode);
           expect(scope.loan).toEqual(lastLoan);
         }));
