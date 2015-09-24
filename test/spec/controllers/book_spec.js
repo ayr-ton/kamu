@@ -513,8 +513,10 @@ describe('BookCtrl', function () {
   });
 
   describe('#borrowBook', function(){
-    var copy = { 'id': '21', 'imageUrl': 'path/to/image' };
-    var loan = {'id': '12', 'email': 'fakeuser@someemail.com', 'copy': copy };
+
+    var lastLoan = { 'id': '1' };
+    var copy = { 'id': '21', 'imageUrl': 'path/to/image', 'lastLoan': lastLoan };
+    var loan = { 'id': '12', 'email': 'fakeuser@someemail.com', 'copy': copy };
 
     it('successfully borrows a book', inject(function  ($window, Modal) {
       var modal = Modal;
@@ -533,6 +535,7 @@ describe('BookCtrl', function () {
 
       httpBackend.expectPOST(apiEndpoint.concat('/loans')).respond(200);
       httpBackend.expectGET(libraryIndexPage).respond(200);
+
       httpBackend.expectGET(apiEndpoint.concat('/copies/').concat(copy.id).concat('?projection=copyWithBookInline')).respond(200, copy);
 
       scope.borrowCopy(copy);
