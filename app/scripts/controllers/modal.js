@@ -9,16 +9,6 @@ app.controller('ModalCtrl', ['$scope', 'Modal', function ($scope, Modal) {
   }]
 );
 
-app.controller('BorrowModalCtrl', ['$scope', 'Modal', function ($scope, Modal) {
-    $scope.copy = Modal.params().copy;
-
-    $scope.submit = function () {
-      var loan = { copy: $scope.copy, email: $scope.form.user + '@thoughtworks.com' };
-      Modal.resolve(loan);
-    };
-  }]
-);
-
 app.controller('ReturnModalCtrl', ['$scope', 'Modal', function($scope, Modal) {
     $scope.loan = Modal.params().loan;
 
