@@ -189,8 +189,8 @@ angular
       var defaultLanguage = 'en-US';
       var supportedLanguages = ['en-US', 'pt-BR', 'es-EC'];
 
-      if (language === null) {
-        language = navigator.language || navigator.userLanguage;
+      if (language === undefined) {
+        language = window.navigator.language || window.navigator.userLanguage;
 
         var cookieLifespan = 365;
         var expireDate = new Date();
