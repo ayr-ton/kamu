@@ -23,10 +23,13 @@ angular
       $scope.currentUserEmail = window.sessionStorage.email;
 
       $scope.borrowerIsCurrentUser = function (copy) {
-        if (copy.lastLoan && $scope.currentUserEmail) {
+
+        if (copy.lastLoan !== undefined && copy.lastLoan !== null) {
           return copy.lastLoan.email.toLowerCase() == $scope.currentUserEmail.toLowerCase();
+        }else {
+          return false;
         }
-        return false
+        
       };
 
       $scope.goBack = function () {
@@ -182,9 +185,15 @@ angular
                 window.alert('Book has been loaned to '.concat(response.email).concat('.'));
                 BookService.getCopy(copy.id)
                   .success(function (data) {
+
                     var scope = angular.element('#copy-'.concat(copy.id)).scope();
                     scope.copy = data;
                     scope.copy.imageUrl = BookService.resolveBookImage(scope.copy.imageUrl);
+
+                    scope.copy.lastLoan = {};
+                    scope.copy.lastLoan.user = {}       
+                    scope.copy.lastLoan.user.imageUrl = UserService.getGravatarFromUserEmail(scope.copy.lastLoan.email);
+
                   });
               }).
               error(function (data, status) {
@@ -233,6 +242,7 @@ angular
                     var scope = angular.element('#copy-'.concat(copy.id)).scope();
                     scope.copy = data;
                     scope.copy.imageUrl = BookService.resolveBookImage(scope.copy.imageUrl);
+
                   });
               }).
               error(function (data, status) {
