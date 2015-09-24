@@ -1,23 +1,14 @@
-var LibrarySelect;
+var LibrarySelect, Login;
 
 LibrarySelect = require('../../page_objects/library_select.js');
+Login = require('../../page_objects/login.js');
 
 describe('a user browsing the library', function () {
-  var librarySelect, bookList;
-
-  function login() {
-    browser.ignoreSynchronization = true;
-    browser.get('http://localhost:9000/test/login');
-
-    var form = browser.driver.findElement(By.css('form'));
-    form.findElement(By.id('username')).sendKeys('John Doe');
-    form.findElement(By.id('password')).sendKeys('any');
-    form.submit();
-    browser.ignoreSynchronization = false;
-  }
+  var librarySelect, bookList, login;
 
   beforeEach(function () {
-    login();
+    login = new Login();
+    login.login('John Doe');
     librarySelect = new LibrarySelect();
   });
 
