@@ -190,9 +190,10 @@ angular
                     scope.copy = data;
                     scope.copy.imageUrl = BookService.resolveBookImage(scope.copy.imageUrl);
 
-                    scope.copy.lastLoan = {};
-                    scope.copy.lastLoan.user = {}       
-                    scope.copy.lastLoan.user.imageUrl = UserService.getGravatarFromUserEmail(scope.copy.lastLoan.email);
+                    if (scope.copy.lastLoan.email !== undefined && scope.copy.lastLoan.email !== null) {
+                      scope.copy.lastLoan.user = {}       
+                      scope.copy.lastLoan.user.imageUrl = UserService.getGravatarFromUserEmail(scope.copy.lastLoan.email);
+                    }
 
                   });
               }).
