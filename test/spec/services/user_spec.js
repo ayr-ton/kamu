@@ -1,12 +1,14 @@
 'use strict';
 
 describe('UserService', function() {
-  var userService;
+  var userService, apiEndpoint, httpBackend;
 
   beforeEach(module('libraryUiApp'));
 
-  beforeEach(inject(function(UserService, $window){
+  beforeEach(inject(function(UserService, $window, _$httpBackend_, ENV){
     userService = UserService;
+    httpBackend = _$httpBackend_;
+    apiEndpoint = ENV.apiEndpoint;
     $window.sessionStorage.email = 'alisboa@thoughtworks.com';
   }));
 
@@ -23,4 +25,19 @@ describe('UserService', function() {
       expect(userGravatarUrl).toEqual(expectedGravatarUrl);
     });
   });
+
+  describe('#getUserByEmail', function() {
+
+    it('successfully gets user details by email from database', function(){
+
+      var mockedEmail = 'fantunes@thoughtworks.com';
+      httpBackend.expectGET(apiEndpoint.concat('/users/search/findByEmail?email=').concat(mockedEmail)).respond(200);
+
+      userService.getUserByEmail(mockedEmail);
+
+      httpBackend.flush();
+
+    });
+  });
+
 });
