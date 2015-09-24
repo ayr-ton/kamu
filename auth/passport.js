@@ -1,5 +1,6 @@
 var passport = require('passport'),
   SamlStrategy = require('passport-saml').Strategy,
+  LocalStrategy = require('passport-local').Strategy,
   allEnvironments = require('./auth-environments.json'),
   config, environment;
 
@@ -39,6 +40,23 @@ passport.deserializeUser(function(id, done) {
   });
 });
 
+if (process.env.NODE_ENV !== 'production') {
+  passport.use(new LocalStrategy(function (username, password, done) {
+    firstName = username.split(' ')[0];
+    lastName  = username.split(' ')[1];
+
+    var user = { firstName: firstName, lastName: lastName, nameID: username.replace(/ /, '.').concat('@thoughtworks.com') };
+
+    function byEmail(current) { return current.nameID == user.nameID; }
+
+    if (users.filter(byEmail).length == 0) {
+      users.push(user);
+    }
+
+    return done(null, user);
+  }));
+};
+
 passport.use(new SamlStrategy(
   {
     issuer: config.auth.issuer,
@@ -72,4 +90,4 @@ passport.protected = function protected(req, res, next) {
   res.redirect('/login');
 };
 
- exports = module.exports = passport;
+exports = module.exports = passport;

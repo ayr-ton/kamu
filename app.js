@@ -28,12 +28,21 @@ app.use(auth.initialize());
 app.use(auth.session());
 app.use(cookieParser());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(favicon(path.join(__dirname, APP_DIRECTORY, 'favicon.ico')));
 
 app.engine('html', require('ejs').renderFile);
 app.set('views', path.join(__dirname, APP_DIRECTORY));
 app.set('view engine', 'html');
+
+if (process.env.NODE_ENV !== 'production') {
+  app.get('/test/login', function (req, res) {
+    return res.sendFile(path.join(__dirname, 'test/login.html'));
+  });
+  app.post('/test/login', auth.authenticate('local', { failureRedirect: '/test/login' }),  function(req, res) {
+    res.redirect('/');
+  });
+}
 
 app.post('/login/callback', auth.authenticate('saml', { failureRedirect: '/', failureFlash: true }), function (req, res) {
 
