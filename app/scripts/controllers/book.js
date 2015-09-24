@@ -23,10 +23,13 @@ angular
       $scope.currentUserEmail = window.sessionStorage.email;
 
       $scope.borrowerIsCurrentUser = function (copy) {
-        if (copy.lastLoan) {
+
+        if (copy.lastLoan !== undefined && copy.lastLoan !== null) {
           return copy.lastLoan.email.toLowerCase() == $scope.currentUserEmail.toLowerCase();
+        }else {
+          return false;
         }
-        return false
+        
       };
 
       $scope.goBack = function () {
@@ -138,8 +141,9 @@ angular
           copy.imageUrl = 'images/no-image.png';
         }
 
-        if (copy.lastLoan  !== undefined) {
-          copy.lastLoan.user.imageUrl = UserService.getGravatarFromUserEmail(copy.lastLoan.user.email);
+        if (copy.lastLoan !== undefined && copy.lastLoan !== null) {
+          copy.lastLoan.user = {};       
+          copy.lastLoan.user.imageUrl = UserService.getGravatarFromUserEmail(copy.lastLoan.email);
         }
 
         return copy;
@@ -166,7 +170,6 @@ angular
       };
 
       $scope.borrowCopy = function (copy) {
-
         var currentUser = window.sessionStorage.email;
 
         LoanService.
@@ -177,6 +180,10 @@ angular
                 var scope = angular.element('#copy-'.concat(copy.id)).scope();
                 scope.copy = data;
                 scope.copy.imageUrl = BookService.resolveBookImage(scope.copy.imageUrl);
+
+                scope.copy.lastLoan.user = { 
+                  imageUrl: UserService.getGravatarFromUserEmail(scope.copy.lastLoan.email) 
+                };                    
               });
           }).
           error(function (data, status) {
@@ -219,6 +226,7 @@ angular
                     var scope = angular.element('#copy-'.concat(copy.id)).scope();
                     scope.copy = data;
                     scope.copy.imageUrl = BookService.resolveBookImage(scope.copy.imageUrl);
+
                   });
               }).
               error(function (data, status) {
