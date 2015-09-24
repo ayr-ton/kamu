@@ -1,3 +1,5 @@
+var AddBook = require('./add_book.js');
+
 module.exports = (function () {
   var self = {};
 
@@ -7,6 +9,16 @@ module.exports = (function () {
     browser.wait(protractor.ExpectedConditions.alertIsPresent(), 1000).then(function(){
       browser.switchTo().alert().accept();
     });
+  }
+
+  self.addBookWithISBN = function (isbn) {
+    addBook = self.clickAddBook();
+
+    addBook.fillISBN(isbn);
+    addBook.search.click();
+    addBook.add.click();
+
+    waitForModalAndAcceptIt();
   }
 
   self.borrow = function (book) {
@@ -26,7 +38,12 @@ module.exports = (function () {
 
   self.isBorrowed = function (book) {
     return book.element(by.css('.books-shelf-return')).isDisplayed();
-  }
+  };
+
+  self.clickAddBook = function () {
+    element(by.css('.main-nav-add-book')).click();
+    return new AddBook();
+  };
 
   return self;
 });
