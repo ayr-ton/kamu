@@ -26,7 +26,7 @@ angular
     };
 
    this.getBook = function (bookId) {
-      var endPoint = ENV.apiEndpoint.concat('/books/').concat(bookId);//.concat('?projection=copyWithBookInline');
+      var endPoint = ENV.apiEndpoint.concat('/books/').concat(bookId);
 
       return $http.get(endPoint);
     };

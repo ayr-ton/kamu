@@ -153,16 +153,21 @@ angular
         $scope.listBooks();
       });
 
-      $scope.openCopy = function (copy) {
+      $scope.loadBookDetails = function (copy) {
         BookService.getBook(copy.reference).success(function (response) {
+
+          //Loading book data  
           BookService.currentBook = response;
           $scope.currentBook = BookService.currentBook;
           var url = '#/library/' + getLibrarySlug() + '/book_details/' + copy.reference;
           window.location.assign(url);
+
+          //Loading loan data
+
         });
       };
 
-      $scope.loadCopy = function (copyReference) {
+      $scope.reloadBookDetails = function (copyReference) {
         BookService.getBook(copyReference).success(function (response) {
           BookService.currentBook = response;
           $scope.currentBook = BookService.currentBook;
@@ -337,7 +342,7 @@ angular
       }
 
       if (isInBookDetails) {
-        $scope.loadCopy($routeParams.bookId);
+        $scope.reloadBookDetails($routeParams.bookId);
       }
     }]
 );

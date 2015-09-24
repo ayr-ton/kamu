@@ -2,7 +2,7 @@
 
 angular
   .module('libraryUiApp')
-  .service('UserService', ['md5', '$window', function (md5, $window) {
+  .service('UserService', ['md5', '$window', '$http', 'ENV', function (md5, $window, $http, ENV) {
     var email = $window.sessionStorage.email;
 
     this.getGravatarFromUserEmail = function(email){
@@ -13,4 +13,12 @@ angular
     this.getGravatarFromSession = function(){
       return this.getGravatarFromUserEmail(email);
     };
+
+    this.getUserByEmail = function(email){
+       var endPoint = ENV.apiEndpoint.concat('/users/search/findByEmail?email=').concat(email);
+
+      return $http.get(endPoint);
+
+    };
+
   }]);
