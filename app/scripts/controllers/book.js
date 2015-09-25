@@ -30,7 +30,7 @@ angular
         }else {
           return false;
         }
-        
+
       };
 
       $scope.goBack = function () {
@@ -143,7 +143,7 @@ angular
         }
 
         if (copy.lastLoan !== undefined && copy.lastLoan !== null) {
-          copy.lastLoan.user = {};       
+          copy.lastLoan.user = {};
           copy.lastLoan.user.imageUrl = UserService.getGravatarFromUserEmail(copy.lastLoan.email);
         }
 
@@ -157,7 +157,7 @@ angular
       $scope.loadBookDetails = function (copy) {
         BookService.getBook(copy.reference).success(function (response) {
 
-          //Loading book data  
+          //Loading book data
           BookService.currentBook = response;
           $scope.currentBook = BookService.currentBook;
           var url = '#/library/' + getLibrarySlug() + '/book_details/' + copy.reference;
@@ -187,9 +187,9 @@ angular
                 scope.copy = data;
                 scope.copy.imageUrl = BookService.resolveBookImage(scope.copy.imageUrl);
 
-                scope.copy.lastLoan.user = { 
-                  imageUrl: UserService.getGravatarFromUserEmail(scope.copy.lastLoan.email) 
-                };                    
+                scope.copy.lastLoan.user = {
+                  imageUrl: UserService.getGravatarFromUserEmail(scope.copy.lastLoan.email)
+                };
               });
               toastr.success('Book has been loaned to '.concat(currentUser).concat('.'));
           }).
@@ -298,8 +298,13 @@ angular
           $scope.isGoogleBook = true;
         });
 
-        $scope.formShowable = $scope.book.title !== undefined;
-        $scope.errorShowable = !$scope.formShowable;
+        var formDisplay = $scope.book.title !== undefined;
+        toggleFormDisplay(formDisplay);
+
+        if(!formDisplay) {
+          $scope.addManually();
+          $scope.errorShowable = !formDisplay;
+        }
       };
 
       function getLibrarySlug() {

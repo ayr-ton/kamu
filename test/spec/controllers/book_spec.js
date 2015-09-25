@@ -30,7 +30,7 @@ describe('BookCtrl', function () {
 
   describe('#loadAndReloadBookDetails', function(){
 
-    var mockedBook = {  
+    var mockedBook = {
        "id":1,
        "title":"Clean Code",
        "author":"Robert C. Martin",
@@ -41,8 +41,8 @@ describe('BookCtrl', function () {
        "publicationDate":"2009",
        "numberOfPages":431,
        "reference":1,
-       "_links":{  
-          "self":{  
+       "_links":{
+          "self":{
              "href":"http://localhost:8080/books/1"
           }
        }
@@ -74,7 +74,7 @@ describe('BookCtrl', function () {
       expect(scope.currentBook.isbn).toEqual(9780132350884);
 
     });
-    
+
     it('successfully loads an existing copy that is not borrowed', function(){
 
       var copyReference = 1;
@@ -240,7 +240,7 @@ describe('BookCtrl', function () {
 
         expect(scope.book).toEqual({});
 
-        expect(scope.formShowable).toBe(false);
+        expect(scope.formShowable).toBe(true);
         expect(scope.errorShowable).toBe(true);
       });
     });
@@ -498,8 +498,8 @@ describe('BookCtrl', function () {
       }
     };
 
-    beforeEach(function () { 
-      route.current = { 'pathParams': { 'library': slug } }; 
+    beforeEach(function () {
+      route.current = { 'pathParams': { 'library': slug } };
       searchUrl = apiEndpoint.concat('/libraries/search/findBySlug?slug=').concat(slug);
     });
 
@@ -554,7 +554,7 @@ describe('BookCtrl', function () {
   it('check correct user image url that has borrowed the book', function () {
 
       var imageUrl =  'http://www.gravatar.com/avatar/5c710e48e871d4d4c2a66f7b69a19150';
-      
+
       var lastLoan = {
           "id"    : 1,
           'email': "tuliolucas.silva@gmail.com"
@@ -595,7 +595,7 @@ describe('BookCtrl', function () {
 
     var currentUser = 'fakeuser@someemail.com';
 
-    var copy = { 'id': '21', 'imageUrl': 'path/to/image' };    
+    var copy = { 'id': '21', 'imageUrl': 'path/to/image' };
     var user = { 'imageUrl' : 'http://www.gravatar.com/avatar/1dbd3e934b5d9a64f15826f7e9e23e16' };
     var loan = {'id': '12', 'email': currentUser, 'copy': copy, 'user': user };
     var copyAfterBorrow = { 'id': '21', 'imageUrl': 'path/to/image', 'lastLoan': loan};
@@ -632,7 +632,7 @@ describe('BookCtrl', function () {
     }));
 
     describe('copy borrow failure', function () {
-      var codes = 
+      var codes =
         [{ 'responseCode': 412, 'errorCode': 'HTTP_CODE_412' },
         { 'responseCode': 409, 'errorCode': 'HTTP_CODE_409' },
         { 'responseCode': 500, 'errorCode': 'HTTP_CODE_500' }];
@@ -687,14 +687,13 @@ describe('BookCtrl', function () {
       httpBackend.flush();
 
       expect(scope.copy).toEqual(copy);
-      
       expect(toastrLocal.success).toHaveBeenCalledWith('Book has returned to library.');
       expect(modal.reject).toHaveBeenCalled();
       expect(scope.copy.imageUrl).toEqual('path/to/image');
     }));
 
     describe('copy ret failure', function () {
-      var codes = 
+      var codes =
         [{ 'responseCode': 428, 'errorCode': 'HTTP_CODE_428' },
         { 'responseCode': 500, 'errorCode': 'HTTP_CODE_500' }];
 
