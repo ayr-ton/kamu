@@ -11,8 +11,6 @@ module.exports = (function () {
     addBook.fillISBN(isbn);
     addBook.search.click();
     addBook.add.click();
-
-    waitForModalAndAcceptIt();
   }
 
   self.borrow = function (book) {
