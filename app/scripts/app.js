@@ -24,11 +24,15 @@ angular
     'ngAnimate', 
     'toastr'
   ])
-  .config(['$routeProvider', '$translateProvider', function ($routeProvider, $translateProvider) {
+  .config(['$routeProvider', '$translateProvider', 'toastrConfig', function ($routeProvider, $translateProvider, toastrConfig) {
     var $cookies;
     angular.injector(['ngCookies']).invoke(['$cookies', function (_$cookies_) {
       $cookies = _$cookies_;
     }]);
+
+    angular.extend(toastrConfig, {
+      positionClass: 'toast-top-center'
+    });
 
     var rootUrl = '/library/:library';
 
