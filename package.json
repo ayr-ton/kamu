@@ -45,6 +45,7 @@
     "parallelshell": "^2.0.0",
     "passport-local": "^1.0.0",
     "protractor": "2.1.0",
+    "request": "^2.64.0",
     "usemin-cli": "0.0.7",
     "watch": "^0.16.0",
     "wiredep": "^2.2.2"
