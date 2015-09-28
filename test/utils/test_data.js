@@ -1,3 +1,5 @@
+'use strict';
+
 var request = require('request');
 var config = require('../../config.js');
 
@@ -13,13 +15,13 @@ module.exports = (function () {
 
     jsonPostRequest({ uri: API_ENDPOINT + '/books', body: book }, function (err, bookResponse) {
       var copy = {
-        'book': bookResponse.headers['location'],
+        'book': bookResponse.headers.location,
         'library': libraryUrl,
         'status': 'AVAILABLE'
       };
       jsonPostRequest({ uri: API_ENDPOINT + '/copies', body: copy }, function (err, copyResponse) {
         bookCopy = {
-          url: copyResponse.headers['location'],
+          url: copyResponse.headers.location,
           library: libraryUrl
         };
         callback();
@@ -42,7 +44,7 @@ module.exports = (function () {
 
   self.setupLibraryWithBook = function (callback) {
     self.setupLibrary(function (err, libraryResponse) {
-      createBookAndAssociatedWithALibrary(libraryResponse.headers['location'], callback);
+      createBookAndAssociatedWithALibrary(libraryResponse.headers.location, callback);
     });
   };
 
