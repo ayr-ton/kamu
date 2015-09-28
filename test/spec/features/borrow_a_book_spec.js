@@ -1,24 +1,25 @@
 var LibrarySelect, Login;
 
-LibrarySelect = require('../../page_objects/library_select.js');
-Login = require('../../page_objects/login.js');
+LibrarySelect = require('../../page_objects/library_select');
+Login = require('../../page_objects/login');
+testData = require('../../utils/test_data');
 
 describe('a user browsing the library', function () {
   var librarySelect, bookList, login;
 
-  beforeEach(function () {
+  beforeEach(function (done) {
     login = new Login();
     login.login('John Doe');
     librarySelect = new LibrarySelect();
+    testData.setupLibraryWithBook(done);
   });
 
-  afterEach(function () {
-    bookList = librarySelect.visit().select('Belo Horizonte');
-    bookList.return(bookList.books.first());
+  afterEach(function (done) {
+    testData.cleanUpLibraryAndBook(done);
   });
 
   it('should be able to borrow a book', function () {
-    bookList = librarySelect.visit().select('Belo Horizonte');
+    bookList = librarySelect.visit().select('test');
 
     var book = bookList.books.first();
 

@@ -1,10 +1,12 @@
 var BookList = require('./book_list.js');
+var config = require('../../config.js');
 
 module.exports = function () {
   var self = {};
 
   self.visit = function () {
-    browser.get('http://localhost:9000');
+    var appEndpoint = config.current().appEndpoint
+    browser.get(appEndpoint);
     return self;
   }
 
