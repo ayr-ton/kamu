@@ -7,7 +7,7 @@ module.exports = (function () {
   var jsonPostRequest = request.defaults({ json: true, method: 'POST' });
 
   self.setupLibrary = function (callback) {
-    var library = { "name": "test", "slug": "test" };
+    var library = { 'name': 'test', 'slug': 'test' };
     jsonPostRequest({ uri: API_ENDPOINT + '/libraries', body: library }, function (err, libraryResponse) {
       libraryUrl = libraryResponse.headers['location'];
       callback();
@@ -27,8 +27,8 @@ module.exports = (function () {
   };
 
   self.setupLibraryWithBook = function (done) {
-    var library = { "name": "test", "slug": "test" };
-    var book = { "title": "test book", "author": "someone"};
+    var library = { 'name': 'test', 'slug': 'test' };
+    var book = { 'title': 'test book', 'author': 'someone'};
 
     jsonPostRequest({ uri: API_ENDPOINT + '/libraries', body: library }, function (err, libraryResponse) {
       jsonPostRequest({ uri: API_ENDPOINT + '/books', body: book }, function (err, bookResponse) {
