@@ -39,7 +39,7 @@ function persistUser(req, res) {
   var username = req.user.firstName.concat(' ').concat(req.user.lastName);
   var email = req.user.nameID;
 
-  var usersApiEndPoint = config.environments[environment].apiEndpoint + "/users";
+  var usersApiEndPoint = config.current().apiEndpoint + "/users";
 
   var apiUser = { name: username, email: email };
   var options = {
@@ -80,7 +80,6 @@ if (process.env.NODE_ENV !== 'production') {
 app.post('/login/callback', auth.authenticate('saml', { failureRedirect: '/', failureFlash: true }), persistUser);
 
 app.get('/login', auth.authenticate('saml', { failureRedirect: '/', failureFlash: true }), function (req, res) {
-
   res.redirect('/');
   }
 );
