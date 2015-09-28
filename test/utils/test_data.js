@@ -1,5 +1,7 @@
 var request = require('request');
-var API_ENDPOINT = 'http://localhost:8080';
+var config = require('../../config.js');
+
+var API_ENDPOINT = config.current().apiEndpoint;
 
 module.exports = (function () {
   var self = {};
