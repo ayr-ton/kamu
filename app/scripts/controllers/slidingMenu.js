@@ -1,10 +1,8 @@
-/**
- * Created by lmunda on 9/17/15.
- */
+'use strict';
 
 angular
   .module('libraryUiApp')
-  .controller("slidingMenu", ['$scope', '$rootScope', function ($scope, $rootScope) {
+  .controller('slidingMenu', ['$scope', '$rootScope', function ($scope, $rootScope) {
     $scope.menuVisible = false;
 
     $scope.closeMenu = function () {
@@ -22,6 +20,6 @@ angular
       });
     }
 
-    $rootScope.$on("documentClicked", _close);
-    $rootScope.$on("escapePressed", _close);
+    $rootScope.$on('documentClicked', _close);
+    $rootScope.$on('escapePressed', _close);
   }]);
