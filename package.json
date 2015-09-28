@@ -2,7 +2,7 @@
   "name": "library-ui",
   "private": true,
   "scripts": {
-    "jshint": "jshint ./app/**/*.js ./test/**/*.js",
+    "jshint": "jshint ./app/**/*.js ./test/**/*.js --config ./.jshintrc",
     "build:clean": "rm -rf ./dist/* && rm -rf ./.tmp/* && mkdir -p ./dist && mkdir -p ./dist/scripts",
     "build:env": "node ./scripts/environment.js",
     "build:wiredep": "wiredep -s ./app/index.html",
