@@ -9,9 +9,9 @@ angular
 
       var $cookies;
       $scope.languages = [
-        {name : "Español Ecuador", code : "es-EC"},
-        {name : "Português Brasil", code : "pt-BR"},
-        {name : "English USA", code : "en-US"}
+        {name : 'Español Ecuador', code : 'es-EC'},
+        {name : 'Português Brasil', code : 'pt-BR'},
+        {name : 'English USA', code : 'en-US'}
       ];
 
       $scope.goBack = function() {
@@ -25,7 +25,7 @@ angular
       var selectedCode = $cookies.get('language');
 
       for (var index = 0; index < $scope.languages.length; index++) {
-        if ($scope.languages[index].code == selectedCode) {
+        if ($scope.languages[index].code === selectedCode) {
           $scope.selectedIndex = index;
           break;
         }
