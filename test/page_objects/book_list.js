@@ -1,17 +1,19 @@
+'use strict';
+
 var AddBook = require('./add_book.js');
 
-module.exports = (function () {
+module.exports = function () {
   var self = {};
 
   self.books = element.all(by.repeater('copy in copies'));
 
   self.addBookWithISBN = function (isbn) {
-    addBook = self.clickAddBook();
+    var addBook = self.clickAddBook();
 
     addBook.fillISBN(isbn);
     addBook.search.click();
     addBook.add.click();
-  }
+  };
 
   self.borrow = function (book) {
     book.element(by.css('.books-shelf-borrow')).click();
@@ -32,4 +34,4 @@ module.exports = (function () {
   };
 
   return self;
-});
+};
