@@ -1,3 +1,5 @@
+var config = require('../../config.js');
+
 module.exports = function () {
   var self, form, username, password;
   self = {};
@@ -7,8 +9,9 @@ module.exports = function () {
   password = function () { return form().findElement(By.id('password')); }
 
   self.login = function (name) {
+    var appEndpoint = config.current().appEndpoint;
     browser.ignoreSynchronization = true;
-    browser.get('http://localhost:9000/test/login');
+    browser.get(appEndpoint + '/test/login');
 
     username().sendKeys(name);
     password().sendKeys('any')
