@@ -1,12 +1,10 @@
 var fs = require('fs');
 var config = require('../config')
 
-var environments, environment, selected, contents;
-
-environemnts = config.environments;
+var environment, selected, contents;
 
 selected = process.env.NODE_ENV || 'development';
-environment = environemnts[selected];
+environment = config.current();
 
 contents = "'use strict'; angular.module('config', []).constant('ENV', {name:'env',apiEndpoint:'url'});";
 
