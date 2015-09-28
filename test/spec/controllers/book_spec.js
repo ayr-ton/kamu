@@ -51,9 +51,9 @@ describe('BookCtrl', function () {
     it('successfully opens an existing copy that is not borrowed', function(){
 
       var copy = {};
-      copy.reference = 1;
+      copy.id = 1;
 
-      var copyBookEndpPoint = apiEndpoint.concat('/books/').concat(copy.reference);
+      var copyBookEndpPoint = apiEndpoint.concat('/copies/').concat(copy.id).concat('?projection=copyWithBookInline');
 
       httpBackend
         .expectGET(copyBookEndpPoint)
@@ -79,7 +79,8 @@ describe('BookCtrl', function () {
 
       var copyReference = 1;
 
-      var copyBookEndpPoint = apiEndpoint.concat('/books/').concat(copyReference);
+      var copyBookEndpPoint = apiEndpoint.concat('/copies/').concat(copyReference).concat('?projection=copyWithBookInline');
+
 
       httpBackend
         .expectGET(copyBookEndpPoint)

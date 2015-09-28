@@ -49,14 +49,20 @@
 }
 
 .book-borrower{
-  
   position: absolute;
-  top: -20px;
-  right: -25px;
+  top: 1px;
+  right: 1px;
   float: right;
   width: 44px;
   height: 44px;
   border-radius: 50%;
   overflow: hidden;
-    /* margin: 10px 10px 10px 4px; */
+}
+
+.book-detail-borrower{  
+  margin-top: 5px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  overflow: hidden;
 }
