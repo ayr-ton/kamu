@@ -5,14 +5,17 @@ Login = require('../../page_objects/login.js');
 testData = require('../../utils/test_data');
 
 describe('a user that wants to add a book', function () {
-  var librarySelect, login, bookList, addBook, JAVASCRIPT_GOOD_PARTS_ISBN;
+  var librarySelect, login, bookList, addBook, JAVASCRIPT_GOOD_PARTS_ISBN, libraryUrl;
 
   beforeEach(function (done) {
     login = new Login();
     librarySelect = new LibrarySelect();
     login.login('John Doe');
     JAVASCRIPT_GOOD_PARTS_ISBN = '9780596554873';
-    testData.setupLibrary(done);
+    testData.setupLibrary(function (err, libraryResponse) {
+      libraryUrl = libraryResponse.headers['location'];
+      done();
+    });
   });
 
   afterEach(function (done) {
@@ -27,7 +30,7 @@ describe('a user that wants to add a book', function () {
       var id = id.split('-')[1];
 
       testData.deleteCopy(id, function () {
-        testData.cleanUpLibrary(done);
+        testData.cleanUpLibrary(libraryUrl, done);
       });
     });
   });
