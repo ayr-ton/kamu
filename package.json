@@ -2,6 +2,7 @@
   "name": "library-ui",
   "private": true,
   "scripts": {
+    "jshint": "jshint ./app/**/*.js ./test/**/*.js",
     "build:clean": "rm -rf ./dist/* && rm -rf ./.tmp/* && mkdir -p ./dist && mkdir -p ./dist/scripts",
     "build:env": "node ./scripts/environment.js",
     "build:wiredep": "wiredep -s ./app/index.html",
@@ -36,6 +37,7 @@
     "bower": "1.4.1",
     "coffee-script": "^1.9.3",
     "debug": "~2.2.0",
+    "jshint": "^2.8.0",
     "karma-coverage": "^0.5.2",
     "karma-jasmine": "~0.1.0",
     "karma-phantomjs-launcher": "*",
