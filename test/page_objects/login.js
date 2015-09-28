@@ -1,12 +1,13 @@
+'use strict';
+
 var config = require('../../config.js');
 
 module.exports = function () {
-  var self, form, username, password;
-  self = {};
+  var self = {};
 
-  form = function () { return browser.driver.findElement(By.css('form')); }
-  username = function () { return form().findElement(By.id('username')); }
-  password = function () { return form().findElement(By.id('password')); }
+  function form() { return browser.driver.findElement(by.css('form')); }
+  function username() { return form().findElement(by.id('username')); }
+  function password() { return form().findElement(by.id('password')); }
 
   self.login = function (name) {
     var appEndpoint = config.current().appEndpoint;
@@ -14,11 +15,11 @@ module.exports = function () {
     browser.get(appEndpoint + '/test/login');
 
     username().sendKeys(name);
-    password().sendKeys('any')
+    password().sendKeys('any');
     form().submit();
 
     browser.ignoreSynchronization = false;
-  }
+  };
 
   return self;
 };
