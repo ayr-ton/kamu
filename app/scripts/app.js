@@ -19,9 +19,9 @@ angular
     'ngTouch',
     'pascalprecht.translate',
     'ngCookies',
-    'ui.mask', 
+    'ui.mask',
     'ngMd5',
-    'ngAnimate', 
+    'ngAnimate',
     'toastr'
   ])
   .config(['$routeProvider', '$translateProvider', 'toastrConfig', function ($routeProvider, $translateProvider, toastrConfig) {
@@ -209,16 +209,17 @@ angular
     });
   }]).
   run(['$rootScope', '$http', '$location', 'ENV', function ($rootScope, $http, $location, ENV) {
-    $rootScope.$on('$routeChangeStart', function (event, next, current) {
+    $rootScope.$on('$routeChangeStart', function (event, next) {
       var slug = next.pathParams.library;
 
-      document.addEventListener("keyup", function(e) {
-        if (e.keyCode === 27)
-          $rootScope.$broadcast("escapePressed", e.target);
+      document.addEventListener('keyup', function(e) {
+        if (e.keyCode === 27) {
+          $rootScope.$broadcast('escapePressed', e.target);
+        }
       });
 
-      document.addEventListener("click", function(e) {
-        $rootScope.$broadcast("documentClicked", e.target);
+      document.addEventListener('click', function(e) {
+        $rootScope.$broadcast('documentClicked', e.target);
       });
 
       if (angular.isDefined(slug)) {

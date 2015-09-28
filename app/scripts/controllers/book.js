@@ -26,7 +26,7 @@ angular
       $scope.borrowerIsCurrentUser = function (copy) {
 
         if (copy.lastLoan !== undefined && copy.lastLoan !== null) {
-          return copy.lastLoan.email.toLowerCase() == $scope.currentUserEmail.toLowerCase();
+          return copy.lastLoan.email.toLowerCase() === $scope.currentUserEmail.toLowerCase();
         }else {
           return false;
         }
@@ -250,9 +250,6 @@ angular
 
                 toastr.error(errorMessage);
               });
-          },
-
-          function handleReject(error) {
           }
         );
       };
@@ -333,7 +330,7 @@ angular
 
       function addBook(library, slug) {
         BookService.addBook($scope.book).
-          success(function (data, status, headers, config) {
+          success(function (data, status, headers) {
             var book = headers('Location');
             addCopy(library, slug, book);
           }).
