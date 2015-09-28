@@ -50,19 +50,20 @@
 
 .book-borrower{
   position: absolute;
-  top: 1px;
-  right: 1px;
+  top: 5px;
+  right: 5px;
   float: right;
   width: 44px;
   height: 44px;
   border-radius: 50%;
   overflow: hidden;
+  border: thin solid white;
 }
 
 .book-detail-borrower{  
   margin-top: 5px;
-  width: 44px;
-  height: 44px;
+  width: 66px;
+  height: 66px;
   border-radius: 50%;
   overflow: hidden;
 }
