@@ -155,23 +155,27 @@ angular
       });
 
       $scope.loadBookDetails = function (copy) {
-        BookService.getBook(copy.reference).success(function (response) {
+        BookService.getCopy(copy.id).success(function (response) {
 
-          //Loading book data
           BookService.currentBook = response;
           $scope.currentBook = BookService.currentBook;
-          var url = '#/library/' + getLibrarySlug() + '/book_details/' + copy.reference;
+          
+          var url = '#/library/' + getLibrarySlug() + '/book_details/' + copy.id;
           window.location.assign(url);
-
-          //Loading loan data
 
         });
       };
 
       $scope.reloadBookDetails = function (copyReference) {
-        BookService.getBook(copyReference).success(function (response) {
+        BookService.getCopy(copyReference).success(function (response) {
           BookService.currentBook = response;
           $scope.currentBook = BookService.currentBook;
+
+        if (BookService.currentBook.lastLoan  !== undefined ) {
+              $scope.currentBook.lastLoan.user = {};
+              $scope.currentBook.lastLoan.user.imageUrl = UserService.getGravatarFromUserEmail(BookService.currentBook.lastLoan.email);
+          }
+          
         });
       };
 
