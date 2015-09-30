@@ -14,7 +14,7 @@ describe('BookCtrl routing', function () {
   it('routes /add_book to #add-book', function () {
     inject(function ($route) {
       var addBookUrl = $route.routes['/library/:library/add_book'];
-      expect(addBookUrl.controller).toBe('BookCtrl');
+      expect(addBookUrl.controller).toBe('AddBookController');
       expect(addBookUrl.templateUrl).toEqual('views/book/add-book.html');
     });
   });
