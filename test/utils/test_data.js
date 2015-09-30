@@ -11,7 +11,29 @@ module.exports = (function () {
   var jsonPostRequest = request.defaults({ json: true, method: 'POST' });
 
   function createBookAndAssociatedWithALibrary(libraryUrl, callback) {
-    var book = { 'title': 'test book', 'author': 'someone'};
+
+  }
+
+  self.setupLibrary = function (callback) {
+      jsonPostRequest({ uri: API_ENDPOINT + '/libraries', body: { 'name': 'test', 'slug': 'test' } }, callback);
+  };
+
+  self.cleanUpLibrary = function (callback) {
+    request({ method: 'GET', url: API_ENDPOINT + '/libraries/search/findBySlug?slug=test', json:true }, function (req, response, body) {
+      if (body._embedded && body._embedded.libraries && body._embedded.libraries.length > 0) {
+        request({ method: 'DELETE', uri: body._embedded.libraries[0]._links.self.href }, callback);
+      } else {
+        callback();
+      }
+    });
+  };
+
+  self.deleteCopy = function (id, callback) {
+    request({ method: 'DELETE', uri: API_ENDPOINT + '/copies/' + id }, callback);
+  };
+
+  self.setupBook = function (libraryUrl, callback) {
+    var book = { 'title': 'test book', 'author': 'someone' };
 
     jsonPostRequest({ uri: API_ENDPOINT + '/books', body: book }, function (err, bookResponse) {
       var copy = {
@@ -19,39 +41,23 @@ module.exports = (function () {
         'library': libraryUrl,
         'status': 'AVAILABLE'
       };
-      jsonPostRequest({ uri: API_ENDPOINT + '/copies', body: copy }, function (err, copyResponse) {
-        bookCopy = {
-          url: copyResponse.headers.location,
-          library: libraryUrl
-        };
+      jsonPostRequest({ uri: API_ENDPOINT + '/copies', body: copy }, callback);
+    });
+  };
+
+  self.cleanUpCopies = function (callback) {
+    request({ method: 'GET', url: API_ENDPOINT + '/copies', json: true}, function (err, response, body) {
+      if (body._embeded && body._embeded.copies && body._embeded.copies.length > 0) {
+        var testBooks = body._embeded.copies.filter(function (copy) { return copy.title === 'test book'; });
+        if (testBooks.length > 0) {
+          self.deleteCopy(testBooks[0].id, callback);
+        } else {
+          callback();
+        }
+      } else {
         callback();
-      });
-    });
-  }
-
-  self.setupLibrary = function (callback) {
-    var library = { 'name': 'test', 'slug': 'test' };
-    jsonPostRequest({ uri: API_ENDPOINT + '/libraries', body: library }, callback);
-  };
-
-  self.cleanUpLibrary = function (libraryUrl, callback) {
-    request({ method: 'DELETE', uri: libraryUrl }, callback);
-  };
-
-  self.deleteCopy = function (id, callback) {
-    request({ method: 'DELETE', uri: API_ENDPOINT + '/copies/' + id }, callback);
-  };
-
-  self.setupLibraryWithBook = function (callback) {
-    self.setupLibrary(function (err, libraryResponse) {
-      createBookAndAssociatedWithALibrary(libraryResponse.headers.location, callback);
-    });
-  };
-
-  self.cleanUpLibraryAndBook = function (done) {
-    request({ method: 'DELETE', url: bookCopy.url }, function () {
-      self.cleanUpLibrary(bookCopy.library, done);
-    });
+      }
+    })
   };
 
   return self;

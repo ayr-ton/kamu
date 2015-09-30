@@ -11,11 +11,15 @@ describe('a user browsing the library', function () {
     login = new Login();
     login.login('John Doe');
     librarySelect = new LibrarySelect();
-    testData.setupLibraryWithBook(done);
+    testData.setupLibrary(function (err, response) {
+      testData.setupBook(response.headers.location, done);
+    });
   });
 
   afterEach(function (done) {
-    testData.cleanUpLibraryAndBook(done);
+    testData.cleanUpCopies(function () {
+      testData.cleanUpLibrary(done);
+    });
   });
 
   it('should be able to borrow a book', function () {
