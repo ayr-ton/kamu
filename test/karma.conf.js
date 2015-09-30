@@ -15,7 +15,7 @@ module.exports = function(config) {
 
     // testing framework to use (jasmine/mocha/qunit/...)
     // as well as any additional frameworks (requirejs/chai/sinon/...)
-    frameworks: [ 
+    frameworks: [
       "wiredep",
       "jasmine"
     ],
@@ -26,7 +26,7 @@ module.exports = function(config) {
     },
 
     coverageReporter: { type : 'lcov', dir : 'coverage/' },
-    reporters: ['progress', 'coverage'],
+    reporters: ['spec', 'coverage'],
 
     preprocessors: {
       'app/**/*.js': ['coverage']
@@ -63,7 +63,8 @@ module.exports = function(config) {
       "karma-wiredep",
       "karma-phantomjs-launcher",
       "karma-jasmine",
-      "karma-coverage"
+      "karma-coverage",
+      "karma-spec-reporter"
     ],
 
     // Continuous Integration mode
