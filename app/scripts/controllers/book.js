@@ -61,43 +61,13 @@ angular
         return NavigationService.isBorrowedBooksActive();
       };
 
-      $scope.autoCompleteSearch = function () {
-        $scope.formShowable = false;
-        $scope.errorShowable = false;
-        $scope.searchShowable = true;
-        $scope.isbnSearch = true;
-      };
-      $scope.autoCompleteSearch();
-
       $scope.getCurrentLibraryPath = function () {
         return $scope.isInsideLibrary() ? '#/library/' + getLibrarySlug() : '#/libraries';
       };
 
-      $scope.findGoogleBooks = function () {
-        var searchCriteria = $scope.searchCriteria.toString();
-
-        $scope.book = {};
-
-        if (searchCriteria !== '') {
-          BookService.findLibraryBook(searchCriteria).
-            success(populateBookFromLibraryApi).
-            error(function () {
-              toggleFormDisplay(false);
-            });
-        }
-      };
 
       $scope.isInsideLibrary = function () {
         return angular.isDefined($route.current) ? angular.isDefined(getLibrarySlug()) : false;
-      };
-
-      $scope.addManually = function () {
-        $scope.book = {};
-        $scope.searchShowable = false;
-        $scope.isbnSearch = false;
-        $scope.isGoogleBook = false;
-
-        toggleFormDisplay(true);
       };
 
       $scope.addBookToLibrary = function () {
@@ -159,7 +129,7 @@ angular
 
           BookService.currentBook = response;
           $scope.currentBook = BookService.currentBook;
-          
+
           var url = '#/library/' + getLibrarySlug() + '/book_details/' + copy.id;
           window.location.assign(url);
 
@@ -175,7 +145,7 @@ angular
               $scope.currentBook.lastLoan.user = {};
               $scope.currentBook.lastLoan.user.imageUrl = UserService.getGravatarFromUserEmail(BookService.currentBook.lastLoan.email);
           }
-          
+
         });
       };
 
@@ -274,39 +244,6 @@ angular
         window.location.assign('/#/library/' + getLibrarySlug() + '/settings');
       };
 
-      var populateBookFromLibraryApi = function (data) {
-        $scope.bookExistsInTheLibrary = false;
-
-        if (data._embedded !== undefined) {
-          $scope.book = data._embedded.books[0];
-          $scope.book.imageUrl = BookService.resolveBookImage($scope.book.imageUrl);
-          $scope.bookExistsInTheLibrary = true;
-          $scope.isGoogleBook = true;
-
-          toggleFormDisplay(true);
-        } else {
-          BookService.findGoogleBooks($scope.searchCriteria).
-            success(populateBookFromGoogleApi).
-            error(function () {
-              toggleFormDisplay(false);
-            });
-        }
-      };
-
-      var populateBookFromGoogleApi = function (data) {
-        angular.forEach(data.items, function (item) {
-          $scope.book = BookService.extractBookInformation(item.volumeInfo, $scope.searchCriteria);
-          $scope.isGoogleBook = true;
-        });
-
-        var formDisplay = $scope.book.title !== undefined;
-        toggleFormDisplay(formDisplay);
-
-        if(!formDisplay) {
-          $scope.addManually();
-          $scope.errorShowable = !formDisplay;
-        }
-      };
 
       function getLibrarySlug() {
         return $route.current.pathParams.library;
@@ -342,11 +279,6 @@ angular
             toastr.error('Error occurred while adding ' + $scope.book.title + '.');
             $scope.addingBook = false;
           });
-      }
-
-      function toggleFormDisplay(displayable) {
-        $scope.formShowable = displayable;
-        $scope.errorShowable = !displayable;
       }
 
       if (isInBookDetails) {
