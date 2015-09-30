@@ -7,12 +7,7 @@ var API_ENDPOINT = config.current().apiEndpoint;
 
 module.exports = (function () {
   var self = {};
-  var bookCopy;
   var jsonPostRequest = request.defaults({ json: true, method: 'POST' });
-
-  function createBookAndAssociatedWithALibrary(libraryUrl, callback) {
-
-  }
 
   self.setupLibrary = function (callback) {
       jsonPostRequest({ uri: API_ENDPOINT + '/libraries', body: { 'name': 'test', 'slug': 'test' } }, callback);
@@ -57,7 +52,7 @@ module.exports = (function () {
       } else {
         callback();
       }
-    })
+    });
   };
 
   return self;
