@@ -46,7 +46,7 @@ angular
       })
       .when(rootUrl + '/add_book', {
         templateUrl: 'views/book/add-book.html',
-        controller: 'BookCtrl'
+        controller: 'AddBookController'
       })
       .when('/libraries', {
         templateUrl: 'views/library/index.html',
@@ -187,7 +187,7 @@ angular
         INVALID_LIBRARY_ERROR: '¡Ups! La librería a la que intenta agregar un libro no está registrada.',
         RETURN_MESSAGE: '¿Estás seguro de devolver este libro?',
         APP_SETTINGS: 'Configuración',
-        APP_ADD_WISH: 'Añadir libro a la lista de deseos',        
+        APP_ADD_WISH: 'Añadir libro a la lista de deseos',
         BORROWED_BY: 'Prestado por'
       });
 
