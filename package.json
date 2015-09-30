@@ -41,6 +41,7 @@
     "karma-coverage": "^0.5.2",
     "karma-jasmine": "~0.1.0",
     "karma-phantomjs-launcher": "*",
+    "karma-spec-reporter": "0.0.20",
     "karma-wiredep": "^1.0.1",
     "live-reload": "^1.1.0",
     "ng-annotate": "^1.0.2",
