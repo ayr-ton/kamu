@@ -42,8 +42,8 @@ module.exports = (function () {
 
   self.cleanUpCopies = function (callback) {
     request({ method: 'GET', url: API_ENDPOINT + '/copies', json: true}, function (err, response, body) {
-      if (body._embeded && body._embeded.copies && body._embeded.copies.length > 0) {
-        var testBooks = body._embeded.copies.filter(function (copy) { return copy.title === 'test book'; });
+      if (body._embedded && body._embedded.copies && body._embedded.copies.length > 0) {
+        var testBooks = body._embedded.copies.filter(function (copy) { return copy.title === 'test book'; });
         if (testBooks.length > 0) {
           self.deleteCopy(testBooks[0].id, callback);
         } else {
