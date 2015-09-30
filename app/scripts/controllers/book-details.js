@@ -2,33 +2,15 @@
 
 angular
   .module('libraryUiApp')
-  .controller('BookDetailsController', ['$scope', '$route', 'BookService', function ($scope, $route, BookService) {
+  .controller('BookDetailsController', ['$scope', '$routeParams', 'BookService', 'UserService', function ($scope, $routeParams, BookService, UserService) {
     $scope.currentBook;
 
-    $scope.loadBookDetails = function (copy) {
-      BookService.getCopy(copy.id).success(function (response) {
+    BookService.getCopy($routeParams.bookId).success(function (response) {
+      $scope.currentBook = response;
 
-        $scope.currentBook = response
-
-        var url = '#/library/' + getLibrarySlug() + '/book_details/' + copy.id;
-        window.location.assign(url);
-
-      });
-    };
-
-    $scope.reloadBookDetails = function (copyReference) {
-      BookService.getCopy(copyReference).success(function (response) {
-        $scope.currentBook = response;
-
-        if ($scope.currentBook.lastLoan  !== undefined ) {
-            $scope.currentBook.lastLoan.user = {};
-            $scope.currentBook.lastLoan.user.imageUrl = UserService.getGravatarFromUserEmail($scope.currentBook.lastLoan.email);
-        }
-      });
-    };
-
-    function getLibrarySlug() {
-      return $route.current.pathParams.library;
-    }
-
+      if ($scope.currentBook.hasOwnProperty('lastLoan') && $scope.currentBook.lastLoan != null) {
+          $scope.currentBook.lastLoan.user = {};
+          $scope.currentBook.lastLoan.user.imageUrl = UserService.getGravatarFromUserEmail($scope.currentBook.lastLoan.email);
+      }
+    });
   }]);

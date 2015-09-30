@@ -14,6 +14,7 @@ angular
     'toastr',
     function ($scope, BookService, LoanService, NavigationService, Modal, $translate, $route, $routeParams, UserService, toastr) {
       var isInBookDetails = NavigationService.isBookDetails();
+      $scope.library = $routeParams.library;
 
       $scope.currentUserEmail = window.sessionStorage.email;
 
