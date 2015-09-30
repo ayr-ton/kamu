@@ -58,7 +58,7 @@ angular
       })
       .when(rootUrl + '/book_details/:bookId', {
         templateUrl: 'views/book/book-details.html',
-        controller: 'BookCtrl'
+        controller: 'BookDetailsController'
       })
       .when(rootUrl + '/settings', {
         templateUrl: 'views/settings/settings.html',
