@@ -1,3 +1,5 @@
+'use strict';
+
 angular
   .module('libraryUiApp')
   .controller('AddBookController', ['$scope', '$route', '$translate', 'BookService', 'toastr', function ($scope, $route, $translate, BookService, toastr) {
@@ -107,11 +109,11 @@ angular
       var formDisplay = $scope.book.title !== undefined;
       toggleFormDisplay(formDisplay);
 
-      if(!formDisplay) {
+      if (!formDisplay) {
         $scope.addManually();
         $scope.errorShowable = !formDisplay;
       }
-    };
+    }
 
     function populateBookFromLibraryApi(data) {
       $scope.bookExistsInTheLibrary = false;
@@ -130,5 +132,5 @@ angular
             toggleFormDisplay(false);
           });
       }
-    };
+    }
   }]);
