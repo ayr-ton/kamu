@@ -30,14 +30,14 @@ describe('libraryUiApp routing', function () {
       location.path('/library/' + library + '/add_book');
       rootScope.$digest();
 
-      expect(route.current.controller).toBe('BookCtrl');
+      expect(route.current.controller).toBe('AddBookController');
     });
 
     it('should route correctly when route is upper case', function () {
       location.path('/liBRary/' + library + '/ADD_BOOK');
       rootScope.$digest();
 
-      expect(route.current.controller).toBe('BookCtrl');
+      expect(route.current.controller).toBe('AddBookController');
     });
   });
 
