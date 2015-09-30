@@ -13,9 +13,8 @@ angular
     'UserService',
     'toastr',
     function ($scope, BookService, LoanService, NavigationService, Modal, $translate, $route, $routeParams, UserService, toastr) {
-      $scope.currentBook = BookService.currentBook;
-
       var isInBookDetails = NavigationService.isBookDetails();
+      $scope.library = $routeParams.library;
 
       $scope.currentUserEmail = window.sessionStorage.email;
 
@@ -98,31 +97,6 @@ angular
       $scope.$on('$viewContentLoaded', function () {
         $scope.listBooks();
       });
-
-      $scope.loadBookDetails = function (copy) {
-        BookService.getCopy(copy.id).success(function (response) {
-
-          BookService.currentBook = response;
-          $scope.currentBook = BookService.currentBook;
-
-          var url = '#/library/' + getLibrarySlug() + '/book_details/' + copy.id;
-          window.location.assign(url);
-
-        });
-      };
-
-      $scope.reloadBookDetails = function (copyReference) {
-        BookService.getCopy(copyReference).success(function (response) {
-          BookService.currentBook = response;
-          $scope.currentBook = BookService.currentBook;
-
-        if (BookService.currentBook.lastLoan  !== undefined ) {
-              $scope.currentBook.lastLoan.user = {};
-              $scope.currentBook.lastLoan.user.imageUrl = UserService.getGravatarFromUserEmail(BookService.currentBook.lastLoan.email);
-          }
-
-        });
-      };
 
       $scope.borrowCopy = function (copy) {
         var currentUser = window.sessionStorage.email;
