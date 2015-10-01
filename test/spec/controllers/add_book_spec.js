@@ -354,7 +354,7 @@ describe('Add Book Controller', function () {
         expect(toastrLocal.success).toHaveBeenCalledWith('Book has been added to library successfully.');
         expect(window.location.replace).toHaveBeenCalledWith('/#/library/'.concat(slug));
       });
-      
+
       it('throws error when atttempt to add copy fails', function () {
         httpBackend
           .expectPOST(addCopyEndpoint)

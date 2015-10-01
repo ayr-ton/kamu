@@ -16,13 +16,7 @@
       <div class="book-shelf-info">
         <p class="book-shelf-title">{{copy.title}}</p>
         <p class="book-shelf-author">{{copy.author}}</p>
-        <div class="books-shelf-borrow" ng-click="borrowCopy(copy)" ng-show="copy.status === 'AVAILABLE'">
-          {{ 'APP_BORROW' | translate }}
-        </div>
-        <div class="books-shelf-return" ng-click="returnCopy(copy)"
-             ng-hide="copy.status === 'AVAILABLE' || !borrowerIsCurrentUser(copy)">
-          {{ 'APP_RETURN' | translate }}
-        </div>
+        <book-action-buttons copy="copy" />
       </div>
     </li>
   </ul>
