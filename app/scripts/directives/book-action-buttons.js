@@ -100,7 +100,7 @@ angular
         restrict: 'E',
         scope: { copy: '=' },
         replace: true,
-        controller: actionButtonsController,
+        controller: ['$scope', actionButtonsController],
         templateUrl: 'templates/book-action-buttons.html'
       };
   }]);
