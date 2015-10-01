@@ -16,18 +16,6 @@ angular
       var isInBookDetails = NavigationService.isBookDetails();
       $scope.library = $routeParams.library;
 
-      $scope.currentUserEmail = window.sessionStorage.email;
-
-      $scope.borrowerIsCurrentUser = function (copy) {
-
-        if (copy.lastLoan !== undefined && copy.lastLoan !== null) {
-          return copy.lastLoan.email.toLowerCase() === $scope.currentUserEmail.toLowerCase();
-        }else {
-          return false;
-        }
-
-      };
-
       $scope.goBack = function () {
         NavigationService.goBack();
       };
