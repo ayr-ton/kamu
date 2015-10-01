@@ -8,7 +8,8 @@ angular
     'BookService',
     'UserService',
     'toastr',
-    function($translate, LoanService, BookService, UserService, toastr) {
+    'Modal',
+    function($translate, LoanService, BookService, UserService, toastr, Modal) {
       function actionButtonsController ($scope) {
 
         $scope.borrowerIsCurrentUser = function (copy) {
@@ -52,6 +53,46 @@ angular
               }
               toastr.error(errorMessage);
             });
+        };
+
+        $scope.returnCopy = function (copy) {
+          $scope.loan = copy.lastLoan;
+
+          var promise = Modal.open(
+            'not-available', {loan : copy.lastLoan}
+          );
+
+          promise.then(
+            function handleResolve(response) {
+              LoanService.
+                returnCopy(response.loan.id).
+                success(function () {
+                  Modal.reject();
+
+                  toastr.success('Book has returned to library.');
+
+                  BookService.getCopy(copy.id)
+                    .success(function (data) {
+                      $scope.copy = data;
+                      $scope.copy.imageUrl = BookService.resolveBookImage($scope.copy.imageUrl);
+                    });
+                }).
+                error(function (data, status) {
+                  var errorMessage;
+
+                  switch (status) {
+                    case 428:
+                      errorMessage = $translate.instant('HTTP_CODE_428');
+                      break;
+                    default:
+                      errorMessage = $translate.instant('HTTP_CODE_500');
+                      break;
+                  }
+
+                  toastr.error(errorMessage);
+                });
+            }
+          );
         };
       }
 

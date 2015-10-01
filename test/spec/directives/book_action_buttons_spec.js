@@ -132,4 +132,62 @@ describe('Book Action Buttons Directive', function () {
       });
     });
   });
+
+  describe('when returning a book', function () {
+    var lastLoan, copy, loan;
+
+    beforeEach(function () {
+      lastLoan = { 'id': '1', email: '' };
+      copy = { 'id': '21', 'imageUrl': 'path/to/image', 'lastLoan': lastLoan };
+      loan = { 'id': '12', 'email': 'fakeuser@someemail.com', 'copy': copy };
+    });
+
+    it('successfully returns a book', inject(function ($window, Modal) {
+      var modal = Modal;
+
+      spyOn(modal, 'reject');
+      spyOn(toastrLocal, 'success');
+      compileElement(copy);
+
+      httpBackend.expectPATCH(apiEndpoint.concat('/loans/12')).respond(200);
+      httpBackend.expectGET(apiEndpoint.concat('/copies/').concat(copy.id).concat('?projection=copyWithBookInline')).respond(200, copy);
+
+      scope.returnCopy(copy);
+
+      modal.resolve({ 'loan': loan });
+
+      httpBackend.flush();
+
+      expect(scope.copy).toEqual(copy);
+      expect(toastrLocal.success).toHaveBeenCalledWith('Book has returned to library.');
+      expect(modal.reject).toHaveBeenCalled();
+      expect(scope.copy.imageUrl).toEqual('path/to/image');
+    }));
+
+    describe('copy ret failure', function () {
+      var codes =
+        [{ 'responseCode': 428, 'errorCode': 'HTTP_CODE_428' },
+        { 'responseCode': 500, 'errorCode': 'HTTP_CODE_500' }];
+
+      codes.forEach(function (item) {
+        it('shows an error', inject(function ($window, $translate, Modal) {
+          spyOn(toastrLocal, 'error');
+          spyOn($translate, 'instant');
+          compileElement(copy);
+
+          httpBackend.expectPATCH(apiEndpoint.concat('/loans/12')).respond(item.responseCode);
+
+          scope.returnCopy(copy);
+
+          Modal.resolve({ 'loan': loan });
+
+          httpBackend.flush();
+
+          expect(toastrLocal.error).toHaveBeenCalled();
+          expect($translate.instant).toHaveBeenCalledWith(item.errorCode);
+          expect(scope.loan).toEqual(lastLoan);
+        }));
+      });
+    });
+  });
 });
