@@ -29,14 +29,16 @@ module.exports = function(config) {
     reporters: ['spec', 'coverage'],
 
     preprocessors: {
-      'app/**/*.js': ['coverage']
+      'app/**/*.js': ['coverage'],
+      'app/templates/*.html': ['html2js']
     },
 
     // list of files / patterns to load in the browser
     files: [
       "app/scripts/**/*.js",
       "test/mock/**/*.js",
-      "test/spec/!(features)/*.js"
+      "test/spec/!(features)/*.js",
+      "app/templates/**/*.html"
     ],
 
     // list of files / patterns to exclude
@@ -64,7 +66,8 @@ module.exports = function(config) {
       "karma-phantomjs-launcher",
       "karma-jasmine",
       "karma-coverage",
-      "karma-spec-reporter"
+      "karma-spec-reporter",
+      "karma-html2js-preprocessor"
     ],
 
     // Continuous Integration mode
