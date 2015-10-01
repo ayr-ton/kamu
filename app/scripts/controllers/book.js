@@ -11,22 +11,9 @@ angular
     '$route',
     '$routeParams',
     'UserService',
-    'toastr',
-    function ($scope, BookService, LoanService, NavigationService, Modal, $translate, $route, $routeParams, UserService, toastr) {
+    function ($scope, BookService, LoanService, NavigationService, Modal, $translate, $route, $routeParams, UserService) {
       var isInBookDetails = NavigationService.isBookDetails();
       $scope.library = $routeParams.library;
-
-      $scope.currentUserEmail = window.sessionStorage.email;
-
-      $scope.borrowerIsCurrentUser = function (copy) {
-
-        if (copy.lastLoan !== undefined && copy.lastLoan !== null) {
-          return copy.lastLoan.email.toLowerCase() === $scope.currentUserEmail.toLowerCase();
-        }else {
-          return false;
-        }
-
-      };
 
       $scope.goBack = function () {
         NavigationService.goBack();
@@ -97,85 +84,6 @@ angular
       $scope.$on('$viewContentLoaded', function () {
         $scope.listBooks();
       });
-
-      $scope.borrowCopy = function (copy) {
-        var currentUser = window.sessionStorage.email;
-
-        LoanService.
-          borrowCopy(copy.id, currentUser).
-          success(function () {
-            BookService.getCopy(copy.id)
-              .success(function (data) {
-                var scope = angular.element('#copy-'.concat(copy.id)).scope();
-                scope.copy = data;
-                scope.copy.imageUrl = BookService.resolveBookImage(scope.copy.imageUrl);
-
-                scope.copy.lastLoan.user = {
-                  imageUrl: UserService.getGravatarFromUserEmail(scope.copy.lastLoan.email)
-                };
-              });
-              toastr.success('Book has been loaned to '.concat(currentUser).concat('.'));
-          }).
-          error(function (data, status) {
-            var errorMessage;
-
-            switch (status) {
-              case 412:
-                errorMessage = $translate.instant('HTTP_CODE_412');
-                break;
-              case 409:
-                errorMessage = $translate.instant('HTTP_CODE_409');
-                break;
-              default:
-                errorMessage = $translate.instant('HTTP_CODE_500');
-                break;
-            }
-            toastr.error(errorMessage);
-          });
-      };
-
-      $scope.returnCopy = function (copy) {
-        var scope = angular.element('#modal-div').scope();
-        scope.loan = copy.lastLoan;
-
-        var promise = Modal.open(
-          'not-available', {loan : copy.lastLoan}
-        );
-
-        promise.then(
-          function handleResolve(response) {
-            LoanService.
-              returnCopy(response.loan.id).
-              success(function () {
-                Modal.reject();
-
-                toastr.success('Book has returned to library.');
-
-                BookService.getCopy(copy.id)
-                  .success(function (data) {
-                    var scope = angular.element('#copy-'.concat(copy.id)).scope();
-                    scope.copy = data;
-                    scope.copy.imageUrl = BookService.resolveBookImage(scope.copy.imageUrl);
-
-                  });
-              }).
-              error(function (data, status) {
-                var errorMessage;
-
-                switch (status) {
-                  case 428:
-                    errorMessage = $translate.instant('HTTP_CODE_428');
-                    break;
-                  default:
-                    errorMessage = $translate.instant('HTTP_CODE_500');
-                    break;
-                }
-
-                toastr.error(errorMessage);
-              });
-          }
-        );
-      };
 
       $scope.gotoAllBooks = function () {
         window.location.assign('/#/library/' + getLibrarySlug());

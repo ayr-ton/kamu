@@ -1,7 +1,6 @@
 .DS_Store
 .idea/
 public/
-views/
 node_modules
 dist
 .tmp

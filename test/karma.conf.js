@@ -26,17 +26,19 @@ module.exports = function(config) {
     },
 
     coverageReporter: { type : 'lcov', dir : 'coverage/' },
-    reporters: ['spec', 'coverage'],
+    reporters: [],
 
     preprocessors: {
-      'app/**/*.js': ['coverage']
+      'app/**/*.js': ['coverage'],
+      'app/templates/*.html': ['html2js']
     },
 
     // list of files / patterns to load in the browser
     files: [
       "app/scripts/**/*.js",
       "test/mock/**/*.js",
-      "test/spec/!(features)/*.js"
+      "test/spec/!(features)/*.js",
+      "app/templates/**/*.html"
     ],
 
     // list of files / patterns to exclude
@@ -62,9 +64,12 @@ module.exports = function(config) {
     plugins: [
       "karma-wiredep",
       "karma-phantomjs-launcher",
+      "karma-chrome-launcher",
       "karma-jasmine",
       "karma-coverage",
-      "karma-spec-reporter"
+      "karma-spec-reporter",
+      "karma-html2js-preprocessor",
+      "karma-notify-reporter"
     ],
 
     // Continuous Integration mode
