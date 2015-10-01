@@ -2,7 +2,7 @@
 
 angular
   .module('libraryUiApp')
-  .controller('slidingMenu', ['$scope', '$rootScope', function ($scope, $rootScope) {
+  .controller('SlidingMenuController', ['$scope', '$rootScope', function ($scope, $rootScope) {
     $scope.menuVisible = false;
 
     $scope.closeMenu = function () {
