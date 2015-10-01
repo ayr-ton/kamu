@@ -11,8 +11,7 @@ angular
     '$route',
     '$routeParams',
     'UserService',
-    'toastr',
-    function ($scope, BookService, LoanService, NavigationService, Modal, $translate, $route, $routeParams, UserService, toastr) {
+    function ($scope, BookService, LoanService, NavigationService, Modal, $translate, $route, $routeParams, UserService) {
       var isInBookDetails = NavigationService.isBookDetails();
       $scope.library = $routeParams.library;
 

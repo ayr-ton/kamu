@@ -14,7 +14,7 @@ angular
 
         $scope.borrowerIsCurrentUser = function (copy) {
           if (copy.lastLoan !== undefined && copy.lastLoan !== null) {
-            return copy.lastLoan.email.toLowerCase() === window.sessionStorage['email'].toLowerCase();
+            return copy.lastLoan.email.toLowerCase() === window.sessionStorage.email.toLowerCase();
           } else {
             return false;
           }
