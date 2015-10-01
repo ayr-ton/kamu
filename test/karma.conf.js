@@ -26,7 +26,7 @@ module.exports = function(config) {
     },
 
     coverageReporter: { type : 'lcov', dir : 'coverage/' },
-    reporters: ['spec', 'coverage'],
+    reporters: [],
 
     preprocessors: {
       'app/**/*.js': ['coverage'],
@@ -64,10 +64,12 @@ module.exports = function(config) {
     plugins: [
       "karma-wiredep",
       "karma-phantomjs-launcher",
+      "karma-chrome-launcher",
       "karma-jasmine",
       "karma-coverage",
       "karma-spec-reporter",
-      "karma-html2js-preprocessor"
+      "karma-html2js-preprocessor",
+      "karma-notify-reporter"
     ],
 
     // Continuous Integration mode
