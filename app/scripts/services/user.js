@@ -18,7 +18,5 @@ angular
        var endPoint = ENV.apiEndpoint.concat('/users/search/findByEmail?email=').concat(email);
 
       return $http.get(endPoint);
-
     };
-
   }]);

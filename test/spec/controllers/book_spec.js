@@ -16,30 +16,6 @@ describe('BookCtrl', function () {
     toastrLocal = toastr;
   }));
 
-  describe('#getCurrentLibraryPath', function () {
-    it('routes to root when library path param is not set', function () {
-      expect(scope.getCurrentLibraryPath()).toBe('#/libraries');
-    });
-
-    it('routes to library path when library path param is set', function () {
-      route.current = {'pathParams': {'library': 'random'}};
-
-      expect(scope.getCurrentLibraryPath()).toBe('#/library/random');
-    });
-  });
-
-  describe('#isInsideLibrary', function () {
-    it('returns true when current route is defined', function () {
-        route.current = {'pathParams': {'library': 'random'}};
-
-        expect(scope.isInsideLibrary()).toBe(true);
-      });
-
-    it('returns false when current route is defined', function () {
-      expect(scope.isInsideLibrary()).toBe(false);
-    });
-  });
-
   describe('#listBooks', function () {
     var searchUrl;
     var slug = 'bh';
@@ -65,7 +41,7 @@ describe('BookCtrl', function () {
     };
 
     beforeEach(function () {
-      route.current = { 'pathParams': { 'library': slug } };
+      scope.library = slug;
       searchUrl = apiEndpoint.concat('/libraries/search/findBySlug?slug=').concat(slug);
     });
 
@@ -142,18 +118,5 @@ describe('BookCtrl', function () {
       expect(scope.copies[0].lastLoan.user.imageUrl).toEqual(imageUrl);
 
     });
-
-  });
-
-  describe('#gotoAddBook', function () {
-    it('redirects to add book page for current slug', inject(function ($window) {
-      route.current = {'pathParams': {'library': 'quito'}};
-
-      spyOn($window.location, 'assign');
-
-      scope.gotoAddBook();
-
-      expect($window.location.assign).toHaveBeenCalledWith('/#/library/quito/add_book');
-    }));
   });
 });
