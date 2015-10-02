@@ -36,17 +36,6 @@
     <!-- endbuild -->
   </head>
   <body ng-app="libraryUiApp">
-    <!--[if lt IE 7]>
-    <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
-      your browser</a> to improve your experience.</p>
-
-    <![endif]-->
-
-    <!--[if lt IE 7]>
-    <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
-      your browser</a> to improve your experience.</p>
-
-    <![endif]-->
 
     <div class="viewport" ng-class="{ 'noScroll' : menuVisible }" ng-controller="SlidingMenuController">
       <div class="containerSlider" ng-class="menuVisible ? 'containerSlider-open' : 'containerSlider-closed'">
@@ -72,9 +61,6 @@
                   {{ 'APP_BORROWED_BOOKS_TAB' | translate }}
                 </a>
               </li>
-              <!--<li>-->
-              <!--<a href="http://" class="mobile-nav-unactive">books i own</a>-->
-              <!--</li>-->
               <li>
                 <a href="/#/library/{{ library }}/add_book"
                    ng-class="isActive('add_book') ? 'mobile-nav-active' : 'mobile-nav-unactive'"
@@ -102,7 +88,6 @@
 
         <div id="window-container" class="container">
           <div id="window">
-            <!-- Add your site or application content here -->
             <div ng-show="hasLoadedLibrary()" ng-controller="NavigationController">
               <header>
                 <div ng-click="showMenu($event)">
@@ -160,7 +145,6 @@
                          class='main-nav-add-wish'
                          ng-class="{'add-wish-active' : isActive('add_wish_list')}"
                          ng-show="hasLoadedLibrary()">
-                        <!--ng-click="gotoAddWish()">-->
                       </a>
                     </li>
                     <li>
