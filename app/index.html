@@ -51,26 +51,24 @@
     <div class="viewport" ng-class="{ 'noScroll' : menuVisible }" ng-controller="SlidingMenuController">
       <div class="containerSlider" ng-class="menuVisible ? 'containerSlider-open' : 'containerSlider-closed'">
 
-        <nav class="mobile-nav">
+        <nav class="mobile-nav" ng-controller="NavigationController">
           <div class="mobile-nav-container">
             <ul>
               <li>
-                <a href=""
-                   ng-click="gotoAllBooks()"
-                   ng-controller='BookCtrl'
-                   ng-class="isAllBooksActive()? 'mobile-nav-active' : 'mobile-nav-unactive'">
+                <a href="/#/library/{{ library }}"
+                   ng-class="isActive('/') ? 'mobile-nav-active' : 'mobile-nav-unactive'">
                   {{'APP_LIBRARY_TAB' | translate }}
                 </a>
               </li>
               <li>
                 <a href=""
-                   ng-class="isWishlistActive()? 'mobile-nav-active' : 'mobile-nav-unactive'">
+                   ng-class="isActive('wish_list') ? 'mobile-nav-active' : 'mobile-nav-unactive'">
                   {{ 'APP_WISHLIST_TAB' | translate }}
                 </a>
               </li>
               <li>
                 <a href=""
-                   ng-class="isBorrowedBooksActive()? 'mobile-nav-active' : 'mobile-nav-unactive'">
+                   ng-class="isActive('borrowed_books') ? 'mobile-nav-active' : 'mobile-nav-unactive'">
                   {{ 'APP_BORROWED_BOOKS_TAB' | translate }}
                 </a>
               </li>
@@ -78,29 +76,23 @@
               <!--<a href="http://" class="mobile-nav-unactive">books i own</a>-->
               <!--</li>-->
               <li>
-                <a href=""
-                   ng-class="isAddBookActive() ? 'mobile-nav-active' : 'mobile-nav-unactive'"
-                   ng-show="isInsideLibrary()"
-                   ng-controller="BookCtrl"
-                   ng-click="gotoAddBook()">
+                <a href="/#/library/{{ library }}/add_book"
+                   ng-class="isActive('add_book') ? 'mobile-nav-active' : 'mobile-nav-unactive'"
+                   ng-show="hasLoadedLibrary()">
                   {{ 'APP_ADD_BOOK' | translate }}
                 </a>
               </li>
               <li>
                 <a href=""
-                   ng-class="isAddWishActive() ? 'mobile-nav-active' : 'mobile-nav-unactive'"
-                   ng-show="isInsideLibrary()"
-                   ng-controller="BookCtrl">
-                  <!--ng-click="gotoAddWish()">-->
+                   ng-class="isActive('add_wish_list') ? 'mobile-nav-active' : 'mobile-nav-unactive'"
+                   ng-show="hasLoadedLibrary()">
                   {{ 'APP_ADD_WISH' | translate }}
                 </a>
               </li>
               <li>
-                <a href=""
-                   ng-class="isSettingsActive() ? 'mobile-nav-active' : 'mobile-nav-unactive'"
-                   ng-show="isInsideLibrary()"
-                   ng-controller="BookCtrl"
-                   ng-click="gotoSettings()">
+                <a href="/#/library/{{ library }}/settings"
+                   ng-class="isActive('settings') ? 'mobile-nav-active' : 'mobile-nav-unactive'"
+                   ng-show="hasLoadedLibrary()">
                   {{ 'APP_SETTINGS' | translate }}
                 </a>
               </li>
@@ -111,8 +103,7 @@
         <div id="window-container" class="container">
           <div id="window">
             <!-- Add your site or application content here -->
-            <div ng-show="isInsideLibrary()"
-                 ng-controller="BookCtrl">
+            <div ng-show="hasLoadedLibrary()" ng-controller="NavigationController">
               <header>
                 <div ng-click="showMenu($event)">
                   <a href="">
@@ -136,22 +127,20 @@
                 <div class="nav-left">
                   <ul class="main-nav-left">
                     <li>
-                      <a href=""
-                         ng-click="gotoAllBooks()"
-                         ng-controller='BookCtrl'
-                         ng-class="isAllBooksActive() ? 'main-nav-active' : 'main-nav-unactive'">
+                      <a href="/#/library/{{library}}"
+                         ng-class="isActive('/') ? 'main-nav-active' : 'main-nav-unactive'">
                         {{'APP_LIBRARY_TAB' | translate }}
                       </a>
                     </li>
                     <li>
                       <a href=""
-                         ng-class="isWishlistActive()? 'main-nav-active' : 'main-nav-unactive'">
+                         ng-class="isActive('wish_list')? 'main-nav-active' : 'main-nav-unactive'">
                         {{ 'APP_WISHLIST_TAB' | translate }}
                       </a>
                     </li>
                     <li>
                       <a href=""
-                         ng-class="isBorrowedBooksActive()? 'main-nav-active' : 'main-nav-unactive'">
+                         ng-class="isActive('borrowed_books')? 'main-nav-active' : 'main-nav-unactive'">
                         {{ 'APP_BORROWED_BOOKS_TAB' | translate }}
                       </a>
                     </li>
@@ -160,27 +149,25 @@
                 <div class="nav-right">
                   <ul>
                     <li>
-                      <a href="" class='main-nav-add-book'
-                         ng-class="{'add-book-active' : isAddBookActive()}"
-                         ng-show="isInsideLibrary()"
-                         ng-controller="BookCtrl"
-                         ng-click="gotoAddBook()">
+                      <a href="/#/library/{{library}}/add_book"
+                         class='main-nav-add-book'
+                         ng-class="{'add-book-active' : isActive('add_book')}"
+                         ng-show="hasLoadedLibrary()">
                       </a>
                     </li>
                     <li>
-                      <a href="" class='main-nav-add-wish'
-                         ng-class="{'add-wish-active' : isAddWishActive()}"
-                         ng-show="isInsideLibrary()"
-                         ng-controller="BookCtrl">
+                      <a href=""
+                         class='main-nav-add-wish'
+                         ng-class="{'add-wish-active' : isActive('add_wish_list')}"
+                         ng-show="hasLoadedLibrary()">
                         <!--ng-click="gotoAddWish()">-->
                       </a>
                     </li>
                     <li>
-                      <a href="" class='main-nav-settings'
-                         ng-class="{'settings-active' : isSettingsActive()}"
-                         ng-show="isInsideLibrary()"
-                         ng-controller="BookCtrl"
-                         ng-click="gotoSettings()">
+                      <a href="/#/library/{{library}}/settings"
+                         class='main-nav-settings'
+                         ng-class="{'settings-active' : isActive('settings')}"
+                         ng-show="hasLoadedLibrary()">
                       </a>
                     </li>
 
@@ -229,6 +216,7 @@
     <script src="scripts/services/navigation.js"></script>
     <script src="scripts/services/user.js"></script>
     <script src="scripts/controllers/sliding-menu.js"></script>
+    <script src="scripts/controllers/navigation-controller.js"></script>
     <script src="scripts/controllers/book.js"></script>
     <script src="scripts/controllers/add-book.js"></script>
     <script src="scripts/controllers/book-details.js"></script>
