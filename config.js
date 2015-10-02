@@ -10,12 +10,20 @@ module.exports = (function () {
     }
   };
 
-  self.current = function () {
+  function env() {
     var env = process.env.NODE_ENV || 'development';
     if (env === 'test') {
       env = 'development';
     }
-    return config.environments[env];
+    return env;
+  }
+
+  self.current = function () {
+    return config.environments[env()];
+  };
+
+  self.isDevelopment = function () {
+    return env() === 'development';
   };
 
   return self;

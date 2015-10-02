@@ -16,7 +16,8 @@
     "test:karma:local": "karma start test/karma.conf.js --reporters spec,notify --browsers PhantomJS --auto-watch",
     "test": "npm run test:karma:ci",
     "livereload": "live-reload --port 9091 ./app",
-    "start": "parallelshell 'node ./web' 'npm run livereload'",
+    "serve": "parallelshell 'npm start' 'npm run livereload'",
+    "start": "node ./bin/www",
     "postinstall": "bower install && npm run build"
   },
   "dependencies": {
