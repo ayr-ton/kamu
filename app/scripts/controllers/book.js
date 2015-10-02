@@ -13,10 +13,10 @@ angular
       $scope.listBooks = function () {
         $scope.copies = [];
 
-        BookService.getLibraryBySlug($scope.library)
+        BookService.getCopiesByLibrarySlug($scope.library)
           .success(function (data) {
-            if (angular.isDefined(data._embedded) && data._embedded.libraries[0]._embedded) {
-              $scope.copies = data._embedded.libraries[0]._embedded.copies;
+            if (angular.isDefined(data._embedded) && data._embedded.copies) {
+              $scope.copies = data._embedded.copies;
 
               angular.forEach($scope.copies, function (copy) {
                 copy = initializeCopy(copy);
