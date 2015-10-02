@@ -1,6 +1,6 @@
 'use strict';
 
-describe('BookCtrl', function () {
+describe('BookController', function () {
   var scope, controller, httpBackend, route, apiEndpoint, loanService, toastrLocal;
   var libraryIndexPage = 'views/library/index.html';
 
@@ -10,7 +10,7 @@ describe('BookCtrl', function () {
     scope = $rootScope;
     route = $route;
     httpBackend = $httpBackend;
-    controller = $controller('BookCtrl', {'$scope': scope});
+    controller = $controller('BookController', {'$scope': scope});
     apiEndpoint = ENV.apiEndpoint;
     loanService = LoanService;
     toastrLocal = toastr;

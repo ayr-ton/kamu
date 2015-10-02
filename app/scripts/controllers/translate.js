@@ -2,7 +2,7 @@
 
 angular
   .module('libraryUiApp')
-  .controller('TranslateCtrl', ['$translate', '$scope', function ($translate, $scope) {
+  .controller('TranslateController', ['$translate', '$scope', function ($translate, $scope) {
 
     var $cookies;
     angular.injector(['ngCookies']).invoke(['$cookies', function (_$cookies_) {

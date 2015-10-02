@@ -1,6 +1,6 @@
 'use strict';
 
-describe('LibraryCtrl', function () {
+describe('LibraryController', function () {
   beforeEach(module('libraryUiApp'));
 
   var $controller, librariesUrl;
@@ -16,7 +16,7 @@ describe('LibraryCtrl', function () {
       $scope.listLibraries = function () {
       };
 
-      $controller('LibraryCtrl', {$scope: $scope});
+      $controller('LibraryController', {$scope: $scope});
 
       expect($scope.libraries).toEqual({});
     });
@@ -27,7 +27,7 @@ describe('LibraryCtrl', function () {
       var httpBackend = $injector.get('$httpBackend');
       httpBackend.whenGET(librariesUrl).respond(200, {'_embedded': {libraries: 'library'}});
 
-      $controller('LibraryCtrl', {$scope: $scope});
+      $controller('LibraryController', {$scope: $scope});
 
       httpBackend.flush();
 
@@ -40,7 +40,7 @@ describe('LibraryCtrl', function () {
       var httpBackend = $injector.get('$httpBackend');
       httpBackend.whenGET(librariesUrl).respond(200, {});
 
-      $controller('LibraryCtrl', {$scope: $scope});
+      $controller('LibraryController', {$scope: $scope});
 
       httpBackend.flush();
 
@@ -54,7 +54,7 @@ describe('LibraryCtrl', function () {
       var $window = $injector.get('$window');
       $window.sessionStorage.email = 'alisboa@thoughtworks.com';
 
-      $controller('LibraryCtrl', {$scope: $scope});
+      $controller('LibraryController', {$scope: $scope});
       expect($scope.getGravatarFromSession()).toEqual('http://www.gravatar.com/avatar/7aff7feba043b2651b7b0c099552c835');
     }));
   });

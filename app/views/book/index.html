@@ -26,9 +26,9 @@
   <div bn-modals ng-show="subview" class="m-modals" ng-switch="subview">
     <div class="modal" bn-modals ng-show="subview" ng-switch="subview">
       <div class="popup-window">
-        <div class="popup-close" ng-click="cancel()" ng-controller="ModalCtrl"></div>
+        <div class="popup-close" ng-click="cancel()" ng-controller="ModalController"></div>
         <div class="popup-header" ng-switch-when="not-available">{{ 'BOOK_RETURN_TITLE' | translate }}</div>
-          <form ng-switch-when="not-available" class="" ng-submit="submit()" ng-controller="ReturnModalCtrl">
+          <form ng-switch-when="not-available" class="" ng-submit="submit()" ng-controller="ReturnModalController">
             <div class="popup-margin popup-bottom-line" >
               <div class="popup-col1">
                 {{ loan.email }}, {{ 'RETURN_MESSAGE' | translate }}

@@ -13,7 +13,7 @@ describe('Book routing', function () {
 
   it('routes / to #index', function () {
     var rootUrl = route.routes['/library/:library'];
-    expect(rootUrl.controller).toBe('BookCtrl');
+    expect(rootUrl.controller).toBe('BookController');
     expect(rootUrl.templateUrl).toEqual('views/book/index.html');
   });
 

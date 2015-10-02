@@ -13,10 +13,10 @@ describe('Modal Controllers', function () {
   }));
 
 
-  describe('ModalCtrl', function () {
+  describe('ModalController', function () {
     describe('#cancel', function() {
       it('rejects modal', function () {
-        controller('ModalCtrl', {'$scope': scope, 'Modal': modal});
+        controller('ModalController', {'$scope': scope, 'Modal': modal});
 
         spyOn(modal, 'reject');
 
@@ -27,16 +27,16 @@ describe('Modal Controllers', function () {
     });
   });  
 
-  describe('ReturnModalCtrl', function () {
+  describe('ReturnModalController', function () {
     it('initizes scope correctly', function () {
-      controller('ReturnModalCtrl', {'$scope': scope, 'Modal': modal});
+      controller('ReturnModalController', {'$scope': scope, 'Modal': modal});
 
       expect(scope.loan).toBe(modal.params().loan);
     });
 
     describe('#submit', function() {
       it('resolves modal with loan', function () {
-        controller('ReturnModalCtrl', {'$scope': scope, 'Modal': modal});
+        controller('ReturnModalController', {'$scope': scope, 'Modal': modal});
 
         scope.loan = { 'id' : '34' };
 

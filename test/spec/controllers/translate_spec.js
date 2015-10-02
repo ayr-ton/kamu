@@ -1,6 +1,6 @@
 'use strict';
 
-describe('TranslateCtrl', function () {
+describe('TranslateController', function () {
   var $controller, scope, translate;
 
   beforeEach(module('libraryUiApp'));
@@ -17,7 +17,7 @@ describe('TranslateCtrl', function () {
 
       spyOn(translate, 'use');
 
-      $controller('TranslateCtrl', { '$scope': scope, '$translate': translate });
+      $controller('TranslateController', { '$scope': scope, '$translate': translate });
 
       scope.changeLanguage(language);
 

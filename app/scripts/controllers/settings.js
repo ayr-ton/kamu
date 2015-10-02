@@ -2,7 +2,7 @@
 
 angular
   .module('libraryUiApp')
-  .controller('SettingsCtrl', [
+  .controller('SettingsController', [
     '$scope',
     '$translate',
     function ($scope, $translate) {

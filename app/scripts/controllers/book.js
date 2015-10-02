@@ -2,7 +2,7 @@
 
 angular
   .module('libraryUiApp')
-  .controller('BookCtrl', [
+  .controller('BookController', [
     '$scope',
     '$routeParams',
     'BookService',

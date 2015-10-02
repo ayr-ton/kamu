@@ -42,7 +42,7 @@ angular
     $routeProvider
       .when(rootUrl, {
         templateUrl: 'views/book/index.html',
-        controller: 'BookCtrl'
+        controller: 'BookController'
       })
       .when(rootUrl + '/add_book', {
         templateUrl: 'views/book/add-book.html',
@@ -50,11 +50,11 @@ angular
       })
       .when('/libraries', {
         templateUrl: 'views/library/index.html',
-        controller: 'LibraryCtrl'
+        controller: 'LibraryController'
       })
       .when('/', {
         templateUrl: 'views/library/index.html',
-        controller: 'LibraryCtrl'
+        controller: 'LibraryController'
       })
       .when(rootUrl + '/book_details/:bookId', {
         templateUrl: 'views/book/book-details.html',
@@ -62,7 +62,7 @@ angular
       })
       .when(rootUrl + '/settings', {
         templateUrl: 'views/settings/settings.html',
-        controller: 'SettingsCtrl'
+        controller: 'SettingsController'
       })
       .otherwise({
         redirectTo: '/'
