@@ -2,10 +2,10 @@
 
 angular
   .module('libraryUiApp')
-  .controller('SettingsCtrl', ['$scope',
-    'NavigationService',
+  .controller('SettingsCtrl', [
+    '$scope',
     '$translate',
-    function ($scope, NavigationService, $translate) {
+    function ($scope, $translate) {
 
       var $cookies;
       $scope.languages = [
@@ -13,10 +13,6 @@ angular
         {name : 'Português Brasil', code : 'pt-BR'},
         {name : 'English USA', code : 'en-US'}
       ];
-
-      $scope.goBack = function() {
-        NavigationService.goBack();
-      };
 
       $scope.selectedIndex = 0;
       angular.injector(['ngCookies']).invoke(['$cookies', function (_$cookies_) {
