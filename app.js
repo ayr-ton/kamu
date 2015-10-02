@@ -8,6 +8,7 @@ var favicon = require('serve-favicon');
 var session = require('express-session');
 var auth = require('./auth/passport');
 var config = require('./config');
+var nodeSassMiddleware = require('node-sass-middleware')
 
 var request = require('request');
 
@@ -23,6 +24,15 @@ app.use(session({
   resave: true,
   saveUninitialized: true
 }));
+
+if (environment === 'development') {
+  app.use(nodeSassMiddleware({
+    src: path.join(__dirname, APP_DIRECTORY, 'styles'),
+    debug: true,
+    response: true,
+    prefix:  '/styles'
+  }));
+}
 
 app.use(auth.initialize());
 app.use(auth.session());

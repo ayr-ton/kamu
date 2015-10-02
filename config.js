@@ -3,6 +3,7 @@ module.exports = (function () {
 
   var config = {
     environments: {
+      dist:        { apiEndpoint: 'http://localhost:8080', appEndpoint: 'http://localhost:9000' },
     	development: { apiEndpoint: 'http://localhost:8080', appEndpoint: 'http://localhost:9000' },
     	staging:     { apiEndpoint: 'http://staging-twlib-api.herokuapp.com', appEndpoint: 'http://staging-twlib.herokuapp.com' },
     	production:  { apiEndpoint: 'http://twlib-api.herokuapp.com', appEndpoint: 'http://twlib.herokuapp.com' }
