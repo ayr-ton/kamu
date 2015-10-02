@@ -19,21 +19,16 @@ describe('BookController', function () {
   describe('#listBooks', function () {
     var searchUrl;
     var slug = 'bh';
-    var library = {
+    var copies = {
       '_embedded': {
-        'libraries': [
+        'copies': [
           {
+            "id" : 1,
+            "title": "Enjoying Fifa with your eyes closed.",
             '_links': {
               'self': {
-                'href': 'link/to/library'
+                "href" : "http://localhost:8080/copies/1{?projection}"
               }
-            },
-            '_embedded': {
-              'copies': [
-                {
-                  'title': 'Enjoying Fifa with your eyes closed.',
-                }
-              ]
             }
           }
         ]
@@ -42,7 +37,7 @@ describe('BookController', function () {
 
     beforeEach(function () {
       scope.library = slug;
-      searchUrl = apiEndpoint.concat('/libraries/search/findBySlug?slug=').concat(slug);
+      searchUrl = apiEndpoint.concat('/copies/search/findCopiesByLibrarySlug?slug=').concat(slug);
     });
 
     it('sets copies to be empty when copies retrieval fails', function () {
@@ -61,7 +56,7 @@ describe('BookController', function () {
 
     it('correctly initializes each copy when copy has no imageUrl', function () {
       httpBackend.expectGET(searchUrl)
-        .respond(200, library);
+        .respond(200, copies);
 
       httpBackend.expectGET(libraryIndexPage)
         .respond(200);
@@ -76,10 +71,10 @@ describe('BookController', function () {
     });
 
     it('correctly initializes each copy when copy has imageUrl', function () {
-      library._embedded.libraries[0]._embedded.copies[0].imageUrl = 'path/to/image';
+      copies._embedded.copies[0].imageUrl = 'path/to/image';
 
       httpBackend.expectGET(searchUrl)
-        .respond(200, library);
+        .respond(200, copies);
 
       httpBackend.expectGET(libraryIndexPage)
         .respond(200);
@@ -102,10 +97,10 @@ describe('BookController', function () {
           'email': "tuliolucas.silva@gmail.com"
       }
 
-      library._embedded.libraries[0]._embedded.copies[0].lastLoan = lastLoan;
+      copies._embedded.copies[0].lastLoan = lastLoan;
 
       httpBackend.expectGET(searchUrl)
-        .respond(200, library);
+        .respond(200, copies);
 
       httpBackend.expectGET(libraryIndexPage)
         .respond(200);
