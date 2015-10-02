@@ -15,7 +15,6 @@ angular
 
         BookService.getLibraryBySlug($scope.library)
           .success(function (data) {
-            $scope.copies = data;
             if (angular.isDefined(data._embedded) && data._embedded.libraries[0]._embedded) {
               $scope.copies = data._embedded.libraries[0]._embedded.copies;
 
