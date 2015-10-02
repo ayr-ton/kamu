@@ -1,0 +1,12 @@
+#!/usr/bin/env node
+
+var app = require('../app');
+var debug = require('debug')('library-ui:server');
+var http = require('http');
+
+app.set('port', process.env.PORT || 9000);
+
+var server = app.listen(app.get('port'), function() {
+  var address = (server.address().address  == '::' ? 'http://localhost:' : server.address().address);
+  console.log('Kamu started at ' + address + server.address().port);
+});
