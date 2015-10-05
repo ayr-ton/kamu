@@ -3,9 +3,10 @@ var request = require('request')
   , path = require('path')
   , config = require('../config')
   , router = require('express').Router()
-  ;
+  , tokenGenerator = require('../auth/token-server-api');
 
-function persistUser(req, res) {
+var persistUser = function (req, res) {
+
   var username, email, usersApiEndPoint, apiUser, options, user;
 
   user = req.user;
@@ -13,12 +14,14 @@ function persistUser(req, res) {
   email = user.nameID;
 
   usersApiEndPoint = config.current().apiEndpoint + "/users";
-
   apiUser = { name: username, email: email };
   options = {
     uri: usersApiEndPoint,
     method: 'POST',
-    json: apiUser
+    json: apiUser,
+    headers: {
+      'token': tokenGenerator.generate(email)
+    }
   };
 
   request(options, function (error, response, body) {
@@ -40,6 +43,7 @@ function persistUser(req, res) {
     }
   });
 }
+
 
 if (process.env.NODE_ENV !== 'production') {
   router.get('/test/login', function (req, res) {
@@ -65,4 +69,5 @@ router.get('/', auth.protected, function (req, res, next)  {
   return res.render('index', { name: username, email: email });
 });
 
-module.exports = router;
+exports.persistUser = persistUser;
+exports.router = router;
