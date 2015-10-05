@@ -1,4 +1,6 @@
-var assert = require("assert");
+'use strict';
+
+var assert = require('assert');
 
 describe('Protect UI and API with TOKEN', function() {
 
@@ -8,7 +10,7 @@ describe('Protect UI and API with TOKEN', function() {
 
 		var tokenGenerator = require('../../auth/token-server-api');
 
-		var email =  "test@thoughtworks.com";
+		var email =  'test@thoughtworks.com';
 
 		var token = tokenGenerator.generate(email);
 
