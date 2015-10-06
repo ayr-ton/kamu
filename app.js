@@ -40,7 +40,7 @@ if (config.isDevelopment()) {
   }));
 }
 
-app.use(routes);
+app.use(routes.router);
 
 app.use(express.static(path.join(__dirname, APP_DIRECTORY)));
 if (environment !== 'production') {
