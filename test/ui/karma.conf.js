@@ -11,13 +11,13 @@ module.exports = function(config) {
     autoWatch: true,
 
     // base path, that will be used to resolve files and exclude
-    basePath: '../',
+    basePath: '../../',
 
     // testing framework to use (jasmine/mocha/qunit/...)
     // as well as any additional frameworks (requirejs/chai/sinon/...)
     frameworks: [
-      "wiredep",
-      "jasmine"
+      'wiredep',
+      'jasmine'
     ],
 
     wiredep: {
@@ -35,10 +35,9 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      "app/scripts/**/*.js",
-      "test/mock/**/*.js",
-      "test/spec/!(features)/*.js",
-      "app/templates/**/*.html"
+      'app/scripts/**/*.js',
+      'test/ui/**/*.js',
+      'app/templates/**/*.html'
     ],
 
     // list of files / patterns to exclude
@@ -57,19 +56,19 @@ module.exports = function(config) {
     // - PhantomJS
     // - IE (only Windows)
     browsers: [
-      "PhantomJS"
+      'PhantomJS'
     ],
 
     // Which plugins to enable
     plugins: [
-      "karma-wiredep",
-      "karma-phantomjs-launcher",
-      "karma-chrome-launcher",
-      "karma-jasmine",
-      "karma-coverage",
-      "karma-spec-reporter",
-      "karma-html2js-preprocessor",
-      "karma-notify-reporter"
+      'karma-wiredep',
+      'karma-phantomjs-launcher',
+      'karma-chrome-launcher',
+      'karma-jasmine',
+      'karma-coverage',
+      'karma-spec-reporter',
+      'karma-html2js-preprocessor',
+      'karma-notify-reporter'
     ],
 
     // Continuous Integration mode
