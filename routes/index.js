@@ -47,7 +47,7 @@ var persistUser = function (req, res) {
 
 if (process.env.NODE_ENV !== 'production') {
   router.get('/test/login', function (req, res) {
-    return res.sendFile(path.join(__dirname, '../test/login.html'));
+    return res.sendFile(path.join(__dirname, '../test/acceptance/utils/login.html'));
   });
   router.post('/test/login', auth.authenticate('local', { failureRedirect: '/test/login' }),  persistUser);
 }
