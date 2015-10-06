@@ -31,6 +31,8 @@ var persistUser = function (req, res) {
         console.log("User successfully persisted (Status code 201)");
       } else if (response.statusCode == 409) {
         console.log("User already exists, will not persist (Status code 409)");
+      } else if(response.statusCode == 403) {
+        console.log("Api access denied");
       } else {
         console.log("Internal Error, Status code: " + response.statusCode);
       }
@@ -43,7 +45,6 @@ var persistUser = function (req, res) {
     }
   });
 }
-
 
 if (process.env.NODE_ENV !== 'production') {
   router.get('/test/login', function (req, res) {
@@ -60,13 +61,14 @@ router.get('/login', auth.authenticate('saml', { failureRedirect: '/', failureFl
 );
 
 router.get('/', auth.protected, function (req, res, next)  {
-  var username, email, user;
-
+  var username, email, user, token;
+ 
   user = req.user;
   username = user.firstName.concat(' ').concat(user.lastName);
   email = user.nameID;
+  token = tokenGenerator.generate(email);
 
-  return res.render('index', { name: username, email: email });
+  return res.render('index', { name: username, email: email, token: token });
 });
 
 exports.persistUser = persistUser;
