@@ -15,7 +15,7 @@
     "test:ui:ci": "karma start test/ui/karma.conf.js --single-run --reporters spec,coverage --browsers PhantomJS",
     "test:ui:local": "karma start test/ui/karma.conf.js --reporters spec,notify --browsers PhantomJS --auto-watch",
     "test:web": "mocha -r test/web/base test/web/ --recursive -R spec",
-    "test": "npm run test:ui:ci",
+    "test": "npm run jshint && npm run test:web && npm run test:ui:ci",
     "livereload": "live-reload --port 9091 ./app",
     "serve": "parallelshell 'npm start' 'npm run livereload'",
     "start": "node ./bin/www",
