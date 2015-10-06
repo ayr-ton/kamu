@@ -1,5 +1,5 @@
 exports.config = {
-  specs: ['spec/features/*_spec.js']
+  specs: ['features/*_spec.js']
 };
 
 if (process.env.SNAP_CI) {
