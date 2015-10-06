@@ -24,11 +24,13 @@ angular
     'ngAnimate',
     'toastr'
   ])
-  .config(['$routeProvider', '$translateProvider', 'toastrConfig', function ($routeProvider, $translateProvider, toastrConfig) {
+  .config(['$routeProvider', '$translateProvider', '$httpProvider', 'toastrConfig', function ($routeProvider, $translateProvider, $httpProvider, toastrConfig) {
     var $cookies;
     angular.injector(['ngCookies']).invoke(['$cookies', function (_$cookies_) {
       $cookies = _$cookies_;
     }]);
+
+    $httpProvider.interceptors.push('authInterceptor');
 
     angular.extend(toastrConfig, {
       positionClass: 'toast-top-center'
@@ -63,6 +65,11 @@ angular
       .when(rootUrl + '/settings', {
         templateUrl: 'views/settings/settings.html',
         controller: 'SettingsController'
+      })
+      .when('/logout', {
+        controller: function($scope, $route) {
+            $route.reload();
+        }
       })
       .otherwise({
         redirectTo: '/'
@@ -213,6 +220,7 @@ angular
   }]).
   run(['$rootScope', '$http', '$location', 'ENV', function ($rootScope, $http, $location, ENV) {
     $rootScope.$on('$routeChangeStart', function (event, next) {
+
       var slug = next.pathParams.library;
 
       document.addEventListener('keyup', function(e) {
