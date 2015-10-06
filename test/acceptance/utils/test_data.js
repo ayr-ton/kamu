@@ -1,7 +1,7 @@
 'use strict';
 
 var request = require('request');
-var config = require('../../config.js');
+var config = require('../../../config.js');
 
 var API_ENDPOINT = config.current().apiEndpoint;
 
