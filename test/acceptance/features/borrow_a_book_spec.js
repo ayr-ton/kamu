@@ -1,8 +1,8 @@
 var LibrarySelect, Login;
 
-LibrarySelect = require('../../page_objects/library_select');
-Login = require('../../page_objects/login');
-testData = require('../../utils/test_data');
+LibrarySelect = require('../page_objects/library_select');
+Login = require('../page_objects/login');
+testData = require('../utils/test_data');
 
 describe('a user browsing the library', function () {
   var librarySelect, bookList, login;

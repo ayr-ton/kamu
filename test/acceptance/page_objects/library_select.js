@@ -1,7 +1,7 @@
 'use strict';
 
 var BookList = require('./book_list.js');
-var config = require('../../config.js');
+var config = require('../../../config.js');
 
 module.exports = function () {
   var self = {};

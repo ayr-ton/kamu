@@ -1,8 +1,8 @@
 var LibrarySelect, Login;
 
-LibrarySelect = require('../../page_objects/library_select.js');
-Login = require('../../page_objects/login.js');
-testData = require('../../utils/test_data');
+LibrarySelect = require('../page_objects/library_select.js');
+Login = require('../page_objects/login.js');
+testData = require('../utils/test_data');
 
 describe('a user that wants to add a book', function () {
   var librarySelect, login, bookList, addBook, JAVASCRIPT_GOOD_PARTS_ISBN;
