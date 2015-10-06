@@ -8,32 +8,36 @@ var index = require('../../routes/index');
 var tokenGenerator = require('../../auth/token-server-api');
 
 
-describe('Protect UI and API with TOKEN', function() {
+describe('Protect UI and API with TOKEN', function () {
+  var sandbox;
 
-  describe('#Token generate', function () {
+  beforeEach(function () {
+    sandbox = sinon.sandbox.create();
+  });
 
-    it('should return a valid token', function () {
+  afterEach(function () {
+    sandbox.restore();
+  });
 
-		var email =  'test@thoughtworks.com';
+  it('should return a valid token', function () {
+    var email, token, decoded;
 
-		var token = tokenGenerator.generate(email);
+    email =  'test@thoughtworks.com';
+    token = tokenGenerator.generate(email);
 
-		var decoded = tokenGenerator.verify(token);
+    decoded = tokenGenerator.verify(token);
 
-      	assert.equal(email, decoded);
-
-    });
-
+    assert.equal(email, decoded);
   });
 
   it('Persisting user request should have a token in header', function(done) {
-    var mockedRequestForUsersAPI = { name: 'Test Cruz', email: 'test@thoughtworks.com' };
-    var usersApiEndPoint = config.current().apiEndpoint;
+    var usersApiEndPoint, scope, userFromOkta, requestFromOkta;
 
-    var sandbox = sinon.sandbox.create();
+    usersApiEndPoint = config.current().apiEndpoint;
+
     sandbox.stub(tokenGenerator, 'generate').returns('a');
 
-    var scope = nock(usersApiEndPoint, {
+    scope = nock(usersApiEndPoint, {
       reqheaders: {
         'token': 'a'
       }
@@ -43,17 +47,16 @@ describe('Protect UI and API with TOKEN', function() {
       .post('/users', '*')
       .reply(201);
 
-    var userFromOkta = {
+    userFromOkta = {
       nameID : 'test@thoughtworks.com',
       firstName: 'Test',
       lastName: 'Cruz'
     };
 
-    var requestFromOkta = {user : userFromOkta};
+    requestFromOkta = {user : userFromOkta};
     index.persistUser(requestFromOkta, {redirect: function(){
       scope.done();
       done();
     }});
-    sandbox.restore();
   });
 });
