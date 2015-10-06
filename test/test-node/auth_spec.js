@@ -8,7 +8,7 @@ var index = require('../../routes/index');
 var tokenGenerator = require('../../auth/token-server-api');
 
 
-describe('Protect UI and API with TOKEN', function () {
+describe('json web token authentication', function () {
   var sandbox;
 
   beforeEach(function () {
@@ -19,7 +19,7 @@ describe('Protect UI and API with TOKEN', function () {
     sandbox.restore();
   });
 
-  it('should return a valid token', function () {
+  it('generates a valid token', function () {
     var email, token, decoded;
 
     email =  'test@thoughtworks.com';
@@ -30,7 +30,7 @@ describe('Protect UI and API with TOKEN', function () {
     assert.equal(email, decoded);
   });
 
-  it('Persisting user request should have a token in header', function(done) {
+  it('adds the token in the request header (when persisting the user)', function(done) {
     var usersApiEndPoint, scope, userFromOkta, requestFromOkta;
 
     usersApiEndPoint = config.current().apiEndpoint;
