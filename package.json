@@ -36,14 +36,20 @@
     "passport": "^0.2.0",
     "passport-saml": "git://github.com/bergie/passport-saml.git",
     "request": "^2.63.0",
-    "serve-favicon": "~2.3.0"
+    "jshint": "^2.8.0",
+    "usemin-cli": "0.0.7",
+    "serve-favicon": "~2.3.0",
+    "passport-local": "^1.0.0",
+    "debug": "~2.2.0",
+    "wiredep": "^2.2.2",
+    "node-sass": "^3.3.3",
+    "node-sass-middleware": "^0.9.6",
+    "ng-annotate": "^1.0.2"
   },
   "devDependencies": {
     "bower": "1.4.1",
     "chai": "^3.3.0",
     "coffee-script": "^1.9.3",
-    "debug": "~2.2.0",
-    "jshint": "^2.8.0",
     "karma-coverage": "^0.5.2",
     "karma-html2js-preprocessor": "^0.1.0",
     "karma-jasmine": "~0.1.0",
@@ -53,16 +59,10 @@
     "karma-wiredep": "^1.0.1",
     "live-reload": "^1.1.0",
     "mocha": "^2.3.3",
-    "ng-annotate": "^1.0.2",
-    "node-sass": "^3.3.3",
-    "node-sass-middleware": "^0.9.6",
     "parallelshell": "^2.0.0",
-    "passport-local": "^1.0.0",
     "protractor": "2.1.0",
     "sinon": "^1.17.1",
-    "usemin-cli": "0.0.7",
-    "watch": "^0.16.0",
-    "wiredep": "^2.2.2"
+    "watch": "^0.16.0"
   },
   "engines": {
     "node": "0.12.7",
