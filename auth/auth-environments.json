@@ -8,14 +8,14 @@
   },
   "staging": {
     "auth": {
-      "issuer": "http://kamu-staging.corporate.thoughtworks.com/",
+      "issuer": "http://www.okta.com/exk4yvktcdqo1W22w0h7",
       "path": "/login/callback",
       "entryPoint": "https://thoughtworks.oktapreview.com/app/thoughtworks_kamustaging_1/exk4yvktcdqo1W22w0h7/sso/saml"
     }
   },
   "production": {
     "auth": {
-      "issuer": "http://kamu.corporate.thoughtworks.com/",
+      "issuer": "http://www.okta.com/exk15w69ierl2znW50h8",
       "path": "/login/callback",
       "entryPoint": "https://thoughtworks.okta.com/app/thoughtworks_labskamu_1/exk15w69ierl2znW50h8/sso/saml"
     }
