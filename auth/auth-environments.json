@@ -8,11 +8,16 @@
   },
   "staging": {
     "auth": {
-      "issuer": "http://staging-twlib.herokuapp.com/",
+      "issuer": "http://kamu-staging.corporate.thoughtworks.com/",
       "path": "/login/callback",
       "entryPoint": "https://thoughtworks.oktapreview.com/app/thoughtworks_kamustaging_1/exk4yvktcdqo1W22w0h7/sso/saml"
     }
   },
-  "prod": {
+  "production": {
+    "auth": {
+      "issuer": "http://kamu.corporate.thoughtworks.com/",
+      "path": "/login/callback",
+      "entryPoint": "https://thoughtworks.okta.com/app/thoughtworks_labskamu_1/exk15w69ierl2znW50h8/sso/saml"
+    }
   }
 }
