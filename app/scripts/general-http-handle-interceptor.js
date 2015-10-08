@@ -12,7 +12,7 @@ angular
       },
       responseError: function (response) {
         if(response.status === 403) {
-            window.location.href = '/';
+            window.location.replace('/');
         }
         return $q.reject(response);
       }

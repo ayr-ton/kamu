@@ -29,7 +29,7 @@ describe('when enable a security access between API and UI', function() {
     window.sessionStorage.token = 'TOKENFAKE';
     var config = { headers: {}};
     factory.request(config);
-    expect(config.headers.token).toBe('TOKENFAKE');
+    expect(config.headers['x-token']).toBe('TOKENFAKE');
   });
 
   it('when http header has an invalid token', function() {
@@ -44,12 +44,14 @@ describe('when enable a security access between API and UI', function() {
             .expectGET('views/library/index.html')
             .respond(200);
 
+    spyOn(window.location, 'replace');
+
     http.get(librariesExpectedGet);
 
     scope.$digest();
     httpBackend.flush();
 
-    expect(location.path()).toEqual('/logout');
+    expect(window.location.replace).toHaveBeenCalledWith('/');
   });
 
 
