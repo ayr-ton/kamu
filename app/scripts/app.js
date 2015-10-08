@@ -66,11 +66,6 @@ angular
         templateUrl: 'views/settings/settings.html',
         controller: 'SettingsController'
       })
-      .when('/logout', {
-        controller: function($scope, $route) {
-            $route.reload();
-        }
-      })
       .otherwise({
         redirectTo: '/'
       });

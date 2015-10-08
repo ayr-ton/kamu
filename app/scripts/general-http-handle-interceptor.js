@@ -6,13 +6,13 @@ angular
     return {
       request: function (config) {
         if ($window.sessionStorage.token) {
-          config.headers.token =  $window.sessionStorage.token;
+          config.headers['x-token'] =  $window.sessionStorage.token;
         }
         return config;
       },
       responseError: function (response) {
         if(response.status === 403) {
-            $location.path('/logout');
+            window.location.href = '/';
         }
         return $q.reject(response);
       }
