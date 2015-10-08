@@ -10,9 +10,12 @@ environment = process.env.NODE_ENV || 'development';
 
 if (environment === 'development') {
   config = allEnvironments.local;
-} else {
+} else if (environment === 'staging') {
   config = allEnvironments.staging;
+} else {
+  config = allEnvironments.production;
 }
+
 config.auth.cert = process.env.OKTA_CERT;
 
 function findByEmail(nameID, fn) {
