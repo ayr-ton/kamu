@@ -2,11 +2,15 @@ var jwt = require('jsonwebtoken');
 
 var privateKey = 'superSecret';
 
+var sessionExpires = 60*60*24;
+
 var generate = function(email) {
-2
+
+	var body = { 'email' : email};
+
 	// sign with default (HMAC SHA256)
-    var token = jwt.sign(email, privateKey, {
-       expiresInMinutes: 1440 // expires in 24 hours
+    var token = jwt.sign(body , privateKey, {
+       expiresIn: sessionExpires
     });
 
 	return token;
@@ -15,7 +19,7 @@ var generate = function(email) {
 var verify = function(token) {
 
     return jwt.verify(token, privateKey, {
-       expiresInMinutes: 1440 // expires in 24 hours
+       expiresIn: sessionExpires 
     });
 
 }

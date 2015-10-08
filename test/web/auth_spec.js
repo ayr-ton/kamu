@@ -7,7 +7,6 @@ var config = require('../../config');
 var index = require('../../routes/index');
 var tokenGenerator = require('../../auth/token-server-api');
 
-
 describe('json web token authentication', function () {
   var sandbox;
 
@@ -20,14 +19,16 @@ describe('json web token authentication', function () {
   });
 
   it('generates a valid token', function () {
+
     var email, token, decoded;
 
     email =  'test@thoughtworks.com';
+
     token = tokenGenerator.generate(email);
 
     decoded = tokenGenerator.verify(token);
 
-    assert.equal(email, decoded);
+    assert.equal(email, decoded.email);
   });
 
   it('adds the token in the request header (when persisting the user)', function(done) {
@@ -36,10 +37,9 @@ describe('json web token authentication', function () {
     usersApiEndPoint = config.current().apiEndpoint;
 
     sandbox.stub(tokenGenerator, 'generate').returns('a');
-
     scope = nock(usersApiEndPoint, {
       reqheaders: {
-        'token': 'a'
+        'x-token': 'a'
       }
     }).filteringRequestBody(function () {
         return '*';
@@ -54,9 +54,10 @@ describe('json web token authentication', function () {
     };
 
     requestFromOkta = {user : userFromOkta};
-    index.persistUser(requestFromOkta, {redirect: function(){
-      scope.done();
-      done();
-    }});
+    index.persistUser(requestFromOkta, {
+      redirect: function(){
+        scope.done();
+        done();
+      }});
   });
 });

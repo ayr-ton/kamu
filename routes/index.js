@@ -20,7 +20,7 @@ var persistUser = function (req, res) {
     method: 'POST',
     json: apiUser,
     headers: {
-      'token': tokenGenerator.generate(email)
+      'x-token': tokenGenerator.generate(email)
     }
   };
 
