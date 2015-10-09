@@ -5,8 +5,8 @@ module.exports = (function () {
     environments: {
       dist:        { apiEndpoint: 'http://localhost:8080', appEndpoint: 'http://localhost:9000' },
     	development: { apiEndpoint: 'http://localhost:8080', appEndpoint: 'http://localhost:9000' },
-    	staging:     { apiEndpoint: 'http://staging-twlib-api.herokuapp.com', appEndpoint: 'http://kamu-staging.corporate.thoughtworks.com' },
-    	production:  { apiEndpoint: 'http://twlib-api.herokuapp.com', appEndpoint: 'http://kamu.corporate.thoughtworks.com' }
+    	staging:     { apiEndpoint: 'http://kamu-staging.corporate.thoughtworks.com:8080', appEndpoint: 'http://kamu-staging.corporate.thoughtworks.com' },
+    	production:  { apiEndpoint: 'http://kamu.corporate.thoughtworks.com:8080', appEndpoint: 'http://kamu.corporate.thoughtworks.com' }
     }
   };
 
