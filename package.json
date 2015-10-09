@@ -20,7 +20,7 @@
     "serve": "parallelshell 'npm start' 'npm run livereload'",
     "start": "node ./bin/www",
     "forever": "forever stopall && forever start ./bin/www",
-    "postinstall": "bower install && npm run build"
+    "postinstall": "bower install"
   },
   "dependencies": {
     "angular-md5": "^0.1.8",
