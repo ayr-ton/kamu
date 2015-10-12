@@ -109,7 +109,9 @@ angular
         RETURN_MESSAGE: 'are you returning this book?',
         APP_SETTINGS: 'Settings',
         APP_ADD_WISH: 'Add book to wishlist',
-        BORROWED_BY: 'Borrowed by'
+        BORROWED_BY: 'Borrowed by',
+        BORROW_SUCCESS: 'Book has been loaned to ',
+        RETURN_SUCCESS: 'Book has returned to library.'
       })
       .translations('pt-BR', {
         APP_LIBRARY_TAB: 'Todos Os Livros',
@@ -149,8 +151,9 @@ angular
         RETURN_MESSAGE: 'você deseja realmente retornar este livro?',
         APP_SETTINGS: 'Configuração',
         APP_ADD_WISH: 'Incluir livro na lista de desejos',
-        BORROWED_BY: 'Emprestado para'
-
+        BORROWED_BY: 'Emprestado para',
+        BORROW_SUCCESS: 'O livro foi emprestado a ',
+        RETURN_SUCCESS: 'O livro foi devolvido a bliblioteca.'
       })
       .translations('es-EC', {
         APP_LIBRARY_TAB: 'Todos Los Libros',
@@ -190,7 +193,9 @@ angular
         RETURN_MESSAGE: '¿Estás seguro de devolver este libro?',
         APP_SETTINGS: 'Configuración',
         APP_ADD_WISH: 'Añadir libro a la lista de deseos',
-        BORROWED_BY: 'Prestado por'
+        BORROWED_BY: 'Prestado por',
+        BORROW_SUCCESS: 'El libro fue prestado a ',
+        RETURN_SUCCESS: 'El libro ha sido devuelto a la librería'
       });
 
     $translateProvider.determinePreferredLanguage(function () {

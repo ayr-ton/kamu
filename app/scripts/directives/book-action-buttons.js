@@ -35,7 +35,8 @@ angular
                     imageUrl: UserService.getGravatarFromUserEmail($scope.copy.lastLoan.email)
                   };
                 });
-                toastr.success('Book has been loaned to '.concat(currentUser).concat('.'));
+                var successMessage = $translate.instant('BORROW_SUCCESS');
+                toastr.success(successMessage.concat(currentUser).concat('.'));
             }).
             error(function (data, status) {
               var errorMessage;
@@ -69,7 +70,8 @@ angular
                 success(function () {
                   Modal.reject();
 
-                  toastr.success('Book has returned to library.');
+                  var successMessage = $translate.instant('RETURN_SUCCESS');
+                  toastr.success(successMessage);
 
                   BookService.getCopy(copy.id)
                     .success(function (data) {
