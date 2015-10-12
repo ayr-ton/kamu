@@ -7,8 +7,7 @@ angular
     '$routeParams',
     'BookService',
     'UserService',
-    'WaitingListService',
-    function ($scope, $routeParams, BookService, UserService, WaitingListService) {
+    function ($scope, $routeParams, BookService, UserService) {
       $scope.library = $routeParams.library;
 
       $scope.listBooks = function () {
