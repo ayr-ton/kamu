@@ -7,7 +7,8 @@ angular
     '$routeParams',
     'BookService',
     'UserService',
-    function ($scope, $routeParams, BookService, UserService) {
+    'WaitingListService',
+    function ($scope, $routeParams, BookService, UserService, WaitingListService) {
       $scope.library = $routeParams.library;
 
       $scope.listBooks = function () {
@@ -41,5 +42,6 @@ angular
       $scope.$on('$viewContentLoaded', function () {
         $scope.listBooks();
       });
+
     }]
 );
