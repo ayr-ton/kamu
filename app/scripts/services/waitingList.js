@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('libraryUiApp')
  .service('WaitingListService', ['$http', 'ENV', function ($http, ENV) {
 
