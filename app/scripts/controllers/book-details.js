@@ -2,7 +2,7 @@
 
 angular
   .module('libraryUiApp')
-  .controller('BookDetailsController', ['$scope', '$routeParams', '$translate', 'BookService', 'UserService','WaitingListService', function ($scope, $routeParams, $translate, BookService, UserService, WaitingListService) {
+  .controller('BookDetailsController', ['$scope', '$routeParams', 'BookService', 'UserService','WaitingListService', function ($scope, $routeParams, BookService, UserService, WaitingListService) {
     $scope.currentBook = {};
     $scope.waitingLists = [];
 
@@ -16,18 +16,16 @@ angular
       }
     });
 
-function toggleFormDisplay(displayable) {
-      $scope.formShowable = displayable;
-      $scope.errorShowable = !displayable;
-    }
-                $scope.getCurrentWaitingList = function (bookId) {
+
+                $scope.getCurrentWaitingList = function (book_id) {console.log("entro")
+
                  var slug = $routeParams.library;
 
                     BookService.getLibraryBySlug(slug).
                       success(function (data) {
                         if (angular.isDefined(data._embedded)) {
 
-                        WaitingListService.getWaitingList(bookId,data._embedded.libraries[0]._links.self.href.slice(-1)).
+                        WaitingListService.getWaitingList(book_id,data._embedded.libraries[0]._links.self.href.slice(-1)).
                           success(function (data) {
 
                             if (angular.isDefined(data._embedded) && data._embedded.waitingLists[0]) {
@@ -43,7 +41,7 @@ function toggleFormDisplay(displayable) {
                                   waitingList.userName = data.data.name;
                                   waitingList.userEmail = data.data.email;
                                   waitingList.userImageUrl = UserService.getGravatarFromUserEmail(data.data.email);
-                                });
+                                })
                               });
                               }
                             }).
