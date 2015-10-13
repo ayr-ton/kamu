@@ -2,84 +2,61 @@
   <a href="javascript:window.history.back()"></a>
   <span class="nav-back-title">{{currentBook.title}}</span>
 </div>
-<div class="container-big">
-  <div class="col-md-8">
-    <div class="main-container-window">
-      <div class="main-container-window-divider">
-        <div class="book-details-image-container">
-          <img ng-src="{{currentBook.imageUrl}}" alt=""/>
-        </div>
-
-        <div class="book-details-info">
-
-          <p class="book-details-title">
-            {{currentBook.title}}<span ng-show="currentBook.subtitle && currentBook.subtitle != ''">: {{currentBook.subtitle}}</span>
-          </p>
-          <span class="small-title">{{ 'BOOK_AUTHORS' | translate }}</span>
-
-          <p class="book-details-sub">{{currentBook.author}}</p>
-        </div>
-
+<div class="main-container main-container-center">
+  <div class="main-container-window">
+    <div class="main-container-window-divider">
+      <div class="book-details-image-container">
+        <img ng-src="{{currentBook.imageUrl}}" alt=""/>
       </div>
 
-      <div class="book-details-data">
-        <ul>
-          <li>
-            <span class="small-title">{{ 'BOOK_PUBLISHER' | translate }}</span>
+      <div class="book-details-info">
 
-            <p class="book-details-sub">{{currentBook.publisher}}</p>
-          </li>
-          <li>
-            <span class="small-title">{{ 'BOOK_PUBLICATION_DATE' | translate }}</span>
-
-            <p class="book-details-sub">{{currentBook.publicationDate | date}}</p>
-          </li>
-          <li>
-            <span class="small-title">{{ 'BOOK_NUMBER_OF_PAGES' | translate }}</span>
-
-            <p class="book-details-sub">
-              {{currentBook.numberOfPages}}
-            </p>
-          </li>
-        </ul>
-      </div>
-
-      <div class="main-container-window-divider">
-        <span class="small-title">{{ 'BOOK_DESCRIPTION' | translate }}</span>
-
-        <p class="book-details-description">
-          {{currentBook.description}}
+        <p class="book-details-title">
+          {{currentBook.title}}<span ng-show="currentBook.subtitle && currentBook.subtitle != ''">: {{currentBook.subtitle}}</span>
         </p>
+        <span class="small-title">{{ 'BOOK_AUTHORS' | translate }}</span>
+
+        <p class="book-details-sub">{{currentBook.author}}</p>
+
+        <span class="small-title" ng-show="currentBook.status !== 'AVAILABLE'">{{ 'BORROWED_BY' | translate }}</span>
+
+        <p class="book-details-sub" ng-show="currentBook.status !== 'AVAILABLE'">{{ currentBook.lastLoan.email }}</p>
+
+        <img class="book-details-sub book-detail-borrower" ng-show="currentBook.status !== 'AVAILABLE'" ng-src="{{currentBook.lastLoan.user.imageUrl}}" alt="{{currentBook.title}}" />
+
+
       </div>
 
     </div>
-  </div>
-  <div class="col-md-4">
-    <div class="main-container-window">
-      <div class="list-title">
-      <p>
-        WAITING LIST
+
+    <div class="book-details-data">
+      <ul>
+        <li>
+          <span class="small-title">{{ 'BOOK_PUBLISHER' | translate }}</span>
+
+          <p class="book-details-sub">{{currentBook.publisher}}</p>
+        </li>
+        <li>
+          <span class="small-title">{{ 'BOOK_PUBLICATION_DATE' | translate }}</span>
+
+          <p class="book-details-sub">{{currentBook.publicationDate | date}}</p>
+        </li>
+        <li>
+          <span class="small-title">{{ 'BOOK_NUMBER_OF_PAGES' | translate }}</span>
+
+          <p class="book-details-sub">
+            {{currentBook.numberOfPages}}
+          </p>
+        </li>
+      </ul>
+    </div>
+
+    <div class="main-container-window-divider">
+      <span class="small-title">{{ 'BOOK_DESCRIPTION' | translate }}</span>
+
+      <p class="book-details-description">
+        {{currentBook.description}}
       </p>
-    </div>
-
-      <div ng-repeat="waitingList in waitingLists" style="display:flex;">
-        <div class="user-container-waiting-list ">
-          <img ng-controller="LibraryController" ng-src="{{ waitingList.userImageUrl }}"/>
-        </div>
-        <div class="book-details-info">
-
-          <span class="small-title">{{waitingList.userName}}</span>
-          <p class="book-details-sub">{{waitingList.userEmail}}</p>
-
-        </div>
-        <div class="circle">{{waitingList.order}}</div>
-
-      </div>
-
-    </div>
-
-
-
     </div>
 
   </div>
