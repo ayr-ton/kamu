@@ -21,7 +21,8 @@ angular
       var selectedCode = $cookies.get('language');
 
       for (var index = 0; index < $scope.languages.length; index++) {
-        if ($scope.languages[index].code === selectedCode) {
+
+        if ($scope.languages[index].code.toLowerCase() === selectedCode.toLowerCase()) {
           $scope.selectedIndex = index;
           break;
         }
