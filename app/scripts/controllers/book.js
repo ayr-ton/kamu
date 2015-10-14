@@ -41,5 +41,6 @@ angular
       $scope.$on('$viewContentLoaded', function () {
         $scope.listBooks();
       });
+
     }]
 );

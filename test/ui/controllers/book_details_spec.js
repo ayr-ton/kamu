@@ -35,7 +35,7 @@ describe('Book Details Controller', function () {
     var copy = { id: 1 };
 
     var copyBookEndpPoint = apiEndpoint.concat('/copies/').concat(copy.id).concat('?projection=copyWithBookInline');
-
+    var copyLibraryEndPoint = apiEndpoint.concat('/libraries/search/findBySlug?slug=undefined');
     httpBackend
       .expectGET(copyBookEndpPoint)
       .respond(200, book);
@@ -43,6 +43,10 @@ describe('Book Details Controller', function () {
     httpBackend
       .expectGET('views/library/index.html')
       .respond(200);
+
+    httpBackend
+      .expectGET(copyLibraryEndPoint)
+      .respond(1);
 
     httpBackend.flush();
   }
