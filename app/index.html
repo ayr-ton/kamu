@@ -24,29 +24,10 @@
                 </a>
               </li>
               <li>
-                <a href=""
-                   ng-class="isActive('wish_list') ? 'mobile-nav-active' : 'mobile-nav-unactive'">
-                  {{ 'APP_WISHLIST_TAB' | translate }}
-                </a>
-              </li>
-              <li>
-                <a href=""
-                   ng-class="isActive('borrowed_books') ? 'mobile-nav-active' : 'mobile-nav-unactive'">
-                  {{ 'APP_BORROWED_BOOKS_TAB' | translate }}
-                </a>
-              </li>
-              <li>
                 <a href="/#/library/{{ library }}/add_book"
                    ng-class="isActive('add_book') ? 'mobile-nav-active' : 'mobile-nav-unactive'"
                    ng-show="hasLoadedLibrary()">
                   {{ 'APP_ADD_BOOK' | translate }}
-                </a>
-              </li>
-              <li>
-                <a href=""
-                   ng-class="isActive('add_wish_list') ? 'mobile-nav-active' : 'mobile-nav-unactive'"
-                   ng-show="hasLoadedLibrary()">
-                  {{ 'APP_ADD_WISH' | translate }}
                 </a>
               </li>
               <li>
@@ -75,11 +56,6 @@
                   <img ng-controller="LibraryController" ng-src="{{ getGravatarFromSession() }}"/>
                 </div>
 
-                <div class="search-mobile"></div>
-                <div class="search">
-                  <div class="search-icon"></div>
-                  <input type="text" name="" value="" placeholder="{{ 'APP_SEARCH' | translate }}"/>
-                </div>
               </header>
 
               <nav class="main-nav">
@@ -91,18 +67,6 @@
                         {{'APP_LIBRARY_TAB' | translate }}
                       </a>
                     </li>
-                    <li>
-                      <a href=""
-                         ng-class="isActive('wish_list')? 'main-nav-active' : 'main-nav-unactive'">
-                        {{ 'APP_WISHLIST_TAB' | translate }}
-                      </a>
-                    </li>
-                    <li>
-                      <a href=""
-                         ng-class="isActive('borrowed_books')? 'main-nav-active' : 'main-nav-unactive'">
-                        {{ 'APP_BORROWED_BOOKS_TAB' | translate }}
-                      </a>
-                    </li>
                   </ul>
                 </div>
                 <div class="nav-right">
@@ -111,13 +75,6 @@
                       <a href="/#/library/{{library}}/add_book"
                          class='main-nav-add-book'
                          ng-class="{'add-book-active' : isActive('add_book')}"
-                         ng-show="hasLoadedLibrary()">
-                      </a>
-                    </li>
-                    <li>
-                      <a href=""
-                         class='main-nav-add-wish'
-                         ng-class="{'add-wish-active' : isActive('add_wish_list')}"
                          ng-show="hasLoadedLibrary()">
                       </a>
                     </li>
