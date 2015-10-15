@@ -14,7 +14,7 @@ angular
         {name : 'English USA', code : 'en-US'}
       ];
 
-      $scope.selectedIndex = 0;
+      $scope.selectedIndex = 2;
       angular.injector(['ngCookies']).invoke(['$cookies', function (_$cookies_) {
         $cookies = _$cookies_;
       }]);
