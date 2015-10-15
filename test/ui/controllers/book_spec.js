@@ -19,24 +19,29 @@ describe('BookController', function () {
   describe('#listBooks', function () {
     var searchUrl;
     var slug = 'bh';
-    var copies = {
-      '_embedded': {
-        'copies': [
-          {
-            "id" : 1,
-            "title": "Enjoying Fifa with your eyes closed.",
-            '_links': {
-              'self': {
-                "href" : "http://localhost:8080/copies/1{?projection}"
+    var copies = {};
+
+    function createDefaultBooks() {
+      return {
+        '_embedded': {
+          'copies': [
+            {
+              'id' : 1,
+              'title': 'Enjoying Fifa with your eyes closed.',
+              '_links': {
+                'self': {
+                  'href' : 'http://localhost:8080/copies/1{?projection}'
+                }
               }
             }
-          }
-        ]
-      }
-    };
-
+          ]
+        }
+      };
+    }
+    
     beforeEach(function () {
       scope.library = slug;
+      copies = createDefaultBooks();
       searchUrl = apiEndpoint.concat('/copies/search/findCopiesByLibrarySlug?slug=').concat(slug);
     });
 
@@ -65,9 +70,9 @@ describe('BookController', function () {
 
       httpBackend.flush();
 
-      expect(scope.copies.length).toEqual(1);
-      expect(scope.copies[0].title).toEqual('Enjoying Fifa with your eyes closed.');
-      expect(scope.copies[0].imageUrl).toEqual('images/no-image.png');
+      var firstBookFromArray = scope.copies[0];
+      expect(firstBookFromArray.title).toEqual('Enjoying Fifa with your eyes closed.');
+      expect(firstBookFromArray.imageUrl).toEqual('images/no-image.png');
     });
 
     it('correctly initializes each copy when copy has imageUrl', function () {
@@ -83,19 +88,19 @@ describe('BookController', function () {
 
       httpBackend.flush();
 
-      expect(scope.copies.length).toEqual(1);
-      expect(scope.copies[0].title).toEqual('Enjoying Fifa with your eyes closed.');
-      expect(scope.copies[0].imageUrl).toEqual('path/to/image');
+      var firstBookFromArray = scope.copies[0];
+      expect(firstBookFromArray.title).toEqual('Enjoying Fifa with your eyes closed.');
+      expect(firstBookFromArray.imageUrl).toEqual('path/to/image');
     });
 
-  it('check correct user image url that has borrowed the book', function () {
+    it('check correct user image url that has borrowed the book', function () {
 
       var imageUrl =  'http://www.gravatar.com/avatar/5c710e48e871d4d4c2a66f7b69a19150';
 
       var lastLoan = {
-          "id"    : 1,
-          'email': "tuliolucas.silva@gmail.com"
-      }
+        'id': 1,
+        'email': 'tuliolucas.silva@gmail.com'
+      };
 
       copies._embedded.copies[0].lastLoan = lastLoan;
 
@@ -108,10 +113,40 @@ describe('BookController', function () {
       scope.listBooks();
 
       httpBackend.flush();
+      var firstBookFromArray = scope.copies[0];
+      expect(firstBookFromArray.lastLoan.user.imageUrl).not.toBeUndefined();
+      expect(firstBookFromArray.lastLoan.user.imageUrl).toEqual(imageUrl);
 
-      expect(scope.copies[0].lastLoan.user.imageUrl).not.toBeUndefined();
-      expect(scope.copies[0].lastLoan.user.imageUrl).toEqual(imageUrl);
+    });
 
+    it ('return the books ordered by title alphabetically', function () {
+
+      var newCopy = {
+        'id' : 2,
+        'title': 'AA this book should appear first.',
+        '_links': {
+          'self': {
+            'href' : 'http://localhost:8080/copies/2{?projection}'
+          }
+        }
+      };
+      copies._embedded.copies.push(newCopy);
+
+      httpBackend.expectGET(searchUrl)
+        .respond(200, copies);
+
+      httpBackend.expectGET(libraryIndexPage)
+        .respond(200);
+
+      scope.listBooks();
+
+      httpBackend.flush();
+
+      var firstBookTitle = scope.copies[0].title;
+      var secondBookTitle = scope.copies[1].title;
+
+      expect(firstBookTitle).toEqual('AA this book should appear first.');
+      expect(secondBookTitle).toEqual('Enjoying Fifa with your eyes closed.');
     });
   });
 });
