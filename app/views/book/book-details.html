@@ -18,7 +18,13 @@
           <span class="small-title">{{ 'BOOK_AUTHORS' | translate }}</span>
 
           <p class="book-details-sub">{{currentBook.author}}</p>
-        </div>
+
+          <span class="small-title" ng-show="currentBook.status !== 'AVAILABLE'">{{ 'BORROWED_BY' | translate }}</span>
+
+          <p class="book-details-sub" ng-show="currentBook.status !== 'AVAILABLE'">{{ currentBook.lastLoan.email }}</p>
+
+          <img class="book-details-sub book-detail-borrower" ng-show="currentBook.status !== 'AVAILABLE'" ng-src="{{currentBook.lastLoan.user.imageUrl}}" alt="{{currentBook.title}}" />
+      </div>
 
       </div>
 
