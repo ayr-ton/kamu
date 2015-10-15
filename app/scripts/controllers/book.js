@@ -18,6 +18,10 @@ angular
             if (angular.isDefined(data._embedded) && data._embedded.copies) {
               $scope.copies = data._embedded.copies;
 
+              $scope.copies.sort(function(book1, book2){
+                return book1.title.localeCompare(book2.title);
+              });
+
               angular.forEach($scope.copies, function (copy) {
                 copy = initializeCopy(copy);
               });
