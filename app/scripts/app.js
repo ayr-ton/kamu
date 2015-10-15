@@ -198,6 +198,13 @@ angular
         RETURN_SUCCESS: 'El libro ha sido devuelto a la librería'
       });
 
+    $translateProvider.useStaticFilesLoader({
+        'prefix': 'locale-',
+        'suffix': '.json'
+    });
+
+    $translateProvider.preferredLanguage($translateProvider.determinePreferredLanguage());
+
     $translateProvider.determinePreferredLanguage(function () {
       var language = $cookies.get('language');
       var defaultLanguage = 'en-US';
@@ -218,7 +225,7 @@ angular
       return language;
     });
   }]).
-  run(['$rootScope', '$http', '$location', 'ENV', function ($rootScope, $http, $location, ENV) {
+  run(['$rootScope', '$http', '$location', 'ENV',  function ($rootScope, $http, $location, ENV) {
     $rootScope.$on('$routeChangeStart', function (event, next) {
 
       var slug = next.pathParams.library;
