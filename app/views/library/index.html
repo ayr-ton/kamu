@@ -3,7 +3,7 @@
     <img src="images/logo-intro.svg" alt=""/>
 
     <div class="intro-window">
-      <a ng-repeat='library in libraries' href='/#/library/{{ library.slug }}'>{{ library.name }}</a>
+      <a ng-repeat="library in libraries | orderBy:'name'" href='/#/library/{{ library.slug }}'>{{ library.name }}</a>
     </div>
   </div>
 </div>
