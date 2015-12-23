@@ -46,7 +46,6 @@
   "devDependencies": {
     "bower": "1.4.1",
     "chai": "^3.3.0",
-    "coffee-script": "^1.9.3",
     "karma-coverage": "^0.5.2",
     "karma-html2js-preprocessor": "^0.1.0",
     "karma-jasmine": "~0.1.0",
