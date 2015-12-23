@@ -23,7 +23,6 @@
     "postinstall": "bower install"
   },
   "dependencies": {
-    "angular-md5": "^0.1.8",
     "body-parser": "~1.13.2",
     "compression": "1.5.2",
     "connect": "^2.14.3",
