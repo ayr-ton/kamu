@@ -34,7 +34,6 @@
     "jshint": "^2.8.0",
     "jsonwebtoken": "^5.4.0",
     "morgan": "~1.6.1",
-    "ng-annotate": "^1.0.2",
     "nock": "^2.13.0",
     "node-sass": "^3.3.3",
     "node-sass-middleware": "^0.9.6",
