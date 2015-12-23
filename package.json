@@ -41,7 +41,6 @@
     "passport-saml": "git://github.com/bergie/passport-saml.git",
     "request": "^2.63.0",
     "serve-favicon": "~2.3.0",
-    "usemin-cli": "0.0.7",
     "wiredep": "^2.2.2"
   },
   "devDependencies": {
