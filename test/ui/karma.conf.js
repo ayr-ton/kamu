@@ -2,9 +2,9 @@
 // http://karma-runner.github.io/0.12/config/configuration-file.html
 // Generated on 2015-06-30 using
 // generator-karma 1.0.0
+'use strict';
 
 module.exports = function(config) {
-  'use strict';
 
   config.set({
     // enable / disable watching file and executing tests whenever any file changes
