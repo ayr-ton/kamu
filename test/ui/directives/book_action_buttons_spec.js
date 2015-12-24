@@ -91,7 +91,7 @@ describe('Book Action Buttons Directive', function () {
       $window.sessionStorage.email = currentUser;
       compileElement(copy);
 
-      spyOn(loanService, 'borrowCopy').andCallThrough();
+      spyOn(loanService, 'borrowCopy').and.callThrough();
       spyOn(toastrLocal, 'success');
 
       httpBackend.expectPOST(apiEndpoint.concat('/loans')).respond(200);

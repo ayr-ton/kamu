@@ -1,3 +1,5 @@
+'use strict';
+
 exports.config = {
   specs: ['features/*_spec.js']
 };

@@ -10,6 +10,19 @@ angular
     function ($scope, $routeParams, BookService, UserService) {
       $scope.library = $routeParams.library;
 
+      function initializeCopy(copy) {
+        if (copy.imageUrl === undefined || copy.imageUrl === null) {
+          copy.imageUrl = 'images/no-image.png';
+        }
+
+        if (copy.lastLoan !== undefined && copy.lastLoan !== null) {
+          copy.lastLoan.user = {};
+          copy.lastLoan.user.imageUrl = UserService.getGravatarFromUserEmail(copy.lastLoan.email);
+        }
+
+        return copy;
+      }
+
       $scope.listBooks = function () {
         $scope.copies = [];
 
@@ -28,19 +41,6 @@ angular
             }
           });
       };
-
-      function initializeCopy(copy) {
-        if (copy.imageUrl === undefined || copy.imageUrl === null) {
-          copy.imageUrl = 'images/no-image.png';
-        }
-
-        if (copy.lastLoan !== undefined && copy.lastLoan !== null) {
-          copy.lastLoan.user = {};
-          copy.lastLoan.user.imageUrl = UserService.getGravatarFromUserEmail(copy.lastLoan.email);
-        }
-
-        return copy;
-      }
 
       $scope.$on('$viewContentLoaded', function () {
         $scope.listBooks();
