@@ -18,7 +18,6 @@ angular
       return $http.get(endPoint);
     };
 
-
     this.getCopy = function (copy) {
       var endPoint = ENV.apiEndpoint.concat('/copies/').concat(copy).concat('?projection=copyWithBookInline');
 
@@ -30,6 +29,35 @@ angular
 
       return $http.get(endPoint);
     };
+
+    function resolveBookImage(imageUrl) {
+      var defaultImageUrl = 'images\\no-image.png';
+
+      return (imageUrl === null || imageUrl === undefined) ? defaultImageUrl : imageUrl ;
+    }
+
+    this.resolveBookImage = function (imageUrl) {
+      return resolveBookImage(imageUrl);
+    };
+
+    function buildBook(bookInfo, isbn) {
+      var book = {};
+
+      book.title = bookInfo.title;
+      if (bookInfo.authors !== undefined) {
+        book.author = bookInfo.authors.join();
+      }
+      book.subtitle = bookInfo.subtitle;
+      book.description = bookInfo.description;
+      book.isbn = isbn.identifier;
+      book.publisher = bookInfo.publisher;
+      book.publicationDate = bookInfo.publishedDate;
+      book.numberOfPages = bookInfo.pageCount;
+      var imageUrl = bookInfo.imageLinks === undefined ? null : bookInfo.imageLinks.thumbnail;
+      book.imageUrl = resolveBookImage(imageUrl);
+
+      return book;
+    }
 
     this.extractBookInformation = function (bookInfo, searchCriteria) {
       var targetBookIdentifier = 'ISBN_13';
@@ -43,10 +71,6 @@ angular
       });
 
       return book;
-    };
-
-    this.resolveBookImage = function (imageUrl) {
-      return resolveBookImage(imageUrl);
     };
 
     this.addBook = function (book) {
@@ -77,28 +101,4 @@ angular
       return $http.get(copiesUrl);
     };
 
-    function buildBook(bookInfo, isbn) {
-      var book = {};
-
-      book.title = bookInfo.title;
-      if (bookInfo.authors !== undefined) {
-        book.author = bookInfo.authors.join();
-      }
-      book.subtitle = bookInfo.subtitle;
-      book.description = bookInfo.description;
-      book.isbn = isbn.identifier;
-      book.publisher = bookInfo.publisher;
-      book.publicationDate = bookInfo.publishedDate;
-      book.numberOfPages = bookInfo.pageCount;
-      var imageUrl = bookInfo.imageLinks === undefined ? null : bookInfo.imageLinks.thumbnail;
-      book.imageUrl = resolveBookImage(imageUrl);
-
-      return book;
-    }
-
-    function resolveBookImage(imageUrl) {
-      var defaultImageUrl = 'images\\no-image.png';
-
-      return (imageUrl === null || imageUrl === undefined) ? defaultImageUrl : imageUrl ;
-    }
   }]);
