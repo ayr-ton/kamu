@@ -5,16 +5,30 @@ angular
 .controller('BookDetailsController', ['$scope', '$routeParams', '$translate', 'BookService', 'UserService','WaitingListService', function ($scope, $routeParams, $translate, BookService, UserService, WaitingListService) {
   $scope.currentBook = {};
   $scope.waitingLists = [];
+  $scope.currentBook.quantity=0;
 
   BookService.getCopy($routeParams.bookId).success(function (response) {
     $scope.currentBook = response;
     $scope.getCurrentWaitingList($routeParams.bookId);
+    $scope.currentBook.quantity = BookService.getQuantityCopies($routeParams.library,$routeParams.bookId);
+    $scope.currentBook.quantity.then(function(data) {
+      console.log('Got data! Promise fulfilled.');
+      console.log(data.data);
+      $scope.currentBook.quantity=data.data;
+    
+    }   , function(error) {
+       console.log('Promise rejected.');
+       console.log(error.message);
+  }  );
 
     if ($scope.currentBook.hasOwnProperty('lastLoan') && $scope.currentBook.lastLoan !== null) {
       $scope.currentBook.lastLoan.user = {};
       $scope.currentBook.lastLoan.user.imageUrl = UserService.getGravatarFromUserEmail($scope.currentBook.lastLoan.email);
     }
   });
+
+
+
 
   function toggleFormDisplay(displayable) {
     $scope.formShowable = displayable;
