@@ -98,12 +98,8 @@ angular
     };
 
     this.getQuantityCopies = function (slug,book) {
-     var endPoint = ENV.apiEndpoint.concat('/copies/search/countByLibrarySlugAndBookId?slug=').concat(slug).concat('&book=').concat(book);
-     var quantity = $http.get(endPoint);
-      console.warn(quantity);
-      window.alert(endPoint);
-   
-      return quantity;
+     var endPoint = ENV.apiEndpoint.concat('/copies/search/countByLibrarySlugAndBookId?slug=').concat(slug).concat('&book=').concat(book); 
+      return $htt.get(endPoint);
     };
 
     this.getCopies = function (copiesUrl) {
