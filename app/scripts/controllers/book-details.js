@@ -11,10 +11,21 @@ angular
     $scope.currentBook = response;
     $scope.getCurrentWaitingList($routeParams.bookId);
     $scope.currentBook.quantity = BookService.getQuantityCopies($routeParams.library,$routeParams.bookId);
+    $scope.currentBook.availableQuantity = BookService.getAvailableQuantityCopies($routeParams.library,$routeParams.bookId);
     $scope.currentBook.quantity.then(function(data) {
-      console.log('Got data! Promise fulfilled.');
+      console.log('Got data! Promise fulfilled quantity.');
       console.log(data.data);
       $scope.currentBook.quantity=data.data;
+    
+    }   , function(error) {
+       console.log('Promise rejected.');
+       console.log(error.message);
+  }  );
+
+    $scope.currentBook.availableQuantity.then(function(data) {
+      console.log('Got data! Promise fulfilled. availableQuantity');
+      console.log(data.data);
+      $scope.currentBook.availableQuantity=data.data;
     
     }   , function(error) {
        console.log('Promise rejected.');

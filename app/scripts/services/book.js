@@ -98,8 +98,15 @@ angular
     };
 
     this.getQuantityCopies = function (slug,book) {
-     var endPoint = ENV.apiEndpoint.concat('/copies/search/countByLibrarySlugAndBookId?slug=').concat(slug).concat('&book=').concat(book); 
-      return $htt.get(endPoint);
+     var endPoint = ENV.apiEndpoint.concat('/copies/search/countByLibrarySlugAndBookId?slug=').concat(slug).concat('&book=').concat(book);
+    
+      return $http.get(endPoint);
+    };
+
+    this.getAvailableQuantityCopies = function (slug,book) {
+     var endPoint = ENV.apiEndpoint.concat('/copies/search/countByLibrarySlugAndBookIdAndStatus?slug=').concat(slug).concat('&book=').concat(book).concat('&status=').concat('AVAILABLE');
+    window.alert(endPoint);
+      return $http.get(endPoint);
     };
 
     this.getCopies = function (copiesUrl) {
