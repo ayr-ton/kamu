@@ -15,17 +15,29 @@
           <p class="book-details-title">
             {{currentBook.title}}<span ng-show="currentBook.subtitle && currentBook.subtitle != ''">: {{currentBook.subtitle}}</span>
           </p>
-          <span class="small-title">{{ 'BOOK_AUTHORS' | translate }}</span>
+          <div class="book-info-details">
+            <div>
+              <span class="small-title">{{ 'BOOK_AUTHORS' | translate }}</span>
 
-          <p class="book-details-sub">{{currentBook.author}}</p>
+              <p class="book-details-sub">{{currentBook.author}}</p>
 
-          <span class="small-title" ng-show="currentBook.status !== 'AVAILABLE'">{{ 'BORROWED_BY' | translate }}</span>
+              <span class="small-title" ng-show="currentBook.status !== 'AVAILABLE'">{{ 'BORROWED_BY' | translate }}</span>
 
-          <p class="book-details-sub" ng-show="currentBook.status !== 'AVAILABLE'">{{ currentBook.lastLoan.email }}</p>
+              <p class="book-details-sub" ng-show="currentBook.status !== 'AVAILABLE'">{{ currentBook.lastLoan.email }}</p>
 
-          <img class="book-details-sub book-detail-borrower" ng-show="currentBook.status !== 'AVAILABLE'" ng-src="{{currentBook.lastLoan.user.imageUrl}}" alt="{{currentBook.title}}" />
+              <img class="book-details-sub book-detail-borrower" ng-show="currentBook.status !== 'AVAILABLE'" ng-src="{{currentBook.lastLoan.user.imageUrl}}" alt="{{currentBook.title}}" />
+            </div>
+        
+            <div>                
+              <p> </p>
+             
+              <span class="small-title">{{ 'BOOK_AVAILABLE_QUANTITY' | translate }}</span>
+                <p class="book-details-sub">
+                 {{currentBook.quantity}} {{ 'TEXT_AVAILABILIBY' | translate }} {{currentBook.quantity}}
+                </p>     
+            </div>  
+          </div>  
       </div>
-
       </div>
 
       <div class="book-details-data">
@@ -45,20 +57,6 @@
 
             <p class="book-details-sub">
               {{currentBook.numberOfPages}}
-            </p>
-          </li>
-          <li>
-            <span class="small-title">{{ 'BOOK_QUANTITY' | translate }}</span>
-
-            <p class="book-details-sub">
-              {{currentBook.quantity}}
-            </p>
-          </li>
-          <li>
-            <span class="small-title">{{ 'BOOK_AVAILABLE_QUANTITY' | translate }}</span>
-
-            <p class="book-details-sub">
-              {{currentBook.availableQuantity}}
             </p>
           </li>
         </ul>
