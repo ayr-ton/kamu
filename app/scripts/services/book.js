@@ -92,8 +92,8 @@ angular
     };
 
     this.getCopiesByLibrarySlug = function (slug) {
-      var endPoint = ENV.apiEndpoint.concat('/copies/search/findCopiesByLibrarySlug?slug=').concat(slug);
-      
+      var endPoint = ENV.apiEndpoint.concat('/copies/search/findDistinctCopiesByLibrary?slug=').concat(slug);
+      window.alert(endPoint);
       return $http.get(endPoint);
     };
 
