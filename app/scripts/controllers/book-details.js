@@ -14,24 +14,12 @@ angular
     $scope.currentBook.quantity = BookService.getQuantityCopies($routeParams.library,$scope.currentBook.reference);
     $scope.currentBook.availableQuantity = BookService.getAvailableQuantityCopies($routeParams.library,$scope.currentBook.reference);
     $scope.currentBook.quantity.then(function(data) {
-      console.log('Got data! Promise fulfilled quantity.');
-      console.log(data.data);
-      $scope.currentBook.quantity=data.data;
-    
-    }   , function(error) {
-       console.log('Promise rejected.');
-       console.log(error.message);
-  }  );
+      $scope.currentBook.quantity=data.data;   
+    });
 
     $scope.currentBook.availableQuantity.then(function(data) {
-      console.log('Got data! Promise fulfilled. availableQuantity');
-      console.log(data.data);
-      $scope.currentBook.availableQuantity=data.data;
-    
-    }   , function(error) {
-       console.log('Promise rejected.');
-       console.log(error.message);
-  }  );
+      $scope.currentBook.availableQuantity=data.data;   
+    });
 
     if ($scope.currentBook.hasOwnProperty('lastLoan') && $scope.currentBook.lastLoan !== null) {
       $scope.currentBook.lastLoan.user = {};
