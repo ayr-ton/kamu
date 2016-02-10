@@ -9,7 +9,8 @@ angular
     'UserService',
     function ($scope, $routeParams, BookService, UserService) {
       $scope.library = $routeParams.library;
-
+      
+    
       function initializeCopy(copy) {
         if (copy.imageUrl === undefined || copy.imageUrl === null) {
           copy.imageUrl = 'images/no-image.png';
@@ -23,26 +24,46 @@ angular
         return copy;
       }
 
+    
+
       $scope.listBooks = function () {
+
         $scope.copies = [];
 
         BookService.getCopiesByLibrarySlug($scope.library)
           .success(function (data) {
             if (angular.isDefined(data._embedded) && data._embedded.copies) {
+              var available;
               $scope.copies = data._embedded.copies;
-
-              $scope.copies.sort(function(book1, book2){
-                return book1.title.localeCompare(book2.title);
-              });
-
+                          
               angular.forEach($scope.copies, function (copy) {
-                copy = initializeCopy(copy);
-              });
+                available = BookService.getAvailableQuantityCopies($routeParams.library,copy.reference);
+                available.then(function(availableQuantity) {
+              
+                    available=availableQuantity.data;
+
+                    if(available){
+                        copy.status = 'AVAILABLE';
+                        console.log('alterou para AVAILABLE');
+                    }
+                    else {
+                      copy.status = 'BORROWED';
+                      console.log('alterou para BORROWED');
+                    }
+                   copy = initializeCopy(copy);
+        
+                });
+                    
+                
+              });           
             }
           });
       };
 
+
+ 
       $scope.$on('$viewContentLoaded', function () {
+
         $scope.listBooks();
       });
 
