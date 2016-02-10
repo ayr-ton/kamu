@@ -6,12 +6,13 @@ angular
   $scope.currentBook = {};
   $scope.waitingLists = [];
   $scope.currentBook.quantity=0;
+  $scope.currentBook.availableQuantity=0;
 
   BookService.getCopy($routeParams.bookId).success(function (response) {
     $scope.currentBook = response;
     $scope.getCurrentWaitingList($routeParams.bookId);
-    $scope.currentBook.quantity = BookService.getQuantityCopies($routeParams.library,$routeParams.bookId);
-    $scope.currentBook.availableQuantity = BookService.getAvailableQuantityCopies($routeParams.library,$routeParams.bookId);
+    $scope.currentBook.quantity = BookService.getQuantityCopies($routeParams.library,$scope.currentBook.reference);
+    $scope.currentBook.availableQuantity = BookService.getAvailableQuantityCopies($routeParams.library,$scope.currentBook.reference);
     $scope.currentBook.quantity.then(function(data) {
       console.log('Got data! Promise fulfilled quantity.');
       console.log(data.data);
