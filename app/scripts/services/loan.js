@@ -22,4 +22,10 @@ angular
 
       return $http.patch(endPoint, loan, postConfiguration);
     };
+
+    this.getListOfPendingLoans = function (slug, book) {
+      var endPoint = ENV.apiEndpoint.concat('/loans/search/findByEndDateIsNullAndCopyLibrarySlugAndCopyBookId?slug=').concat(slug).concat('&book=').concat(book);
+
+      return $http.get(endPoint);
+    };
   }]);
