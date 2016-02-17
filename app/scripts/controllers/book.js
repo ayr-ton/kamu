@@ -44,11 +44,9 @@ angular
 
                     if(available){
                         copy.status = 'AVAILABLE';
-                        console.log('alterou para AVAILABLE');
                     }
                     else {
                       copy.status = 'BORROWED';
-                      console.log('alterou para BORROWED');
                     }
                    copy = initializeCopy(copy);
         
