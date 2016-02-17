@@ -974,6 +974,11 @@ button.list-group-item-danger.active:focus {
   height: 66px;
   border-radius: 50%;
   overflow: hidden;
+  list-style-type: ',';
+}
+
+ul.listnames{
+  list-style-type: ',';  
 }
 
 .circle {
