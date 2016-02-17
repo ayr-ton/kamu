@@ -42,16 +42,16 @@ angular
     if (hasMoreThanZeroBorredCopy()){
       
       if(angular.isDefined(loansData._embedded) && loansData._embedded.loans) {
-            var users= '';
+            var users= [];
             $scope.currentBook.loans = loansData._embedded.loans;          
               angular.forEach($scope.currentBook.loans, function (loanData) {
               
-                users +=loanData.email+',';
+                users.push(loanData.email);
                 $scope.currentBook.lastLoan.email = loanData.email;
                 
               });
 
-              $scope.currentBook.lastLoan.user = users;
+              $scope.currentBook.lastLoan.users = users;
       } 
      }
     if (hasOneBorredCopy() && $scope.currentBook.hasOwnProperty('lastLoan') && $scope.currentBook.lastLoan !== null){
