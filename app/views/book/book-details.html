@@ -22,12 +22,13 @@
               <p class="book-details-sub">{{currentBook.author}}</p>
 
               <span class="small-title" ng-show="currentBook.quantity !== currentBook.availableQuantity">{{ 'BORROWED_BY' | translate }}</span>
-                
               <p class="book-details-sub" ng-show="currentBook.quantity !== currentBook.availableQuantity">
-                <ul> {{ currentBook.lastLoan.user }} </ul>
-
+                <ul class="book-details-sub">  
+                  <li ng-repeat="user in currentBook.lastLoan.users" >
+                    {{ user }}
+                  </li>
+                </ul>
               </p>
-
               <img class="book-details-sub book-detail-borrower" ng-show="(currentBook.quantity - currentBook.availableQuantity) === 1" ng-src="{{currentBook.lastLoan.imageUrl}}" alt="{{currentBook.title}}" />
             </div>
         
@@ -98,7 +99,6 @@
       </div>
 
     </div>
-
 
 
     </div>
