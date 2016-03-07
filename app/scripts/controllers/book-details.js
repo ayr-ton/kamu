@@ -2,19 +2,65 @@
 
 angular
 .module('libraryUiApp')
-.controller('BookDetailsController', ['$scope', '$routeParams', '$translate', 'BookService', 'UserService','WaitingListService', function ($scope, $routeParams, $translate, BookService, UserService, WaitingListService) {
+.controller('BookDetailsController', ['$scope', '$routeParams', '$translate', 'BookService', 'UserService','WaitingListService', 'LoanService', function ($scope, $routeParams, $translate, BookService, UserService, WaitingListService, LoanService) {
   $scope.currentBook = {};
   $scope.waitingLists = [];
+  $scope.currentBook.quantity=0;
+  $scope.currentBook.availableQuantity=0;
+  $scope.currentBook.loans = {};
+
+
 
   BookService.getCopy($routeParams.bookId).success(function (response) {
     $scope.currentBook = response;
     $scope.getCurrentWaitingList($routeParams.bookId);
+    $scope.currentBook.quantity = BookService.getQuantityCopies($routeParams.library,$scope.currentBook.reference);
+    $scope.currentBook.availableQuantity = BookService.getAvailableQuantityCopies($routeParams.library,$scope.currentBook.reference);
+    $scope.currentBook.quantity.then(function(data) {
+      $scope.currentBook.quantity=data.data;   
+    });
 
-    if ($scope.currentBook.hasOwnProperty('lastLoan') && $scope.currentBook.lastLoan !== null) {
-      $scope.currentBook.lastLoan.user = {};
-      $scope.currentBook.lastLoan.user.imageUrl = UserService.getGravatarFromUserEmail($scope.currentBook.lastLoan.email);
-    }
-  });
+    $scope.currentBook.availableQuantity.then(function(data) {
+      $scope.currentBook.availableQuantity=data.data;
+    
+    });
+
+  
+
+ function hasOneBorredCopy(){
+   
+    return Boolean(($scope.currentBook.quantity - $scope.currentBook.availableQuantity) === 1);
+  }
+
+  function hasMoreThanZeroBorredCopy(){
+ 
+    return Boolean(($scope.currentBook.quantity - $scope.currentBook.availableQuantity) > 0);
+  }
+
+
+ LoanService.getListOfPendingLoans($routeParams.library,$scope.currentBook.reference).success(function(loansData){
+    if (hasMoreThanZeroBorredCopy()){
+      
+      if(angular.isDefined(loansData._embedded) && loansData._embedded.loans) {
+            var users= [];
+            $scope.currentBook.loans = loansData._embedded.loans;          
+              angular.forEach($scope.currentBook.loans, function (loanData) {
+              
+                users.push(loanData.email);
+                $scope.currentBook.lastLoan.email = loanData.email;
+                
+              });
+
+              $scope.currentBook.lastLoan.users = users;
+      } 
+     }
+    if (hasOneBorredCopy() && $scope.currentBook.hasOwnProperty('lastLoan') && $scope.currentBook.lastLoan !== null){
+     
+      $scope.currentBook.lastLoan.imageUrl = UserService.getGravatarFromUserEmail($scope.currentBook.lastLoan.email);
+    }  
+
+ });
+});
 
   function toggleFormDisplay(displayable) {
     $scope.formShowable = displayable;

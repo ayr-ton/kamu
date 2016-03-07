@@ -477,12 +477,12 @@
 	font-size: 12px;
 	color: #7e7e7e;
 	font-style: italic;
-	overflow : hidden;
+	overflow : scroll;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	float: left;
 	clear: both;
-	width: 100%;
+	width: 65%;
 	text-align: left;
 	text-indent: 2px;
 }
@@ -523,3 +523,20 @@
 .book-details-data ul li:last-child{
 	border-right-style: none;
 }
+
+.book-info-details{
+    width: 100%;   
+    height: 150px;
+    border: 0 px solid black; 
+    display: -webkit-flex; 
+    -webkit-align-items: flex-start;
+   
+}
+
+.book-info-details div{
+   -webkit-flex: 1; 
+   flex: 1;
+}
+
+
+
