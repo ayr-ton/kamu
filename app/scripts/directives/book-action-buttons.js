@@ -28,8 +28,10 @@ angular
             success(function () {
               BookService.getCopy(copy.id)
                 .success(function (data) {
+
                   $scope.copy = data;
                   $scope.copy.imageUrl = BookService.resolveBookImage($scope.copy.imageUrl);
+                  $scope.copy.status = 'BORROWED';
 
                   $scope.copy.lastLoan.user = {
                     imageUrl: UserService.getGravatarFromUserEmail($scope.copy.lastLoan.email)

@@ -7,10 +7,10 @@ angular
     '$routeParams',
     'BookService',
     'UserService',
-    function ($scope, $routeParams, BookService, UserService) {
+    'LoanService',
+    function ($scope, $routeParams, BookService, UserService, LoanService) {
       $scope.library = $routeParams.library;
-      
-    
+          
       function initializeCopy(copy) {
         if (copy.imageUrl === undefined || copy.imageUrl === null) {
           copy.imageUrl = 'images/no-image.png';
@@ -24,8 +24,7 @@ angular
         return copy;
       }
 
-    
-
+ 
       $scope.listBooks = function () {
 
         $scope.copies = [];
@@ -33,32 +32,31 @@ angular
         BookService.getCopiesByLibrarySlug($scope.library)
           .success(function (data) {
             if (angular.isDefined(data._embedded) && data._embedded.copies) {
-              var available;
+              var available;          
               $scope.copies = data._embedded.copies;
+              var email = window.sessionStorage.email.toLowerCase();
                           
               angular.forEach($scope.copies, function (copy) {
-                available = BookService.getAvailableQuantityCopies($routeParams.library,copy.reference);
-                available.then(function(availableQuantity) {
-              
-                    available=availableQuantity.data;
-
-                    if(available){
-                        copy.status = 'AVAILABLE';
-                    }
-                    else {
-                      copy.status = 'BORROWED';
-                    }
-                   copy = initializeCopy(copy);
+                  LoanService.hasUserBorrowedThisCopy($scope.library, copy.reference, email).success(function(pendingUserData){
+                  available = BookService.getAvailableQuantityCopies($routeParams.library,copy.reference);
+                  available.then(function(availableQuantity) {   
+                      available=availableQuantity.data;
+                  
+                      if((available > 0) && (pendingUserData === 0)){
+                         copy.status = 'AVAILABLE';
+                      }
+                      else if ((available === 0) || (pendingUserData > 0)){
+                          copy.status = 'BORROWED';
+                      }
+                      copy = initializeCopy(copy);
         
-                });
-                    
-                
-              });           
+                  });
+                }); 
+
+              });          
             }
           });
       };
-
-
  
       $scope.$on('$viewContentLoaded', function () {
 

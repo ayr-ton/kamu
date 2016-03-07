@@ -28,4 +28,10 @@ angular
 
       return $http.get(endPoint);
     };
+
+    this.hasUserBorrowedThisCopy = function (slug, book, email) {
+      var endPoint = ENV.apiEndpoint.concat('/loans/search/countByEndDateIsNullAndCopyLibrarySlugAndCopyBookIdAndUserEmail?slug=').concat(slug).concat('&book=').concat(book).concat('&email=').concat(email);
+      
+      return $http.get(endPoint);
+    };
   }]);
