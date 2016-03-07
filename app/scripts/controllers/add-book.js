@@ -86,7 +86,6 @@ angular
       addCopyRequest.status = 'AVAILABLE';
       addCopyRequest.library = library;
       addCopyRequest.book = book;
-      addCopyRequest.donator = $scope.donator;
 
       BookService.addCopy(addCopyRequest).
         success(function () {
