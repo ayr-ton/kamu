@@ -21,6 +21,6 @@
   "appPath": "app",
   "moduleName": "libraryUiApp",
   "resolutions": {
-    "angular": "1.5.2"
+    "angular": ">= 1.5.2"
   }
 }
