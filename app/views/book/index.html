@@ -5,17 +5,18 @@
         <div class="books-shelf-image-container">
           <a href="/#/library/{{ library }}/book_details/{{ copy.id }}">
             <div class="books-img">
-              <img ng-src="{{copy.imageUrl}}" alt="{{copy.title}}" />
+              <img ng-src="{{copy.book.imageUrl}}" alt="{{copy.book.title}}" />
             </div>
-              <img class="book-borrower" ng-show="copy.status !== 'AVAILABLE'" ng-src="{{copy.lastLoan.user.imageUrl}}" alt="{{copy.title}}" />
+              <img class="book-borrower" ng-show="copy.status !== 'AVAILABLE'"
+                   ng-src="{{copy.lastLoan.user.imageUrl}}" alt="{{copy.title}}" />
 
           </a>
 
         </div>
       </div>
       <div class="book-shelf-info">
-        <p class="book-shelf-title">{{copy.title}}</p>
-        <p class="book-shelf-author">{{copy.author}}</p>
+        <p class="book-shelf-title">{{copy.book.title}}</p>
+        <p class="book-shelf-author">{{copy.book.author}}</p>
         <book-action-buttons copy="copy" />
       </div>
     </li>
