@@ -87,19 +87,20 @@ angular
 
     this.getLibraryBySlug = function (slug) {
       var endPoint = ENV.apiEndpoint.concat('/libraries/search/findBySlug?slug=').concat(slug);
-      
+
       return $http.get(endPoint);
     };
 
     this.getCopiesByLibrarySlug = function (slug) {
-      var endPoint = ENV.apiEndpoint.concat('/copies/search/findDistinctCopiesByLibrary?slug=').concat(slug);
+      var email = window.sessionStorage.email;
+      var endPoint = ENV.apiEndpoint.concat('/copy/list?slug=').concat(slug).concat("&email=").concat(email);
 
       return $http.get(endPoint);
     };
 
     this.getQuantityCopies = function (slug,book) {
      var endPoint = ENV.apiEndpoint.concat('/copies/search/countByLibrarySlugAndBookId?slug=').concat(slug).concat('&book=').concat(book);
-    
+
       return $http.get(endPoint);
     };
 
@@ -108,9 +109,9 @@ angular
       return $http.get(endPoint);
     };
 
-   
+
     this.getCopies = function (copiesUrl) {
-      
+
       return $http.get(copiesUrl);
     };
 
