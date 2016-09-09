@@ -10,10 +10,10 @@ angular
     'LoanService',
     function ($scope, $routeParams, BookService, UserService, LoanService) {
       $scope.library = $routeParams.library;
-          
+
       function initializeCopy(copy) {
-        if (copy.imageUrl === undefined || copy.imageUrl === null) {
-          copy.imageUrl = 'images/no-image.png';
+        if (copy.book.imageUrl === undefined || copy.book.imageUrl === null) {
+          copy.book.imageUrl = 'images/no-image.png';
         }
 
         if (copy.lastLoan !== undefined && copy.lastLoan !== null) {
@@ -24,24 +24,23 @@ angular
         return copy;
       }
 
- 
+
       $scope.listBooks = function () {
 
         $scope.copies = [];
 
         BookService.getCopiesByLibrarySlug($scope.library)
           .success(function (data) {
-            if (angular.isDefined(data._embedded) && data._embedded.copies) {
-              var available;          
-              $scope.copies = data._embedded.copies;
+              var available;
+              $scope.copies = data;
               var email = window.sessionStorage.email.toLowerCase();
-                          
+
               angular.forEach($scope.copies, function (copy) {
-                  LoanService.hasUserBorrowedThisCopy($scope.library, copy.reference, email).success(function(pendingUserData){
-                  available = BookService.getAvailableQuantityCopies($routeParams.library,copy.reference);
-                  available.then(function(availableQuantity) {   
+                  LoanService.hasUserBorrowedThisCopy($scope.library, copy.book.reference, email).success(function(pendingUserData){
+                  available = BookService.getAvailableQuantityCopies($routeParams.library, copy.book.reference);
+                  available.then(function(availableQuantity) {
                       available=availableQuantity.data;
-                  
+
                       if((available > 0) && (pendingUserData === 0)){
                          copy.status = 'AVAILABLE';
                       }
@@ -49,15 +48,14 @@ angular
                           copy.status = 'BORROWED';
                       }
                       copy = initializeCopy(copy);
-        
-                  });
-                }); 
 
-              });          
-            }
+                  });
+                });
+
+              });
           });
       };
- 
+
       $scope.$on('$viewContentLoaded', function () {
 
         $scope.listBooks();
