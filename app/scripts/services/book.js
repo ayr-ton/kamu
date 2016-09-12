@@ -93,7 +93,7 @@ angular
 
     this.getCopiesByLibrarySlug = function (slug) {
       var email = window.sessionStorage.email;
-      var endPoint = ENV.apiEndpoint.concat('/copy/list?slug=').concat(slug).concat("&email=").concat(email);
+      var endPoint = ENV.apiEndpoint.concat('/copy/list?slug=').concat(slug).concat('&email=').concat(email);
 
       return $http.get(endPoint);
     };
