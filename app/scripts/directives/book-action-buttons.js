@@ -13,11 +13,16 @@ angular
       function actionButtonsController ($scope) {
 
         $scope.borrowerIsCurrentUser = function (copy) {
-          if (copy.lastLoan !== undefined && copy.lastLoan !== null) {
-            return copy.lastLoan.email.toLowerCase() === window.sessionStorage.email.toLowerCase();
-          } else {
-            return false;
-          }
+          var email = window.sessionStorage.email;
+          var status = false;
+
+          copy.loans.forEach(function(loan) {
+            if (loan.endDate == null && loan.user.email == email) {
+              status = true;
+            }
+          });
+
+          return status;
         };
 
         $scope.borrowCopy = function (copy) {
@@ -60,9 +65,16 @@ angular
 
         $scope.returnCopy = function (copy) {
           $scope.loan = copy.lastLoan;
+          var email = window.sessionStorage.email;
+
+          copy.loans.forEach(function(loan) {
+            if (loan.endDate == null && loan.user.email == email) {
+              $scope.loan = loan;
+            }
+          });
 
           var promise = Modal.open(
-            'not-available', {loan : copy.lastLoan}
+            'not-available', {loan : $scope.loan}
           );
 
           promise.then(
