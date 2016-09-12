@@ -17,7 +17,7 @@ angular
           var status = false;
 
           copy.loans.forEach(function(loan) {
-            if (loan.endDate == null && loan.user.email == email) {
+            if (loan.endDate === null && loan.user.email === email) {
               status = true;
             }
           });
@@ -68,7 +68,7 @@ angular
           var email = window.sessionStorage.email;
 
           copy.loans.forEach(function(loan) {
-            if (loan.endDate == null && loan.user.email == email) {
+            if (loan.endDate === null && loan.user.email === email) {
               $scope.loan = loan;
             }
           });
