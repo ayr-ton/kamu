@@ -38,6 +38,7 @@ angular
               angular.forEach($scope.copies, function (copy) {
                   LoanService.hasUserBorrowedThisCopy($scope.library, copy.book.reference, email).success(function(pendingUserData){
                   available = BookService.getAvailableQuantityCopies($routeParams.library, copy.book.reference);
+
                   available.then(function(availableQuantity) {
                       available=availableQuantity.data;
 
@@ -47,8 +48,8 @@ angular
                       else if ((available === 0) || (pendingUserData > 0)){
                           copy.status = 'BORROWED';
                       }
-                      copy = initializeCopy(copy);
 
+                      copy = initializeCopy(copy);
                   });
                 });
 
