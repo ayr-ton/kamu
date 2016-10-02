@@ -27,7 +27,7 @@
     "cookie-parser": "~1.4.0",
     "debug": "~2.2.0",
     "ejs": "~2.3.3",
-    "express": "~4.13.1",
+    "express": "4.13.4",
     "express-session": "^1.11.3",
     "forever": "^0.15.1",
     "jshint": "^2.9.1-rc2",
@@ -41,11 +41,11 @@
     "passport-saml": "git://github.com/bergie/passport-saml.git",
     "request": "^2.63.0",
     "serve-favicon": "~2.3.0",
-    "wiredep": "^3.0.0",
-    "usemin-cli": "0.0.7"
+    "usemin-cli": "0.0.7",
+    "wiredep": "^3.0.0"
   },
   "devDependencies": {
-    "phantomjs" : "1.9.19",
+    "phantomjs": "1.9.19",
     "bower": "1.7.1",
     "chai": "^3.3.0",
     "karma": "0.13.15",
