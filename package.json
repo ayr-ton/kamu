@@ -44,11 +44,11 @@
     "request": "^2.63.0",
     "serve-favicon": "~2.3.0",
     "usemin-cli": "0.0.7",
-    "wiredep": "^3.0.0"
+    "wiredep": "^3.0.0",
+	"bower": "1.7.1"
   },
   "devDependencies": {
     "phantomjs": "1.9.19",
-    "bower": "1.7.1",
     "chai": "^3.3.0",
     "karma": "0.13.15",
     "karma-coverage": "^0.5.2",
