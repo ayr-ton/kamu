@@ -5,8 +5,8 @@ module.exports = (function () {
     environments: {
       dist:        { apiEndpoint: 'http://localhost:8080', appEndpoint: 'http://localhost:9000' },
     	development: { apiEndpoint: 'http://localhost:8080', appEndpoint: 'http://localhost:9000' },
-        staging:     { apiEndpoint: 'https://staging-kamu-api.herokuapp.com/', appEndpoint: 'https://staging-kamu-ui.herokuapp.com/' },
-        production:  { apiEndpoint: 'https://kamu-api.herokuapp.com/', appEndpoint: 'https://kamu-ui.herokuapp.com/' }
+        staging:     { apiEndpoint: 'https://staging-kamu-api.herokuapp.com', appEndpoint: 'https://staging-kamu-ui.herokuapp.com' },
+        production:  { apiEndpoint: 'https://kamu-api.herokuapp.com', appEndpoint: 'https://kamu-ui.herokuapp.com' }
     }
   };
 
