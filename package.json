@@ -18,7 +18,7 @@
     "test": "npm run jshint && npm run test:web && npm run test:ui:ci",
     "livereload": "live-reload --port 9091 ./app",
     "serve": "parallelshell 'npm start' 'npm run livereload'",
-    "start": "node ./bin/www",
+    "start": "node ./index.js",
     "forever": "forever stopall && forever start ./bin/www",
     "postinstall": "bower install"
   },
