@@ -3,10 +3,10 @@ module.exports = (function () {
 
   var config = {
     environments: {
-      dist:        { apiEndpoint: 'http://localhost:8080', appEndpoint: 'http://localhost:9000' },
-    	development: { apiEndpoint: 'http://localhost:8080', appEndpoint: 'http://localhost:9000' },
-        staging:     { apiEndpoint: 'https://staging-kamu-api.herokuapp.com', appEndpoint: 'https://staging-kamu-ui.herokuapp.com' },
-        production:  { apiEndpoint: 'https://kamu-api.herokuapp.com', appEndpoint: 'https://kamu-ui.herokuapp.com' }
+        dist:        { apiClientEndpoint: 'http://localhost:8080', apiEndpoint: 'http://api:8080', appEndpoint: 'http://localhost:9000' },
+    	development: { apiClientEndpoint: 'http://localhost:8080', apiEndpoint: 'http://api:8080', appEndpoint: 'http://localhost:9000' },
+        staging:     { apiClientEndpoint: 'https://staging-kamu-api.herokuapp.com', apiEndpoint: 'https://staging-kamu-api.herokuapp.com', appEndpoint: 'https://staging-kamu-ui.herokuapp.com' },
+        production:  { apiClientEndpoint: 'https://kamu-api.herokuapp.com', apiEndpoint: 'https://kamu-api.herokuapp.com', appEndpoint: 'https://kamu-ui.herokuapp.com' }
     }
   };
 

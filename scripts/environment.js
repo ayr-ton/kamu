@@ -8,4 +8,4 @@ environment = config.current();
 
 contents = "'use strict'; angular.module('config', []).constant('ENV', {name:'env',apiEndpoint:'url'});";
 
-fs.writeFileSync('./app/scripts/config.js', contents.replace(/env/, selected).replace(/url/, environment.apiEndpoint));
+fs.writeFileSync('./app/scripts/config.js', contents.replace(/env/, selected).replace(/url/, environment.apiClientEndpoint));

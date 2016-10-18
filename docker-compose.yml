@@ -1,0 +1,34 @@
+version: '2'
+services:
+  db:
+    image: postgres:9.4
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: libraryadmin
+      POSTGRES_DB: librarydb  
+    ports:
+      - "5432:5432"
+  api:
+    build: ../kamu-api
+    image: kamu-api
+    ports:
+      - "8080:8080"
+      - "8001:8001"
+    volumes:
+      - ../kamu-api:/usr/src/app
+    depends_on:
+      - db 
+  ui:
+    build: .
+    image: kamu-ui
+    volumes:
+      - ./app:/usr/src/app/app
+    environment:
+      NODE_ENV: development
+    ports:
+      - "9000:9000"
+      - "9091:9091"
+#    command: bash -c "bower install && npm cache clear && npm install && npm start"
+    depends_on:
+      - api
+    
