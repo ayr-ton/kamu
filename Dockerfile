@@ -5,10 +5,16 @@ WORKDIR /usr/src/app
 
 COPY . /usr/src/app
 
+RUN git config --global url."https://github.com/".insteadOf git@github.com:
+RUN git config --global url."https://".insteadOf git://
+
+RUN npm config set unsafe-perm true
+
 RUN npm install --global bower --silent
-RUN npm install --silent
 
 RUN echo '{ "allow_root": true }' > /root/.bowerrc
+
+RUN npm install
 
 RUN bower install
 
