@@ -40,9 +40,11 @@ The setup of the development environment and the provisioning is automated in so
 ``MMMMMMMMMMMdhhddNMMMMMMMMMMMMMMMMNddhhdMMMMMMMMMMM``
 ``MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM``
 
-10. Run the following command to load the database for Kamu:
+10. Run the following command to load the development database:
 	* `psql -h 127.0.0.1 -p 5432 -U libraryadmin -d librarydb < ./db/sample_data.sql`
 	* You would need psql but not necessarily the whole rdbms, in fact rebember that if you install Postgresql make sure the server is down in order to avoid port conflicts with the server in the docker containter
+	* If you install PostgreSQL make sure to add ``psql`` to the ``PATH`` in you .bash_profile file:
+``export PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin``
 	* Also you can use another tool of you preference for load the same file
 11. To test the enviroment login into OktaPreview then go to Kamu Localhost, if you are able to see Kamu in you browser you enviroment is corretly set
 12. Keep open the shell where you issued ``docker-compose up`` in order to see the log messages 
