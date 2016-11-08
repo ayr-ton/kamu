@@ -42,6 +42,7 @@ The setup of the development environment and the provisioning is automated in so
 
 10. Run the following command to load the development database:
 	* `psql -h 127.0.0.1 -p 5432 -U libraryadmin -d librarydb < ./db/sample_data.sql`
+	* When you are asked to enter the database password type: ``admin``
 	* You would need psql but not necessarily the whole rdbms, in fact rebember that if you install Postgresql make sure the server is down in order to avoid port conflicts with the server in the docker containter
 	* If you install PostgreSQL make sure to add ``psql`` to the ``PATH`` in you .bash_profile file:
 ``export PATH=$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin``
