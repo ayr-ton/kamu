@@ -56,7 +56,7 @@ After the previous steps were sucessful executed:
 
 1. Go to IntelliJ
 2. Import the project kamu-api
-3. Go to menu Run > Edit Configurations > Add New Configuration > Remote
+3. Go to menu Run > Edit Configurations >> Add New Configuration >> Remote
 4. Set a name for the configuration
 5. Replace the default address 5005 by 8001 in all the command line setups
 6. To test the configuration:
