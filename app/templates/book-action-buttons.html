@@ -1,9 +1,0 @@
-<div>
-  <div class="books-shelf-borrow" ng-click="borrowCopy(copy)" ng-if="copy.status === 'AVAILABLE'">
-    {{ 'APP_BORROW' | translate }}
-  </div>
-  <div class="books-shelf-return" ng-click="returnCopy(copy)"
-       ng-if="copy.status !== 'AVAILABLE' && borrowerIsCurrentUser(copy)">
-    {{ 'APP_RETURN' | translate }}
-  </div>
-</div>
