@@ -93,4 +93,22 @@ ENV/
 # Rope project settings
 .ropeproject
 
+# Django development database
 db.sqlite3
+
+# Node / React ignores
+# dependencies
+/node_modules
+
+# testing
+/coverage
+
+# production
+/static
+
+# misc
+.DS_Store
+.env
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
