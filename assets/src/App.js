@@ -1,8 +1,27 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
+  constructor() {
+    super();
+    this._getBooks();
+  }
+
+  _getBooks() {
+    axios.get('/api/books/')
+    .then(function (response) {
+      let results = response.data.results.map(book => {
+        return `${book.title} (${book.author})`;
+      });
+      console.log(results);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
+
   render() {
     return (
       <div className="App">
