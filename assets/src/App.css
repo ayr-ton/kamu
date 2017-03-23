@@ -3,3 +3,16 @@
   align-items: center;
   height: 100%;
 }
+
+.book-list {
+  display: flex;
+  align-content: space-between;
+  flex-wrap: wrap;
+  margin-top: 50px;
+}
+
+.book {
+  width: 200px;
+  margin: 10px auto;
+  cursor: pointer;
+}

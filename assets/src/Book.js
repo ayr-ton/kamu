@@ -3,13 +3,14 @@ import {Card, CardMedia, CardTitle} from 'material-ui/Card';
 
 export default class Book extends Component {
 	render() {
+		const book = this.props.book;
 		return (
-			<Card>
+			<Card className="book">
 				<CardMedia>
-					<img src="" alt="" />
+					<img src={book.image_url} alt={"Cover of " + book.title} />
 				</CardMedia>
 
-				<CardTitle title={this.props.book.title} subtitle={this.props.book.author} />
+				<CardTitle title={book.title} subtitle={book.author} />
 			</Card>
 		);
 	}

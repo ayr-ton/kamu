@@ -30,7 +30,7 @@ export default class BookList extends Component {
 		}
 
 		return (
-			<div>
+			<div className="book-list">
 				{content}
 			</div>
 		);
