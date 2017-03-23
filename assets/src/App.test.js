@@ -1,8 +1,21 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import App from './App';
+import BookList from './BookList';
+import Header from './Header';
+import { shallow } from 'enzyme';
+import { expect } from 'chai';
 
-it('renders without crashing', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<App />, div);
+describe('Main app layout', () => {
+	let app;
+	beforeEach(() => {
+		app = shallow(<App />);
+	});
+
+	it('should have only one header as a child', () => {
+		expect(app.contains(<Header />)).to.be.true;
+	});
+
+	it('should contain the component with the list of books', () => {
+		expect(app.contains(<BookList />)).to.be.true;
+	});
 });
