@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import Book from './Book';
 
 export default class BookList extends Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 		this.state = {
 			books: []
 		};

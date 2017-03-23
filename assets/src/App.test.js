@@ -16,6 +16,6 @@ describe('Main app layout', () => {
 	});
 
 	it('should contain the component with the list of books', () => {
-		expect(app.contains(<BookList />)).to.be.true;
+		expect(app.find(BookList).length).to.equal(1);
 	});
 });

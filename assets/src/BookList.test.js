@@ -29,19 +29,6 @@ describe('<BookList />', () => {
 	});
 
 	it('should render the list of books in its state', () => {
-		const books = [
-		{
-			id: 1,
-			title: "book 1",
-			author: "author 1"
-		},
-		{
-			id: 2,
-			title: "book 2",
-			author: "author 2"
-		},
-		];
-
 		bookList.instance().setState({ books });
 		expect(bookList.find('Book')).to.have.length(books.length);
 		expect(bookList.contains(<Book book={books[0]} />)).to.be.true;
