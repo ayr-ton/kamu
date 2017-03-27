@@ -19,12 +19,13 @@ class Book(models.Model):
 class Library(models.Model):
     name = models.CharField(max_length = 255)
     slug = models.CharField(max_length = 255)
+    books = models.ManyToManyField(Book, through='BookCopy')
 
     def __str__(self):
         return self.name
 
 class BookCopy(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    library = models.ForeignKey(Library, on_delete=models.CASCADE)
+    library = models.ForeignKey(Library, related_name='copies', on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
 
