@@ -21,6 +21,7 @@ from django.contrib.staticfiles.views import serve
 
 router = routers.DefaultRouter()
 router.register(r'books', views.BookViewSet)
+router.register(r'libraries', views.LibraryViewSet)
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),

@@ -17,3 +17,12 @@
   margin: 30px 20px;
   cursor: pointer;
 }
+
+.library-list {
+  width: 300px;
+  margin: 20px auto;
+}
+
+.library {
+  text-align: center;
+}

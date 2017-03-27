@@ -56,7 +56,6 @@ class KamuMigrator:
         
         for library in libraries:
             print('Importing ' + library['name'])
-            
             Library.objects.update_or_create(
                 id=library['id'],
                 name=library['name'],
@@ -74,7 +73,6 @@ class KamuMigrator:
         
         for copy in copies:
             print('Importing copy ' + copy['id'])
-            
             BookCopy.objects.update_or_create(
                 id=copy['id'],
                 book=Book.objects.get(pk=copy['book_id']),
