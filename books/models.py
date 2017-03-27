@@ -24,7 +24,7 @@ class Library(models.Model):
         return self.name
 
 class BookCopy(models.Model):
-    book_id = models.ForeignKey(Book, on_delete=models.CASCADE)
-    library_id = models.ForeignKey(Library, on_delete=models.CASCADE)
-    user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    library = models.ForeignKey(Library, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
 
