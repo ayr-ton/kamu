@@ -11,10 +11,11 @@ class BookSerializer(serializers.HyperlinkedModelSerializer):
 class LibraryCompactSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Library
+        extra_kwargs = {'url': {'lookup_field': 'slug'}}
         fields = ('id', 'url', 'name', 'slug')
 
 class LibrarySerializer(serializers.ModelSerializer):
     books = BookSerializer(many=True)
     class Meta:
         model = Library
-        fields = ('id', 'url', 'name', 'slug', 'books')
+        fields = ('id', 'name', 'slug', 'books')
