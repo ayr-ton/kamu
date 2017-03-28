@@ -5,13 +5,16 @@ import psycopg2
 import psycopg2.extras
 
 class Command(BaseCommand):
-    help = 'Migrates a Kamu legacy database'
-    
-    def __init__(self):
-        self.connection = psycopg2.connect("dbname='kamu_old'")
-        self.cursor = self.connection.cursor(cursor_factory = psycopg2.extras.DictCursor)
+    help = 'Migrates a Kamu legacy database to the current schema.\n\n\
+        This script assumes you have a local PostgreSQL server containing\
+        the legacy database with the specified name.'
+
+    def add_arguments(self, parser):
+        parser.add_argument('database', type=str)
     
     def handle(self, *args, **options):
+        self.connection = psycopg2.connect("dbname='%s'" % options['database'])
+        self.cursor = self.connection.cursor(cursor_factory = psycopg2.extras.DictCursor)
         self.migrate_books()
         self.migrate_libraries()
         self.migrate_copies()
