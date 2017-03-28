@@ -7,11 +7,8 @@ from books.models import *
 
 class KamuMigrator:
     def __init__(self):
-        try:
-            self.connection = psycopg2.connect("dbname='kamu_old'")
-            self.cursor = self.connection.cursor(cursor_factory = psycopg2.extras.DictCursor)
-        except:
-            print('Unable to connect to the database.')
+        self.connection = psycopg2.connect("dbname='kamu_old'")
+        self.cursor = self.connection.cursor(cursor_factory = psycopg2.extras.DictCursor)
     
     def migrate(self):
         self.migrate_books()
