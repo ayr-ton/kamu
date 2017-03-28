@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.db.models import Count
 from books.models import *
 
 
@@ -15,7 +16,11 @@ class LibraryCompactSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'url', 'name', 'slug')
 
 class LibrarySerializer(serializers.ModelSerializer):
-    books = BookSerializer(many=True)
+    books = serializers.SerializerMethodField()
     class Meta:
         model = Library
         fields = ('id', 'name', 'slug', 'books')
+    def get_books(self, obj):
+        books = obj.books.annotate(copies=Count('id'))
+        serializer = BookSerializer(books, many=True, context=self.context)
+        return serializer.data
