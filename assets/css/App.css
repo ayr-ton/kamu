@@ -16,6 +16,8 @@
   width: 200px;
   margin: 30px 20px;
   cursor: pointer;
+  max-height: 500px;
+  overflow: hidden;
 }
 
 .library-list {
