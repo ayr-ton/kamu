@@ -12,9 +12,9 @@ class BookViewSet(viewsets.ModelViewSet):
 class LibraryViewSet(viewsets.ModelViewSet):
     queryset = Library.objects.all()
     serializer_class = LibraryCompactSerializer
+    lookup_field = 'slug'
 
-    def retrieve(self, request, pk=None):
-        queryset = Library.objects.all()
-        library = get_object_or_404(queryset, pk=pk)
+    def retrieve(self, request, slug=None):
+        library = Library.objects.get(slug=slug)
         serializer = LibrarySerializer(library, context={ 'request': request })
         return Response(serializer.data)
