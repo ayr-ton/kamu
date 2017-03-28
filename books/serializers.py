@@ -8,8 +8,13 @@ class BookSerializer(serializers.HyperlinkedModelSerializer):
         model = Book
         fields = '__all__'
 
-class LibrarySerializer(serializers.HyperlinkedModelSerializer):
-    books = serializers.HyperlinkedIdentityField(view_name='book-detail', many=True)
+class LibraryCompactSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Library
+        fields = ('id', 'url', 'name', 'slug')
+
+class LibrarySerializer(serializers.ModelSerializer):
+    books = BookSerializer(many=True)
     class Meta:
         model = Library
         fields = ('id', 'url', 'name', 'slug', 'books')
