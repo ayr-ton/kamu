@@ -4,14 +4,13 @@ import Book from './Book';
 export default class BookList extends Component {
 	constructor(props) {
 		super(props);
-		this.librarySlug = props.match.params.library_slug;
 		this.state = {
 			books: []
 		};
 	}
 
 	componentWillMount() {
-		this._loadBooks(this.library);
+		this._loadBooks();
 	}
 
 	_loadBooks() {
