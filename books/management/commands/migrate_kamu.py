@@ -1,16 +1,17 @@
-#!/usr/bin/env python
-import psycopg2
-import psycopg2.extras
+from django.core.management.base import BaseCommand, CommandError
 from dateutil.parser import parse
 from books.models import *
+import psycopg2
+import psycopg2.extras
 
-
-class KamuMigrator:
+class Command(BaseCommand):
+    help = 'Migrates a Kamu legacy database'
+    
     def __init__(self):
         self.connection = psycopg2.connect("dbname='kamu_old'")
         self.cursor = self.connection.cursor(cursor_factory = psycopg2.extras.DictCursor)
     
-    def migrate(self):
+    def handle(self, *args, **options):
         self.migrate_books()
         self.migrate_libraries()
         self.migrate_copies()
@@ -84,6 +85,3 @@ class KamuMigrator:
             imported_copies += 1
         
         print("Imported %d copies of %d." % (imported_copies, total_copies))
-
-migrator = KamuMigrator()
-migrator.migrate()
