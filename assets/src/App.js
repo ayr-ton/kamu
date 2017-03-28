@@ -6,12 +6,10 @@ import Header from './Header';
 import BookList from './BookList';
 import BookService from './BookService';
 import LibrarySelector from './LibrarySelector';
-import LibraryService from './LibraryService';
 
 class App extends Component {
   render() {
     const bookService = new BookService();
-    const libraryService = new LibraryService();
 
     return (
       <MuiThemeProvider>
@@ -19,7 +17,7 @@ class App extends Component {
           <Header />
           <Router>
             <div>
-              <Route exact path="/" render={routeProps => <LibrarySelector service={libraryService} {...routeProps} /> } />
+              <Route exact path="/" render={routeProps => <LibrarySelector service={bookService} {...routeProps} /> } />
               <Route path="/library/:library_slug" render={routeProps => <BookList service={bookService} {...routeProps} /> } />
             </div>
           </Router>
