@@ -7,6 +7,8 @@ import sinon from 'sinon';
 
 describe('<BookList />', () => {
 	let bookList;
+	let bookService;
+	const librarySlug = 'slug';
 	const books = [
 		{
 			id: 1,
@@ -21,11 +23,11 @@ describe('<BookList />', () => {
 	];
 
 	beforeEach(() => {
-		const bookService = {
+		bookService = {
 			getBooks: () => { return Promise.resolve(books); }
 		};
 
-		bookList = shallow(<BookList service={bookService} />);
+		bookList = shallow(<BookList service={bookService} librarySlug='slug' />);
 	});
 
 	it('should render the list of books in its state', () => {
@@ -45,5 +47,12 @@ describe('<BookList />', () => {
 	it('should read the books from an API and set the state', async () => {
 		await bookList.instance()._loadBooks();
 		expect(bookList.state('books')).to.equal(books);
+	});
+
+	it('should pass the library slug to getBooks', () => {
+		const spy = sinon.spy(bookService, 'getBooks');
+		bookList.instance()._loadBooks();
+		expect(spy.calledWith(librarySlug)).to.be.true;
+		bookService.getBooks.restore();
 	});
 });

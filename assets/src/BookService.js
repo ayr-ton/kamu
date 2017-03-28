@@ -8,12 +8,12 @@ export default class BookService {
 		});
 	}
 
-	getBooks() {
-		return fetch('/api/books/')
+	getBooks(librarySlug) {
+		return fetch(`/api/libraries/${librarySlug}/`)
 		.then(response => {
 			return response.json();
 		}).then(data => {
-			return data.results;
+			return data.books;
 		});
 	}
 }
