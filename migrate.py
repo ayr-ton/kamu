@@ -22,7 +22,7 @@ class KamuMigrator:
         imported_books = 0
         
         for book in books:
-            print('Importing ' + book['title'])
+            print('Importing %s...' % book['title'])
             if book['publicationdate']:
                 try:
                     publication_date = parse(book['publicationdate'])
@@ -31,15 +31,17 @@ class KamuMigrator:
             
             Book.objects.update_or_create(
                 id=book['id'],
-                author=book['author'],
-                title=book['title'],
-                subtitle=book['subtitle'],
-                description=book['description'],
-                image_url=book['imageurl'],
-                isbn=book['isbn'],
-                number_of_pages=book['numberofpages'],
-                publication_date=publication_date,
-                publisher=book['publisher'],
+                defaults={
+                    'author': book['author'],
+                    'title': book['title'],
+                    'subtitle': book['subtitle'],
+                    'description': book['description'],
+                    'image_url': book['imageurl'],
+                    'isbn': book['isbn'],
+                    'number_of_pages': book['numberofpages'],
+                    'publication_date': publication_date,
+                    'publisher': book['publisher']
+                }
             )
             imported_books += 1
         
@@ -52,11 +54,13 @@ class KamuMigrator:
         imported_libraries = 0
         
         for library in libraries:
-            print('Importing ' + library['name'])
+            print('Importing %s...' % library['name'])
             Library.objects.update_or_create(
                 id=library['id'],
-                name=library['name'],
-                slug=library['slug']
+                defaults={
+                    'name': library['name'],
+                    'slug': library['slug']
+                }
             )
             imported_libraries += 1
         
@@ -69,11 +73,13 @@ class KamuMigrator:
         imported_copies = 0
         
         for copy in copies:
-            print('Importing copy ' + copy['id'])
+            print('Importing copy %d' % copy['id'])
             BookCopy.objects.update_or_create(
                 id=copy['id'],
-                book=Book.objects.get(pk=copy['book_id']),
-                library=Library.objects.get(pk=copy['library_id'])
+                defaults={
+                    'book': Book.objects.get(pk=copy['book_id']),
+                    'library': Library.objects.get(pk=copy['library_id'])
+                }
             )
             imported_copies += 1
         
