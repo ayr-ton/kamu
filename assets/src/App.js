@@ -18,7 +18,10 @@ class App extends Component {
           <Router>
             <div>
               <Route exact path="/" render={routeProps => <LibrarySelector service={bookService} {...routeProps} /> } />
-              <Route path="/library/:library_slug" render={routeProps => <BookList service={bookService} {...routeProps} /> } />
+              <Route path="/library/:library_slug" render={routeProps => {
+                const library_slug = routeProps.match.params.library_slug;
+                return <BookList service={bookService} librarySlug={library_slug} />
+              }} />
             </div>
           </Router>
         </div>

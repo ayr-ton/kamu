@@ -14,8 +14,4 @@ describe('Main app layout', () => {
 	it('should have only one header as a child', () => {
 		expect(app.contains(<Header />)).to.be.true;
 	});
-
-	it('should contain the component with the list of books', () => {
-		expect(app.find(BookList).length).to.equal(1);
-	});
 });
