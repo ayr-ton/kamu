@@ -138,14 +138,14 @@ SAML2_AUTH = {
     'METADATA_AUTO_CONF_URL': 'https://thoughtworks.oktapreview.com/app/exk4v36owiuXaaDq50h7/sso/saml/metadata',
 
     'NEW_USER_PROFILE': {
-        'USER_GROUPS': [], 
+        'USER_GROUPS': [],
         'ACTIVE_STATUS': True,
         'STAFF_STATUS': True,
         'SUPERUSER_STATUS': False,
     },
     'ATTRIBUTES_MAP': {
         'email': 'email',
-        'username': 'login',
+        'username': 'email',
         'first_name': 'firstName',
         'last_name': 'lastName',
     }
