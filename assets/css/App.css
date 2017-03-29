@@ -6,18 +6,50 @@
 
 .book-list {
   display: flex;
+  justify-content: space-around;
   align-content: space-between;
-  justify-content: center;
+  align-items: flex-end;
   flex-wrap: wrap;
   margin-top: 20px;
 }
 
 .book {
-  width: 200px;
+  width: 150px;
   margin: 30px 20px;
   cursor: pointer;
   max-height: 500px;
   overflow: hidden;
+}
+
+.book .book-cover {
+  width: 100%;
+}
+
+.book .book-details {
+  margin: 10px;
+}
+
+.book .book-title,
+.book .book-author {
+  font-weight: normal;
+  margin: 5px 0;
+
+  display: block; /* Fallback for non-webkit */
+  display: -webkit-box;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.book .book-title {
+  font-size: 15px;
+}
+
+.book .book-author {
+  font-size: 12px;
+  color: #999;
+  -webkit-line-clamp: 2;
 }
 
 .library-list {
