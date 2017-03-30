@@ -14,5 +14,6 @@ urlpatterns = [
     url(r'^admin/login/$', django_saml2_auth.views.signin),
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include(router.urls)),
+    url(r'^api/profile', views.UserView.as_view()),
     url(r'^', serve, kwargs={'path': 'index.html'}),
 ]
