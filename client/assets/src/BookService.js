@@ -1,6 +1,6 @@
 export default class BookService {
 	getLibraries() {
-		return fetch('/api/libraries/')
+		return fetch('/api/libraries/', { credentials: 'include' })
 		.then(response => {
 			return response.json();
 		}).then(data => {
@@ -9,7 +9,7 @@ export default class BookService {
 	}
 
 	getBooks(librarySlug) {
-		return fetch(`/api/libraries/${librarySlug}/`)
+		return fetch(`/api/libraries/${librarySlug}/`, { credentials: 'include' })
 		.then(response => {
 			return response.json();
 		}).then(data => {
