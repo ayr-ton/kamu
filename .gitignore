@@ -104,7 +104,7 @@ db.sqlite3
 /coverage
 
 # production
-/static
+/client/static
 
 # misc
 .DS_Store
