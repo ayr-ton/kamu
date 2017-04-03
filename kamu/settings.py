@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'books'
+    'books',
+    'django_saml2_auth'
 ]
 
 MIDDLEWARE = [
@@ -130,4 +131,22 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ],
     'PAGE_SIZE': 10
+}
+
+
+SAML2_AUTH = {
+    'METADATA_AUTO_CONF_URL': 'https://thoughtworks.oktapreview.com/app/exk4v36owiuXaaDq50h7/sso/saml/metadata',
+
+    'NEW_USER_PROFILE': {
+        'USER_GROUPS': [],
+        'ACTIVE_STATUS': True,
+        'STAFF_STATUS': True,
+        'SUPERUSER_STATUS': False,
+    },
+    'ATTRIBUTES_MAP': {
+        'email': 'email',
+        'username': 'email',
+        'first_name': 'firstName',
+        'last_name': 'lastName',
+    }
 }
