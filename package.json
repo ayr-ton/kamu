@@ -1,72 +1,95 @@
 {
-  "name": "library-ui",
+  "name": "assets",
+  "version": "0.1.0",
   "private": true,
-  "scripts": {
-    "jshint": "jshint ./app/scripts/**/*.js ./test/**/*.js --config ./.jshintrc",
-    "build:clean": "rm -rf ./dist/* && rm -rf ./.tmp/* && mkdir -p ./dist && mkdir -p ./dist/scripts && mkdir -p ./dist/styles",
-    "build:env": "node ./scripts/environment.js",
-    "build:sass": "node-sass ./app/styles/main.scss > ./dist/styles/main.css",
-    "build:wiredep": "wiredep -s ./app/index.html",
-    "build:minify": "usemin ./app/index.html --dest ./dist/ --output ./dist/index.html --rmlr true",
-    "build:copy": "cp -rf ./app/images ./dist && cp -rf ./app/views ./dist && cp -rf ./app/templates ./dist && cp ./app/404.html ./dist && cp ./app/error.html ./dist && cp ./app/*.ico ./dist && cp ./app/*.txt ./dist/",
-    "build": "npm run build:clean && npm run jshint && npm run build:env && npm run build:wiredep && npm run build:sass && npm run build:minify && npm run build:copy",
-    "test:protractor": "protractor test/acceptance/protractor.conf.js",
-    "test:acceptance": "./scripts/acceptance.sh",
-    "test:ui:ci": "karma start test/ui/karma.conf.js --single-run --reporters spec,coverage --browsers PhantomJS",
-    "test:ui:local": "karma start test/ui/karma.conf.js --reporters spec,notify --browsers PhantomJS --auto-watch",
-    "test:web": "mocha -r test/web/base test/web/ --recursive -R spec",
-    "test": "npm run jshint && npm run test:web && npm run test:ui:ci",
-    "livereload": "live-reload --port 9091 ./app",
-    "serve": "parallelshell 'npm start' 'npm run livereload'",
-    "start": "npm run build && node index.js",
-    "forever": "forever stopall && forever start ./bin/www",
-    "postinstall": "bower install"
-  },
   "dependencies": {
-    "body-parser": "~1.14.2",
-    "cookie-parser": "~1.4.0",
-    "debug": "~2.2.0",
-    "ejs": "~2.3.3",
-    "express": "4.13.4",
-    "express-session": "^1.11.3",
-    "foobar": "^1.1.0",
-    "forever": "^0.15.1",
-    "grunt-cli": "^1.2.0",
-    "jshint": "^2.9.1-rc2",
-    "jsonwebtoken": "^5.4.0",
-    "morgan": "~1.6.1",
-    "nock": "^3.6.0",
-    "node-sass": "^3.3.3",
-    "node-sass-middleware": "^0.9.6",
-    "passport": "^0.3.2",
-    "passport-local": "^1.0.0",
-    "passport-saml": "git://github.com/bergie/passport-saml.git",
-    "request": "^2.63.0",
-    "serve-favicon": "~2.3.0",
-    "usemin-cli": "0.0.7",
-    "wiredep": "^3.0.0",
-	"bower": "1.7.1"
+    "concurrently": "^3.4.0",
+    "material-ui": "^0.17.1",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "react-router-dom": "^4.0.0",
+    "react-tap-event-plugin": "^2.0.1"
   },
   "devDependencies": {
-    "phantomjs": "1.9.19",
-    "chai": "^3.3.0",
-    "karma": "0.13.15",
-    "karma-coverage": "^0.5.2",
-    "karma-html2js-preprocessor": "^0.1.0",
-    "karma-jasmine": "~0.3.6",
-    "karma-notify-reporter": "^0.1.1",
-    "karma-phantomjs-launcher": "^0.2.2",
-    "karma-spec-reporter": "0.0.23",
-    "karma-wiredep": "^1.0.1",
-    "live-reload": "^1.1.0",
-    "mocha": "^2.3.3",
-    "parallelshell": "^2.0.0",
-    "protractor": "3.0.0",
-    "sinon": "^1.17.1",
-    "watch": "^0.17.1"
+    "autoprefixer": "6.7.2",
+    "babel-core": "6.22.1",
+    "babel-eslint": "7.1.1",
+    "babel-jest": "18.0.0",
+    "babel-loader": "6.2.10",
+    "babel-preset-react-app": "^2.2.0",
+    "babel-runtime": "^6.20.0",
+    "case-sensitive-paths-webpack-plugin": "1.1.4",
+    "chai": "^3.5.0",
+    "chalk": "1.1.3",
+    "connect-history-api-fallback": "1.3.0",
+    "cross-spawn": "4.0.2",
+    "css-loader": "0.26.1",
+    "detect-port": "1.1.0",
+    "dotenv": "2.0.0",
+    "enzyme": "^2.7.1",
+    "eslint": "3.16.1",
+    "eslint-config-react-app": "^0.6.2",
+    "eslint-loader": "1.6.0",
+    "eslint-plugin-flowtype": "2.21.0",
+    "eslint-plugin-import": "2.0.1",
+    "eslint-plugin-jsx-a11y": "4.0.0",
+    "eslint-plugin-react": "6.4.1",
+    "extract-text-webpack-plugin": "1.0.1",
+    "file-loader": "0.10.0",
+    "fs-extra": "0.30.0",
+    "html-webpack-plugin": "2.24.0",
+    "http-proxy-middleware": "0.17.3",
+    "jest": "18.1.0",
+    "json-loader": "0.5.4",
+    "object-assign": "4.1.1",
+    "postcss-loader": "1.2.2",
+    "promise": "7.1.1",
+    "react-addons-test-utils": "^15.4.2",
+    "react-dev-utils": "^0.5.2",
+    "sinon": "^2.1.0",
+    "style-loader": "0.13.1",
+    "url-loader": "0.5.7",
+    "webpack": "1.14.0",
+    "webpack-dev-server": "1.16.2",
+    "webpack-manifest-plugin": "1.1.0",
+    "whatwg-fetch": "2.0.2"
   },
-  "engines": {
-    "node": "5.3.0",
-    "npm": "3.3.12"
+  "scripts": {
+    "start": "concurrently \"node client/scripts/start.js\" \"./manage.py runserver\"",
+    "build": "node client/scripts/build.js",
+    "test": "node client/scripts/test.js --env=jsdom"
+  },
+  "proxy": "http://localhost:8000",
+  "jest": {
+    "collectCoverageFrom": [
+      "client/assets/src/**/*.{js,jsx}"
+    ],
+    "setupFiles": [
+      "<rootDir>/client/config/polyfills.js"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>[/\\\\](build|docs|node_modules|scripts)[/\\\\]"
+    ],
+    "testEnvironment": "node",
+    "testURL": "http://localhost",
+    "transform": {
+      "^.+\\.(js|jsx)$": "<rootDir>/node_modules/babel-jest",
+      "^.+\\.css$": "<rootDir>/client/config/jest/cssTransform.js",
+      "^(?!.*\\.(js|jsx|css|json)$)": "<rootDir>/client/config/jest/fileTransform.js"
+    },
+    "transformIgnorePatterns": [
+      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$"
+    ],
+    "moduleNameMapper": {
+      "^react-native$": "react-native-web"
+    }
+  },
+  "babel": {
+    "presets": [
+      "react-app"
+    ]
+  },
+  "eslintConfig": {
+    "extends": "react-app"
   }
 }

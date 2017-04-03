@@ -1,0 +1,5 @@
+Django==1.10.6
+djangorestframework==3.6.2
+psycopg2==2.7.1
+python-dateutil==2.6.0
+six==1.10.0
