@@ -10,7 +10,8 @@ function isDevelopmentEnvironment(){
 function buildEntry(){
   entry = {
     app: [ './assets/src/index.js'],
-    home: [ './assets/src/home/index.js']
+    home: [ './assets/src/home/index.js'],
+    libraries: [ './assets/src/libraries/index.js' ]
   }
 
   if (isDevelopmentEnvironment()) {

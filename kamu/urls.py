@@ -12,6 +12,7 @@ router.register(r'libraries', views.LibraryViewSet)
 
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='home.html')),
+    url(r'^libraries/(?P<slug>.+)/', TemplateView.as_view(template_name='libraries.html')),
     url(r'^okta-login/', include('django_saml2_auth.urls')),
     url(r'^admin/login/$', django_saml2_auth.views.signin),
     url(r'^admin/', admin.site.urls),
