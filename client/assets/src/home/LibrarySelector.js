@@ -26,7 +26,7 @@ export default class LibrarySelector extends Component {
 		if (this.state.libraries) {
 			content = this.state.libraries.map(library => {
 				return (
-					<ListItem primaryText={library.name} />
+					<ListItem className='library' key={library.id} primaryText={library.name} />
 				);
 			});
 			content = (<List>{content}</List>);
