@@ -1,0 +1,7 @@
+{% extends "index.html" %}
+{% load render_bundle from webpack_loader %}
+
+{% block content %}
+  <div id="libraries" data-library="{{slug}}" />
+  {% render_bundle 'home' %}
+{% endblock %}

@@ -7,8 +7,8 @@ export default class Book extends Component {
 		this.state = { zDepth: 1 };
 	}
 
-	onMouseOver = () => this.setState({ zDepth: 2 });
-	onMouseOut = () => this.setState({ zDepth: 1 });
+	onMouseOver() { return this.setState({ zDepth: 2 }); }
+	onMouseOut() { this.setState({ zDepth: 1 }); }
 
 	render() {
 		const book = this.props.book;
