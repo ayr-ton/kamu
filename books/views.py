@@ -16,7 +16,6 @@ class LibraryViewSet(viewsets.ModelViewSet):
     queryset = Library.objects.all()
     serializer_class = LibraryCompactSerializer
     lookup_field = 'slug'
-    permission_classes = [ IsAuthenticated ]
 
     def retrieve(self, request, slug=None):
         library = Library.objects.get(slug=slug)
@@ -29,8 +28,6 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('username', 'email')
 
 class UserView(APIView):
-    permission_classes = [ IsAuthenticated ]
-    
     def get(self, request, format=None):
         content = {
             'user': UserSerializer(request.user).data
