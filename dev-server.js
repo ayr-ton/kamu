@@ -19,8 +19,9 @@ var devServerConfig = {
 function listenHandler(err, result) {
   if (err) {
     console.error(err);
+    return;
   }
-  console.log('Listening at localhost: %s', PORT);
+  console.log('WebpackDevServer listening at localhost:%s', PORT);
 };
 
 var devServer = new WebpackDevServer(webpack(config), devServerConfig);
