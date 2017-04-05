@@ -1,6 +1,6 @@
 {
-  "name": "assets",
-  "version": "1.0.0",
+  "name": "kamu",
+  "version": "3.0.0",
   "private": true,
   "scripts": {
     "build": "NODE_ENV=production webpack",
