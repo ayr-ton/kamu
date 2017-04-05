@@ -9,9 +9,9 @@ function isDevelopmentEnvironment(){
 
 function buildEntry(){
   entry = {
-    app: [ './assets/src/index.js'],
-    home: [ './assets/src/home/index.js'],
-    libraries: [ './assets/src/libraries/index.js' ]
+    app: [ './src/index.js'],
+    home: [ './src/home/index.js'],
+    libraries: [ './src/libraries/index.js' ]
   }
 
   if (isDevelopmentEnvironment()) {
@@ -34,7 +34,7 @@ function buildOutput(){
 }
 
 module.exports = {
-    context: path.resolve(__dirname, 'client/'),
+    context: path.resolve(__dirname, 'assets/'),
 
     entry: buildEntry(),
 
@@ -62,7 +62,7 @@ module.exports = {
         },
         {
           test: /\.css$/,
-          loaders: ["style", "css"]
+          loaders: ['style', 'css']
         }
       ],
     },
