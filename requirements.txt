@@ -7,6 +7,7 @@ git+https://github.com/ayr-ton/django-saml2-auth.git#egg=django-saml2-auth
 django-webpack-loader==0.4.1
 djangorestframework==3.6.2
 future==0.16.0
+gunicorn==19.7.1
 idna==2.5
 packaging==16.8
 Paste==2.0.3
