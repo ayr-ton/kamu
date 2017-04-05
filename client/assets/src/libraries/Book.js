@@ -5,6 +5,9 @@ export default class Book extends Component {
 	constructor() {
 		super();
 		this.state = { zDepth: 1 };
+
+		this.onMouseOver = this.onMouseOver.bind(this);
+		this.onMouseOut = this.onMouseOut.bind(this);
 	}
 
 	onMouseOver() { return this.setState({ zDepth: 2 }); }
