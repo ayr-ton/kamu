@@ -7,7 +7,11 @@ export default class Header extends Component {
 		return (
 			<MuiThemeProvider>
 				<AppBar
-					title={<div className="header-content"><img src="/static/images/logo.svg" alt="Kamu logo" /></div>}
+					title={
+						<a href="/" className="header-content">
+							<img src="/static/images/logo.svg" alt="Kamu logo" />
+						</a>
+					}
 					iconElementLeft={<div></div>}
 				/>
 			</MuiThemeProvider>
