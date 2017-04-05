@@ -2,11 +2,19 @@
   "name": "assets",
   "version": "1.0.0",
   "private": true,
+  "scripts": {
+    "build": "NODE_ENV=production webpack",
+    "coverage": "NODE_ENV=development istanbul cover _mocha -- -R spec --recursive --watch-extensions js,jsx --compilers js:babel-core/register --require app/assets/javascript/tests/setup.js $(find app/assets/javascript/tests/ -name '*_test.jsx' && find app/assets/javascript/tests/ -name '*_test.js')",
+    "start": "NODE_ENV=development concurrently --raw --kill-others \"node dev-server.js\" \"python manage.py runserver\"",
+    "test": "NODE_ENV=development mocha --no-deprecation --recursive --reporter spec --watch-extensions js,jsx --compilers js:babel-core/register --require app/assets/javascript/tests/setup.js $(find app/assets/javascript/tests/ -name '*_test.jsx' && find app/assets/javascript/tests/ -name '*_test.js')",
+    "test:watch": "NODE_ENV=development mocha --no-deprecation --recursive --reporter spec --watch --watch-extensions js,jsx --compilers js:babel-core/register --require app/assets/javascript/tests/setup.js $(find app/assets/javascript/tests/ -name '*_test.jsx' && find app/assets/javascript/tests/ -name '*_test.js')"
+  },
   "dependencies": {
     "babel-core": "^6.11.4",
     "babel-loader": "^6.2.4",
     "babel-preset-es2015": "^6.9.0",
     "babel-preset-react": "^6.11.1",
+    "concurrently": "^3.4.0",
     "css-loader": "^0.23.1",
     "extract-text-webpack-plugin": "^1.0.1",
     "lodash": "^4.14.1",
@@ -31,12 +39,5 @@
     "react-addons-test-utils": "^15.3.0",
     "sinon": "^1.17.5",
     "webpack-dev-server": "^1.13.1"
-  },
-  "scripts": {
-    "build": "NODE_ENV=production webpack",
-    "coverage": "NODE_ENV=development istanbul cover _mocha -- -R spec --recursive --watch-extensions js,jsx --compilers js:babel-core/register --require app/assets/javascript/tests/setup.js $(find app/assets/javascript/tests/ -name '*_test.jsx' && find app/assets/javascript/tests/ -name '*_test.js')",
-    "dev": "NODE_ENV=development node dev-server.js",
-    "test": "NODE_ENV=development mocha --no-deprecation --recursive --reporter spec --watch-extensions js,jsx --compilers js:babel-core/register --require app/assets/javascript/tests/setup.js $(find app/assets/javascript/tests/ -name '*_test.jsx' && find app/assets/javascript/tests/ -name '*_test.js')",
-    "test:watch": "NODE_ENV=development mocha --no-deprecation --recursive --reporter spec --watch --watch-extensions js,jsx --compilers js:babel-core/register --require app/assets/javascript/tests/setup.js $(find app/assets/javascript/tests/ -name '*_test.jsx' && find app/assets/javascript/tests/ -name '*_test.js')"
-  } 
+  }
 }
