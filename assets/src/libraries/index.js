@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import BookList from './BookList';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import BookService from './BookService';
+import BookService from '../services/BookService';
 
 const container = document.getElementById('libraries');
 const library = container.getAttribute('data-library');

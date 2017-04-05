@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import LibrarySelector from './LibrarySelector';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import BookService from '../libraries/BookService';
+import BookService from '../services/BookService';
 
 ReactDOM.render((
 	<MuiThemeProvider>
