@@ -40,7 +40,7 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+                'django.contrib.messages.context_processors.messages'
             ],
         },
     },
@@ -95,7 +95,6 @@ REST_FRAMEWORK = {
     ],
     'PAGE_SIZE': 10
 }
-
 
 SAML2_AUTH = {
     'METADATA_AUTO_CONF_URL': 'https://thoughtworks.oktapreview.com/app/exk4v36owiuXaaDq50h7/sso/saml/metadata',
