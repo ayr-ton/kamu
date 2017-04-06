@@ -14,12 +14,15 @@ class Book(models.Model):
     publisher = models.CharField(max_length = 255, null=True)
 
     def __str__(self):
-        return self.title
+        return "%s (%s)" % (self.title, self.author)
 
 class Library(models.Model):
     name = models.CharField(max_length = 255)
     slug = models.CharField(max_length = 255)
     books = models.ManyToManyField(Book, through='BookCopy')
+
+    class Meta:
+        verbose_name_plural = 'libraries'
 
     def __str__(self):
         return self.name
