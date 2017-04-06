@@ -20,6 +20,7 @@ class Command(BaseCommand):
         self.migrate_libraries()
         self.migrate_copies()
         self.migrate_users()
+        self.migrate_loans()
     
     def migrate_books(self):
         self.cursor.execute("SELECT * from book")
@@ -112,3 +113,21 @@ class Command(BaseCommand):
             imported_users += 1
         
         print("Imported %d users of %d." % (imported_users, total_users))
+    
+    def migrate_loans(self):
+        self.cursor.execute("SELECT * from loan")
+        loans = self.cursor.fetchall()
+        total_loans = self.cursor.rowcount
+        imported_loans = 0
+        
+        for loan in loans:
+            print('Importing loan %d' % loan['id'])
+            BookCopy.objects.update_or_create(
+                id=loan['copy_id'],
+                defaults={
+                    'user': User.objects.get(pk=loan['user_id'])
+                }
+            )
+            imported_loans += 1
+        
+        print("Imported %d loans of %d." % (imported_loans, total_loans))
