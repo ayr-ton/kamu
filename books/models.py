@@ -7,7 +7,7 @@ class Book(models.Model):
     title = models.CharField(max_length = 255)
     subtitle = models.CharField(max_length = 255, null=True)
     description = models.TextField(null=True)
-    image_url = models.CharField(max_length = 255, null=True)
+    image_url = models.TextField(null=True)
     isbn = models.CharField(max_length = 255, null=True)
     number_of_pages = models.IntegerField(null=True)
     publication_date = models.DateField(null=True)
