@@ -94,7 +94,7 @@ SAML2_AUTH = {
         'USER_GROUPS': [],
         'ACTIVE_STATUS': True,
         'STAFF_STATUS': True,
-        'SUPERUSER_STATUS': False,
+        'SUPERUSER_STATUS': True,
     },
     'ATTRIBUTES_MAP': {
         'email': 'email',
