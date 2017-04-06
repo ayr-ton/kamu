@@ -3,7 +3,7 @@ cffi==1.10.0
 cryptography==1.8.1
 decorator==4.0.11
 Django==1.10.6
-git+https://github.com/ayr-ton/django-saml2-auth.git#egg=django-saml2-auth
+django-saml2-auth==2.0.4
 django-webpack-loader==0.4.1
 djangorestframework==3.6.2
 future==0.16.0
