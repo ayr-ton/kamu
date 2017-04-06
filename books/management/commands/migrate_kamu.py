@@ -1,4 +1,5 @@
-from django.core.management.base import BaseCommand 
+from django.core.management.base import BaseCommand
+from django.contrib.auth.models import User
 from dateutil.parser import parse
 from books.models import *
 import psycopg2
@@ -18,6 +19,7 @@ class Command(BaseCommand):
         self.migrate_books()
         self.migrate_libraries()
         self.migrate_copies()
+        self.migrate_users()
     
     def migrate_books(self):
         self.cursor.execute("SELECT * from book")
@@ -88,3 +90,25 @@ class Command(BaseCommand):
             imported_copies += 1
         
         print("Imported %d copies of %d." % (imported_copies, total_copies))
+     
+    def migrate_users(self):
+        self.cursor.execute("SELECT * from users")
+        users = self.cursor.fetchall()
+        total_users = self.cursor.rowcount
+        imported_users = 0
+        
+        for user in users:
+            print('Importing user %s' % user['name'])
+            names = user['name'].split(' ')
+            User.objects.update_or_create(
+                id=user['id'],
+                defaults={
+                    'email': user['email'],
+                    'username': user['email'],
+                    'first_name': names[0],
+                    'last_name': names[-1]
+                }
+            )
+            imported_users += 1
+        
+        print("Imported %d users of %d." % (imported_users, total_users))
