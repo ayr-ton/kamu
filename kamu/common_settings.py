@@ -2,8 +2,6 @@ import os
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 SECRET_KEY = '5%5*wq!wtipnzre-n!d*6@02j)en6*g1sr+!p1zv-krr$aay1='
 
 INSTALLED_APPS = [
