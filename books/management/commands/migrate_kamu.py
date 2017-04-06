@@ -101,14 +101,13 @@ class Command(BaseCommand):
         for user in users:
             print('Importing user %s' % user['name'])
             names = user['name'].split(' ')
-            User.objects.update_or_create(
+            User.objects.create_superuser(
+                user['email'],
+                user['email'],
+                None,
                 id=user['id'],
-                defaults={
-                    'email': user['email'],
-                    'username': user['email'],
-                    'first_name': names[0],
-                    'last_name': names[-1]
-                }
+                first_name=names[0],
+                last_name=names[-1]
             )
             imported_users += 1
         
