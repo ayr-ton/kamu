@@ -104,7 +104,7 @@ db.sqlite3
 /coverage
 
 # production
-/client/static
+/kamu/staticfiles
 
 # misc
 .DS_Store
