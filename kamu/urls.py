@@ -1,11 +1,11 @@
 import django_saml2_auth.views
 from django.conf.urls import url, include
+from django.conf import settings
 from django.contrib import admin
 from django.views.generic import TemplateView, RedirectView
 from rest_framework import routers
 from django.contrib.auth.decorators import login_required
 from books import views
-from . import settings
 
 
 router = routers.DefaultRouter()
