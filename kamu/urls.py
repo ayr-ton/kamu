@@ -1,10 +1,11 @@
+import django_saml2_auth.views
 from django.conf.urls import url, include
 from django.contrib import admin
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, RedirectView
 from rest_framework import routers
 from django.contrib.auth.decorators import login_required
-import django_saml2_auth.views
 from books import views
+from . import settings
 
 
 router = routers.DefaultRouter()
@@ -20,4 +21,5 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include(router.urls)),
     url(r'^api/profile', views.UserView.as_view()),
+    url(r'^favicon\.ico$', RedirectView.as_view(url=settings.STATIC_URL + 'images/favicon.ico'))
 ]
