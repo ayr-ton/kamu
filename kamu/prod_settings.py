@@ -2,7 +2,7 @@ from .common_settings import *
 import os
 
 
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['staging-kamu.herokuapp.com', 'kamu.herokuapp.com']
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
