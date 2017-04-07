@@ -4,6 +4,7 @@ from .models import *
 class BookCopyInline(admin.TabularInline):
     model = BookCopy
     extra = 1
+    readonly_fields = ('book',)
 
 class LibraryAdmin(admin.ModelAdmin):
     inlines = [BookCopyInline]
