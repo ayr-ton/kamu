@@ -3,7 +3,7 @@
   "version": "3.0.0",
   "private": true,
   "scripts": {
-    "build": "NODE_ENV=production webpack",
+    "build": "webpack -p",
     "coverage": "NODE_ENV=development istanbul cover _mocha -- -R spec --recursive --watch-extensions js,jsx --compilers js:babel-core/register --require app/assets/javascript/tests/setup.js $(find app/assets/javascript/tests/ -name '*_test.jsx' && find app/assets/javascript/tests/ -name '*_test.js')",
     "start": "NODE_ENV=development concurrently --raw --kill-others \"node dev-server.js\" \"python manage.py runserver\"",
     "test": "NODE_ENV=development mocha --no-deprecation --recursive --reporter spec --watch-extensions js,jsx --compilers js:babel-core/register --require app/assets/javascript/tests/setup.js $(find app/assets/javascript/tests/ -name '*_test.jsx' && find app/assets/javascript/tests/ -name '*_test.js')",
