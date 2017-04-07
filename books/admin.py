@@ -15,6 +15,6 @@ class BookAdmin(admin.ModelAdmin):
 
 admin.site.site_header = 'Kamu administration'
 admin.site.site_title = 'Kamu administration'
-admin.site.index_title = None
+admin.site.index_title = 'Kamu'
 admin.site.register(Book, BookAdmin)
 admin.site.register(Library, LibraryAdmin)
