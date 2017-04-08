@@ -1,0 +1,47 @@
+{
+  "name": "kamu",
+  "scripts": {
+  },
+  "env": {
+    "DATABASE_HOST": {
+      "required": true
+    },
+    "DATABASE_NAME": {
+      "required": true
+    },
+    "DATABASE_PASSWORD": {
+      "required": true
+    },
+    "DATABASE_USER": {
+      "required": true
+    },
+    "DJANGO_SETTINGS_MODULE": {
+      "required": true
+    },
+    "NODE_ENV": {
+      "required": true
+    },
+    "NODE_MODULES_CACHE": {
+      "required": true
+    },
+    "OKTA_METADATA_URL": {
+      "required": true
+    }
+  },
+  "formation": {
+  },
+  "addons": [
+    "heroku-postgresql"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    },
+    {
+      "url": "heroku/nodejs"
+    },
+    {
+      "url": "https://github.com/strydercorp/heroku-buildpack-xmlsec.git"
+    }
+  ]
+}
