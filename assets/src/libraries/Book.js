@@ -18,7 +18,10 @@ export default class Book extends Component {
 
 		return (
 			<Paper className="book" zDepth={this.state.zDepth} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut}>
-				<img className="book-cover" src={book.image_url} alt={"Cover of " + book.title} />
+				<div className="book-cover">
+					<img src={book.image_url} alt={"Cover of " + book.title} />
+					<div className="book-cover-overlay"></div>
+				</div>
 				<div className="book-details">
 					<h1 className="book-title">{book.title}</h1>
 					<h2 className="book-author">{book.author}</h2>

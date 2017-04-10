@@ -35,6 +35,7 @@ export default class Header extends Component {
 					}
 					iconElementLeft={<div></div>}
 					iconElementRight={avatar}
+					className="header"
 				/>
 			</MuiThemeProvider>
 		);
