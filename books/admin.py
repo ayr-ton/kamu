@@ -15,10 +15,12 @@ class BookAdmin(admin.ModelAdmin):
     inlines = [BookCopyInline]
     list_display = ['title', 'author']
     list_per_page = 20
+    search_fields = ['title', 'author']
 
 class BookCopyAdmin(admin.ModelAdmin):
     list_display = ['id', 'library', 'book', 'user']
     list_per_page = 20
+    search_fields = ['book__title', 'user__username']
 
 admin.site.site_header = 'Kamu administration'
 admin.site.site_title = 'Kamu administration'
