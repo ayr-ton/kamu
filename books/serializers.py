@@ -1,10 +1,21 @@
 from rest_framework import serializers
 from django.db.models import Count
+from django.contrib.auth.models import User
 from books.models import *
+from hashlib import md5
 
+class UserSerializer(serializers.ModelSerializer):
+    image_url = serializers.SerializerMethodField()
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'image_url')
+    def get_image_url(self, obj):
+        email_hash = md5(obj.email.strip().lower().encode()).hexdigest()
+        return "https://www.gravatar.com/avatar/%s?size=100" % email_hash
 
-class BookSerializer(serializers.HyperlinkedModelSerializer):
+class BookSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
+    copies = serializers.IntegerField()
     class Meta:
         model = Book
         fields = '__all__'
@@ -22,5 +33,5 @@ class LibrarySerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'slug', 'books')
     def get_books(self, obj):
         books = obj.books.annotate(copies=Count('id'))
-        serializer = BookSerializer(books, many=True, context=self.context)
+        serializer = BookSerializer(books, many=True)
         return serializer.data
