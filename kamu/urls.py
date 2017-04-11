@@ -9,7 +9,6 @@ from books import views
 
 
 router = routers.DefaultRouter()
-router.register(r'books', views.BookViewSet)
 router.register(r'libraries', views.LibraryViewSet)
 
 urlpatterns = [
