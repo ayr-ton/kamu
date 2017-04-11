@@ -1,5 +1,4 @@
 from django.shortcuts import get_object_or_404
-from django.contrib.auth.models import User
 from hashlib import md5
 from rest_framework.response import Response    
 from rest_framework.views import APIView
@@ -21,15 +20,6 @@ class LibraryViewSet(viewsets.ModelViewSet):
         library = Library.objects.get(slug=slug)
         serializer = LibrarySerializer(library, context={ 'request': request })
         return Response(serializer.data)
-
-class UserSerializer(serializers.ModelSerializer):
-    image_url = serializers.SerializerMethodField()
-    class Meta:
-        model = User
-        fields = ('username', 'email', 'image_url')
-    def get_image_url(self, obj):
-        email_hash = md5(obj.email.strip().lower().encode()).hexdigest()
-        return "https://www.gravatar.com/avatar/%s?size=100" % email_hash
 
 class UserView(APIView):
     def get(self, request, format=None):
