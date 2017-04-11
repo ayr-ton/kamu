@@ -11,14 +11,24 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('username', 'email', 'image_url')
     def get_image_url(self, obj):
         email_hash = md5(obj.email.strip().lower().encode()).hexdigest()
-        return "https://www.gravatar.com/avatar/%s?size=100" % email_hash
+        return 'https://www.gravatar.com/avatar/%s?size=100' % email_hash
 
-class BookSerializer(serializers.ModelSerializer):
+class BookCopySerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+    class Meta:
+        model = BookCopy
+        fields = ('id', 'user')
+
+class LibraryBookSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
-    copies = serializers.IntegerField()
+    copies = serializers.SerializerMethodField()
     class Meta:
         model = Book
         fields = '__all__'
+    def get_copies(self, obj):
+        copies = obj.bookcopy_set.filter(library=self.context['library'])
+        serializer = BookCopySerializer(copies, many=True, context=self.context)
+        return serializer.data
 
 class LibraryCompactSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -32,6 +42,7 @@ class LibrarySerializer(serializers.ModelSerializer):
         model = Library
         fields = ('id', 'name', 'slug', 'books')
     def get_books(self, obj):
+        self.context['library'] = obj
         books = obj.books.annotate(copies=Count('id'))
-        serializer = BookSerializer(books, many=True)
+        serializer = LibraryBookSerializer(books, many=True, context=self.context)
         return serializer.data
