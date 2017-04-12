@@ -10,6 +10,7 @@ from books import views
 
 router = routers.DefaultRouter()
 router.register(r'libraries', views.LibraryViewSet)
+router.register(r'copies', views.BookCopyViewSet)
 
 urlpatterns = [
     url(r'^$', login_required(TemplateView.as_view(template_name='home.html'))),
