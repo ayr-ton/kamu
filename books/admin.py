@@ -4,6 +4,7 @@ from .models import *
 class BookCopyInline(admin.TabularInline):
     model = BookCopy
     extra = 0
+    max_num = 0
     show_change_link = True
     readonly_fields = ['book', 'user']
 
