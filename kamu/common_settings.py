@@ -90,6 +90,7 @@ REST_FRAMEWORK = {
 }
 
 SAML2_AUTH = {
+    'DEFAULT_NEXT_URL': '/',
     'NEW_USER_PROFILE': {
         'USER_GROUPS': [],
         'ACTIVE_STATUS': True,
