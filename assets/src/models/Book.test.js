@@ -34,4 +34,26 @@ describe('Book', () => {
 			expect(book4.getAvailableCopyID()).to.be.null;
 		});
 	});
+
+	describe('checking if the user owns a copy of the book', () => {
+		it('should return true if the book has a copy that belongs to the user', () => {
+			global.currentUser = { username: 1 };
+			const book = new Book();
+			book.copies = [ { user: global.currentUser } ];
+			expect(book.belongsToUser()).to.be.true;
+
+			book.copies = [ { user: global.currentUser }, { user: null } ];
+			expect(book.belongsToUser()).to.be.true;
+		});
+
+		it('should return false if the book does not have a copy that belongs to the user', () => {
+			global.currentUser = { username: 1 };
+			const book = new Book();
+			book.copies = [ { user: { username: 2 } } ];
+			expect(book.belongsToUser()).to.be.false;
+
+			book.copies = [];
+			expect(book.belongsToUser()).to.be.false;
+		});
+	});
 });

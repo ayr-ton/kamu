@@ -16,6 +16,7 @@ export default class Header extends Component {
 	componentWillMount() {
 		this.props.service.getLoggedUser().then(user => {
 			this.setState({ user });
+			window.currentUser = user;
 		});
 	}
 
