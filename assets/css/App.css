@@ -88,6 +88,11 @@
   -webkit-line-clamp: 2;
 }
 
+.book .book-actions {
+  margin: 10px;
+  text-align: center;
+}
+
 .library-list {
   width: 300px;
   margin: 20px auto;

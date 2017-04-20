@@ -1,3 +1,4 @@
+import Book from '../models/Book';
 import { fetchFromAPI } from './helpers';
 
 export default class BookService {
@@ -9,7 +10,12 @@ export default class BookService {
 
 	getBooks(librarySlug) {
 		return fetchFromAPI(`/libraries/${librarySlug}`).then(data => {
-			return data.books;
+			let books = [];
+			for (const bookJson of data.books) {
+				let book = Object.assign(new Book(), bookJson);
+				books.push(book);
+			}
+			return books;
 		});
-	}
+	}	
 }
