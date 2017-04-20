@@ -1,6 +1,8 @@
 import Book from '../models/Book';
 import { fetchFromAPI } from './helpers';
 
+// TODO: Add tests to this class
+
 export default class BookService {
 	getLibraries() {
 		return fetchFromAPI('/libraries').then(data => {
@@ -19,8 +21,28 @@ export default class BookService {
 		});
 	}	
 
-	borrowBookCopy(copyID) {
+	borrowBook(book) {
+		const copyID = book.getAvailableCopyID();
 		return fetchFromAPI(`/copies/${copyID}/borrow`, 'POST').then(data => {
+			for (let copy of book.copies) {
+				if (copy.id == copyID) {
+					copy.user = currentUser;
+					break;
+				}
+			}
+			return true;
+		});
+	}
+
+	returnBook(book) {
+		const copyID = book.getBorrowedCopyID();
+		return fetchFromAPI(`/copies/${copyID}/return`, 'POST').then(data => {
+			for (let copy of book.copies) {
+				if (copy.id == copyID) {
+					copy.user = null;
+					break;
+				}
+			}
 			return true;
 		});
 	}
