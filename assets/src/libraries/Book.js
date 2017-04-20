@@ -2,22 +2,42 @@ import React, { Component } from 'react';
 import Paper from 'material-ui/Paper';
 import FlatButton from 'material-ui/FlatButton';
 
+// FIXME
+import injectTapEventPlugin from 'react-tap-event-plugin';
+injectTapEventPlugin();
+
 export default class Book extends Component {
-	constructor() {
-		super();
-		this.state = { zDepth: 1 };
+	constructor(props) {
+		super(props);
+		this.state = {
+			zDepth: 1,
+			available: props.book.isAvailable(),
+			borrowedByMe: false
+		};
 
 		this.onMouseOver = this.onMouseOver.bind(this);
 		this.onMouseOut = this.onMouseOut.bind(this);
 		this._actionButtons = this._actionButtons.bind(this);
+		this._borrow = this._borrow.bind(this);
 	}
 
 	onMouseOver() { return this.setState({ zDepth: 2 }); }
 	onMouseOut() { this.setState({ zDepth: 1 }); }
 
+	_borrow() {
+		const availableCopyID = this.props.book.getAvailableCopyID();
+		console.log('Clicked borrow, id', availableCopyID);
+		this.props.service.borrowBookCopy(availableCopyID).then(() => {
+			console.log('Borrowed!');
+			this.setState({ available: false, borrowedByMe: true })
+		});
+	}
+
 	_actionButtons() {
-		if (this.props.book.isAvailable()) {
-			return <FlatButton label="Borrow" className="borrow-button" />;
+		if (this.state.available) {
+			return <FlatButton label="Borrow" onTouchTap={this._borrow} />;
+		} else if (this.state.borrowedByMe) {
+			return <FlatButton label="Borrowed" disabled />;
 		}
 
 		return null;

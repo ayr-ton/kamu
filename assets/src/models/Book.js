@@ -1,9 +1,13 @@
 export default class Book {
 	isAvailable() {
+		return this.getAvailableCopyID() != null;
+	}	
+
+	getAvailableCopyID() {
 		for (const copy of this.copies) {
-			if (copy.user === null) return true;
+			if (copy.user === null) return copy.id;
 		}
 
-		return false;
-	}	
+		return null;
+	}
 }
