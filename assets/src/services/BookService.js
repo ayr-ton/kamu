@@ -18,4 +18,10 @@ export default class BookService {
 			return books;
 		});
 	}	
+
+	borrowBookCopy(copyID) {
+		return fetchFromAPI(`/copies/${copyID}/borrow`, 'POST').then(data => {
+			return true;
+		});
+	}
 }

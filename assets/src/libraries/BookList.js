@@ -25,7 +25,7 @@ export default class BookList extends Component {
 		let content;
 		if (this.state.books) {
 			content = this.state.books.map(book => {
-				return <Book key={book.id} book={book} />
+				return <Book key={book.id} book={book} service={this.props.service} />
 			});
 		}
 
