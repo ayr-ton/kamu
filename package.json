@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "webpack -p",
-    "start": "concurrently --raw --kill-others \"node dev-server.js\" \"python manage.py runserver\"",
+    "start": "NODE_ENV=development concurrently --raw --kill-others \"node dev-server.js\" \"python manage.py runserver\"",
     "test": "mocha --no-deprecation --recursive --reporter spec --watch-extensions js,jsx --require babel-polyfill --compilers js:babel-core/register $(find assets/src/ -name '*.test.jsx' && find assets/src/ -name '*.test.js')",
     "test:watch": "yarn test -- --watch"
   },
