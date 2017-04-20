@@ -24,7 +24,7 @@ describe('Book', () => {
 			expect(book4.isAvailable()).to.be.false;
 		});
 
-		it('should return the first available book copy without a user', () => {
+		it('should return the first available book copy id without a user', () => {
 			expect(book1.getAvailableCopyID()).to.equal(1);
 			expect(book2.getAvailableCopyID()).to.equal(3);
 		});
@@ -39,21 +39,41 @@ describe('Book', () => {
 		it('should return true if the book has a copy that belongs to the user', () => {
 			global.currentUser = { username: 1 };
 			const book = new Book();
-			book.copies = [ { user: global.currentUser } ];
+			book.copies = [ { id: 1, user: global.currentUser } ];
 			expect(book.belongsToUser()).to.be.true;
 
-			book.copies = [ { user: global.currentUser }, { user: null } ];
+			book.copies = [ { id: 2, user: global.currentUser }, { id: 3, user: null } ];
 			expect(book.belongsToUser()).to.be.true;
 		});
 
 		it('should return false if the book does not have a copy that belongs to the user', () => {
 			global.currentUser = { username: 1 };
 			const book = new Book();
-			book.copies = [ { user: { username: 2 } } ];
+			book.copies = [ { id: 4, user: { username: 2 } } ];
 			expect(book.belongsToUser()).to.be.false;
 
 			book.copies = [];
 			expect(book.belongsToUser()).to.be.false;
+		});
+
+		it('should return the id of the copy that belongs to the user', () => {
+			global.currentUser = { username: 1 };
+			const book = new Book();
+			book.copies = [ { id: 1, user: global.currentUser } ];
+			expect(book.getBorrowedCopyID()).to.equal(1);
+
+			book.copies = [ { id: 2, user: global.currentUser }, { id: 3, user: null } ];
+			expect(book.getBorrowedCopyID()).to.equal(2);
+		});
+
+		it('should return null if the book does not have a copy that belongs to the user', () => {
+			global.currentUser = { username: 1 };
+			const book = new Book();
+			book.copies = [ { id: 4, user: { username: 2 } } ];
+			expect(book.getBorrowedCopyID()).to.be.null;
+
+			book.copies = [];
+			expect(book.getBorrowedCopyID()).to.be.null;
 		});
 	});
 });

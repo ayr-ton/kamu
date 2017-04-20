@@ -12,10 +12,14 @@ export default class Book {
 	}
 
 	belongsToUser() {
+		return this.getBorrowedCopyID() != null;
+	}
+
+	getBorrowedCopyID() {
 		for (const copy of this.copies) {
-			if (copy.user && copy.user.username === currentUser.username) return true;
+			if (copy.user && copy.user.username === currentUser.username) return copy.id;
 		}
 
-		return false;
+		return null;
 	}
 }
