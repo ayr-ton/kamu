@@ -28,6 +28,13 @@ class BookCopyBorrowView(APIView):
         book_copy.save()
         return Response({ 'status': 'Book borrowed' })
 
+class BookCopyReturnView(APIView):
+    def post(self, request, id=None):
+        book_copy = BookCopy.objects.get(pk=id)
+        book_copy.user = None
+        book_copy.save()
+        return Response({ 'status': 'Book returned' })
+
 class UserView(APIView):
     def get(self, request, format=None):
         content = {

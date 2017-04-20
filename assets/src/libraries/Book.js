@@ -19,17 +19,21 @@ export default class Book extends Component {
 		this.onMouseOut = this.onMouseOut.bind(this);
 		this._actionButtons = this._actionButtons.bind(this);
 		this._borrow = this._borrow.bind(this);
+		this._return = this._return.bind(this);
 	}
 
 	onMouseOver() { return this.setState({ zDepth: 2 }); }
 	onMouseOut() { this.setState({ zDepth: 1 }); }
 
 	_borrow() {
-		const availableCopyID = this.props.book.getAvailableCopyID();
-		console.log('Clicked borrow, id', availableCopyID);
-		this.props.service.borrowBookCopy(availableCopyID).then(() => {
-			console.log('Borrowed!');
-			this.setState({ available: false, borrowedByMe: true })
+		this.props.service.borrowBook(this.props.book).then(() => {
+			this.setState({ available: false, borrowedByMe: true });
+		});
+	}
+
+	_return() {
+		this.props.service.returnBook(this.props.book).then(() => {
+			this.setState({ available: true, borrowedByMe: false });
 		});
 	}
 
@@ -37,7 +41,7 @@ export default class Book extends Component {
 		if (this.state.available) {
 			return <FlatButton label="Borrow" onTouchTap={this._borrow} />;
 		} else if (this.state.borrowedByMe) {
-			return <FlatButton label="Borrowed" disabled />;
+			return <FlatButton label="Return" onTouchTap={this._return} />;
 		}
 
 		return null;
