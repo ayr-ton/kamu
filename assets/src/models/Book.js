@@ -10,4 +10,12 @@ export default class Book {
 
 		return null;
 	}
+
+	belongsToUser() {
+		for (const copy of this.copies) {
+			if (copy.user && copy.user.username === currentUser.username) return true;
+		}
+
+		return false;
+	}
 }
