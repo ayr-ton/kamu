@@ -12,7 +12,7 @@ export default class Book extends Component {
 		this.state = {
 			zDepth: 1,
 			available: props.book.isAvailable(),
-			borrowedByMe: false
+			borrowedByMe: props.book.belongsToUser()
 		};
 
 		this.onMouseOver = this.onMouseOver.bind(this);
