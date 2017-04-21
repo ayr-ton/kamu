@@ -4,7 +4,11 @@ import os
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 
-DEBUG = False
+if os.environ['ENV'] == 'staging':
+    DEBUG = True
+else:
+    DEBUG = False
+
 ALLOWED_HOSTS = ['staging-kamu.herokuapp.com', 'kamu.herokuapp.com']
 
 DATABASES = {
