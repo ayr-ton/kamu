@@ -1,5 +1,3 @@
-![Kamu logo](https://raw.githubusercontent.com/twlabs/kamu/master/assets/images/logo.svg)
-
 # Kamu
 > "Some books leave us free and some books make us free."
 > – Ralph Waldo Emerson
@@ -67,4 +65,6 @@ yarn start
 
 Now just go to [http://localhost:8000](http://localhost:8000) in your browser :)
 
-Enjoy it <3 
+
+
+tttttttttttt
