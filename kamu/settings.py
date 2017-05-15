@@ -6,6 +6,8 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 
 DEBUG = True
 ALLOWED_HOSTS = []
+SECRET_KEY = '5%5*wq!wtipnzre-n!d*6@02j)en6*g1sr+!p1zv-krr$aay1='
+SECURE_SSL_REDIRECT = True
 
 DATABASES = {
     'default': {

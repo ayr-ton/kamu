@@ -10,6 +10,8 @@ else:
     DEBUG = False
 
 ALLOWED_HOSTS = ['staging-kamu.herokuapp.com', 'kamu.herokuapp.com']
+SECRET_KEY = os.environ['SECRET_KEY']
+SECURE_SSL_REDIRECT = True
 
 DATABASES = {
     'default': {
