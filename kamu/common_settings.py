@@ -103,3 +103,5 @@ SAML2_AUTH = {
         'last_name': 'lastName',
     }
 }
+
+SAML2_AUTH['METADATA_AUTO_CONF_URL'] = os.environ['OKTA_METADATA_URL']
