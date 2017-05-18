@@ -23,5 +23,3 @@ DATABASES = {
         'PORT': '5432',
     }
 }
-
-SAML2_AUTH['METADATA_AUTO_CONF_URL'] = os.environ['OKTA_METADATA_URL']
