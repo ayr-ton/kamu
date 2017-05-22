@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.com/ayr-ton/kamu.svg?token=KGsd1SkDsTdBvgkTgbtG&branch=master)](https://travis-ci.com/ayr-ton/kamu)
 # Kamu
 > "Some books leave us free and some books make us free."
 > – Ralph Waldo Emerson
