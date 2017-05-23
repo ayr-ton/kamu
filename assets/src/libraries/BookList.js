@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import Book from './Book';
+import BookDetail from './BookDetail';
 
 export default class BookList extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			books: []
+			books: [],
+			open: false,
+			currentBook: {}
 		};
+		this.showDetail = this.showDetail.bind(this);
 	}
 
 	componentWillMount() {
@@ -21,16 +25,21 @@ export default class BookList extends Component {
 		});
 	}
 
+	showDetail(book) {
+		this.setState({open: !this.state.open, currentBook: book});
+	}
+
 	render() {
 		let content;
 		if (this.state.books) {
 			content = this.state.books.map(book => {
-				return <Book key={book.id} book={book} service={this.props.service} />
+				return <Book key={book.id} book={book} service={this.props.service} showDetail={this.showDetail} />
 			});
 		}
 
 		return (
 			<div className="book-list">
+				<BookDetail open={this.state.open} showDetail={this.showDetail} book={this.state.currentBook} />
 				{content}
 			</div>
 		);
