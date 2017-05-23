@@ -5,6 +5,7 @@ import FlatButton from 'material-ui/FlatButton';
 // FIXME
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
+import BookDetail from './BookDetail';
 
 export default class Book extends Component {
 	constructor(props) {
@@ -51,7 +52,7 @@ export default class Book extends Component {
 		const book = this.props.book;
 
 		return (
-			<Paper className="book" zDepth={this.state.zDepth} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut}>
+			<Paper className="book" zDepth={this.state.zDepth} onMouseOver={this.onMouseOver} onClick={()=>this.props.showDetail(book)} onMouseOut={this.onMouseOut}>
 				<div className="book-cover">
 					<img src={book.image_url} alt={"Cover of " + book.title} />
 					<div className="book-cover-overlay"></div>
