@@ -19,7 +19,14 @@ export default class BookService {
 			}
 			return books;
 		});
-	}	
+	}
+
+	getBookDetail(book) {
+		const bookID = book.id;
+		return fetchFromAPI(`/books/${bookID}/show`).then(data => {
+			return data.book;
+		});
+	}
 
 	borrowBook(book) {
 		const copyID = book.getAvailableCopyID();
