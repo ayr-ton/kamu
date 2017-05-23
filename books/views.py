@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
 from hashlib import md5
-from rest_framework.response import Response    
+from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import viewsets
 from books.serializers import *
@@ -34,6 +34,12 @@ class BookCopyReturnView(APIView):
         book_copy.user = None
         book_copy.save()
         return Response({ 'status': 'Book returned' })
+
+class BookDetailView(APIView):
+    def get(self, request, id=None):
+        book = Book.objects.get(pk=id)
+        serializer_class = BookDetailSerializer
+        return Response(serializer_class.data)
 
 class UserView(APIView):
     def get(self, request, format=None):
