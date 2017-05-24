@@ -13,11 +13,19 @@ class UserSerializer(serializers.ModelSerializer):
         email_hash = md5(obj.email.strip().lower().encode()).hexdigest()
         return 'https://www.gravatar.com/avatar/%s?size=100' % email_hash
 
+class BookDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Book
+        fields = ('author','title','subtitle',
+        'description','image_url','isbn','number_of_pages',
+        'publication_date','publisher')
+
 class BookCopySerializer(serializers.ModelSerializer):
     user = UserSerializer()
+    book = BookDetailSerializer()
     class Meta:
         model = BookCopy
-        fields = ('id', 'user')
+        fields = ('id', 'user', 'book')
 
 class LibraryBookSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
