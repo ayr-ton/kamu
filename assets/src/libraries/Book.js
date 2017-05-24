@@ -21,6 +21,7 @@ export default class Book extends Component {
 		this._actionButtons = this._actionButtons.bind(this);
 		this._borrow = this._borrow.bind(this);
 		this._return = this._return.bind(this);
+		this.showDetail = this.showDetail.bind(this);
 	}
 
 	onMouseOver() { return this.setState({ zDepth: 2 }); }
@@ -48,11 +49,15 @@ export default class Book extends Component {
 		return null;
 	}
 
+	showDetail() {
+		this.props.showDetail(this.props.book);
+	}
+
 	render() {
 		const book = this.props.book;
 
 		return (
-			<Paper className="book" zDepth={this.state.zDepth} onMouseOver={this.onMouseOver} onClick={()=>this.props.showDetail(book)} onMouseOut={this.onMouseOut}>
+			<Paper className="book" zDepth={this.state.zDepth} onMouseOver={this.onMouseOver} onClick={this.showDetail} onMouseOut={this.onMouseOut}>
 				<div className="book-cover">
 					<img src={book.image_url} alt={"Cover of " + book.title} />
 					<div className="book-cover-overlay"></div>
