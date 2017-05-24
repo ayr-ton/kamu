@@ -11,6 +11,7 @@ export default class BookList extends Component {
 			currentBook: {}
 		};
 		this.showDetail = this.showDetail.bind(this);
+		this.fetchBook = this.fetchBook.bind(this);
 	}
 
 	componentWillMount() {
@@ -26,7 +27,22 @@ export default class BookList extends Component {
 	}
 
 	showDetail(book) {
-		this.setState({open: !this.state.open, currentBook: book});
+		if (book) {
+			return this.fetchBook(book);
+		}
+		this.setState({open: !this.state.open, currentBook: {}});
+	}
+
+	fetchBook(book) {
+		this.props.service.getBookDetail(book).then(book => {
+			console.log(book);
+			this.setState({
+				currentBook: book,
+				open: !this.state.open
+			});
+		}).catch(error => {
+			console.error(error);
+		});
 	}
 
 	render() {
