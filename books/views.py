@@ -37,9 +37,12 @@ class BookCopyReturnView(APIView):
 
 class BookDetailView(APIView):
     def get(self, request, id=None):
-        book = Book.objects.get(pk=id)
-        serializer_class = BookDetailSerializer
-        return Response(serializer_class.data)
+        # book = Book.objects.get(pk=id)
+        # print BookCopy.objects.filter(book=id).order_by('-id')[:1]
+        book_copy = BookCopy.objects.filter(book=id).order_by('-id')[1]
+        print book_copy
+        serializer = BookCopySerializer(book_copy)
+        return Response(serializer.data)
 
 class UserView(APIView):
     def get(self, request, format=None):
