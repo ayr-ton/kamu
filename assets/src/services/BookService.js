@@ -24,7 +24,7 @@ export default class BookService {
 	getBookDetail(book) {
 		const bookID = book.id;
 		return fetchFromAPI(`/books/${bookID}/show`).then(data => {
-			return data.book;
+			return data;
 		});
 	}
 
