@@ -1,5 +1,3 @@
-language: node_js
-python: "3.6"
 cache:
   yarn: true
   directories:
@@ -9,12 +7,14 @@ cache:
 jobs:
   include:
     - stage: python unit tests
+      language: python
       script: echo WIP
     - stage: javascript unit tests
+      language: node_js
       script: yarn test
     - stage: security tests
       script: echo WIP
     - stage: deploy to staging
       script: echo WIP
     - stage: test staging
-      script: 'https://staging-kamu.thoughtworks-labs.net' 
+      script: 'curl https://staging-kamu.thoughtworks-labs.net' 
