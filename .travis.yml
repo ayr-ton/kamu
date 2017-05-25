@@ -1,19 +1,18 @@
+cache:
+  yarn: true
+  directories:
+    - $HOME/.cache/pip
+    - node_modules
+
 jobs:
   include:
     - stage: python unit tests
       language: python
       python: "3.6"
-      cache:
-        directories:
-          - $HOME/.cache/pip
       script: echo WIP
     - stage: node_js unit tests
       language: node_js
       node_js: "7"
-      cache:
-        yarn: true
-        directories:
-          - node_modules
       script: yarn test
     - stage: security tests on python
       script: echo WIP
