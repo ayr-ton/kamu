@@ -88,20 +88,20 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10
 }
 
-SAML2_AUTH = {
-    'DEFAULT_NEXT_URL': '/',
-    'NEW_USER_PROFILE': {
-        'USER_GROUPS': [],
-        'ACTIVE_STATUS': True,
-        'STAFF_STATUS': True,
-        'SUPERUSER_STATUS': True,
-    },
-    'ATTRIBUTES_MAP': {
+if os.environ.get("DISABLE_SAML2") == None:
+    SAML2_AUTH = {
+        'DEFAULT_NEXT_URL': '/',
+        'NEW_USER_PROFILE': {
+            'USER_GROUPS': [],
+            'ACTIVE_STATUS': True,
+            'STAFF_STATUS': True,
+            'SUPERUSER_STATUS': True,
+        },
+        'ATTRIBUTES_MAP': {
         'email': 'email',
         'username': 'email',
         'first_name': 'firstName',
         'last_name': 'lastName',
+        }
     }
-}
-
-SAML2_AUTH['METADATA_AUTO_CONF_URL'] = os.environ['OKTA_METADATA_URL']
+    SAML2_AUTH['METADATA_AUTO_CONF_URL'] = os.environ['OKTA_METADATA_URL']
