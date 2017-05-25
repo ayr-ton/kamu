@@ -5,3 +5,16 @@ cache:
   directories:
     - $HOME/.cache/pip
     - node_modules
+
+jobs:
+  include:
+    - stage: python unit tests
+      script: echo WIP
+    - stage: javascript unit tests
+      script: yarn test
+    - stage: security tests
+      script: echo WIP
+    - stage: deploy to staging
+      script: echo WIP
+    - stage: test staging
+      script: 'https://staging-kamu.thoughtworks-labs.net' 
