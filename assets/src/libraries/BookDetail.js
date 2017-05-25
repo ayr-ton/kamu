@@ -8,7 +8,8 @@ export default class BookDetail extends Component {
 	}
 
 	render() {
-		const book = this.props.book;
+		const book = this.props.book
+		const user = this.props.user
 		const actions = [
 			<FlatButton
 				label="Close"
@@ -16,7 +17,6 @@ export default class BookDetail extends Component {
 				onTouchTap={this.props.showDetail}
 			/>,
 		];
-		console.log(this.props.book);
 
 		return (
 
@@ -27,13 +27,14 @@ export default class BookDetail extends Component {
 				onRequestClose={this.props.showDetail}
 				contentStyle={{width: "70%", maxWidth: "none"}}
 			>
+
 			<div className="modal-book">
 				<div className="modal-book__image-box">
-				<img src={this.props.book.image_url} className="modal-book__image"/>
+				<img src={book.image_url} className="modal-book__image"/>
 				</div>
 				<div className="modal-book__details">
-					<div className="modal-book__title">{this.props.book.title}</div>
-					<div className="modal-book__author">{this.props.book.author}</div>
+					<div className="modal-book__title">{book.title}</div>
+					<div className="modal-book__author">{book.author}</div>
 
 					<div className="modal-book__details-container">
 						<div className="modal-book__available-wrapper">
@@ -43,22 +44,22 @@ export default class BookDetail extends Component {
 						<div className="modal-book__publisher-wrapper">
 							<div className="modal-book__publisher-name">
 								<div className="modal-book__detail-label">Editora</div>
-								<div className="modal-book__detail-value">{this.props.book.publisher}</div>
+								<div className="modal-book__detail-value">{book.publisher}</div>
 							</div>
 							<div className="modal-book__publication-date">
 								<div className="modal-book__detail-label">Data de Publicação</div>
-								<div className="modal-book__detail-value">{this.props.book.publication_date}</div>
+								<div className="modal-book__detail-value">{book.publication_date}</div>
 							</div>
 							<div className="modal-book__number-of-pages">
 								<div className="modal-book__detail-label">Páginas</div>
-								<div className="modal-book__detail-value">{this.props.book.number_of_pages}</div>
+								<div className="modal-book__detail-value">{book.number_of_pages}</div>
 							</div>
 						</div>
 					</div>
 
 					<div className="modal-book__description-wrapper">
 						<div className="modal-book__detail-label">Sobre o Livro</div>
-						<div className="modal-book__description">{this.props.book.description}</div>
+						<div className="modal-book__description">{book.description}</div>
 					</div>
 
 					<div className="modal-book__borrowed-informations">
@@ -67,8 +68,8 @@ export default class BookDetail extends Component {
 
 							<div className="modal-book__borrowed-with-wrapper">
 								<div className="modal-book__borrowed-person">
-									<Avatar src={this.props.book.image_url}/>
-									<span>{'Andrey'}</span>
+									<Avatar src={book.image_url}/>
+									<span>{user.username}</span>
 								</div>
 								<div className="modal-book__borrowed-elapsed-time">
 									<span className="borrowed-elapsed-time__label">Emprestado a </span>
@@ -91,14 +92,3 @@ export default class BookDetail extends Component {
 		);
 	}
 }
-
-
-// author
-// title
-// subtitle
-// description
-// image_url
-// isbn
-// number_of_pages
-// publication_date
-// publisher
