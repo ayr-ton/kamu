@@ -8,7 +8,8 @@ export default class BookList extends Component {
 		this.state = {
 			books: [],
 			open: false,
-			currentBook: {}
+			currentBook: {},
+		 	user: {}
 		};
 		this.showDetail = this.showDetail.bind(this);
 		this.fetchBook = this.fetchBook.bind(this);
@@ -27,17 +28,17 @@ export default class BookList extends Component {
 	}
 
 	showDetail(book) {
-		if (book) {
+		if (book.id) {
 			return this.fetchBook(book);
 		}
-		this.setState({open: !this.state.open, currentBook: {}});
+		this.setState({open: !this.state.open, currentBook: {}, user: {}});
 	}
 
 	fetchBook(book) {
-		this.props.service.getBookDetail(book).then(book => {
-			console.log(book);
+		this.props.service.getBook(book.id).then(bookCopy => {
 			this.setState({
-				currentBook: book,
+				currentBook: bookCopy.book,
+				user: bookCopy.user,
 				open: !this.state.open
 			});
 		}).catch(error => {
@@ -55,7 +56,7 @@ export default class BookList extends Component {
 
 		return (
 			<div className="book-list">
-				<BookDetail open={this.state.open} showDetail={this.showDetail} book={this.state.currentBook} />
+				<BookDetail open={this.state.open} showDetail={this.showDetail} book={this.state.currentBook} user={this.state.user}/>
 				{content}
 			</div>
 		);
