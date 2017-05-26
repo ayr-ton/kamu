@@ -13,10 +13,6 @@ jobs:
     language: node_js
     node_js: '7'
     script: yarn test
-  - stage: security tests on python
-    script: echo WIP
-  - stage: security tests on node_js
-    script: echo WIP
   - stage: deploy to staging
     script: skip
     deploy: &script
