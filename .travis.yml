@@ -17,3 +17,12 @@ jobs:
     script: echo WIP
   - stage: security tests on node_js
     script: echo WIP
+  - stage: deploy to staging
+    script: skip
+    deploy: &script
+      provider: script
+      script: git remote add deploy $MAINSTREAM && git push -f deploy master
+      on:
+        branch: master
+  - stage: test staging
+    script: 'curl $STAGING'
