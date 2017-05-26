@@ -1,24 +1,19 @@
 cache:
   yarn: true
   directories:
-    - $HOME/.cache/pip
-    - node_modules
-
+  - "$HOME/.cache/pip"
+  - node_modules
 jobs:
   include:
-    - stage: python unit tests
-      language: python
-      python: "3.6"
-      script: echo WIP
-    - stage: node_js unit tests
-      language: node_js
-      node_js: "7"
-      script: yarn test
-    - stage: security tests on python
-      script: echo WIP
-    - stage: security tests on node_js
-      script: echo WIP
-    - stage: deploy to staging
-      script: echo WIP
-    - stage: test staging
-      script: 'curl https://staging-kamu.thoughtworks-labs.net' 
+  - stage: python unit tests
+    language: python
+    python: '3.6'
+    script: echo WIP
+  - stage: node_js unit tests
+    language: node_js
+    node_js: '7'
+    script: yarn test
+  - stage: security tests on python
+    script: echo WIP
+  - stage: security tests on node_js
+    script: echo WIP
