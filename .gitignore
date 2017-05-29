@@ -114,3 +114,11 @@ yarn-debug.log*
 yarn-error.log*
 webpack-stats.json
 public/
+
+#PyVenv
+kamu/bin
+kamu/pip-selfcheck.json
+kamu/pyvenv.cfg
+
+#PyCharm
+.idea/
