@@ -68,7 +68,7 @@ export default class BookDetail extends Component {
 
 							<div className="modal-book__borrowed-with-wrapper">
 								<div className="modal-book__borrowed-person">
-									<Avatar src={book.image_url}/>
+									<Avatar src={user.image_url}/>
 									<span>{user.username}</span>
 								</div>
 								<div className="modal-book__borrowed-elapsed-time">
@@ -84,6 +84,7 @@ export default class BookDetail extends Component {
 								<span className="modal-book__waitlist-amount">4</span>
 							</div>
 							<div className="modal-book__waitlist-value">""</div>
+							<div className="modal-book__waitlist-button"><span>ENTRAR NA FILA</span></div>
 						</div>
 					</div>
 				</div>
