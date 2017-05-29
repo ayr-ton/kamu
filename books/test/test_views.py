@@ -6,7 +6,7 @@ from books.models import Book, Library, BookCopy
 
 
 # VIEWS
-class UserViewTestCase(TestCase):
+class BookCopyBorrowViewCase(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username="claudia")
         self.user.set_password("123")
@@ -21,12 +21,3 @@ class UserViewTestCase(TestCase):
 
         self.request = self.client.post('/api/copies/' + str(self.bookCopy.id) + "/borrow")
         self.assertEqual(self.request.status_code, 200)
-
-    def test_api_profile(self):
-        response = self.client.get('/api/profile', follow=True)
-
-        self.assertEquals(response.status_code, 200)
-
-    def test_api(self):
-        response = self.client.get('/api/', follow=True)
-        self.assertEquals(response.status_code, 200)
