@@ -36,12 +36,11 @@ describe('BookService', () => {
            sandbox.restore();
         });
 
-        it("Should return libraries", (done) => {
+        it("Should return libraries", () => {
             let bookService = new BookService();
 
-            bookService.getLibraries().then(librariesReturned => {
+            return bookService.getLibraries().then(librariesReturned => {
                 expect(librariesReturned).to.deep.equal(libraries);
-                done();
             });
         });
     });
@@ -106,12 +105,11 @@ describe('BookService', () => {
            sandbox.restore();
         });
 
-        it("Should return books", (done) => {
+        it("Should return books", () => {
             let bookService = new BookService();
 
-            bookService.getBooks(slug).then(booksReturned => {
+            return bookService.getBooks(slug).then(booksReturned => {
                 expect(booksReturned).to.deep.equal(books);
-                done();
             });
         });
     });
@@ -172,14 +170,12 @@ describe('BookService', () => {
            sandbox.restore();
         });
 
-        it("Should borrow copy", (done) => {
+        it("Should borrow copy", () => {
             let bookService = new BookService();
 
-            bookService.borrowBook(book).then(data => {
+            return bookService.borrowBook(book).then(data => {
                 expect(data).to.be.true
                 expect(book.copies[1].user).to.deep.equal(user);
-
-                done();
             });
         });
 
@@ -243,14 +239,12 @@ describe('BookService', () => {
            sandbox.restore();
         });
 
-        it("Should return copy", (done) => {
+        it("Should return copy", () => {
             let bookService = new BookService();
 
-            bookService.returnBook(book).then(data => {
-                expect(data).to.be.true
+            return bookService.returnBook(book).then(data => {
+                expect(data).to.be.true;
                 expect(book.copies[1].user).to.deep.equal(null);
-
-                done();
             });
         });
 
