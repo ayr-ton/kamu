@@ -15,7 +15,7 @@ class BookCopyBorrowViewCase(TestCase):
         self.user.save()
         self.client.force_login(user=self.user)
 
-    def test_borrow_book_copy(self):
+    def test_user_can_borrow_book_copy(self):
         self.book = Book.objects.create(author="Author", title="the title", subtitle="The subtitle",
                                         publication_date=timezone.now())
         self.library = Library.objects.create(name="Santiago", slug="slug")
@@ -34,7 +34,7 @@ class BookCopyReturnView(TestCase):
         self.user.save()
         self.client.force_login(user=self.user)
 
-    def test_return_book_copy(self):
+    def test_user_can_return_book_copy(self):
         self.book = Book.objects.create(author="Author", title="the title", subtitle="The subtitle",
                                         publication_date=timezone.now())
         self.library = Library.objects.create(name="Santiago", slug="slug")
@@ -58,7 +58,7 @@ class LibraryViewSet(TestCase):
         self.library = Library.objects.create(name="Santiago", slug="slug")
         self.bookCopy = BookCopy.objects.create(book=self.book, library=self.library)
 
-    def test_retrieve(self):
+    def test_user_can_retrieve_libraries(self):
         self.request = self.client.get("/api/libraries/" + self.library.slug + "/")
 
         library_json = json.loads(json.dumps(self.request.data))
@@ -77,6 +77,5 @@ class UserView(TestCase):
     def test_user_should_be_able_to_see_its_own_profile(self):
         self.request = self.client.get("/api/profile")
         user_json = json.loads(json.dumps(self.request.data))
-        print(user_json)
 
         self.assertEqual(self.user.username, user_json['user']['username'])
