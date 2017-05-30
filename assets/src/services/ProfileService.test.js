@@ -18,11 +18,10 @@ describe('ProfileService', () => {
 			};
         });
 
-        it("Should get user from local Storage", (done) => {
+        it("Should get user from local Storage", () => {
             let profileService = new ProfileService();
-            profileService.getLoggedUser().then((userReturned) => {
+            return profileService.getLoggedUser().then((userReturned) => {
             	expect(userReturned).to.deep.equal(user);
-            	done();
 			});
         });
     });
@@ -59,11 +58,10 @@ describe('ProfileService', () => {
            sandbox.restore();
         });
 
-        it("Should get user from backend", (done) => {
+        it("Should get user from backend", () => {
             let profileService = new ProfileService();
-            profileService.getLoggedUser().then((userReturned) => {
+            return profileService.getLoggedUser().then((userReturned) => {
             	expect(userReturned).to.deep.equal(user);
-            	done();
 			});
         });
     });
