@@ -2,13 +2,17 @@ import sinon from 'sinon';
 import { expect } from 'chai';
 import ProfileService from "./ProfileService";
 
+function generateUser(){
+    return {
+        username: "test@thoughtsworks.com"
+        , email: "test@thoughtsworks.com"
+        , image_url: ""
+    };
+}
+
 describe('ProfileService', () => {
     describe('Get user from localStorage', () => {
-        let user = {
-            username: "test@thoughtsworks.com"
-            , email: "test@thoughtsworks.com"
-            , image_url: ""
-        };
+        let user = generateUser();
 
 		beforeEach(() => {
 			global.localStorage = {
@@ -27,13 +31,7 @@ describe('ProfileService', () => {
     });
 
     describe('Get user from backend', () => {
-        let user = {
-            username: "test@thoughtsworks.com"
-            , email: "test@thoughtsworks.com"
-            , image_url: ""
-        };
-
-
+        let user = generateUser();
 
         let sandbox;
         beforeEach(() => {
