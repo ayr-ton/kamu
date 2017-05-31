@@ -6,8 +6,9 @@ import { shallow } from 'enzyme';
 import { expect } from 'chai';
 import sinon from 'sinon';
 
-describe('<Book />', () => {
-	let bookModel = new BookModel();
+function generateBooks() {
+    let bookModel = new BookModel();
+
     bookModel.id = 1;
     bookModel.author = "Kent Beck";
     bookModel.title = "Test Driven Development";
@@ -19,26 +20,22 @@ describe('<Book />', () => {
     bookModel.publication_date = "2003-05-17";
     bookModel.publisher = "Addison-Wesley Professional";
 
-    let user = {
+    return bookModel;
+}
+
+function generateUser(){
+    return {
         username: "test@thoughtsworks.com"
         , email: "test@thoughtsworks.com"
         , image_url: ""
     };
+}
 
-    bookModel.copies = [
-        {
-          "id": 1348,
-          "user": {
-            "username": "bherrera@thoughtworks.com",
-            "email": "bherrera@thoughtworks.com",
-            "image_url": "https://www.gravatar.com/avatar/5cf7021537744b09534beb1d66adfbea?size=100"
-          }
-        }
-        ,{
-          "id": 1349,
-          "user": user
-        }
-    ];
+describe('<Book />', () => {
+	let bookModel = generateBooks();    
+    let user = generateUser();
+
+    
 
     let bookComponent;
 
@@ -46,6 +43,21 @@ describe('<Book />', () => {
 
     let sandbox;
 	beforeEach(() => {
+        bookModel.copies = [
+            {
+              "id": 1348,
+              "user": {
+                "username": "bherrera@thoughtworks.com",
+                "email": "bherrera@thoughtworks.com",
+                "image_url": "https://www.gravatar.com/avatar/5cf7021537744b09534beb1d66adfbea?size=100"
+              }
+            }
+            ,{
+              "id": 1349,
+              "user": user
+            }
+        ];
+    
 	    sandbox = sinon.sandbox.create();
         sandbox.stub(
             bookModel
