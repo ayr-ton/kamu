@@ -64,11 +64,14 @@ class LibraryViewSet(TestCase):
         self.library = Library.objects.create(name="Santiago", slug="slug")
         self.bookCopy = BookCopy.objects.create(book=self.book, library=self.library)
 
-    def test_user_can_retrieve_libraries(self):
+    def test_user_can_retrieve_library_information_with_existing_slug(self):
         self.request = self.client.get("/api/libraries/" + self.library.slug + "/")
 
         library_json = json.loads(json.dumps(self.request.data))
 
+        self.assertEqual(self.library.name, library_json['name'])
+        self.assertEqual(self.library.slug, library_json['slug'])
+        self.assertEqual(1, len(library_json['books']))
         self.assertEqual(1, len(library_json['books'][0]['copies']))
         self.assertEqual(self.request.status_code, 200)
 
