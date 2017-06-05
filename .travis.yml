@@ -8,7 +8,7 @@ jobs:
   - stage: python unit tests
     language: python
     python: '3.6'
-    script: echo WIP
+    script: python manage.py test
   - stage: node_js unit tests
     language: node_js
     node_js: '7'
