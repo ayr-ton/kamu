@@ -8,17 +8,28 @@ jobs:
   - stage: python unit tests
     language: python
     python: '3.6'
-    script: echo WIP
+    script: DISABLE_SAML2=true python manage.py test
   - stage: node_js unit tests
     language: node_js
     node_js: '7'
     script: yarn test
   - stage: deploy to staging
-    script: skip
+    script: export DISABLE_SAML2=true
     deploy: &script
       provider: script
       script: git remote add deploy $MAINSTREAM && git push -f deploy master
       on:
         branch: master
   - stage: test staging
+    sudo: required
+    language: python
+    python: '3.6'
+    services:
+      - docker
+    before_script:
+      - docker-compose up -d
+    script: export DISABLE_SAML2=true
+    script: python KamuSeleniumTests.py
+    after_script:
+      - docker-compose down
     script: 'curl $STAGING'
