@@ -1,0 +1,17 @@
+selenium-hub:
+  image: selenium/hub
+  ports:
+    - "4444:4444"
+
+chrome:
+    image: selenium/node-chrome
+    links:
+      - selenium-hub:hub
+    volumes:
+      - /dev/shm:/dev/shm # Mitigates the Chromium issue described at https://code.google.com/p/chromium/issues/detail?id=519952
+
+firefox:
+    #image: selenium/node-firefox
+    image: cvakiitho/docker-selenium
+    links:
+      - selenium-hub:hub
