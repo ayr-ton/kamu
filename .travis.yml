@@ -25,4 +25,4 @@ jobs:
     language: python
     python: '3.6'
     script: DISABLE_SAML2=true python KamuSeleniumTests.py
-    script: 'curl $STAGING'
+    #script: 'curl $STAGING'
