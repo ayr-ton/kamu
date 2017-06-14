@@ -19,7 +19,7 @@ jobs:
       provider: script
       script: git remote add deploy $MAINSTREAM && git push -f deploy master
       on:
-        branch: master
+        branch: Functional_tests
   - stage: test staging
     sudo: required
     language: python
