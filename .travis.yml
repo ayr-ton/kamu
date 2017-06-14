@@ -14,7 +14,7 @@ jobs:
     node_js: '7'
     script: yarn test
   - stage: deploy to staging
-    script: export DISABLE_SAML2=true
+    script: skip
     deploy: &script
       provider: script
       script: git remote add deploy $MAINSTREAM && git push -f deploy master
@@ -24,12 +24,5 @@ jobs:
     sudo: required
     language: python
     python: '3.6'
-    services:
-      - docker
-    before_script:
-      - docker-compose up -d
-    script: export DISABLE_SAML2=true
-    script: python KamuSeleniumTests.py
-    after_script:
-      - docker-compose down
+    script: DISABLE_SAML2=true python KamuSeleniumTests.py
     script: 'curl $STAGING'
