@@ -17,7 +17,7 @@ jobs:
     script: skip
     deploy: &script
       provider: script
-      script: git remote add deploy $MAINSTREAM && git push -f deploy master
+      script: git remote add deploy $MAINSTREAM && git push -f deploy Functional_tests
       on:
         branch: Functional_tests
   - stage: test staging
