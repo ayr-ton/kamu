@@ -6,7 +6,8 @@
     "build": "webpack -p",
     "start": "NODE_ENV=development concurrently --raw --kill-others \"node dev-server.js\" \"python manage.py runserver\"",
     "test": "mocha --no-deprecation --recursive --reporter spec --watch-extensions js,jsx --require babel-polyfill --compilers js:babel-core/register assets/src/**/*.test.js",
-    "test:watch": "yarn test -- --watch"
+    "test:watch": "yarn test -- --watch",
+    "lint": "eslint ."
   },
   "dependencies": {
     "babel-core": "^6.24.1",
