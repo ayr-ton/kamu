@@ -19,6 +19,10 @@ export default class ProfileService {
 	}
 
 	setRegion(region) {
-		return localStorage.setItem('region', region);
+		localStorage.setItem('region', region);
+	}
+
+	clearRegion() {
+		localStorage.removeItem('region');
 	}
 }
