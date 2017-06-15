@@ -1,13 +1,16 @@
-import React, { Component } from 'react';
-import AppBar from 'material-ui/AppBar';
-import IconButton from 'material-ui/IconButton';
-import IconMenu from 'material-ui/IconMenu';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import MenuItem from 'material-ui/MenuItem';
+import React, {Component} from "react";
+import AppBar from "material-ui/AppBar";
+import IconButton from "material-ui/IconButton";
+import IconMenu from "material-ui/IconMenu";
+import MoreVertIcon from "material-ui/svg-icons/navigation/more-vert";
+import MenuItem from "material-ui/MenuItem";
 
 export default class Header extends Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+            displaysMenu: window.location.pathname !== '/'
+        };
 
 		this._changeRegion = this._changeRegion.bind(this);
 	}
@@ -24,15 +27,18 @@ export default class Header extends Component {
 	}
 
 	render() {
-		const menu = (
-			<IconMenu
-				iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
-				targetOrigin={{horizontal: 'right', vertical: 'top'}}
-				anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-			>
-				<MenuItem primaryText="Change library" id="change-region" onClick={this._changeRegion} />
-			</IconMenu>
-		);
+		let menu;
+		if (this.state.displaysMenu) {
+			menu = (
+				<IconMenu
+					iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
+					targetOrigin={{horizontal: 'right', vertical: 'top'}}
+					anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+				>
+					<MenuItem primaryText="Change library" id="change-region" onClick={this._changeRegion} />
+				</IconMenu>
+            );
+        }
 
 		return (
 				<AppBar
