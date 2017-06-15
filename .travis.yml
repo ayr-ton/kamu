@@ -5,6 +5,13 @@ cache:
   - node_modules
 jobs:
   include:
+  - stage: lint
+    language: node_js
+    node_js: '7'
+    install:
+      - npm install eslint-changes
+    script:
+      - ./node_modules/.bin/eslint-changes
   - stage: python unit tests
     language: python
     python: '3.6'
