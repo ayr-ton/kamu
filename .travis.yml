@@ -8,11 +8,8 @@ jobs:
   - stage: lint
     language: node_js
     node_js: '7'
-    install:
-      - yarn install
-      - npm install eslint-changes
     script:
-      - ./node_modules/.bin/eslint-changes
+      - yarn lint
   - stage: python unit tests
     language: python
     python: '3.6'
