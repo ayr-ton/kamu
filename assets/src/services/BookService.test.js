@@ -229,10 +229,68 @@ describe('BookService', () => {
 
         it("Should return copy", () => {
             let bookService = new BookService();
-
             return bookService.returnBook(book).then(data => {
                 expect(data).to.be.true;
                 expect(book.copies[1].user).to.deep.equal(null);
+            });
+        });
+
+         it("Shouldn't return copy", () => {
+            let bookService = new BookService();
+            book.copies.pop();
+            return bookService.returnBook(book).then(data => {
+                expect(data).to.be.false;
+            });
+        });
+
+        //ToDo: Add a test for the case that the user doesnt have copies of the book
+    });
+
+
+        describe('Return book II', () => {
+        let book = generateBooks()[0];
+        let user = generateUser();
+
+        let sandbox;
+        beforeEach(() => {
+            book.copies = [
+                {
+                  "id": 1348,
+                  "user": {
+                    "username": "bherrera@thoughtworks.com",
+                    "email": "bherrera@thoughtworks.com",
+                    "image_url": "https://www.gravatar.com/avatar/5cf7021537744b09534beb1d66adfbea?size=100"
+                  }
+                }
+                ,{
+                  "id": 1349,
+                  "user": user
+                }
+            ];
+
+            sandbox = sinon.sandbox.create();
+            sandbox.stub(
+                require("./helpers")
+                , "fetchFromAPI"
+            ).withArgs(`/copies/${book.copies[1].id}/return`)
+            .returns(Promise.reject(new Error("Because backend fail")));
+
+            sandbox.stub(
+                book
+                , "getBorrowedCopyID"
+            ).returns(book.copies[1].id);
+
+            global.currentUser = user;
+        });
+
+        afterEach(() => {
+           sandbox.restore();
+        });
+
+         it("Shouldn't return copy because backend fail", () => {
+            let bookService = new BookService();
+            return bookService.returnBook(book).then(data => {
+                expect(data).to.be.false;
             });
         });
 

@@ -41,10 +41,12 @@ export default class BookService {
 			for (let copy of book.copies) {
 				if (copy.id == copyID) {
 					copy.user = null;
-					break;
+					return true;
 				}
 			}
-			return true;
-		});
+			return false;
+		}).catch(()=>{
+		    return false;
+        });
 	}
 }
