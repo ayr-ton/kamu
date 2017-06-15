@@ -21,7 +21,7 @@ describe('LibrarySelector', () => {
 		global.window = { location: { href: '' } };
 
 		bookService = {
-			getLibraries: () => { return Promise.resolve(libraries); }
+			getLibraries: () => Promise.resolve(libraries)
 		};
 
 		profileService = {
