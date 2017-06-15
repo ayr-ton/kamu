@@ -9,6 +9,7 @@ jobs:
     language: node_js
     node_js: '7'
     install:
+      - yarn install
       - npm install eslint-changes
     script:
       - ./node_modules/.bin/eslint-changes
