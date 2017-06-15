@@ -1,23 +1,23 @@
-import sinon from 'sinon';
-import { expect } from 'chai';
+import sinon from "sinon";
+import {expect} from "chai";
 import BookService from "./BookService";
 import Book from "../models/Book";
 
 function generateLibraries() {
     return [
-            {
-                id: 1,
-                url: "http://localhost:8000/api/libraries/quito/",
-                me: "Quito",
-                slug: "quito"
-            },
-            {
-                id: 2,
-                url: "http://localhost:8000/api/libraries/bh/",
-                name: "Belo Horizonte",
-                slug: "bh"
-            }
-        ];
+        {
+            id: 1,
+            url: "http://localhost:8000/api/libraries/quito/",
+            me: "Quito",
+            slug: "quito"
+        },
+        {
+            id: 2,
+            url: "http://localhost:8000/api/libraries/bh/",
+            name: "Belo Horizonte",
+            slug: "bh"
+        }
+    ];
 }
 
 function generateUser() {
@@ -43,15 +43,15 @@ function generateBooks() {
     book1.publisher = "Addison-Wesley Professional";
 
     book1.copies = [{
-          "id": 1348,
-          "user": {
+        "id": 1348,
+        "user": {
             "username": "bherrera@thoughtworks.com",
             "email": "bherrera@thoughtworks.com",
             "image_url": "https://www.gravatar.com/avatar/5cf7021537744b09534beb1d66adfbea?size=100"
-          }
-        }];
+        }
+    }];
     books.push(book1);
-    
+
     let book2 = new Book();
     book2.id = 2;
     book2.author = "Robert Martin";
@@ -65,9 +65,9 @@ function generateBooks() {
     book2.publisher = "Pearson Education";
 
     book2.copies = [{
-            "id": 1349,
-            "user": null
-        }];
+        "id": 1349,
+        "user": null
+    }];
     books.push(book2);
 
     return books;
@@ -90,7 +90,7 @@ describe('BookService', () => {
         });
 
         afterEach(() => {
-           sandbox.restore();
+            sandbox.restore();
         });
 
         it("Should return libraries", () => {
@@ -120,7 +120,7 @@ describe('BookService', () => {
         });
 
         afterEach(() => {
-           sandbox.restore();
+            sandbox.restore();
         });
 
         it("Should return books", () => {
@@ -133,8 +133,8 @@ describe('BookService', () => {
     });
 
     describe('Borrow book', () => {
+        let bookShouldBorrow = generateBooks()[0];
         let book = generateBooks()[0];
-
         let user = generateUser();
 
 
@@ -142,16 +142,16 @@ describe('BookService', () => {
         beforeEach(() => {
             book.copies = [
                 {
-                  "id": 1348,
-                  "user": {
-                    "username": "bherrera@thoughtworks.com",
-                    "email": "bherrera@thoughtworks.com",
-                    "image_url": "https://www.gravatar.com/avatar/5cf7021537744b09534beb1d66adfbea?size=100"
-                  }
+                    "id": 1348,
+                    "user": {
+                        "username": "bherrera@thoughtworks.com",
+                        "email": "bherrera@thoughtworks.com",
+                        "image_url": "https://www.gravatar.com/avatar/5cf7021537744b09534beb1d66adfbea?size=100"
+                    }
                 }
-                ,{
-                  "id": 1349,
-                  "user": null
+                , {
+                    "id": 1349,
+                    "user": null
                 }
             ];
 
@@ -160,7 +160,7 @@ describe('BookService', () => {
                 require("./helpers")
                 , "fetchFromAPI"
             ).withArgs(`/copies/${book.copies[1].id}/borrow`)
-            .returns(Promise.resolve({}));
+                .returns(Promise.resolve({}));
 
             sandbox.stub(
                 book
@@ -171,7 +171,7 @@ describe('BookService', () => {
         });
 
         afterEach(() => {
-           sandbox.restore();
+            sandbox.restore();
         });
 
         it("Should borrow copy", () => {
@@ -182,6 +182,69 @@ describe('BookService', () => {
                 expect(book.copies[1].user).to.deep.equal(user);
             });
         });
+
+        it("Shouldn't borrow copy because all copies are borrowed", () => {
+            let bookService = new BookService();
+
+            book.copies.pop();
+
+            return bookService.borrowBook(book).then(data => {
+                expect(data).to.be.false
+            });
+        })
+
+        //ToDo: Add a test for the case that no copies are available, expect return False from the method
+    });
+
+    describe('Borrow book II', () => {
+        let bookShouldBorrow = generateBooks()[0];
+        let book = generateBooks()[0];
+        let user = generateUser();
+
+
+        let sandbox;
+        beforeEach(() => {
+            book.copies = [
+                {
+                    "id": 1348,
+                    "user": {
+                        "username": "bherrera@thoughtworks.com",
+                        "email": "bherrera@thoughtworks.com",
+                        "image_url": "https://www.gravatar.com/avatar/5cf7021537744b09534beb1d66adfbea?size=100"
+                    }
+                }
+                , {
+                    "id": 1349,
+                    "user": null
+                }
+            ];
+
+            sandbox = sinon.sandbox.create();
+            sandbox.stub(
+                require("./helpers")
+                , "fetchFromAPI"
+            ).withArgs(`/copies/${book.copies[1].id}/borrow`)
+                .returns(Promise.reject(new Error("Because yes")));
+
+            sandbox.stub(
+                book
+                , "getAvailableCopyID"
+            ).returns(book.copies[1].id);
+
+            global.currentUser = user;
+        });
+
+        afterEach(() => {
+            sandbox.restore();
+        });
+
+        it("Shouldn't borrow copy because backend fails", () => {
+            let bookService = new BookService();
+
+            return bookService.borrowBook(book).then(data => {
+                expect(data).to.be.false
+            });
+        })
 
 
         //ToDo: Add a test for the case that no copies are available, expect return False from the method
@@ -195,16 +258,16 @@ describe('BookService', () => {
         beforeEach(() => {
             book.copies = [
                 {
-                  "id": 1348,
-                  "user": {
-                    "username": "bherrera@thoughtworks.com",
-                    "email": "bherrera@thoughtworks.com",
-                    "image_url": "https://www.gravatar.com/avatar/5cf7021537744b09534beb1d66adfbea?size=100"
-                  }
+                    "id": 1348,
+                    "user": {
+                        "username": "bherrera@thoughtworks.com",
+                        "email": "bherrera@thoughtworks.com",
+                        "image_url": "https://www.gravatar.com/avatar/5cf7021537744b09534beb1d66adfbea?size=100"
+                    }
                 }
-                ,{
-                  "id": 1349,
-                  "user": user
+                , {
+                    "id": 1349,
+                    "user": user
                 }
             ];
 
@@ -213,7 +276,7 @@ describe('BookService', () => {
                 require("./helpers")
                 , "fetchFromAPI"
             ).withArgs(`/copies/${book.copies[1].id}/return`)
-            .returns(Promise.resolve({}));
+                .returns(Promise.resolve({}));
 
             sandbox.stub(
                 book
@@ -224,7 +287,7 @@ describe('BookService', () => {
         });
 
         afterEach(() => {
-           sandbox.restore();
+            sandbox.restore();
         });
 
         it("Should return copy", () => {
