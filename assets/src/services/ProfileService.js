@@ -13,4 +13,12 @@ export default class ProfileService {
 			return user;
 		});
 	}
+
+	getRegion() {
+		return localStorage.getItem('region');
+	}
+
+	setRegion(region) {
+		return localStorage.setItem('region', region);
+	}
 }
