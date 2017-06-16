@@ -33,6 +33,7 @@ class BookCopy(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     library = models.ForeignKey(Library, related_name='copies', on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
+    borrow_date = models.DateField(null=True, blank=True)
 
     class Meta:
         verbose_name_plural = 'Book copies'
