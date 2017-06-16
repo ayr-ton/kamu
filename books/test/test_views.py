@@ -28,6 +28,7 @@ class BookCopyBorrowViewCase(TestCase):
 
         book_copy = BookCopy.objects.get(pk=self.bookCopy.id)
         self.assertEqual(self.user, book_copy.user)
+        self.assertIsNotNone(book_copy.borrow_date)
 
 
 class BookCopyReturnView(TestCase):
@@ -41,7 +42,7 @@ class BookCopyReturnView(TestCase):
         self.book = Book.objects.create(author="Author", title="the title", subtitle="The subtitle",
                                         publication_date=timezone.now())
         self.library = Library.objects.create(name="Santiago", slug="slug")
-        self.bookCopy = BookCopy.objects.create(book=self.book, library=self.library, user=self.user)
+        self.bookCopy = BookCopy.objects.create(book=self.book, library=self.library, user=self.user, borrow_date=timezone.now())
 
         self.request = self.client.post('/api/copies/' + str(self.bookCopy.id) + '/return')
 
@@ -49,7 +50,9 @@ class BookCopyReturnView(TestCase):
         self.assertTrue(str(self.request.data).__contains__("Book returned"))
 
         book_copy = BookCopy.objects.get(pk=self.bookCopy.id)
+
         self.assertEqual(None, book_copy.user)
+        self.assertIsNone(book_copy.borrow_date)
 
 
 class LibraryViewSet(TestCase):
