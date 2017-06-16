@@ -1,3 +1,4 @@
+from django.utils import timezone
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -25,6 +26,7 @@ class BookCopyBorrowView(APIView):
     def post(self, request, id=None):
         book_copy = BookCopy.objects.get(pk=id)
         book_copy.user = request.user
+        book_copy.borrow_date = timezone.now()
         book_copy.save()
         return Response({'status': 'Book borrowed'})
 
@@ -33,6 +35,7 @@ class BookCopyReturnView(APIView):
     def post(self, request, id=None):
         book_copy = BookCopy.objects.get(pk=id)
         book_copy.user = None
+        book_copy.borrow_date = None
         book_copy.save()
         return Response({'status': 'Book returned'})
 
