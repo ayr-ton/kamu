@@ -21,19 +21,21 @@ export default class BookService {
 		});
 	}	
 
-	//TODO: Refactor name to borrowCopy
-	borrowBook(book) {
-		const copyID = book.getAvailableCopyID();
-		return fetchFromAPI(`/copies/${copyID}/borrow`, 'POST').then(data => {
-			for (let copy of book.copies) {
-				if (copy.id == copyID) {
-					copy.user = currentUser;
-					break;
-				}
-			}
-			return true;
-		});
-	}
+    //TODO: Refactor name to borrowCopy
+    borrowBook(book) {
+        const copyID = book.getAvailableCopyID();
+        return fetchFromAPI(`/copies/${copyID}/borrow`, 'POST').then(data => {
+            for (let copy of book.copies) {
+                if (copy.id == copyID) {
+                    copy.user = currentUser;
+                    return true;
+                }
+            }
+            return false;
+        }).catch(() => {
+            return false;
+        });
+    }
 
 	returnBook(book) {
 		const copyID = book.getBorrowedCopyID();
@@ -41,10 +43,12 @@ export default class BookService {
 			for (let copy of book.copies) {
 				if (copy.id == copyID) {
 					copy.user = null;
-					break;
+					return true;
 				}
 			}
-			return true;
-		});
+			return false;
+		}).catch(()=>{
+		    return false;
+        });
 	}
 }
