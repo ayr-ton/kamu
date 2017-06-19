@@ -1,6 +1,5 @@
 import os
 
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 INSTALLED_APPS = [
@@ -13,8 +12,15 @@ INSTALLED_APPS = [
     'rest_framework',
     'webpack_loader',
     'books',
-    'django_saml2_auth'
+    'django_saml2_auth',
+    'django_crontab',
 ]
+
+CRONJOBS = [
+    ('* * * * *', 'books.cron.send_notification.send_notification', '>> /Users/claudialopez/Desktop/crontab.txt')
+]
+
+CRONTAB_COMMAND_PREFIX = 'export DISABLE_SAML2=true &&'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -98,10 +104,10 @@ if os.environ.get("DISABLE_SAML2") == None:
             'SUPERUSER_STATUS': True,
         },
         'ATTRIBUTES_MAP': {
-        'email': 'email',
-        'username': 'email',
-        'first_name': 'firstName',
-        'last_name': 'lastName',
+            'email': 'email',
+            'username': 'email',
+            'first_name': 'firstName',
+            'last_name': 'lastName',
         }
     }
     SAML2_AUTH['METADATA_AUTO_CONF_URL'] = os.environ['OKTA_METADATA_URL']
