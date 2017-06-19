@@ -27,6 +27,7 @@ export default class BookService {
 		});
 	}
 
+	//TODO: Refactor name to borrowCopy
 	borrowBook(book) {
 		const copyID = book.getAvailableCopyID();
 		return fetchFromAPI(`/copies/${copyID}/borrow`, 'POST').then(data => {
