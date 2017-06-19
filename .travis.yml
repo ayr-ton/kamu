@@ -21,4 +21,4 @@ jobs:
       on:
         branch: master
   - stage: test staging
-    script: 'curl $STAGING'
+    script: 'curl --fail $STAGING'
