@@ -14,8 +14,7 @@ Kamu is an application that focus on managing a physical library, you can add bo
 
 ## Installation / Getting started
 
-Here is a quick step-by-step minimal setup you need to get the local app up and
-running in your workstation:
+Here is a quick step-by-step minimal setup you need to get the local app up and running in your workstation:
 
 Clone this repo and open the root folder:
 
@@ -48,33 +47,36 @@ Install the frontend dependencies using [Yarn](http://yarnpkg.com):
 yarn install
 ```
 
-For setup local without authenticate with Okta Preview, is necessary create a super user using the command:
-
-```shell
-python manage.py createsuperuser
-```
-
-> Use the "DISABLE_SAML2=true" concatenating with the commands the Python:
+---
+**For setup local without authenticate with Okta Preview:**
+Use the "DISABLE_SAML2=true" concatenating with the commands the Python:
 
 ```shell
   Examples:  
   DISABLE_SAML2=true yarn start
-  DISABLE_SAML2=true python manager.py migrate
+  DISABLE_SAML2=true python manage.py migrate
 ```
 
-> Other form the going is export this parameter before the execute os commands do Python:
+Other form the going is export this parameter before the execute os commands do Python:
 
 ```shell
   export DISABLE_SAML2=true
   yarn start
-  python manager.py migrate
+  python manage.py migrate
 ```
 
-> Case necessity execute application with authenticate by Okta Preview again, enough execute the command:
+Case necessity execute application with authenticate by Okta Preview again, enough execute the command:
 
 ```shell
   unset DISABLE_SAML2=true
 ```
+
+Finally, is necessary to create a super user using the command:
+
+```shell
+python manage.py createsuperuser
+```
+---
 
 Create the database tables:
 
