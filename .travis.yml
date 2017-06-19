@@ -14,15 +14,16 @@ jobs:
     node_js: '7'
     script: yarn test
   - stage: deploy to staging
-    script: skip
+    #script: skip
+    script: DISABLE_SAML2=true
     deploy: &script
       provider: script
       script: git remote add deploy $MAINSTREAM && git push -f deploy master
       on:
         branch: master
   - stage: test staging
-    sudo: required
-    language: python
-    python: '3.6'
-    script: DISABLE_SAML2=true python KamuSeleniumTests.py
-    #script: 'curl $STAGING'
+    #sudo: required
+    #language: python
+    #python: '3.6'
+    #script: DISABLE_SAML2=true python KamuSeleniumTests.py
+    script: 'curl $STAGING'
