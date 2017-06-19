@@ -5,7 +5,7 @@
 [![Build Status](https://travis-ci.com/ayr-ton/kamu.svg?token=KGsd1SkDsTdBvgkTgbtG&branch=master)](https://travis-ci.com/ayr-ton/kamu)
 [![Join the chat at https://gitter.im/pykamu/Lobby](https://badges.gitter.im/pykamu/Lobby.svg)](https://gitter.im/pykamu/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-Kamu is an application that focus on managing a physical library, you can add books, borrow and return them. 
+Kamu is an application that focus on managing a physical library, you can add books, borrow and return them.
 
 ## Requirements
 
@@ -46,6 +46,34 @@ Install the frontend dependencies using [Yarn](http://yarnpkg.com):
 
 ```shell
 yarn install
+```
+
+> Use the "DISABLE_SAML2=true" concatenating with the commands the Python:
+
+```shell
+  Examples:  
+  DISABLE_SAML2=true yarn start
+  DISABLE_SAML2=true python manage.py migrate
+```
+
+> Other form the going is export this parameter before the execute os commands do Python:
+
+```shell
+  export DISABLE_SAML2=true
+  yarn start
+  python manage.py migrate
+```
+
+> Case necessity execute application with authenticate by Okta Preview again, enough execute the command:
+
+```shell
+  unset DISABLE_SAML2=true
+```
+
+For setup local without authenticate with Okta Preview, is necessary create a super user using the command:
+
+```shell
+python manage.py createsuperuser
 ```
 
 Create the database tables:
