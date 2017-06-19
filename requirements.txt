@@ -25,3 +25,4 @@ six==1.10.0
 WebOb==1.7.2
 whitenoise==3.3.0
 zope.interface==4.3.3
+django-crontab==0.7.1
