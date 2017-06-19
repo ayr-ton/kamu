@@ -1,0 +1,9 @@
+- Our backlog is at: https://trello.com/b/Gu6SxfMd/backlog
+- If you can't see the backlog, try to join our team on Trello via: https://trello.com/invite/kamu6/c5d8fd9a75a0967d68a124bfb1d91088
+- To contribute to this project we would recommend fork this and find a friend to pair. 
+- After you finish working on your fork, make a Pull Request and find two reviewers so we could make this collaborative.
+- Unit tests are mandatory to new features, but you dont need to test any plugin specific functionality 
+- If you plan to make any refactory, discuss with old contributors at https://gitter.im/pykamu/Contributors 
+- Create a card on Trello with Tech Debts for your story if you can identify any. 
+- We don't demand to you paying all the tech debts you create during the development of new features, but we would encourage creating a second pull request paying the tech debts before submiting new features
+- After your first feature pull request approval you could be invited to be a reviewer as well so you could help new contributors 
