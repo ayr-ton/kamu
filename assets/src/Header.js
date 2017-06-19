@@ -1,33 +1,46 @@
-import React, { Component } from 'react';
-import AppBar from 'material-ui/AppBar';
-import Avatar from 'material-ui/Avatar';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import FlatButton from 'material-ui/FlatButton';
-
+import React, {Component} from "react";
+import AppBar from "material-ui/AppBar";
+import IconButton from "material-ui/IconButton";
+import IconMenu from "material-ui/IconMenu";
+import MoreVertIcon from "material-ui/svg-icons/navigation/more-vert";
+import MenuItem from "material-ui/MenuItem";
 
 export default class Header extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			user: null
-		};
+            displaysMenu: window.location.pathname !== '/'
+        };
+
+		this._changeRegion = this._changeRegion.bind(this);
 	}
 
 	componentWillMount() {
-		this.props.service.getLoggedUser().then(user => {
-			this.setState({ user });
+		return this.props.service.getLoggedUser().then(user => {
 			window.currentUser = user;
 		});
 	}
 
+	_changeRegion() {
+		this.props.service.clearRegion();
+		window.location.href = '/';
+	}
+
 	render() {
-		let avatar;
-		if (this.state.user) {
-			avatar = <Avatar src={this.state.user.image_url} size={50} />;
-		}
+		let menu;
+		if (this.state.displaysMenu) {
+			menu = (
+				<IconMenu
+					iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
+					targetOrigin={{horizontal: 'right', vertical: 'top'}}
+					anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+				>
+					<MenuItem primaryText="Change library" id="change-region" onClick={this._changeRegion} />
+				</IconMenu>
+            );
+        }
 
 		return (
-			<MuiThemeProvider>
 				<AppBar
 					title={
 						<a href="/" className="header-content">
@@ -35,10 +48,9 @@ export default class Header extends Component {
 						</a>
 					}
 					iconElementLeft={<div></div>}
-					iconElementRight={avatar}
+					iconElementRight={<div>{menu}</div>}
 					className="header"
 				/>
-			</MuiThemeProvider>
 		);
 	}
 }
