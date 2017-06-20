@@ -5,7 +5,7 @@
   "scripts": {
     "build": "webpack -p",
     "start": "NODE_ENV=development concurrently --raw --kill-others \"node dev-server.js\" \"python manage.py runserver\"",
-    "test": "mocha --no-deprecation --recursive --reporter spec --watch-extensions js,jsx --require babel-polyfill --compilers js:babel-core/register assets/src/**/*.test.js",
+    "test": "mocha --require ignore-styles --no-deprecation --recursive --reporter spec --watch-extensions js,jsx --require babel-polyfill --compilers js:babel-core/register assets/src/**/*.test.js",
     "test:watch": "yarn test -- --watch"
   },
   "dependencies": {
@@ -35,6 +35,7 @@
     "babel-register": "^6.4.3",
     "chai": "^3.5.0",
     "enzyme": "^2.8.1",
+    "ignore-styles": "^5.0.1",
     "istanbul": "^0.4.5",
     "jsdom": "^9.12.0",
     "mocha": "^3.2.0",
