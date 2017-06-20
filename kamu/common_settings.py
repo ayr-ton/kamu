@@ -17,7 +17,7 @@ INSTALLED_APPS = [
 ]
 
 CRONJOBS = [
-    ('* * * * *', 'books.cron.send_notification.send_notification', '>> /Users/LAivillavicencio/Desktop/crontab.txt')
+    ('* * * * *', 'books.cron.send_notification.send_notification')
 ]
 
 CRONTAB_COMMAND_PREFIX = 'export DISABLE_SAML2=true &&'
