@@ -25,7 +25,7 @@ describe('LibrarySelector', () => {
 		};
 
 		profileService = {
-			setRegion: (region) => {}
+			setRegion: () => {}
 		};
 
 		librarySelector = shallow(<LibrarySelector bookService={bookService} profileService={profileService} />);

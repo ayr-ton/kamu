@@ -16,8 +16,8 @@ export default class BookList extends Component {
 	_loadBooks() {
 		return this.props.service.getBooks(this.props.librarySlug).then(books => {
 			this.setState({ books });
-		}).catch(error => {
-			console.error(error);
+		}).catch(() => {
+			return false;
 		});
 	}
 
