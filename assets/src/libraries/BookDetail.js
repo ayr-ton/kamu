@@ -18,6 +18,24 @@ export default class BookDetail extends Component {
 			/>,
 		];
 
+		let borrow_info;
+		if(user) {
+			borrow_info = <div className="modal-book__borrowed-with">
+				<div className="modal-book__borrowed-with-label">Emprestado com:</div>
+
+				<div className="modal-book__borrowed-with-wrapper">
+					<div className="modal-book__borrowed-person">
+						<Avatar src={user.image_url} />
+						<span>{user.username}</span>
+					</div>
+					<div className="modal-book__borrowed-elapsed-time">
+						<span className="borrowed-elapsed-time__label">Emprestado a </span>
+						<span className="borrowed-elapsed-time__value">20 dias</span>
+					</div>
+				</div>
+			</div>
+		}
+
 		return (
 
 			<Dialog
@@ -63,20 +81,7 @@ export default class BookDetail extends Component {
 					</div>
 
 					<div className="modal-book__borrowed-informations">
-						<div className="modal-book__borrowed-with">
-							<div className="modal-book__borrowed-with-label">Emprestado com:</div>
-
-							<div className="modal-book__borrowed-with-wrapper">
-								<div className="modal-book__borrowed-person">
-									<Avatar src={user.image_url}/>
-									<span>{user.username}</span>
-								</div>
-								<div className="modal-book__borrowed-elapsed-time">
-									<span className="borrowed-elapsed-time__label">Emprestado a </span>
-									<span className="borrowed-elapsed-time__value">20 dias</span>
-								</div>
-							</div>
-						</div>
+						{borrow_info}
 
 						<div className="modal-book__waitlist">
 							<div className="modal-book__waitlist-label">
