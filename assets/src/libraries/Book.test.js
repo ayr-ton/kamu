@@ -32,7 +32,7 @@ function generateUser(){
 }
 
 describe('<Book />', () => {
-	let bookModel = generateBooks();    
+    let bookModel = generateBooks();
     let user = generateUser();
 
     
@@ -42,7 +42,7 @@ describe('<Book />', () => {
     let bookService = new BookService();
 
     let sandbox;
-	beforeEach(() => {
+    beforeEach(() => {
         bookModel.copies = [
             {
               "id": 1348,
@@ -58,7 +58,7 @@ describe('<Book />', () => {
             }
         ];
     
-	    sandbox = sinon.sandbox.create();
+        sandbox = sinon.sandbox.create();
         sandbox.stub(
             bookModel
             , "isAvailable"
@@ -86,63 +86,63 @@ describe('<Book />', () => {
             }
         });
 
-	});
+    });
 
-	afterEach(() => {
+    afterEach(() => {
        sandbox.restore();
     });
 
-	it('should change zDepth to 2 onMouseOver', () => {
-	    bookComponent = shallow(<Book key={bookModel.id} book={bookModel} />);
-	    expect(bookComponent.state().zDepth).to.equal(1);
-		bookComponent.simulate('mouseover');
-		expect(bookComponent.state().zDepth).to.equal(2);
-	});
+    it('should change zDepth to 2 onMouseOver', () => {
+        bookComponent = shallow(<Book key={bookModel.id} book={bookModel} />);
+        expect(bookComponent.state().zDepth).to.equal(1);
+        bookComponent.simulate('mouseover');
+        expect(bookComponent.state().zDepth).to.equal(2);
+    });
 
-	it('should change zDepth to 1 onMouseOut', () => {
-	    bookComponent = shallow(<Book key={bookModel.id} book={bookModel} />);
-	    bookComponent.setState({zDepth: 2});
-	    expect(bookComponent.state().zDepth).to.equal(2);
-		bookComponent.simulate('mouseout');
-		expect(bookComponent.state().zDepth).to.equal(1);
-	});
+    it('should change zDepth to 1 onMouseOut', () => {
+        bookComponent = shallow(<Book key={bookModel.id} book={bookModel} />);
+        bookComponent.setState({zDepth: 2});
+        expect(bookComponent.state().zDepth).to.equal(2);
+        bookComponent.simulate('mouseout');
+        expect(bookComponent.state().zDepth).to.equal(1);
+    });
 
-	it('should contain an img element', () => {
-	    bookComponent = shallow(<Book key={bookModel.id} book={bookModel} />);
-	    expect(bookComponent.contains(<img src={bookModel.image_url} alt={"Cover of " + bookModel.title} />)).to.be.true;
-	});
+    it('should contain an img element', () => {
+        bookComponent = shallow(<Book key={bookModel.id} book={bookModel} />);
+        expect(bookComponent.contains(<img src={bookModel.image_url} alt={"Cover of " + bookModel.title} />)).to.be.true;
+    });
 
-	it('should borrow a book and change available to false and borrowedByMe to true on TouchTap', () => {
-	    bookComponent = shallow(<Book key={bookModel.id} book={bookModel} service={bookService}/>);
-	    expect(bookComponent.state().available).to.be.true;
-	    expect(bookComponent.state().borrowedByMe).to.be.false;
+    it('should borrow a book and change available to false and borrowedByMe to true on TouchTap', () => {
+        bookComponent = shallow(<Book key={bookModel.id} book={bookModel} service={bookService}/>);
+        expect(bookComponent.state().available).to.be.true;
+        expect(bookComponent.state().borrowedByMe).to.be.false;
 
-	    bookComponent.find("FlatButton").simulate('touchTap');
+        bookComponent.find("FlatButton").simulate('touchTap');
 
-	    expect(bookComponent.state().available).to.be.false;
-	    expect(bookComponent.state().borrowedByMe).to.be.true;
-	});
+        expect(bookComponent.state().available).to.be.false;
+        expect(bookComponent.state().borrowedByMe).to.be.true;
+    });
 
-	it('should return a book and change available to true and borrowedByMe to false on TouchTap', () => {
-	    bookComponent = shallow(<Book key={bookModel.id} book={bookModel} service={bookService}/>);
-	    bookComponent.setState({available : false, borrowedByMe: true});
+    it('should return a book and change available to true and borrowedByMe to false on TouchTap', () => {
+        bookComponent = shallow(<Book key={bookModel.id} book={bookModel} service={bookService}/>);
+        bookComponent.setState({available : false, borrowedByMe: true});
 
-	    expect(bookComponent.state().available).to.be.false;
-	    expect(bookComponent.state().borrowedByMe).to.be.true;
+        expect(bookComponent.state().available).to.be.false;
+        expect(bookComponent.state().borrowedByMe).to.be.true;
 
-	    bookComponent.find("FlatButton").simulate('touchTap');
+        bookComponent.find("FlatButton").simulate('touchTap');
 
-	    expect(bookComponent.state().available).to.be.true;
-	    expect(bookComponent.state().borrowedByMe).to.be.false;
-	});
+        expect(bookComponent.state().available).to.be.true;
+        expect(bookComponent.state().borrowedByMe).to.be.false;
+    });
 
-	it('should not render FlatButton when available and borrowByMe is false', () => {
-	    bookComponent = shallow(<Book key={bookModel.id} book={bookModel} service={bookService}/>);
-	    bookComponent.setState({available : false, borrowedByMe: false});
+    it('should not render FlatButton when available and borrowByMe is false', () => {
+        bookComponent = shallow(<Book key={bookModel.id} book={bookModel} service={bookService}/>);
+        bookComponent.setState({available : false, borrowedByMe: false});
 
-	    expect(bookComponent.state().available).to.be.false;
-	    expect(bookComponent.state().borrowedByMe).to.be.false;
+        expect(bookComponent.state().available).to.be.false;
+        expect(bookComponent.state().borrowedByMe).to.be.false;
 
-	    expect(bookComponent.find("FlatButton").length).to.equal(0);
-	});
+        expect(bookComponent.find("FlatButton").length).to.equal(0);
+    });
 });

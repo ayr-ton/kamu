@@ -1,6 +1,6 @@
 import sinon from 'sinon';
 import { expect } from 'chai';
-import ProfileService from "./ProfileService";
+import ProfileService from './ProfileService';
 
 function generateUser(){
     return {
@@ -16,18 +16,18 @@ describe('ProfileService', () => {
     describe('Get user from localStorage', () => {
         let user = generateUser();
 
-		beforeEach(() => {
-			global.localStorage = {
-				getItem : (key) => {
-					return JSON.stringify(user);
-				}
-			};
+        beforeEach(() => {
+            global.localStorage = {
+                getItem : () => {
+                    return JSON.stringify(user);
+                }
+            };
         });
 
         it("Should get user from local Storage", () => {
             return profileService.getLoggedUser().then((userReturned) => {
-            	expect(userReturned).to.deep.equal(user);
-			});
+                expect(userReturned).to.deep.equal(user);
+            });
         });
     });
 
@@ -44,13 +44,11 @@ describe('ProfileService', () => {
             .returns(Promise.resolve({user: user}));
 
             global.localStorage = {
-				setItem : (key, data) => {
-
-				},
-				getItem : (key) => {
-					return null;
-				}
-			};
+                setItem : () => {},
+                getItem : () => {
+                    return null;
+                }
+            };
         });
 
         afterEach(() => {
@@ -59,8 +57,8 @@ describe('ProfileService', () => {
 
         it("Should get user from backend", () => {
             return profileService.getLoggedUser().then((userReturned) => {
-            	expect(userReturned).to.deep.equal(user);
-			});
+                expect(userReturned).to.deep.equal(user);
+            });
         });
     });
 
