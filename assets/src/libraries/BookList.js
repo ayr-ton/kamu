@@ -9,7 +9,7 @@ export default class BookList extends Component {
 			books: [],
 			open: false,
 			currentBook: {},
-		 	user: {}
+			user: {}
 		};
 		this.showDetail = this.showDetail.bind(this);
 		this.fetchBook = this.fetchBook.bind(this);
@@ -41,8 +41,8 @@ export default class BookList extends Component {
 				user: bookCopy.user,
 				open: !this.state.open
 			});
-		}).catch(error => {
-			console.error(error);
+		}).catch(() => {
+			return false;
 		});
 	}
 
