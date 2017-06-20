@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {List, ListItem} from 'material-ui/List';
+import { List, ListItem } from 'material-ui/List';
 
 export default class LibrarySelector extends Component {
 	constructor(props) {
@@ -18,8 +18,8 @@ export default class LibrarySelector extends Component {
 	_loadLibraries() {
 		return this.props.bookService.getLibraries().then(libraries => {
 			this.setState({ libraries });
-		}).catch(error => {
-			console.error(error);
+		}).catch(() => {
+			return false;
 		});
 	}
 
