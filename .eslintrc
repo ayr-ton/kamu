@@ -15,3 +15,10 @@ env:
   browser: true
   mocha: true
   node: true
+
+globals:
+  currentUser: true
+
+rules:
+  react/jsx-uses-react: error
+  react/jsx-uses-vars: error
