@@ -15,10 +15,10 @@ jobs:
     script: yarn test
   - stage: deploy to staging
     script: skip
-    #script: DISABLE_SAML2=true
+    script: export DISABLE_SAML2=true
     deploy: &script
       provider: script
-      script: git remote add deploy $MAINSTREAM && DISABLE_SAML2=true && git push -f deploy master
+      script: git remote add deploy $MAINSTREAM && git push -f deploy master
       on:
         branch: master
   - stage: test staging
