@@ -1,5 +1,4 @@
 import React from 'react';
-import Book from './Book';
 import BookList from './BookList';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';

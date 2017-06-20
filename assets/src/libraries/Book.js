@@ -5,7 +5,6 @@ import FlatButton from 'material-ui/FlatButton';
 // FIXME
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
-import BookDetail from './BookDetail';
 
 export default class Book extends Component {
 	constructor(props) {
