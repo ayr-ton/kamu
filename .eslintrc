@@ -1,0 +1,24 @@
+extends:
+  "eslint:recommended"
+
+parserOptions:
+  ecmaVersion: 8
+  sourceType: "module"
+  ecmaFeatures:
+    jsx: true
+
+plugins:
+  - react
+
+env:
+  es6: true
+  browser: true
+  mocha: true
+  node: true
+
+globals:
+  currentUser: true
+
+rules:
+  react/jsx-uses-react: error
+  react/jsx-uses-vars: error
