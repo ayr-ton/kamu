@@ -31,7 +31,5 @@ class SendNotifications(TestCase):
     def test_usrs_out_of_term(self):
         bookCopiesRet = get_borrows_out_of_time(3)
 
-        self.assertEqual(len(bookCopiesRet), 2)
-
         for bookCopy in bookCopiesRet:
             self.assertEqual(bookCopy, self.bookCopies[bookCopy.id])
