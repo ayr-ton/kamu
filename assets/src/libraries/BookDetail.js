@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Paper, FlatButton, Dialog, FontIcon, Avatar, ListItem, List} from 'material-ui';
+import { FlatButton, Dialog, FontIcon, Avatar } from 'material-ui';
 import '../../css/ModalBook.css';
 
 export default class BookDetail extends Component {
