@@ -5,6 +5,11 @@ cache:
   - node_modules
 jobs:
   include:
+  - stage: lint
+    language: node_js
+    node_js: '7'
+    script:
+      - yarn lint
   - stage: python unit tests
     language: python
     python: '3.6'

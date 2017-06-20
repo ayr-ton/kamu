@@ -133,7 +133,6 @@ describe('BookService', () => {
     });
 
     describe('Borrow book', () => {
-        let bookShouldBorrow = generateBooks()[0];
         let book = generateBooks()[0];
         let user = generateUser();
 
@@ -197,7 +196,6 @@ describe('BookService', () => {
     });
 
     describe('Borrow book II', () => {
-        let bookShouldBorrow = generateBooks()[0];
         let book = generateBooks()[0];
         let user = generateUser();
 
