@@ -16,10 +16,11 @@ jobs:
   - stage: deploy to staging
     script: skip
     #script: export DISABLE_SAML2=true
+    before_deploy: export DISABLE_SAML2=true
     deploy: &script
       provider: script
-      env: DISABLE_SAML2=true
-      script: git remote add deploy $MAINSTREAM && env $DISABLE_SAML2 git push -f deploy master
+      #env: DISABLE_SAML2=true
+      script: git remote add deploy $MAINSTREAM && git push -f deploy master
       on:
         branch: master
   - stage: test staging
