@@ -33,7 +33,7 @@ export default class BookList extends Component {
 	}
 
 	render() {
-		let content, bookDetail;
+		let content, contentDetail;
 
 		if (this.state.books) {
 			content = this.state.books.map(book => {
@@ -42,12 +42,12 @@ export default class BookList extends Component {
 		}
 
 		if (this.state.open) {
-			bookDetail = <BookDetail open={this.state.open} showDetail={this.showDetail} book={this.state.currentBook} />
+			contentDetail = <BookDetail open={this.state.open} showDetail={this.showDetail} book={this.state.currentBook} />
 		}
 
 		return (			
 			<div className="book-list">
-				{bookDetail}
+				{contentDetail}
 				{content}
 			</div>			
 		);

@@ -9,6 +9,7 @@ export default class BookDetail extends Component {
 
 	render() {		
 		const book = this.props.book;
+		const copiesAvailable = book.getCountBookCopiesAvailable();
 
 		const actions = [
 			<FlatButton
@@ -38,7 +39,7 @@ export default class BookDetail extends Component {
 					<div className="modal-book__details-container">
 						<div className="modal-book__available-wrapper">
 							<div className="modal-book__detail-label">Disponibilidade</div>
-							<div className="modal-book__detail-value">0 de {book.copies.length}</div>
+							<div className="modal-book__detail-value">{copiesAvailable} de {book.copies.length}</div>
 						</div>
 						<div className="modal-book__publisher-wrapper">
 							<div className="modal-book__publisher-name">
