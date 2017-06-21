@@ -11,6 +11,15 @@ export default class Book {
 		return null;
 	}
 
+	getCountBookCopiesAvailable(){
+		let count = 0;
+		for (const copy of this.copies) {
+			if (copy.user === null) count++;
+		}
+
+		return count;
+	}
+
 	belongsToUser() {
 		return this.getBorrowedCopyID() != null;
 	}
