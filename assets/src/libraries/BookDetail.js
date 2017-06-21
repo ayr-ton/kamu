@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FlatButton, Dialog, FontIcon, Avatar } from 'material-ui';
+import { FlatButton, Dialog, FontIcon } from 'material-ui';
 import '../../css/ModalBook.css';
 
 export default class BookDetail extends Component {
@@ -7,9 +7,9 @@ export default class BookDetail extends Component {
 		super(props);
 	}
 
-	render() {
-		const book = this.props.book
-		const user = this.props.user
+	render() {		
+		const book = this.props.book;
+
 		const actions = [
 			<FlatButton
 				label="Close"
@@ -18,26 +18,7 @@ export default class BookDetail extends Component {
 			/>,
 		];
 
-		let borrow_info;
-		if(user) {
-			borrow_info = <div className="modal-book__borrowed-with">
-				<div className="modal-book__borrowed-with-label">Emprestado com:</div>
-
-				<div className="modal-book__borrowed-with-wrapper">
-					<div className="modal-book__borrowed-person">
-						<Avatar src={user.image_url} />
-						<span>{user.username}</span>
-					</div>
-					<div className="modal-book__borrowed-elapsed-time">
-						<span className="borrowed-elapsed-time__label">Emprestado a </span>
-						<span className="borrowed-elapsed-time__value">20 dias</span>
-					</div>
-				</div>
-			</div>
-		}
-
 		return (
-
 			<Dialog
 				actions={actions}
 				modal={true}
@@ -57,7 +38,7 @@ export default class BookDetail extends Component {
 					<div className="modal-book__details-container">
 						<div className="modal-book__available-wrapper">
 							<div className="modal-book__detail-label">Disponibilidade</div>
-							<div className="modal-book__detail-value">0 de 0</div>
+							<div className="modal-book__detail-value">0 de {book.copies.length}</div>
 						</div>
 						<div className="modal-book__publisher-wrapper">
 							<div className="modal-book__publisher-name">
@@ -81,7 +62,6 @@ export default class BookDetail extends Component {
 					</div>
 
 					<div className="modal-book__borrowed-informations">
-						{borrow_info}
 
 						<div className="modal-book__waitlist">
 							<div className="modal-book__waitlist-label">
