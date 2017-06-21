@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FlatButton, Dialog, FontIcon } from 'material-ui';
+import { FlatButton, Dialog, FontIcon, Avatar } from 'material-ui';
 import '../../css/ModalBook.css';
 
 export default class BookDetail extends Component {
@@ -17,6 +17,27 @@ export default class BookDetail extends Component {
 				onTouchTap={this.props.showDetail}
 			/>,
 		];
+
+		// TODO: Date of borrow: "Borrowed 20 days ago"
+		let borrowers = [];
+		for (let copy of book.copies) {
+			if(copy.user) {
+				borrowers.push(<div key={copy.user.username} className="modal-book__borrowed-with">
+					<div className="modal-book__borrowed-with-label">Emprestado com:</div>
+
+					<div className="modal-book__borrowed-with-wrapper">
+						<div className="modal-book__borrowed-person">
+							<Avatar src={copy.user.image_url} />
+							<span>{copy.user.username}</span>
+						</div>					
+						<div className="modal-book__borrowed-elapsed-time">
+							<span className="borrowed-elapsed-time__label">Emprestado a </span>
+							<span className="borrowed-elapsed-time__value">20 dias</span>
+						</div>
+					</div>
+				</div>);
+			}
+		}
 
 		return (
 			<Dialog
@@ -62,7 +83,7 @@ export default class BookDetail extends Component {
 					</div>
 
 					<div className="modal-book__borrowed-informations">
-
+						{borrowers}
 						<div className="modal-book__waitlist">
 							<div className="modal-book__waitlist-label">
 								<FontIcon className="material-icons">people</FontIcon>
