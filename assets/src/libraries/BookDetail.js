@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { FlatButton, Dialog, FontIcon, Avatar } from 'material-ui';
 import '../../css/ModalBook.css';
+import moment from 'moment';
 
 export default class BookDetail extends Component {
 	constructor(props) {
@@ -41,7 +42,7 @@ export default class BookDetail extends Component {
 						</div>					
 						<div className="modal-book__borrowed-elapsed-time">
 							<span className="borrowed-elapsed-time__label">Borrowed</span>
-							<span className="borrowed-elapsed-time__value">0 ago</span>
+							<span className="borrowed-elapsed-time__value">{moment(copy.borrow_date).fromNow()}</span>
 						</div>
 					</div>
 				</div>);
