@@ -30,7 +30,7 @@ export default class BookDetail extends Component {
 			if(copy.user) {
 				if(!headerDisplayed) {
 					headerDisplayed = true;
-					borrowers.push(<div className="modal-book__borrowed-with-label">Emprestado com:</div>);
+					borrowers.push(<div key="borrowed-title" className="modal-book__borrowed-with-label">Borrowed with:</div>);
 				}
 
 				borrowers.push(<div key={copy.user.username} className="modal-book__borrowed-with">					
@@ -40,8 +40,8 @@ export default class BookDetail extends Component {
 							<span>{copy.user.username}</span>
 						</div>					
 						<div className="modal-book__borrowed-elapsed-time">
-							<span className="borrowed-elapsed-time__label">Emprestado a </span>
-							<span className="borrowed-elapsed-time__value">0 dias</span>
+							<span className="borrowed-elapsed-time__label">Borrowed</span>
+							<span className="borrowed-elapsed-time__value">0 ago</span>
 						</div>
 					</div>
 				</div>);
@@ -70,27 +70,27 @@ export default class BookDetail extends Component {
 
 					<div className="modal-book__details-container">
 						<div className="modal-book__available-wrapper">
-							<div className="modal-book__detail-label">Disponibilidade</div>
-							<div className="modal-book__detail-value">{copiesAvailable} de {book.copies.length}</div>
+							<div className="modal-book__detail-label">Availability</div>
+							<div className="modal-book__detail-value">{copiesAvailable} of {book.copies.length}</div>
 						</div>
 						<div className="modal-book__publisher-wrapper">
 							<div className="modal-book__publisher-name">
-								<div className="modal-book__detail-label">Editora</div>
+								<div className="modal-book__detail-label">Publisher</div>
 								<div className="modal-book__detail-value">{book.publisher}</div>
 							</div>
 							<div className="modal-book__publication-date">
-								<div className="modal-book__detail-label">Data de Publicação</div>
+								<div className="modal-book__detail-label">Publication date</div>
 								<div className="modal-book__detail-value">{book.publication_date}</div>
 							</div>
 							<div className="modal-book__number-of-pages">
-								<div className="modal-book__detail-label">Páginas</div>
+								<div className="modal-book__detail-label">Pages</div>
 								<div className="modal-book__detail-value">{book.number_of_pages}</div>
 							</div>
 						</div>
 					</div>
 
 					<div className="modal-book__description-wrapper">
-						<div className="modal-book__detail-label">Sobre o Livro</div>
+						<div className="modal-book__detail-label">About</div>
 						<div className="modal-book__description">{book.description}</div>
 					</div>
 
@@ -104,8 +104,8 @@ export default class BookDetail extends Component {
 								<FontIcon className="material-icons">people</FontIcon>
 								<span className="modal-book__waitlist-amount">4</span>
 							</div>
-							<div className="modal-book__waitlist-value">""</div>
-							<div className="modal-book__waitlist-button"><span>ENTRAR NA FILA</span></div>
+							<div className="modal-book__waitlist-value"></div>
+							<button className="modal-book__waitlist-button"><span>Join in the queue</span></button>
 						</div>
 					</div>
 				</div>

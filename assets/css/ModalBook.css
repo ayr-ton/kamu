@@ -75,8 +75,11 @@
   display: flex;
   flex-flow: row;
   font-weight: bold;
-  margin-top: 1em;
   margin-bottom: 0.3em;
+}
+
+.modal-book__description-wrapper {
+  margin-bottom: 1em;
 }
 
 .modal-book__borrowed-person{
@@ -92,6 +95,9 @@
     height: 40px;
 }
 
+.modal-book__borrowed-informations {
+  margin-right: 4em;
+}
 
 .modal-book__borrowed-elapsed-time{
   background-color: #5c5c5c;
@@ -127,4 +133,22 @@
 .modal-book__borrowed-elapsed-time {
   display: flex;
   flex-flow: column nowrap;
+}
+
+
+.modal-book__waitlist-label {
+  display: flex;
+}
+
+.modal-book__waitlist-amount {
+  margin-left: 3px;  
+}
+
+.modal-actions {
+  position: absolute;
+  top: 0;
+}
+
+.modal-actions button {
+  
 }
