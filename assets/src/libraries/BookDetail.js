@@ -24,7 +24,6 @@ export default class BookDetail extends Component {
 			/>,
 		];
 
-		// TODO: Date of borrow: "Borrowed 20 days ago"
 		let borrowers = [];
 		let headerDisplayed = false;
 		for (let copy of book.copies) {
