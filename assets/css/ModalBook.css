@@ -1,3 +1,7 @@
+.modal-container {
+
+}
+
 .dialog-book {
   width: 100%;
   height: 100%;
@@ -10,10 +14,10 @@
 }
 
 .modal-book__image-box {
-  width: 33%;
+  width: 25%;
   display: flex;
   flex-flow: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 }
 
@@ -22,7 +26,7 @@
 }
 
 .modal-book__details {
-  width: 67%;
+  width: 75%;
 }
 
 .modal-book__title {
@@ -49,12 +53,14 @@
 }
 
 .modal-book__detail-label {
-  font-size: 0.9em;
+  font-size: 0.8em;
+  margin-bottom: 2px;
 }
 
 .modal-book__detail-value {
   font-size: 0.9em;
   font-weight: bold;
+  color: #000;
 }
 
 .modal-book__publisher-name{
@@ -70,11 +76,22 @@
   flex-flow: row;
   font-weight: bold;
   margin-top: 1em;
+  margin-bottom: 0.3em;
 }
 
 .modal-book__borrowed-person{
   margin-right: 1em;
+  display: flex;
 }
+.modal-book__borrowed-person img {
+  margin-right: 5px;
+}
+.modal-book__borrowed-person span {
+    display: inline-flex;
+    align-items: center;
+    height: 40px;
+}
+
 
 .modal-book__borrowed-elapsed-time{
   background-color: #5c5c5c;
@@ -93,17 +110,13 @@
   padding: 0.5em 1.3em;
 }
 
-.modal-book__description-wrapper {
-
+.modal-book__status {
+  display: flex;
+  flex-flow: row;
 }
 
 .modal-book__description {
   font-weight: 1.1em;
-}
-
-.modal-book__borrowed-informations {
-  display: flex;
-  flex-flow: row nowrap;
 }
 
 .modal-book__borrowed-with-wrapper {

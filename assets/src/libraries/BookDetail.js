@@ -7,6 +7,10 @@ export default class BookDetail extends Component {
 		super(props);
 	}
 
+	handleClose() {
+		this.setState({open: false});
+	}
+
 	render() {		
 		const book = this.props.book;
 		const copiesAvailable = book.getCountBookCopiesAvailable();
@@ -21,11 +25,15 @@ export default class BookDetail extends Component {
 
 		// TODO: Date of borrow: "Borrowed 20 days ago"
 		let borrowers = [];
+		let headerDisplayed = false;
 		for (let copy of book.copies) {
 			if(copy.user) {
-				borrowers.push(<div key={copy.user.username} className="modal-book__borrowed-with">
-					<div className="modal-book__borrowed-with-label">Emprestado com:</div>
+				if(!headerDisplayed) {
+					headerDisplayed = true;
+					borrowers.push(<div className="modal-book__borrowed-with-label">Emprestado com:</div>);
+				}
 
+				borrowers.push(<div key={copy.user.username} className="modal-book__borrowed-with">					
 					<div className="modal-book__borrowed-with-wrapper">
 						<div className="modal-book__borrowed-person">
 							<Avatar src={copy.user.image_url} />
@@ -33,7 +41,7 @@ export default class BookDetail extends Component {
 						</div>					
 						<div className="modal-book__borrowed-elapsed-time">
 							<span className="borrowed-elapsed-time__label">Emprestado a </span>
-							<span className="borrowed-elapsed-time__value">20 dias</span>
+							<span className="borrowed-elapsed-time__value">0 dias</span>
 						</div>
 					</div>
 				</div>);
@@ -46,7 +54,10 @@ export default class BookDetail extends Component {
 				modal={true}
 				open={this.props.open}
 				onRequestClose={this.props.showDetail}
-				contentStyle={{width: "70%", maxWidth: "none"}}
+				contentStyle={{width: "90%", maxWidth: "none"}} 
+				autoScrollBodyContent={true} 
+				actionsContainerClassName="modal-actions" 
+				contentClassName="modal-container" 
 			>
 
 			<div className="modal-book">
@@ -83,8 +94,11 @@ export default class BookDetail extends Component {
 						<div className="modal-book__description">{book.description}</div>
 					</div>
 
-					<div className="modal-book__borrowed-informations">
-						{borrowers}
+					<div className="modal-book__status">
+						<div className="modal-book__borrowed-informations">
+							{borrowers}
+						</div>
+						
 						<div className="modal-book__waitlist">
 							<div className="modal-book__waitlist-label">
 								<FontIcon className="material-icons">people</FontIcon>
