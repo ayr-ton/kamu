@@ -33,7 +33,7 @@ class BookCopySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BookCopy
-        fields = ('id', 'user', 'book')
+        fields = ('id', 'user', 'book', 'borrow_date')
 
 
 class LibraryBookSerializer(serializers.ModelSerializer):
