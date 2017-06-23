@@ -48,7 +48,7 @@ export default class BookDetail extends Component {
 		return (
 			<Dialog
 				actions={actions}
-				modal={true}
+				modal={false}
 				open={this.props.open}
 				onRequestClose={this.changeOpenStatus}
 				contentStyle={{width: "90%", maxWidth: "none"}} 
