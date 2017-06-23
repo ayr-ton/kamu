@@ -19,21 +19,12 @@ class UserSerializer(serializers.ModelSerializer):
         return 'https://www.gravatar.com/avatar/%s?size=100' % email_hash
 
 
-class BookDetailSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Book
-        fields = ('author','title','subtitle',
-        'description','image_url','isbn','number_of_pages',
-        'publication_date','publisher')
-
-
 class BookCopySerializer(serializers.ModelSerializer):
     user = UserSerializer()
-    book = BookDetailSerializer()
 
     class Meta:
         model = BookCopy
-        fields = ('id', 'user', 'book', 'borrow_date')
+        fields = ('id', 'user', 'borrow_date')
 
 
 class LibraryBookSerializer(serializers.ModelSerializer):

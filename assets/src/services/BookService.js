@@ -21,12 +21,6 @@ export default class BookService {
         });
     }
 
-	getBook(book_id) {
-		return fetchFromAPI(`/books/${book_id}/show`).then(data => {
-			return data;
-		});
-	}
-
     //TODO: Refactor name to borrowCopy
     borrowBook(book) {
         const copyID = book.getAvailableCopyID();
