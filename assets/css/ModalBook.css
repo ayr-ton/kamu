@@ -1,7 +1,3 @@
-.modal-container {
-
-}
-
 .dialog-book {
   width: 100%;
   height: 100%;
@@ -147,8 +143,4 @@
 .modal-actions {
   position: absolute;
   top: 0;
-}
-
-.modal-actions button {
-  
 }
