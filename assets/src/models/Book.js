@@ -12,12 +12,7 @@ export default class Book {
 	}
 
 	getCountBookCopiesAvailable(){
-		let count = 0;
-		for (const copy of this.copies) {
-			if (copy.user === null) count++;
-		}
-
-		return count;
+		return this.copies.filter(copy => copy.user === null).length;
 	}
 
 	belongsToUser() {
