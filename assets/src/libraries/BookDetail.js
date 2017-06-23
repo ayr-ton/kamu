@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FlatButton, Dialog, FontIcon, Avatar } from 'material-ui';
+import { FlatButton, Dialog, Avatar } from 'material-ui';
 import '../../css/ModalBook.css';
 import moment from 'moment';
 
