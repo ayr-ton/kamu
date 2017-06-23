@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Paper from 'material-ui/Paper';
 import FlatButton from 'material-ui/FlatButton';
+import BookDetail from './BookDetail';
 
 // FIXME
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -12,7 +13,8 @@ export default class Book extends Component {
 		this.state = {
 			zDepth: 1,
 			available: props.book.isAvailable(),
-			borrowedByMe: props.book.belongsToUser()
+			borrowedByMe: props.book.belongsToUser(),
+			open: false
 		};
 
 		this.onMouseOver = this.onMouseOver.bind(this);
@@ -20,7 +22,7 @@ export default class Book extends Component {
 		this._actionButtons = this._actionButtons.bind(this);
 		this._borrow = this._borrow.bind(this);
 		this._return = this._return.bind(this);
-		this.showDetail = this.showDetail.bind(this);
+		this.changeOpenStatus = this.changeOpenStatus.bind(this);
 	}
 
 	onMouseOver() { return this.setState({ zDepth: 2 }); }
@@ -48,15 +50,19 @@ export default class Book extends Component {
 		return null;
 	}
 
-	showDetail() {
-		this.props.showDetail(this.props.book);
-	}
+	changeOpenStatus() { this.setState({ open: !this.state.open }); }
 
 	render() {
 		const book = this.props.book;
+		let contentDetail;
 
-		return (
-			<Paper className="book" zDepth={this.state.zDepth} onMouseOver={this.onMouseOver} onClick={this.showDetail} onMouseOut={this.onMouseOut}>
+		if (this.state.open) {
+			contentDetail = <BookDetail open={this.state.open} book={book} changeOpenStatus={this.changeOpenStatus}  />
+		}
+
+		return (		
+			<div>	
+			<Paper className="book" zDepth={this.state.zDepth} onMouseOver={this.onMouseOver} onClick={this.changeOpenStatus} onMouseOut={this.onMouseOut}>
 				<div className="book-cover">
 					<img src={book.image_url} alt={"Cover of " + book.title} />
 					<div className="book-cover-overlay"></div>
@@ -71,6 +77,9 @@ export default class Book extends Component {
 					{this._actionButtons()}
 				</div>
 			</Paper>
+
+			{contentDetail}
+			</div>
 		);
 	}
 }
