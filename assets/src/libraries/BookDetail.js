@@ -94,16 +94,7 @@ export default class BookDetail extends Component {
 					<div className="modal-book__status">
 						<div className="modal-book__borrowed-informations">
 							{borrowers}
-						</div>
-						
-						<div className="modal-book__waitlist">
-							<div className="modal-book__waitlist-label">
-								<FontIcon className="material-icons">people</FontIcon>
-								<span className="modal-book__waitlist-amount">4</span>
-							</div>
-							<div className="modal-book__waitlist-value"></div>
-							<button className="modal-book__waitlist-button"><span>Join in the queue</span></button>
-						</div>
+						</div>						
 					</div>
 				</div>
 			</div>
