@@ -6,10 +6,7 @@ import moment from 'moment';
 export default class BookDetail extends Component {
 	constructor(props) {
 		super(props);
-	}
-
-	handleClose() {
-		this.setState({open: false});
+		this.changeOpenStatus = this.props.changeOpenStatus.bind(this);
 	}
 
 	render() {		
@@ -20,7 +17,7 @@ export default class BookDetail extends Component {
 			<FlatButton
 				label="Close"
 				primary={true}
-				onTouchTap={this.props.showDetail}
+				onTouchTap={this.changeOpenStatus}
 			/>,
 		];
 
@@ -53,7 +50,7 @@ export default class BookDetail extends Component {
 				actions={actions}
 				modal={true}
 				open={this.props.open}
-				onRequestClose={this.props.showDetail}
+				onRequestClose={this.changeOpenStatus}
 				contentStyle={{width: "90%", maxWidth: "none"}} 
 				autoScrollBodyContent={true} 
 				actionsContainerClassName="modal-actions" 
