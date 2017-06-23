@@ -52,7 +52,7 @@ export default class BookDetail extends Component {
 					<div className="modal-book__borrowed-with-wrapper">
 						<div className="modal-book__borrowed-person">
 							<Avatar src={copy.user.image_url} />
-							<span>{copy.user.username}</span>
+							<span>{copy.user.name}</span>
 						</div>					
 						
 						{borrowed_time_ago}
