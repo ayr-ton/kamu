@@ -45,7 +45,7 @@ class BookCopyReturnView(APIView):
         except:
             raise Http404("Book Copy not found")
         return Response({'status': 'Book returned'})
-
+        
 
 class UserView(APIView):
     def get(self, request, format=None):
