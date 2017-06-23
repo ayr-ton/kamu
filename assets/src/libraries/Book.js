@@ -61,7 +61,6 @@ export default class Book extends Component {
 		}
 
 		return (		
-			<div>	
 			<Paper className="book" zDepth={this.state.zDepth} onMouseOver={this.onMouseOver} onClick={this.changeOpenStatus} onMouseOut={this.onMouseOut}>
 				<div className="book-cover">
 					<img src={book.image_url} alt={"Cover of " + book.title} />
@@ -76,10 +75,8 @@ export default class Book extends Component {
 				<div className="book-actions">
 					{this._actionButtons()}
 				</div>
+				{contentDetail}
 			</Paper>
-
-			{contentDetail}
-			</div>
 		);
 	}
 }
