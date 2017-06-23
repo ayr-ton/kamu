@@ -153,3 +153,7 @@
 .modal-actions__btn-close:hover {
   background-color: none;
 }
+
+.modal-book__borrowed-with {
+  margin-bottom: 10px;
+}
