@@ -32,8 +32,17 @@ export default class BookDetail extends Component {
 
 		let borrowers = [];
 		let headerDisplayed = false;
+		let borrowed_time_ago;
+
 		for (let copy of book.copies) {
 			if(copy.user) {
+				if(copy.borrow_date) {
+					borrowed_time_ago = <div className="modal-book__borrowed-elapsed-time">
+							<span className="borrowed-elapsed-time__label">Borrowed</span>
+							<span className="borrowed-elapsed-time__value">{moment(copy.borrow_date).fromNow()}</span>
+						</div>
+				}
+
 				if(!headerDisplayed) {
 					headerDisplayed = true;
 					borrowers.push(<div key="borrowed-title" className="modal-book__borrowed-with-label">Borrowed with:</div>);
@@ -45,10 +54,8 @@ export default class BookDetail extends Component {
 							<Avatar src={copy.user.image_url} />
 							<span>{copy.user.username}</span>
 						</div>					
-						<div className="modal-book__borrowed-elapsed-time">
-							<span className="borrowed-elapsed-time__label">Borrowed</span>
-							<span className="borrowed-elapsed-time__value">{moment(copy.borrow_date).fromNow()}</span>
-						</div>
+						
+						{borrowed_time_ago}
 					</div>
 				</div>);
 			}
