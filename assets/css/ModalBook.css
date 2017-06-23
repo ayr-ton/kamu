@@ -28,6 +28,7 @@
 .modal-book__title {
   font-size: 2em;
   font-weight: bold;
+  line-height: 1em;
 }
 
 .modal-book__author {
@@ -143,4 +144,12 @@
 .modal-actions {
   position: absolute;
   top: 0;
+}
+
+.modal-actions__btn-close {
+  font-size: 3em;
+}
+
+.modal-actions__btn-close:hover {
+  background-color: none;
 }

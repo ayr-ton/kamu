@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { FlatButton, Dialog, Avatar } from 'material-ui';
+import { IconButton, Dialog, Avatar } from 'material-ui';
 import '../../css/ModalBook.css';
 import moment from 'moment';
+import Clear from 'material-ui/svg-icons/content/clear';
 
 export default class BookDetail extends Component {
 	constructor(props) {
@@ -13,12 +14,20 @@ export default class BookDetail extends Component {
 		const book = this.props.book;
 		const copiesAvailable = book.getCountBookCopiesAvailable();
 
+		const styles = {
+			largeIcon: {
+				width: 40,
+				height: 40,
+			},  
+			large: {
+				padding: 0
+			}
+		};
+
 		const actions = [
-			<FlatButton
-				label="Close"
-				primary={true}
-				onTouchTap={this.changeOpenStatus}
-			/>,
+			<IconButton iconStyle={styles.largeIcon} style={styles.large} onTouchTap={this.changeOpenStatus}>
+				<Clear />
+			</IconButton>
 		];
 
 		let borrowers = [];
