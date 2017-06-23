@@ -45,13 +45,7 @@ class BookCopyReturnView(APIView):
         except:
             raise Http404("Book Copy not found")
         return Response({'status': 'Book returned'})
-
-
-class BookDetailView(APIView):
-    def get(self, request, id=None):
-        book_copy = BookCopy.objects.filter(book=id).order_by('-id').first()
-        serializer = BookCopySerializer(book_copy)
-        return Response(serializer.data)
+        
 
 class UserView(APIView):
     def get(self, request, format=None):

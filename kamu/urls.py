@@ -21,7 +21,6 @@ urlpatterns = [
     url(r'^api/profile', views.UserView.as_view()),
     url(r'^api/copies/(?P<id>.+)/borrow', views.BookCopyBorrowView.as_view()),
     url(r'^api/copies/(?P<id>.+)/return', views.BookCopyReturnView.as_view()),
-    url(r'^api/books/(?P<id>.+)/show', views.BookDetailView.as_view()),
     url(r'^favicon\.ico$', RedirectView.as_view(url=settings.STATIC_URL + 'images/favicon.ico'))
 ]
 
