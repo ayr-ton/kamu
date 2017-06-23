@@ -50,5 +50,5 @@ export default class BookService {
         }).catch(()=>{
             return false;
         });
-    }
+	}
 }

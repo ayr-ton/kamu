@@ -5,7 +5,8 @@ export default class BookList extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			books: []
+			books: [],			
+			currentBook: {}
 		};
 	}
 
@@ -23,16 +24,18 @@ export default class BookList extends Component {
 
 	render() {
 		let content;
+
 		if (this.state.books) {
 			content = this.state.books.map(book => {
 				return <Book key={book.id} book={book} service={this.props.service} />
 			});
 		}
 
-		return (
+		return (			
 			<div className="book-list">
 				{content}
-			</div>
+			</div>			
 		);
+
 	}
 }
