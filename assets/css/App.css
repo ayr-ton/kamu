@@ -93,7 +93,16 @@
 .book .book-actions {
   margin: 10px;
   text-align: center;
-  align-self: flex-end;
+}
+
+.book .book-actions .btn-borrow, .book .book-actions .btn-return {
+  width: 100%;
+}
+.book .book-actions button {
+  background-color: rgba(0, 0, 0, 0.8) !important;
+}
+.book .book-actions button span {
+  color: #fff !important;
 }
 
 .library-list {
