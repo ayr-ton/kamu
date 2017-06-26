@@ -12,8 +12,8 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 import unittest
 
 
-class KamuSeleniumTests(unittest.TestCase):
-    
+class Selenium(unittest.TestCase):
+
     @classmethod
     def setUp(cls):
 
