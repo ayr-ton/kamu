@@ -1,93 +1,117 @@
+import sys
+
+from pip._vendor import requests
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 import unittest
 
 
 class KamuSeleniumTests(unittest.TestCase):
+    driver = None
+
     @classmethod
     def setUp(cls):
+
+        # cls.driver = webdriver.Remote(
+        #     command_executor='http://localhost:4444/wd/hub',
+        #     desired_capabilities=DesiredCapabilities.CHROME)
         cls.driver = webdriver.Chrome()
-        # self.driver = webdriver.Firefox()
+        # cls.driver.get("https://staging-kamu.thoughtworks-labs.net/")
         cls.driver.get("http://localhost:8000")
         assert "Log in | Kamu administration" in cls.driver.title
 
     def testAcessLibrarie(self):
 
         self.login()
-
-        self.acessLibrarie("/bh")
-
+        self.acessLibrarie("Belo Horizonte")
         time_wait = 10
         wait = WebDriverWait(self.driver, time_wait)
-
         WebDriverWait(self.driver, self.page_has_loaded)
 
         # Assert
         book_list = wait.until(lambda driver: driver.find_element_by_class_name("book-list"))
         books_librarie_elements = wait.until(lambda driver: book_list.find_elements_by_class_name("book"))
         self.assertIsNotNone(books_librarie_elements)
+        wait.until(EC.visibility_of_all_elements_located((By.CLASS_NAME, "book")))
 
     def testBorrowBook(self):
 
+        self.login()
+        self.acessLibrarie("Belo Horizonte")
+
         time_wait = 10
         wait = WebDriverWait(self.driver, time_wait)
-
-        self.login()
-
-        self.acessLibrarie("/bh")
-
-        # 1
-        # book_list = self.driver.find_element_by_class_name("book-list")
-        # books = book_list.find_elements_by_class_name("book")
-        # # bookBorrowed = 0
-        # for actionBorrow in books:
-        #     if actionBorrow.text == "Borrow":
-        #         actionBorrow.click()
-        #         # var = bookBorrowed + 1
-        #     self.assertIn("Return", actionBorrow.text())
-        #     assert "Return" in actionBorrow.text()
-
-        # 2
-        # action_borrow_xpath = "//span[contains(text(), 'Borrow')]"
-        # actionBorrow = wait.until(EC.visibility_of_element_located((By.XPATH, action_borrow_xpath)))
-        # actionBorrow.click()
-
-        # 3
-        buttons_books = wait.until(EC.visibility_of_all_elements_located((By.TAG_NAME, "button")))
-        # actionBorrow = buttons_books.text == "Borrow"
+        wait.until(EC.presence_of_all_elements_located((By.CLASS_NAME, "book")))
+        buttons_books = wait.until(EC.presence_of_all_elements_located((By.TAG_NAME, "button")))
+        books_borrow = 0
         for buttonElement in buttons_books:
-            if buttonElement.text == "Borrow":
+            if buttonElement.text == "BORROW":
                 buttonElement.click()
-                self.AssertIn("Return", buttonElement.text())
-                wait.until(EC.text_to_be_present_in_element(buttonElement, 'Return'))
-                
-        # self.assertFalse("Borrow", self.driver.page_source)
+                books_borrow += 1
+                # wait.until(EC.text_to_be_present_in_element(buttonElement, "RETURN"))
+                # self.assertEquals(buttonElement.text, "RETURN")
+
+        print(books_borrow)
+        self.assertTrue(books_borrow > 0)
 
     def testReturnBook(self):
 
+        self.login()
+        self.acessLibrarie("Belo Horizonte")
+
         time_wait = 10
         wait = WebDriverWait(self.driver, time_wait)
-
-        self.login()
-
-        self.acessLibrarie("/bh")
-
-        # action_return_xpath = "//span[contains(text(), 'Return')]"
-        # actionReturn = wait.until(EC.visibility_of_element_located((By.XPATH, action_return_xpath)))
-        # actionReturn.click()
-
+        wait.until(EC.presence_of_all_elements_located((By.CLASS_NAME, "book")))
         buttons_books = wait.until(EC.visibility_of_all_elements_located((By.TAG_NAME, "button")))
+        books_return = 0
         for buttonElement in buttons_books:
-            if buttonElement.text == "Borrow":
+            if buttonElement.text == "RETURN":
                 buttonElement.click()
-                # self.AssertIn("Borrow", buttonElement.text())
-                # wait.until(EC.text_to_be_present_in_element(buttonElement, 'Borrow'))
-                
+                books_return += 1
+                # wait.until(EC.text_to_be_present_in_element(buttonElement, 'BORROW'))
+                # self.assertEqual(buttonElement.text, "BORROW")
+
+        print(books_return)
+        self.assertTrue(books_return > 0)
+
+    # def testBrokenImage(self):
+    #
+    #     self.login()
+    #
+    #     self.acessLibrarie("Belo Horizonte")
+    #
+    #     time_wait = 10
+    #     wait = WebDriverWait(self.driver, time_wait)
+    #
+    #     WebDriverWait(self.driver, self.page_has_loaded)
+    #     wait.until(EC.presence_of_all_elements_located((By.CLASS_NAME, "book-cover")))
+    #     # broken_images = 0
+    #     inv_images = 0
+    #     all_images = wait.until(lambda driver: driver.find_elements_by_tag_name("img"))
+    #     for image in all_images:
+    #         broken_images = self.driver.execute_script("return arguments[0].complete && typeof arguments["
+    #                                                    "0].naturalWidth != \"undefined\" && arguments["
+    #                                                    "0].naturalWidth > 0", image)
+    #         wait.until(lambda driver: driver.find_elements_by_tag_name("img"))
+    #         wait.until(lambda driver: driver.find_element_by_class_name("book-cover"))
+    #         if broken_images == False:
+    #             inv_images += 1
+    #
+    #     # for image in all_images:
+    #     #     r = requests.head(image.get_attribute('src'))
+    #     #     self.driver.save_screenshot("image.png")
+    #     #     if r.status_code != 200:
+    #     #         broken_images += 1
+    #
+    #     # self.assertTrue(inv_images == 0)
+    #     self.assertEqual(inv_images, 0)
+
     @classmethod
     def tearDown(cls):
         cls.driver.quit()
@@ -111,6 +135,7 @@ class KamuSeleniumTests(unittest.TestCase):
         self.assertIn("Log in | Kamu administration", self.driver.title)
 
         kamu_username = "selenium_tests"
+        # kamu_username = "qa_tw@thoughtworks.com"
         kamu_password = "selenium_10"
         time_wait = 10
         wait = WebDriverWait(driver, time_wait)
@@ -135,7 +160,8 @@ class KamuSeleniumTests(unittest.TestCase):
     def acessLibrarie(self, librarie):
         time_wait = 10
         wait = WebDriverWait(self.driver, time_wait)
-        librarie_link_xpath = "//a[contains(@href, '" + librarie + "')]"
+        # librarie_link_xpath = "//a[contains(@href, '" + librarie + "')]"
+        librarie_link_xpath = "//div[contains(text(), '" + librarie + "')]"
         librarieLinkElement = wait.until(EC.visibility_of_element_located((By.XPATH, librarie_link_xpath)))
         librarieLinkElement.click()
 
