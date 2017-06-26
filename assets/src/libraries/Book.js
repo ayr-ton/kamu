@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Paper from 'material-ui/Paper';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import BookDetail from './BookDetail';
 
 // FIXME
@@ -42,9 +42,9 @@ export default class Book extends Component {
 
 	_actionButtons() {
 		if (this.state.available) {
-			return <FlatButton label="Borrow" onTouchTap={this._borrow} />;
+			return <RaisedButton label="Borrow" className="btn-borrow" onTouchTap={this._borrow} />;
 		} else if (this.state.borrowedByMe) {
-			return <FlatButton label="Return" onTouchTap={this._return} />;
+			return <RaisedButton label="Return" className="btn-return" onTouchTap={this._return} />;
 		}
 
 		return null;
