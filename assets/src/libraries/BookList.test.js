@@ -1,5 +1,4 @@
 import React from 'react';
-import Book from './Book';
 import BookList from './BookList';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
@@ -33,8 +32,6 @@ describe('<BookList />', () => {
 	it('should render the list of books in its state', () => {
 		bookList.instance().setState({ books });
 		expect(bookList.find('Book')).to.have.length(books.length);
-		expect(bookList.contains(<Book book={books[0]} service={bookService} />)).to.be.true;
-		expect(bookList.contains(<Book book={books[1]} service={bookService} />)).to.be.true;
 	});
 
 	it('should call _loadBooks() when mounting the component', () => {
