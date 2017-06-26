@@ -11,6 +11,10 @@ export default class Book {
 		return null;
 	}
 
+	getCountBookCopiesAvailable(){
+		return this.copies.filter(copy => copy.user === null).length;
+	}
+
 	belongsToUser() {
 		return this.getBorrowedCopyID() != null;
 	}
