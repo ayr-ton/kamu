@@ -13,8 +13,7 @@ import unittest
 
 
 class KamuSeleniumTests(unittest.TestCase):
-    driver = None
-
+    
     @classmethod
     def setUp(cls):
 
