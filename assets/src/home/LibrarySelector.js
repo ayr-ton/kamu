@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {List, ListItem} from 'material-ui/List';
+import { List, ListItem } from 'material-ui/List';
 
 export default class LibrarySelector extends Component {
 	constructor(props) {
@@ -7,6 +7,8 @@ export default class LibrarySelector extends Component {
 		this.state = {
 			libraries: []
 		};
+
+		this._selectLibrary = this._selectLibrary.bind(this);
 	}
 
 	componentWillMount() {
@@ -14,11 +16,16 @@ export default class LibrarySelector extends Component {
 	}
 
 	_loadLibraries() {
-		return this.props.service.getLibraries().then(libraries => {
+		return this.props.bookService.getLibraries().then(libraries => {
 			this.setState({ libraries });
-		}).catch(error => {
-			console.error(error);
+		}).catch(() => {
+			return false;
 		});
+	}
+
+	_selectLibrary(library) {
+		this.props.profileService.setRegion(library.slug);
+		window.location.href = `/libraries/${library.slug}`;
 	}
 
 	render() {
@@ -26,9 +33,7 @@ export default class LibrarySelector extends Component {
 		if (this.state.libraries) {
 			content = this.state.libraries.map(library => {
 				return (
-					<a href={'/libraries/' + library.slug}>
-						<ListItem className='library' key={library.id} primaryText={library.name} />
-					</a>
+					<ListItem className='library' key={library.id} primaryText={library.name} onClick={() => this._selectLibrary(library)} />
 				);
 			});
 			content = (<List>{content}</List>);

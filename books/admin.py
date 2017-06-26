@@ -1,5 +1,7 @@
 from django.contrib import admin
+
 from .models import *
+
 
 class BookCopyInline(admin.TabularInline):
     model = BookCopy
@@ -8,9 +10,11 @@ class BookCopyInline(admin.TabularInline):
     show_change_link = True
     readonly_fields = ['book', 'user']
 
+
 class LibraryAdmin(admin.ModelAdmin):
     inlines = [BookCopyInline]
     list_display = ['name']
+
 
 class BookAdmin(admin.ModelAdmin):
     inlines = [BookCopyInline]
@@ -18,10 +22,12 @@ class BookAdmin(admin.ModelAdmin):
     list_per_page = 20
     search_fields = ['title', 'author']
 
+
 class BookCopyAdmin(admin.ModelAdmin):
     list_display = ['id', 'library', 'book', 'user']
     list_per_page = 20
     search_fields = ['book__title', 'user__username']
+
 
 admin.site.site_header = 'Kamu administration'
 admin.site.site_title = 'Kamu administration'
