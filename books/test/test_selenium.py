@@ -1,15 +1,10 @@
-import sys
+import unittest
 
-from pip._vendor import requests
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
-
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-
-import unittest
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 
 
 class Selenium(unittest.TestCase):
@@ -48,16 +43,12 @@ class Selenium(unittest.TestCase):
         wait = WebDriverWait(self.driver, time_wait)
         wait.until(EC.presence_of_all_elements_located((By.CLASS_NAME, "book")))
         buttons_books = wait.until(EC.presence_of_all_elements_located((By.TAG_NAME, "button")))
-        books_borrow = 0
+
         for buttonElement in buttons_books:
             if buttonElement.text == "BORROW":
                 buttonElement.click()
-                books_borrow += 1
-                # wait.until(EC.text_to_be_present_in_element(buttonElement, "RETURN"))
-                # self.assertEquals(buttonElement.text, "RETURN")
-
-        print(books_borrow)
-        self.assertTrue(books_borrow > 0)
+                self.assertEqual(buttonElement.text, "RETURN")
+                break
 
     def testReturnBook(self):
 
@@ -68,16 +59,12 @@ class Selenium(unittest.TestCase):
         wait = WebDriverWait(self.driver, time_wait)
         wait.until(EC.presence_of_all_elements_located((By.CLASS_NAME, "book")))
         buttons_books = wait.until(EC.visibility_of_all_elements_located((By.TAG_NAME, "button")))
-        books_return = 0
+
         for buttonElement in buttons_books:
             if buttonElement.text == "RETURN":
                 buttonElement.click()
-                books_return += 1
-                # wait.until(EC.text_to_be_present_in_element(buttonElement, 'BORROW'))
-                # self.assertEqual(buttonElement.text, "BORROW")
-
-        print(books_return)
-        self.assertTrue(books_return > 0)
+                self.assertEqual(buttonElement.text, "BORROW")
+                break
 
     # def testBrokenImage(self):
     #
