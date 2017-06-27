@@ -17,7 +17,7 @@ jobs:
     env: HOMEBREW_CASK_OPTS='--appdir=/Applications'
 
     before_script:
-      - brew update > /dev/null
+      - brew update >/dev/null
       - brew cask install google-chrome
     script: DISABLE_SAML2=true python manage.py test
   - stage: node_js unit tests
