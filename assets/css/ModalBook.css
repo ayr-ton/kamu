@@ -10,25 +10,25 @@
 }
 
 .modal-book__image-box {
-  width: 25%;
+  width: 20%;
   display: flex;
   flex-flow: column;
   justify-content: flex-start;
-  align-items: center;
+  align-items: left;
 }
 
 .modal-book__image {
-  width: 80%;
+  width: 90%;
 }
 
 .modal-book__details {
-  width: 75%;
+  width: 80%;
 }
 
 .modal-book__title {
   font-size: 2em;
   font-weight: bold;
-  line-height: 1em;
+  line-height: 1.1em;
 }
 
 .modal-book__author {
