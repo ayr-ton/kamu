@@ -32,12 +32,12 @@ export default class BookDetail extends Component {
 
 		let borrowers = [];
 		let headerDisplayed = false;
-		let borrowed_time_ago;
+		let borrowedTimeAgo;
 
 		for (let copy of book.copies) {
 			if(copy.user) {
 				if(copy.borrow_date) {
-					borrowed_time_ago = <div className="modal-book__borrowed-elapsed-time">
+					borrowedTimeAgo = <div className="modal-book__borrowed-elapsed-time">
 							<span className="borrowed-elapsed-time__label">Borrowed</span>
 							<span className="borrowed-elapsed-time__value">{moment(copy.borrow_date).fromNow()}</span>
 						</div>
@@ -55,10 +55,45 @@ export default class BookDetail extends Component {
 							<span>{copy.user.name}</span>
 						</div>					
 						
-						{borrowed_time_ago}
+						{borrowedTimeAgo}
 					</div>
 				</div>);
 			}
+		}
+
+		let imageUrl;
+		let publisherWrapper;
+		let publisherName;
+		let publicationDate;
+		let numberOfPages;
+		let bookDescription;
+
+		if(book.image_url) imageUrl = <img src={book.image_url} className="modal-book__image"/>
+
+		if(book.description) bookDescription = <div className="modal-book__description">{book.description}</div>
+
+		if(book.publisher) publisherName = <div className="modal-book__publisher-name">
+								<div className="modal-book__detail-label">Publisher</div>
+								<div className="modal-book__detail-value">{book.publisher}</div>
+							</div>
+
+		if(book.publication_date) publicationDate = <div className="modal-book__publication-date">
+								<div className="modal-book__detail-label">Publication date</div>
+								<div className="modal-book__detail-value">{book.publication_date}</div>
+							</div>
+
+		if(book.number_of_pages) numberOfPages = <div className="modal-book__number-of-pages">
+								<div className="modal-book__detail-label">Pages</div>
+								<div className="modal-book__detail-value">{book.number_of_pages}</div>
+							</div>
+
+		if(publisherName || publicationDate || numberOfPages) {
+			publisherWrapper = 
+				<div className="modal-book__publisher-wrapper">
+					{publisherName}
+					{publicationDate}
+					{numberOfPages}
+				</div>			
 		}
 
 		return (
@@ -75,7 +110,7 @@ export default class BookDetail extends Component {
 
 			<div className="modal-book">
 				<div className="modal-book__image-box">
-				<img src={book.image_url} className="modal-book__image"/>
+					{imageUrl}
 				</div>
 				<div className="modal-book__details">
 					<div className="modal-book__title">{book.title}</div>
@@ -86,25 +121,13 @@ export default class BookDetail extends Component {
 							<div className="modal-book__detail-label">Availability</div>
 							<div className="modal-book__detail-value">{copiesAvailable} of {book.copies.length}</div>
 						</div>
-						<div className="modal-book__publisher-wrapper">
-							<div className="modal-book__publisher-name">
-								<div className="modal-book__detail-label">Publisher</div>
-								<div className="modal-book__detail-value">{book.publisher}</div>
-							</div>
-							<div className="modal-book__publication-date">
-								<div className="modal-book__detail-label">Publication date</div>
-								<div className="modal-book__detail-value">{book.publication_date}</div>
-							</div>
-							<div className="modal-book__number-of-pages">
-								<div className="modal-book__detail-label">Pages</div>
-								<div className="modal-book__detail-value">{book.number_of_pages}</div>
-							</div>
-						</div>
+						
+						{publisherWrapper}
+						
 					</div>
 
 					<div className="modal-book__description-wrapper">
-						<div className="modal-book__detail-label">About</div>
-						<div className="modal-book__description">{book.description}</div>
+						{bookDescription}
 					</div>
 
 					<div className="modal-book__status">
