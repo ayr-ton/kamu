@@ -26,19 +26,21 @@
 .book {
   display: flex;
   flex-direction: column;
-  width: 215px;
-  margin: 30px 20px;
+  width: 190px;
+  margin: 30px 10px 0;
   cursor: pointer;
   max-height: 500px;
   overflow: hidden;
 }
 
 .book .book-cover {
-  height: 300px;
+  height: 270px;
   position: relative;
   display: flex;
   align-items: center;
   overflow: hidden;
+  background-size: cover;
+  background-position: center top;
 }
 
 .book .book-cover img {
@@ -93,7 +95,16 @@
 .book .book-actions {
   margin: 10px;
   text-align: center;
-  align-self: flex-end;
+}
+
+.book .book-actions .btn-borrow, .book .book-actions .btn-return {
+  width: 100%;
+}
+.book .book-actions button {
+  background-color: rgba(0, 0, 0, 0.8) !important;
+}
+.book .book-actions button span {
+  color: #fff !important;
 }
 
 .library-list {

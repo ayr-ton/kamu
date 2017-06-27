@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Paper from 'material-ui/Paper';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import BookDetail from './BookDetail';
 
 // FIXME
@@ -42,9 +42,9 @@ export default class Book extends Component {
 
 	_actionButtons() {
 		if (this.state.available) {
-			return <FlatButton label="Borrow" onTouchTap={this._borrow} />;
+			return <RaisedButton label="Borrow" className="btn-borrow" onTouchTap={this._borrow} />;
 		} else if (this.state.borrowedByMe) {
-			return <FlatButton label="Return" onTouchTap={this._return} />;
+			return <RaisedButton label="Return" className="btn-return" onTouchTap={this._return} />;
 		}
 
 		return null;
@@ -60,16 +60,22 @@ export default class Book extends Component {
 			contentDetail = <BookDetail open={this.state.open} book={book} changeOpenStatus={this.changeOpenStatus}  />
 		}
 
-		return (		
-			<Paper className="book" zDepth={this.state.zDepth} onMouseOver={this.onMouseOver} onClick={this.changeOpenStatus} onMouseOut={this.onMouseOut}>
-				<div className="book-cover">
-					<img src={book.image_url} alt={"Cover of " + book.title} />
-					<div className="book-cover-overlay"></div>
-				</div>
+		const bookCover ={
+			backgroundImage: `url('${book.image_url}')`
+		};
 
-				<div className="book-details">
-					<h1 className="book-title">{book.title}</h1>
-					<h2 className="book-author">{book.author}</h2>
+		return (		
+			<Paper className="book" zDepth={this.state.zDepth} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut}>
+				<div className="book-info" onClick={this.changeOpenStatus}>
+
+					<div className="book-cover" style={bookCover}>
+						<div className="book-cover-overlay"></div>
+					</div>
+
+					<div className="book-details"> 
+						<h1 className="book-title">{book.title}</h1>
+						<h2 className="book-author">{book.author}</h2>
+					</div>
 				</div>
 
 				<div className="book-actions">
