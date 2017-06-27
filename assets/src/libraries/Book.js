@@ -60,12 +60,15 @@ export default class Book extends Component {
 			contentDetail = <BookDetail open={this.state.open} book={book} changeOpenStatus={this.changeOpenStatus}  />
 		}
 
+		const bookCover ={
+			backgroundImage: `url('${book.image_url}')`
+		};
+
 		return (		
 			<Paper className="book" zDepth={this.state.zDepth} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut}>
 				<div className="book-info" onClick={this.changeOpenStatus}>
 
-					<div className="book-cover">
-						<img src={book.image_url} alt={"Cover of " + book.title} />
+					<div className="book-cover" style={bookCover}>
 						<div className="book-cover-overlay"></div>
 					</div>
 
