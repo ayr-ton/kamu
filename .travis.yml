@@ -12,41 +12,42 @@ jobs:
       - yarn lint
   - stage: python unit tests
     language: python
-      matrix:
-        include:
-          - os: linux
-            python: '3.6'
-            sudo: required
-            env: DISPLAY=':99.0'
-            dist: trusty
-            addons:
-              apt:
-                sources:
-                  - google-chrome
-                packages:
-                  - google-chrome-stable
-          - os: osx
-            node_js: '7'
-            sudo: required
-            env: HOMEBREW_CASK_OPTS='--appdir=/Applications'
+    matrix:
+      include:
+        - os: linux
+          python: '3.6'
+          sudo: required
+          env: DISPLAY=':99.0'
+          dist: trusty
+          addons:
+            apt:
+              sources:
+                - google-chrome
+              packages:
+                - google-chrome-stable
+        - os: osx
+          python: '3.6'
+          sudo: required
+          env: HOMEBREW_CASK_OPTS='--appdir=/Applications'
 
-      before_install:
-        - |
-          if [ "$TRAVIS_OS_NAME" = "osx" ]; then
-            brew update > /dev/null
-            brew cask install google-chrome
-          fi
-      install:
-        - npm install
+    before_install:
+      - |
+        if [ "$TRAVIS_OS_NAME" = "osx" ]; then
+          brew update > /dev/null
+          brew cask install google-chrome
+        fi
+    install:
+      #- npm install
+      - DISABLE_SAML2=true python manage.py test
 
-      before_script:
-        - |
-          if [ "$TRAVIS_OS_NAME" = "linux" ]; then
-            sh -e /etc/init.d/xvfb start
-          fi
-      script:
-        #- npm test
-        - DISABLE_SAML2=true python manage.py test
+    before_script:
+      - |
+        if [ "$TRAVIS_OS_NAME" = "linux" ]; then
+          sh -e /etc/init.d/xvfb start
+        fi
+    script:
+      #- npm test
+      - DISABLE_SAML2=true python manage.py test
 
     #script: DISABLE_SAML2=true python manage.py test
   - stage: node_js unit tests
