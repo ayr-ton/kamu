@@ -26,6 +26,7 @@
 .book {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   width: 190px;
   margin: 30px 10px 0;
   cursor: pointer;
