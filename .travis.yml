@@ -37,8 +37,8 @@ jobs:
           brew cask install google-chrome
         fi
     install:
-      - npm install
-      #- DISABLE_SAML2=true python manage.py test
+      #- npm install
+      - DISABLE_SAML2=true python manage.py test
 
     before_script:
       - |
