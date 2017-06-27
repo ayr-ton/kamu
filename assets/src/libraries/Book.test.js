@@ -107,9 +107,9 @@ describe('<Book />', () => {
         expect(bookComponent.state().zDepth).to.equal(1);
     });
 
-    it('should contain an img element', () => {
+    it('should contain an img as background-image', () => {
         bookComponent = shallow(<Book key={bookModel.id} book={bookModel} />);
-        expect(bookComponent.contains(<img src={bookModel.image_url} alt={"Cover of " + bookModel.title} />)).to.be.true;
+        expect(bookComponent.find(".book-cover").props().style.backgroundImage).to.equal(`url('${bookModel.image_url}')`)
     });
 
     it('should borrow a book and change available to false and borrowedByMe to true on TouchTap', () => {
@@ -117,7 +117,7 @@ describe('<Book />', () => {
         expect(bookComponent.state().available).to.be.true;
         expect(bookComponent.state().borrowedByMe).to.be.false;
 
-        bookComponent.find("FlatButton").simulate('touchTap');
+        bookComponent.find("RaisedButton").simulate('touchTap');
 
         expect(bookComponent.state().available).to.be.false;
         expect(bookComponent.state().borrowedByMe).to.be.true;
@@ -130,7 +130,7 @@ describe('<Book />', () => {
         expect(bookComponent.state().available).to.be.false;
         expect(bookComponent.state().borrowedByMe).to.be.true;
 
-        bookComponent.find("FlatButton").simulate('touchTap');
+        bookComponent.find("RaisedButton").simulate('touchTap');
 
         expect(bookComponent.state().available).to.be.true;
         expect(bookComponent.state().borrowedByMe).to.be.false;
