@@ -13,6 +13,12 @@ jobs:
   - stage: python unit tests
     language: python
     python: '3.6'
+    sudo: required
+    env: HOMEBREW_CASK_OPTS='--appdir=/Applications'
+
+    before_script:
+      - brew update > /dev/null
+      - brew cask install google-chrome
     script: DISABLE_SAML2=true python manage.py test
   - stage: node_js unit tests
     language: node_js
