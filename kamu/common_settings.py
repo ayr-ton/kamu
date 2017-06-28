@@ -22,6 +22,27 @@ CRONJOBS = [
 
 CRONTAB_COMMAND_PREFIX = 'export DISABLE_SAML2=true &&'
 
+#EMAIL_HOST=''
+#EMAIL_PORT=''
+#EMAIL_HOST_USER=''
+#EMAIL_HOST_PASSWORD=''
+#EMAIL_USE_TLS=''
+#EMAIL_USE_SSL=''
+#EMAIL_TIMEOUT=''
+
+#To use a real server
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+#To use the console as output for the email
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' 
+EMAIL_USE_TLS = True 
+EMAIL_HOST = 'smtp.gmail.com' 
+EMAIL_PORT = 587 
+EMAIL_HOST_USER = 'rakil@gmail.com' 
+EMAIL_HOST_PASSWORD = '*******' 
+DEFAULT_FROM_EMAIL = 'testing@testing.com'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
