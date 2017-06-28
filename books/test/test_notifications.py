@@ -33,3 +33,7 @@ class SendNotifications(TestCase):
 
         for bookCopy in bookCopiesRet:
             self.assertEqual(bookCopy, self.bookCopies[bookCopy.id])
+
+
+    def test_send_notification_to_be_true(self):
+        self.assertTrue(send_notification(None))
