@@ -82,7 +82,7 @@ describe('<Book />', () => {
             }
         });
         
-        global.localStorage = { 
+        global.sessionStorage = { 
             getItem : () => { return null }
         }
 
