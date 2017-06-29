@@ -2,27 +2,27 @@ import { fetchFromAPI } from './helpers';
 
 export default class ProfileService {
 	getLoggedUser() {
-		const user = JSON.parse(localStorage.getItem('user'));
+		const user = JSON.parse(sessionStorage.getItem('user'));
 		if (user) {
 			return Promise.resolve(user);
 		}
 
 		return fetchFromAPI('/profile').then(data => {
 			const user = data.user;
-			localStorage.setItem('user', JSON.stringify(user));
+			sessionStorage.setItem('user', JSON.stringify(user));
 			return user;
 		});
 	}
 
 	getRegion() {
-		return localStorage.getItem('region');
+		return sessionStorage.getItem('region');
 	}
 
 	setRegion(region) {
-		localStorage.setItem('region', region);
+		sessionStorage.setItem('region', region);
 	}
 
 	clearRegion() {
-		localStorage.removeItem('region');
+		sessionStorage.removeItem('region');
 	}
 }
