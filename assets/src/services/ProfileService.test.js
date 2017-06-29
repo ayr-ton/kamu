@@ -13,18 +13,18 @@ function generateUser(){
 describe('ProfileService', () => {
     let profileService = new ProfileService();
 
-    describe('Get user from localStorage', () => {
+    describe('Get user from sessionStorage', () => {
         let user = generateUser();
 
         beforeEach(() => {
-            global.localStorage = {
+            global.sessionStorage = {
                 getItem : () => {
                     return JSON.stringify(user);
                 }
             };
         });
 
-        it("Should get user from local Storage", () => {
+        it("Should get user from session Storage", () => {
             return profileService.getLoggedUser().then((userReturned) => {
                 expect(userReturned).to.deep.equal(user);
             });
@@ -43,7 +43,7 @@ describe('ProfileService', () => {
             ).withArgs(`/profile`)
             .returns(Promise.resolve({user: user}));
 
-            global.localStorage = {
+            global.sessionStorage = {
                 setItem : () => {},
                 getItem : () => {
                     return null;
@@ -65,7 +65,7 @@ describe('ProfileService', () => {
     describe("Region", () => {
         let expectedRegion = null;
         beforeEach(() => {
-            global.localStorage = {
+            global.sessionStorage = {
                 setItem : (key, data) => {
                     if (key == 'region') expectedRegion = data;
                 },
@@ -76,7 +76,7 @@ describe('ProfileService', () => {
             };
         });
 
-        it("Should set and retrieve the region in localStorage", () => {
+        it("Should set and retrieve the region in sessionStorage", () => {
             let newRegion = 'quito';
             profileService.setRegion(newRegion);
             
