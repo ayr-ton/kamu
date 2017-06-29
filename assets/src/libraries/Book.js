@@ -50,7 +50,16 @@ export default class Book extends Component {
 		return null;
 	}
 
-	changeOpenStatus() { this.setState({ open: !this.state.open }); }
+	changeOpenStatus() { 		
+		this.setState({ open: !this.state.open }, this._trackAnalytics);	
+				
+	}
+
+	_trackAnalytics() {
+		if(this.state.open) {
+			window.ga('send', 'event', 'Show Detail', this.props.book.title);
+		}
+	}
 
 	render() {
 		const book = this.props.book;
