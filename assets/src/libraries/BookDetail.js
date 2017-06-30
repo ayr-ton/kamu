@@ -8,6 +8,7 @@ export default class BookDetail extends Component {
 	constructor(props) {
 		super(props);
 		this.changeOpenStatus = this.props.changeOpenStatus.bind(this);
+		this.actionButtons = this.props.actionButtons.bind(this);
 	}
 
 	render() {		
@@ -111,7 +112,12 @@ export default class BookDetail extends Component {
 			<div className="modal-book">
 				<div className="modal-book__image-box">
 					{imageUrl}
+
+					<div className="modal-book__actions-buttons">
+						{this.actionButtons()}
+					</div>
 				</div>
+
 				<div className="modal-book__details">
 					<div className="modal-book__title">{book.title}</div>
 					<div className="modal-book__author">{book.author}</div>

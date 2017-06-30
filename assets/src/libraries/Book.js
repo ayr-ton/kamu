@@ -57,7 +57,7 @@ export default class Book extends Component {
 		let contentDetail;
 
 		if (this.state.open) {
-			contentDetail = <BookDetail open={this.state.open} book={book} changeOpenStatus={this.changeOpenStatus}  />
+			contentDetail = <BookDetail open={this.state.open} book={book} changeOpenStatus={this.changeOpenStatus} actionButtons={this._actionButtons} />
 		}
 
 		const bookCover ={
