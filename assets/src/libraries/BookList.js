@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import Book from './Book';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+
 
 export default class BookList extends Component {
 	constructor(props) {
@@ -8,6 +10,10 @@ export default class BookList extends Component {
 			books: [],			
 			currentBook: {}
 		};
+	}
+
+	componentDidMount() {
+		injectTapEventPlugin();
 	}
 
 	componentWillMount() {
