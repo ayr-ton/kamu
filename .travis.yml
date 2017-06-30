@@ -25,8 +25,6 @@ jobs:
       script: git remote add deploy $MAINSTREAM && git push -f deploy master
       on:
         branch: master
-  - stage: test staging
-    script: 'curl --fail $STAGING'
 notifications:
   webhooks:
     urls:
