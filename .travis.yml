@@ -18,6 +18,10 @@ jobs:
     language: node_js
     node_js: '7'
     script: yarn test
+  - stage: python functional tests
+    language: python
+    python: '3.6'
+    script: python functional_tests.py
   - stage: deploy to staging
     script: skip
     deploy: &script
