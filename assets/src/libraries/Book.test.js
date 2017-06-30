@@ -34,14 +34,10 @@ function generateUser(){
 describe('<Book />', () => {
     let bookModel = generateBooks();
     let user = generateUser();
-
-    
-
     let bookComponent;
-
     let bookService = new BookService();
-
     let sandbox;
+
     beforeEach(() => {
         bookModel.copies = [
             {
@@ -85,7 +81,12 @@ describe('<Book />', () => {
                 f();
             }
         });
+        
+        global.sessionStorage = { 
+            getItem : () => { return null }
+        }
 
+        window.ga = function() { }
     });
 
     afterEach(() => {
@@ -113,7 +114,7 @@ describe('<Book />', () => {
     });
 
     it('should borrow a book and change available to false and borrowedByMe to true on TouchTap', () => {
-        bookComponent = shallow(<Book key={bookModel.id} book={bookModel} service={bookService}/>);
+        bookComponent = shallow(<Book key={bookModel.id} book={bookModel} service={bookService} library='bh'/>);
         expect(bookComponent.state().available).to.be.true;
         expect(bookComponent.state().borrowedByMe).to.be.false;
 
