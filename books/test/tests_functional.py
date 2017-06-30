@@ -28,11 +28,10 @@ class Selenium(unittest.TestCase):
         wait = WebDriverWait(self.driver, time_wait)
         WebDriverWait(self.driver, self.page_has_loaded)
 
-        # Assert
         book_list = wait.until(lambda driver: driver.find_element_by_class_name("book-list"))
         books_librarie_elements = wait.until(lambda driver: book_list.find_elements_by_class_name("book"))
         self.assertIsNotNone(books_librarie_elements)
-        wait.until(EC.visibility_of_all_elements_located((By.CLASS_NAME, "book")))
+        wait.until(EC.presence_of_all_elements_located((By.CLASS_NAME, "book")))
 
     def testBorrowBook(self):
 
@@ -47,6 +46,7 @@ class Selenium(unittest.TestCase):
         for buttonElement in buttons_books:
             if buttonElement.text == "BORROW":
                 buttonElement.click()
+                wait.until(lambda driver: "RETURN" in buttonElement.text)
                 self.assertEqual(buttonElement.text, "RETURN")
                 break
 
@@ -58,45 +58,14 @@ class Selenium(unittest.TestCase):
         time_wait = 10
         wait = WebDriverWait(self.driver, time_wait)
         wait.until(EC.presence_of_all_elements_located((By.CLASS_NAME, "book")))
-        buttons_books = wait.until(EC.visibility_of_all_elements_located((By.TAG_NAME, "button")))
+        buttons_books = wait.until(EC.presence_of_all_elements_located((By.TAG_NAME, "button")))
 
         for buttonElement in buttons_books:
             if buttonElement.text == "RETURN":
                 buttonElement.click()
+                wait.until(lambda driver: "BORROW" in buttonElement.text)
                 self.assertEqual(buttonElement.text, "BORROW")
                 break
-
-    # def testBrokenImage(self):
-    #
-    #     self.login()
-    #
-    #     self.acessLibrarie("Belo Horizonte")
-    #
-    #     time_wait = 10
-    #     wait = WebDriverWait(self.driver, time_wait)
-    #
-    #     WebDriverWait(self.driver, self.page_has_loaded)
-    #     wait.until(EC.presence_of_all_elements_located((By.CLASS_NAME, "book-cover")))
-    #     # broken_images = 0
-    #     inv_images = 0
-    #     all_images = wait.until(lambda driver: driver.find_elements_by_tag_name("img"))
-    #     for image in all_images:
-    #         broken_images = self.driver.execute_script("return arguments[0].complete && typeof arguments["
-    #                                                    "0].naturalWidth != \"undefined\" && arguments["
-    #                                                    "0].naturalWidth > 0", image)
-    #         wait.until(lambda driver: driver.find_elements_by_tag_name("img"))
-    #         wait.until(lambda driver: driver.find_element_by_class_name("book-cover"))
-    #         if broken_images == False:
-    #             inv_images += 1
-    #
-    #     # for image in all_images:
-    #     #     r = requests.head(image.get_attribute('src'))
-    #     #     self.driver.save_screenshot("image.png")
-    #     #     if r.status_code != 200:
-    #     #         broken_images += 1
-    #
-    #     # self.assertTrue(inv_images == 0)
-    #     self.assertEqual(inv_images, 0)
 
     @classmethod
     def tearDown(cls):
@@ -146,7 +115,6 @@ class Selenium(unittest.TestCase):
     def acessLibrarie(self, librarie):
         time_wait = 10
         wait = WebDriverWait(self.driver, time_wait)
-        # librarie_link_xpath = "//a[contains(@href, '" + librarie + "')]"
         librarie_link_xpath = "//div[contains(text(), '" + librarie + "')]"
         librarieLinkElement = wait.until(EC.visibility_of_element_located((By.XPATH, librarie_link_xpath)))
         librarieLinkElement.click()
