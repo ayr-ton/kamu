@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { List, ListItem } from 'material-ui/List';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+
 
 export default class LibrarySelector extends Component {
 	constructor(props) {
@@ -9,6 +11,10 @@ export default class LibrarySelector extends Component {
 		};
 
 		this._selectLibrary = this._selectLibrary.bind(this);
+	}
+	
+	componentDidMount() {
+		injectTapEventPlugin();
 	}
 
 	componentWillMount() {
