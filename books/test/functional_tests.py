@@ -12,11 +12,7 @@ class Selenium(unittest.TestCase):
     @classmethod
     def setUp(cls):
 
-        # cls.driver = webdriver.Remote(
-        #     command_executor='http://localhost:4444/wd/hub',
-        #     desired_capabilities=DesiredCapabilities.CHROME)
         cls.driver = webdriver.Chrome()
-        # cls.driver.get("https://staging-kamu.thoughtworks-labs.net/")
         cls.driver.get("http://localhost:8000")
         assert "Log in | Kamu administration" in cls.driver.title
 
@@ -90,7 +86,6 @@ class Selenium(unittest.TestCase):
         self.assertIn("Log in | Kamu administration", self.driver.title)
 
         kamu_username = "selenium_tests"
-        # kamu_username = "qa_tw@thoughtworks.com"
         kamu_password = "selenium_10"
         time_wait = 10
         wait = WebDriverWait(driver, time_wait)
