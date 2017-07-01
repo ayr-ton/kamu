@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Book from './Book';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 import ProfileService from '../services/ProfileService';
 
 export default class BookList extends Component {
@@ -9,6 +10,10 @@ export default class BookList extends Component {
 			books: [],			
 			currentBook: {}
 		};
+	}
+
+	componentDidMount() {
+		injectTapEventPlugin();
 	}
 
 	componentWillMount() {
