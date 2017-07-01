@@ -3,10 +3,6 @@ import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
 import BookDetail from './BookDetail';
 
-// FIXME
-import injectTapEventPlugin from 'react-tap-event-plugin';
-injectTapEventPlugin();
-
 export default class Book extends Component {
 	constructor(props) {
 		super(props);
