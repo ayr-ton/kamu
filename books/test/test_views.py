@@ -30,6 +30,10 @@ class BookCopyBorrowViewCase(TestCase):
         self.assertEqual(self.user, book_copy.user)
         self.assertIsNotNone(book_copy.borrow_date)
 
+    def test_shouldnt_borrow_book_copy_when_invalid_id(self):
+        self.request = self.client.post('/api/copies/' + str(99) + "/borrow")
+        self.assertEqual(404, self.request.status_code)
+
 
 class BookCopyReturnView(TestCase):
     def setUp(self):
@@ -53,6 +57,10 @@ class BookCopyReturnView(TestCase):
 
         self.assertEqual(None, book_copy.user)
         self.assertIsNone(book_copy.borrow_date)
+
+    def test_shouldnt_return_book_copy_when_invalid_id(self):
+        self.request = self.client.post('/api/copies/' + str(99) + "/return")
+        self.assertEqual(404, self.request.status_code)
 
 
 class LibraryViewSet(TestCase):

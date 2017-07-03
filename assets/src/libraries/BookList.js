@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
 import Book from './Book';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+import ProfileService from '../services/ProfileService';
 
 export default class BookList extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			books: []
+			books: [],			
+			currentBook: {}
 		};
+	}
+
+	componentDidMount() {
+		injectTapEventPlugin();
 	}
 
 	componentWillMount() {
@@ -16,23 +23,27 @@ export default class BookList extends Component {
 	_loadBooks() {
 		return this.props.service.getBooks(this.props.librarySlug).then(books => {
 			this.setState({ books });
-		}).catch(error => {
-			console.error(error);
+		}).catch(() => {
+			return false;
 		});
 	}
 
 	render() {
 		let content;
+		const profileService = new ProfileService();
+		const library = profileService.getRegion();
+
 		if (this.state.books) {
 			content = this.state.books.map(book => {
-				return <Book key={book.id} book={book} service={this.props.service} />
+				return <Book key={book.id} book={book} service={this.props.service} library={library} />
 			});
 		}
 
-		return (
+		return (			
 			<div className="book-list">
 				{content}
-			</div>
+			</div>			
 		);
+
 	}
 }

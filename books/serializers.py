@@ -9,14 +9,18 @@ from books.models import *
 
 class UserSerializer(serializers.ModelSerializer):
     image_url = serializers.SerializerMethodField()
+    name = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'image_url')
+        fields = ('username', 'email', 'image_url', 'first_name', 'last_name', 'name')
 
     def get_image_url(self, obj):
         email_hash = md5(obj.email.strip().lower().encode()).hexdigest()
         return 'https://www.gravatar.com/avatar/%s?size=100' % email_hash
+
+    def get_name(self, obj):
+        return obj.first_name + " " + obj.last_name
 
 
 class BookCopySerializer(serializers.ModelSerializer):
@@ -24,7 +28,7 @@ class BookCopySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BookCopy
-        fields = ('id', 'user')
+        fields = ('id', 'user', 'borrow_date')
 
 
 class LibraryBookSerializer(serializers.ModelSerializer):
