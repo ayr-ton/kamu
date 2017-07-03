@@ -67,3 +67,27 @@ yarn start
 ```
 
 Now just go to [http://localhost:8000](http://localhost:8000) in your browser :)
+
+
+## Running and configuring Cronjobs
+
+The cronjobs use the crontabs of unix system, so it doesn't run on windows systems.
+To add the cronjobs defines in kamu run:
+
+```shell
+DISABLE_SAML2=true ./manage.py crontab add
+```
+Once you run that command it will register the cronjob and the SO will begin to execute the job according to the confoguration.
+
+To remove (and stop) the jobs execute:
+```shell
+DISABLE_SAML2=true ./manage.py crontab remove
+```
+
+To show the current jobs running execute:
+```shell
+DISABLE_SAML2=true ./manage.py crontab show
+```
+
+
+
