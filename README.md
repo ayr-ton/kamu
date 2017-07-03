@@ -69,9 +69,9 @@ yarn start
 Now just go to [http://localhost:8000](http://localhost:8000) in your browser :)
 
 
-## Running and configuring Cronjobs
+## Running and configuring cronjobs
 
-The cronjobs use the crontabs of unix system, so it doesn't run on windows systems.
+The cronjobs use the unix's crontabs, so it doesn't run on windows systems.
 To add the cronjobs defines in kamu run:
 
 ```shell
