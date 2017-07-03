@@ -77,7 +77,7 @@ To add the cronjobs defines in kamu run:
 ```shell
 DISABLE_SAML2=true ./manage.py crontab add
 ```
-Once you run that command it will register the cronjob and the SO will begin to execute the job according to the confoguration.
+Once you run that command it will register the cronjob and the SO will begin to execute the job according to the configuration.
 
 To remove (and stop) the jobs execute:
 ```shell
