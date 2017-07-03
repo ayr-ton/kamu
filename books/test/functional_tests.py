@@ -1,4 +1,5 @@
 import unittest
+import os
 
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
@@ -11,8 +12,10 @@ class Selenium(unittest.TestCase):
 
     @classmethod
     def setUp(cls):
-
-        cls.driver = webdriver.Chrome()
+        #chromedriver = '/usr/local/Cellar/chromedriver/2.30/bin/chromedriver'
+        #chromedriver = os.listdir("chromedriver")
+        chromedriver = './books/test/chromedriver'
+        cls.driver = webdriver.Chrome(chromedriver)
         cls.driver.get("http://localhost:8000")
         assert "Log in | Kamu administration" in cls.driver.title
 
