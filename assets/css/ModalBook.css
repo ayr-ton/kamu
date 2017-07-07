@@ -157,3 +157,17 @@
 .modal-book__borrowed-with {
   margin-bottom: 10px;
 }
+
+.modal-book__actions-buttons {
+  margin: 10px 0px;
+  width: 90%;
+}
+.modal-book__actions-buttons .btn-borrow, .modal-book__actions-buttons .btn-return {
+  width: 100%;
+}
+.modal-book__actions-buttons button {
+  background-color: rgba(0, 0, 0, 0.8) !important;
+}
+.modal-book__actions-buttons button span {
+  color: #fff !important;
+}

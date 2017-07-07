@@ -3,10 +3,6 @@ import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
 import BookDetail from './BookDetail';
 
-// FIXME
-import injectTapEventPlugin from 'react-tap-event-plugin';
-injectTapEventPlugin();
-
 export default class Book extends Component {
 	constructor(props) {
 		super(props);
@@ -31,12 +27,14 @@ export default class Book extends Component {
 	_borrow() {
 		this.props.service.borrowBook(this.props.book).then(() => {
 			this.setState({ available: false, borrowedByMe: true });
+			window.ga('send', 'event', 'Borrow', this.props.book.title, this.props.library);
 		});
 	}
 
 	_return() {
 		this.props.service.returnBook(this.props.book).then(() => {
 			this.setState({ available: true, borrowedByMe: false });
+			window.ga('send', 'event', 'Return', this.props.book.title, this.props.library);
 		});
 	}
 
@@ -50,16 +48,24 @@ export default class Book extends Component {
 		return null;
 	}
 
-	changeOpenStatus() { this.setState({ open: !this.state.open }); }
+	changeOpenStatus() { 		
+		this.setState({ open: !this.state.open }, this._trackAnalytics);					
+	}
+
+	_trackAnalytics() {
+		if(this.state.open) {														
+			window.ga('send', 'event', 'Show Detail', this.props.book.title, this.props.library);
+		}
+	}
 
 	render() {
 		const book = this.props.book;
 		let contentDetail;
 
 		if (this.state.open) {
-			contentDetail = <BookDetail open={this.state.open} book={book} changeOpenStatus={this.changeOpenStatus}  />
+			contentDetail = <BookDetail open={this.state.open} book={book} changeOpenStatus={this.changeOpenStatus} actionButtons={this._actionButtons} />
 		}
-
+		
 		const bookCover ={
 			backgroundImage: `url('${book.image_url}')`
 		};
