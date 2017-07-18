@@ -1,0 +1,12 @@
+[urls]
+url_local=http://localhost:8000
+url_staging=https://staging-kamu.thoughtworks-labs.net/
+url_prod=https://kamu.thoughtworks-labs.net/
+[login]
+kamu_username=selenium_tests
+kamu_password=selenium_10
+[libraries]
+bh=Belo Horizonte
+sp=São Paulo
+poa=Porto Alegre
+rec=Recife
