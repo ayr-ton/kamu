@@ -48,27 +48,27 @@ yarn install
 ```
 
 ---
-**For setup local without authenticate with Okta Preview:**
-Use the "DISABLE_SAML2=true" concatenating with the commands the Python:
+**For setup local with authenticate with Okta Preview:**
+Use the "OKTA_METADATA_URL='url-of-okta-saml'" concatenating with the commands the Python:
 
 ```shell
   Examples:  
-  DISABLE_SAML2=true yarn start
-  DISABLE_SAML2=true python manage.py migrate
+  OKTA_METADATA_URL='url-of-okta-saml' yarn start
+  OKTA_METADATA_URL='url-of-okta-saml' python manage.py migrate
 ```
 
 Other form the going is export this parameter before the execute os commands do Python:
 
 ```shell
-  export DISABLE_SAML2=true
+  OKTA_METADATA_URL='url-of-okta-saml'
   yarn start
   python manage.py migrate
 ```
 
-Case necessity execute application with authenticate by Okta Preview again, enough execute the command:
+Case necessity execute application without authenticate by Okta Preview again, enough execute the command:
 
 ```shell
-  unset DISABLE_SAML2=true
+  unset OKTA_METADATA_URL
 ```
 
 Finally, is necessary to create a super user using the command:
@@ -102,19 +102,37 @@ Now just go to [http://localhost:8000](http://localhost:8000) in your browser :)
 ## Running and configuring cronjobs
 
 The cronjobs use the unix's crontabs, so it doesn't run on windows systems.
-To add the cronjobs defines in kamu run:
+
+If you want to run the cronjobs you need to configure the next OS ENV
+```shell
+export DJANGO_EMAIL_HOST=localhost
+export DJANGO_EMAIL_PORT=2525
+export DJANGO_EMAIL_TIMEOUT=1
+export DJANGO_EMAIL_CRON_FROM=example@domain.com
+```
+To run the test the env vars are no needed since it use a fake server.
+
+To add the cronjobs defined in kamu run:
 
 ```shell
-DISABLE_SAML2=true ./manage.py crontab add
+python manage.py crontab add
 ```
-Once you run that command it will register the cronjob and the SO will begin to execute the job according to the configuration.
+Once you run that command it will register the cronjob with a hash. The SO will begin to execute the job according to the configuration, even if you shutdown the machine, when you start it again the cronjobs will begin to execute again.
 
 To remove (and stop) the jobs execute:
 ```shell
-DISABLE_SAML2=true ./manage.py crontab remove
+python manage.py crontab remove
 ```
 
 To show the current jobs running execute:
 ```shell
-DISABLE_SAML2=true ./manage.py crontab show
+python manage.py crontab show
 ```
+
+To run immediately execute:
+```
+python manage.py crontab run hash-of-the-cronjob
+```
+
+If there's a problem during the job execution it will create a text in /var/mail/username that content the error.
+Most error will come because the env vars are not set globally, due to the fact that crontab run in his own session
