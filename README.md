@@ -48,7 +48,7 @@ yarn install
 ```
 
 **For setup local with authenticate with Okta Preview:**
-Use the "OKTA_METADATA_URL='url-of-okta-saml'" concatenating with the commands the Python:
+Use the "OKTA_METADATA_URL='url-of-okta-saml'" concatenating with the python's commands:
 
 ```shell
   Examples:  
@@ -56,15 +56,14 @@ Use the "OKTA_METADATA_URL='url-of-okta-saml'" concatenating with the commands t
   OKTA_METADATA_URL='url-of-okta-saml' python manage.py migrate
 ```
 
-Other form the going is export this parameter before the execute os commands do Python:
+Another way is to export the var and then execute the commands:
 
 ```shell
-  OKTA_METADATA_URL='url-of-okta-saml'
+  export OKTA_METADATA_URL='url-of-okta-saml'
   yarn start
   python manage.py migrate
 ```
-
-Case necessity execute application without authenticate by Okta Preview again, enough execute the command:
+In case of need authenticate without Okta preview again, execute:
 
 ```shell
   unset OKTA_METADATA_URL
