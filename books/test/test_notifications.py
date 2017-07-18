@@ -30,19 +30,17 @@ class SendNotificationsTest(TestCase):
                                        borrow_date=datetime.date(2017, 6, 1))
         self.bookCopies[book.id] = book
 
-    def test_usrs_out_of_term(self):
+    def test_users_out_of_term(self):
         bookCopiesRet = get_borrows_out_of_time(settings.CRON_EMAIL_NOTIFICATION_SETTINGS["BORROW_MAX_TERM_MONTH"])
 
         for bookCopy in bookCopiesRet:
             self.assertEqual(bookCopy, self.bookCopies[bookCopy.id])
 
 
-    def test_send_notification_to_be_true(self):
+    def test_send_notification_assert_mail_sents(self):
         bookCopiesList = list(self.bookCopies.values())
         
         send_notification(bookCopiesList)
 
         self.assertEqual(len(mail.outbox), len(bookCopiesList))
         self.assertEqual(mail.outbox[0].subject, settings.CRON_EMAIL_NOTIFICATION_SETTINGS["TEMPLATE_SUBJECT"])
-
-    #TODO Test for email send fail. What must the system do?
