@@ -5,16 +5,16 @@
 [![Build Status](https://travis-ci.com/ayr-ton/kamu.svg?token=KGsd1SkDsTdBvgkTgbtG&branch=master)](https://travis-ci.com/ayr-ton/kamu)
 [![Join the chat at https://gitter.im/pykamu/Lobby](https://badges.gitter.im/pykamu/Lobby.svg)](https://gitter.im/pykamu/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-Kamu is an application that focus on managing a physical library, you can add books, borrow and return them.
+Kamu is an application that focus on managing a physical library where you can add books, borrow and return them.
 
 ## Requirements
 
-- Python 3.6+ for the Django backend
-- Node.js 6.10+ for the frontend assets
+- Python 3.6+ for Django backend
+- Node.js 6.10+ for frontend assets
 
 ## Installation / Getting started
 
-Here is a quick step-by-step minimal setup you need to get the local app up and running in your workstation:
+Here is a quick step-by-step minimal setup, to get the app up and running in your local workstation:
 
 Clone this repo and open the root folder:
 
@@ -23,31 +23,30 @@ git clone https://github.com/twlabs/kamu.git
 cd kamu
 ```
 
-Create the Python virtual enviroment:
+Create Python virtual enviroment:
 
 ```shell
 python3 -m venv kamu
 ```
 
-Activate the virtual enviroment (this command can change based on OS):
+Activate virtual enviroment (this command can change based on OS):
 
 ```shell
 source kamu/bin/activate
 ```
 
-Install the backend dependencies using pip:
+Install backend dependencies using pip:
 
 ```shell
 pip install -r requirements.txt
 ```
 
-Install the frontend dependencies using [Yarn](http://yarnpkg.com):
+Install frontend dependencies using [Yarn](http://yarnpkg.com):
 
 ```shell
 yarn install
 ```
 
----
 **For setup local with authenticate with Okta Preview:**
 Use the "OKTA_METADATA_URL='url-of-okta-saml'" concatenating with the commands the Python:
 
@@ -71,14 +70,15 @@ Case necessity execute application without authenticate by Okta Preview again, e
   unset OKTA_METADATA_URL
 ```
 
-Finally, is necessary to create a super user using the command:
+Create a super user:
 
 ```shell
 python manage.py createsuperuser
 ```
----
 
-Create the database tables:
+You will use this super user to login as administrator in your local kamu application.
+
+Create database tables:
 
 ```shell
 python manage.py migrate
@@ -90,7 +90,7 @@ Seed the database with initial dump data:
 python manage.py loaddata dump_data/*.json
 ```
 
-Start the development server:
+Start your local server:
 
 ```shell
 yarn start
