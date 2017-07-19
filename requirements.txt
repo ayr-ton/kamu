@@ -21,6 +21,8 @@ python-dateutil==2.6.0
 pytz==2016.10
 repoze.who==2.3
 requests==2.13.0
+selenium==3.4.3
+chromedriver==2.24.1
 six==1.10.0
 WebOb==1.7.2
 whitenoise==3.3.0
