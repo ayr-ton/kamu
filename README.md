@@ -100,38 +100,42 @@ Now just go to [http://localhost:8000](http://localhost:8000) in your browser :)
 
 ## Running and configuring cronjobs
 
-The cronjobs use the unix's crontabs, so it doesn't run on windows systems.
+The cronjobs use Unix's crontabs, so it doesn't run on Windows systems.
 
-If you want to run the cronjobs you need to configure the next OS ENV
+If you want to run the cronjobs you need to configure the following environment variables, used to send the email reminders:
+
 ```shell
 export DJANGO_EMAIL_HOST=localhost
 export DJANGO_EMAIL_PORT=2525
 export DJANGO_EMAIL_TIMEOUT=1
 export DJANGO_EMAIL_CRON_FROM=example@domain.com
 ```
-To run the test the env vars are no needed since it use a fake server.
 
-To add the cronjobs defined in kamu run:
+To setup the cronjobs run:
 
 ```shell
 python manage.py crontab add
 ```
+
 Once you run that command it will register the cronjob with a hash. The SO will begin to execute the job according to the configuration, even if you shutdown the machine, when you start it again the cronjobs will begin to execute again.
 
 To remove (and stop) the jobs execute:
+
 ```shell
 python manage.py crontab remove
 ```
 
 To show the current jobs running execute:
+
 ```shell
 python manage.py crontab show
 ```
 
 To run immediately execute:
+
 ```
 python manage.py crontab run hash-of-the-cronjob
 ```
 
 If there's a problem during the job execution it will create a text in /var/mail/username that content the error.
-Most error will come because the env vars are not set globally, due to the fact that crontab run in his own session
+Most errors will come because the env vars are not set globally, due to the fact that crontab run in its own session.
