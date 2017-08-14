@@ -85,7 +85,7 @@ describe('BookService', () => {
                 , "fetchFromAPI"
             ).withArgs('/libraries')
                 .returns(
-                    Promise.resolve({results: libraries})
+                    Promise.resolve(libraries)
                 );
         });
 
