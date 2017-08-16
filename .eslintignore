@@ -3,4 +3,3 @@ coverage/
 dev-server.js
 webpack.config.js
 kamu/lib/
-kamu/selenium/
