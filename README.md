@@ -97,7 +97,6 @@ yarn start
 
 Now just go to [http://localhost:8000](http://localhost:8000) in your browser :)
 
-
 ## Running and configuring cronjobs
 
 The cronjobs use Unix's crontabs, so it doesn't run on Windows systems.
