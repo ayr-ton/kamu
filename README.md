@@ -47,16 +47,26 @@ Install frontend dependencies using [Yarn](http://yarnpkg.com):
 yarn install
 ```
 
-To execute local application without Okta Preview authentication, set DISABLE_SAML2 variable:
+**For setup local with authenticate with Okta Preview:**
+Use the "OKTA_METADATA_URL='url-of-okta-saml'" concatenating with the python's commands:
 
 ```shell
-  export DISABLE_SAML2=true
+  Examples:  
+  OKTA_METADATA_URL='url-of-okta-saml' yarn start
+  OKTA_METADATA_URL='url-of-okta-saml' python manage.py migrate
 ```
 
-In case you need to execute with Okta Preview authentication, unset the DISABLE_SAML2 variable:
+Another way is to export the var and then execute the commands:
 
 ```shell
-  unset DISABLE_SAML2=true
+  export OKTA_METADATA_URL='url-of-okta-saml'
+  yarn start
+  python manage.py migrate
+```
+In case of need authenticate without Okta preview again, execute:
+
+```shell
+  unset OKTA_METADATA_URL
 ```
 
 Create a super user:
@@ -86,3 +96,46 @@ yarn start
 ```
 
 Now just go to [http://localhost:8000](http://localhost:8000) in your browser :)
+
+
+## Running and configuring cronjobs
+
+The cronjobs use Unix's crontabs, so it doesn't run on Windows systems.
+
+If you want to run the cronjobs you need to configure the following environment variables, used to send the email reminders:
+
+```shell
+export DJANGO_EMAIL_HOST=localhost
+export DJANGO_EMAIL_PORT=2525
+export DJANGO_EMAIL_TIMEOUT=1
+export DJANGO_EMAIL_CRON_FROM=example@domain.com
+```
+
+To setup the cronjobs run:
+
+```shell
+python manage.py crontab add
+```
+
+Once you run that command it will register the cronjob with a hash. The SO will begin to execute the job according to the configuration, even if you shutdown the machine, when you start it again the cronjobs will begin to execute again.
+
+To remove (and stop) the jobs execute:
+
+```shell
+python manage.py crontab remove
+```
+
+To show the current jobs running execute:
+
+```shell
+python manage.py crontab show
+```
+
+To run immediately execute:
+
+```
+python manage.py crontab run hash-of-the-cronjob
+```
+
+If there's a problem during the job execution it will create a text in /var/mail/username that content the error.
+Most errors will come because the env vars are not set globally, due to the fact that crontab run in its own session.

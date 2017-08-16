@@ -1,6 +1,5 @@
 import os
 
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 INSTALLED_APPS = [
@@ -13,7 +12,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'webpack_loader',
     'books',
-    'django_saml2_auth'
+    'django_saml2_auth',
+    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -87,7 +87,7 @@ REST_FRAMEWORK = {
     ],
 }
 
-if os.environ.get("DISABLE_SAML2") == None:
+if os.environ.get("OKTA_METADATA_URL") != None:
     SAML2_AUTH = {
         'DEFAULT_NEXT_URL': '/',
         'NEW_USER_PROFILE': {
@@ -97,10 +97,10 @@ if os.environ.get("DISABLE_SAML2") == None:
             'SUPERUSER_STATUS': True,
         },
         'ATTRIBUTES_MAP': {
-        'email': 'email',
-        'username': 'email',
-        'first_name': 'firstName',
-        'last_name': 'lastName',
+            'email': 'email',
+            'username': 'email',
+            'first_name': 'firstName',
+            'last_name': 'lastName',
         }
     }
     SAML2_AUTH['METADATA_AUTO_CONF_URL'] = os.environ['OKTA_METADATA_URL']
