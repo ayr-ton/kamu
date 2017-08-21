@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  build_backend:
     working_directory: ~/kamu
     docker:
       - image: python:3.6.0
@@ -21,26 +21,30 @@ jobs:
           command: |
               . venv/bin/activate
               DISABLE_SAML2=true python manage.py test
-    # nodejs-workflow:
-    #   jobs:
-    #     build:
-    #       working_directory: ~/kamu
-    #         docker:
-    #           - image: circleci/node:7
-    #         steps:
-    #           - checkout
-    #           - run:
-    #             name: update-yarn
-    #             command: 'sudo npm install -g yarn@latest'
-    #           - restore_cache:
-    #             key: dependency-cache-{{ checksum "package.json" }}
-    #           - run:
-    #             name: install-nodejs-dependencies
-    #             command: yarn install
-    #           - save_cache:
-    #             key: dependency-cache-{{ checksum "package.json" }}
-    #             paths:
-    #               - ./node_modules    
+  build_frontend:
+    working_directory: ~/kamu
+    docker:
+      - image: circleci/node:7
+    steps:
+      - checkout
+      - run:
+          command: 'sudo npm install -g yarn@latest'
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          command: yarn install
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+      - run:
+          command: yarn test
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build_backend
+      - build_frontend
 notify:
   webhooks:
     - url: https://webhooks.gitter.im/e/032e112573c8a1eafc93
