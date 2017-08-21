@@ -6,43 +6,43 @@
           working_directory: ~/kamu
             docker:
               - image: python:3.6.0
-        steps:
-          - checkout
-          - restore_cache:
-            key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
-          - run:
-            command: |
-              python3 -m venv venv
-              . venv/bin/activate
-              pip install -r requirements.txt
-          - save_cache:
-            key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
-            paths:
-              - "venv"
-          - run:
-            command: |
-              . venv/bin/activate
-              DISABLE_SAML2=true python manage.py test
+            steps:
+              - checkout
+              - restore_cache:
+                key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
+              - run:
+                command: |
+                  python3 -m venv venv
+                  . venv/bin/activate
+                  pip install -r requirements.txt
+              - save_cache:
+                key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
+                paths:
+                  - "venv"
+              - run:
+                command: |
+                  . venv/bin/activate
+                  DISABLE_SAML2=true python manage.py test
     nodejs-workflow:
       jobs:
         build:
           working_directory: ~/kamu
             docker:
               - image: circleci/node:7
-        steps:
-          - checkout
-          - run:
-            name: update-yarn
-            command: 'sudo npm install -g yarn@latest'
-          - restore_cache:
-            key: dependency-cache-{{ checksum "package.json" }}
-          - run:
-            name: install-nodejs-dependencies
-            command: yarn install
-          - save_cache:
-            key: dependency-cache-{{ checksum "package.json" }}
-            paths:
-              - ./node_modules    
+            steps:
+              - checkout
+              - run:
+                name: update-yarn
+                command: 'sudo npm install -g yarn@latest'
+              - restore_cache:
+                key: dependency-cache-{{ checksum "package.json" }}
+              - run:
+                name: install-nodejs-dependencies
+                command: yarn install
+              - save_cache:
+                key: dependency-cache-{{ checksum "package.json" }}
+                paths:
+                  - ./node_modules    
     deployment:
       staging:
         branch: master
