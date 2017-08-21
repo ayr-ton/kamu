@@ -18,13 +18,6 @@ jobs:
     language: node_js
     node_js: '7'
     script: yarn test
-  - stage: deploy to staging
-    script: skip
-    deploy: &script
-      provider: script
-      script: git remote add deploy $MAINSTREAM && git push -f deploy master
-      on:
-        branch: master
 notifications:
   webhooks:
     urls:
