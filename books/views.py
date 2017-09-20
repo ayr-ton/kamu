@@ -7,6 +7,20 @@ from rest_framework.views import APIView
 from books.serializers import *
 
 
+class BookCopyAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        # Don't forget to filter out results depending on the visitor !
+        if not self.request.user.is_authenticated():
+            return BookCopy.objects.none()
+
+        qs = BookCopy.objects.order_by('book__title')
+
+        if self.q:
+            qs = qs.filter(book__title__istartswith=self.q)
+
+        return qs
+
+
 class LibraryViewSet(viewsets.ModelViewSet):
     queryset = Library.objects.all()
     serializer_class = LibraryCompactSerializer
@@ -45,7 +59,7 @@ class BookCopyReturnView(APIView):
         except:
             raise Http404("Book Copy not found")
         return Response({'status': 'Book returned'})
-        
+
 
 class UserView(APIView):
     def get(self, request, format=None):

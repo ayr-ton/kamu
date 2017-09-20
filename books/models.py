@@ -1,3 +1,4 @@
+from dal import autocomplete
 from django.conf import settings
 from django.db import models
 
@@ -37,3 +38,6 @@ class BookCopy(models.Model):
 
     class Meta:
         verbose_name_plural = 'Book copies'
+
+    def __str__(self):
+        return self.book.title
