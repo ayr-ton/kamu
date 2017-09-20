@@ -1,6 +1,26 @@
+from django import forms
 from django.contrib import admin
 
 from .models import *
+
+
+class BookCopyModelForm(forms.ModelForm):
+    class Meta:
+        fields = ['book', 'library', 'user', 'borrow_date']
+        model = BookCopy
+        widgets = {
+            'book': autocomplete.ModelSelect2(
+                url='book-autocomplete',
+                attrs={
+                    # Set some placeholder
+                    'data-placeholder': 'Book title',
+                    # Only trigger autocompletion after 3 characters have been typed
+                    'data-allow-clear': "true",
+                    'data-minimum-input-length': 3,
+                    'data-width': 400
+                }
+            )
+        }
 
 
 class BookCopyInline(admin.TabularInline):
@@ -27,6 +47,7 @@ class BookCopyAdmin(admin.ModelAdmin):
     list_display = ['id', 'library', 'book', 'user']
     list_per_page = 20
     search_fields = ['book__title', 'user__username']
+    form = BookCopyModelForm
 
 
 admin.site.site_header = 'Kamu administration'
