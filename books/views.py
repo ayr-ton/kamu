@@ -7,16 +7,16 @@ from rest_framework.views import APIView
 from books.serializers import *
 
 
-class BookCopyAutocomplete(autocomplete.Select2QuerySetView):
+class BookAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
         # Don't forget to filter out results depending on the visitor !
         if not self.request.user.is_authenticated():
-            return BookCopy.objects.none()
+            return Book.objects.none()
 
-        qs = BookCopy.objects.order_by('book__title')
+        qs = Book.objects.order_by('title')
 
         if self.q:
-            qs = qs.filter(book__title__istartswith=self.q)
+            qs = qs.filter(title__istartswith=self.q)
 
         return qs
 

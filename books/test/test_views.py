@@ -3,6 +3,7 @@ import json
 from django.contrib.auth.models import User
 from django.test import TestCase, Client
 from django.utils import timezone
+from django.urls import reverse
 
 from books.models import Book, Library, BookCopy
 
@@ -12,7 +13,7 @@ from books.models import Book, Library, BookCopy
 class BookCopyAutocompleteView(TestCase):
     def setUp(self):
         self.client = Client()
-        self.endpoint = '/book-autocomplete/'
+        self.endpoint = reverse('book-autocomplete')
 
     def test_endpoint_working(self):
         """Tests if the endpoint book-autocomplete/ is working"""
@@ -22,7 +23,7 @@ class BookCopyAutocompleteView(TestCase):
 
     def test_user_not_logged_in(self):
         """Tests if request that has no user logged in returns nothing"""
-        response = self.client.get('/book-autocomplete/')
+        response = self.client.get(self.endpoint)
 
         response = json.loads(response.content)
 
@@ -50,13 +51,9 @@ class BookCopyAutocompleteView(TestCase):
         # creates a book copy
         self.bookCopy = BookCopy.objects.create(book=self.book, library=self.library)
 
-        response = self.client.get('/book-autocomplete/')
+        response = self.client.get(self.endpoint)
 
-        response = json.loads(response.content)
-
-        # Asserts that the newly created book is returned
-        self.assertTrue(len(response.get('results')) > 0)
-        self.assertEqual(response.get('results')[0].get('text'), title)
+        self.assertContains(response, title)
 
 
 class BookCopyBorrowViewCase(TestCase):

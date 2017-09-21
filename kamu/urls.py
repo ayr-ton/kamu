@@ -21,7 +21,7 @@ urlpatterns = [
     url(r'^api/', include(router.urls)),
     url(r'^api/profile', views.UserView.as_view()),
     url(r'^book-autocomplete/$',
-        views.BookCopyAutocomplete.as_view(),
+        views.BookAutocomplete.as_view(),
         name='book-autocomplete'),
     url(r'^api/copies/(?P<id>.+)/borrow', views.BookCopyBorrowView.as_view()),
     url(r'^api/copies/(?P<id>.+)/return', views.BookCopyReturnView.as_view()),
