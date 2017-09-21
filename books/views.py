@@ -16,7 +16,7 @@ class BookAutocomplete(autocomplete.Select2QuerySetView):
         qs = Book.objects.order_by('title')
 
         if self.q:
-            qs = qs.filter(title__istartswith=self.q)
+            qs = qs.filter(title__icontains=self.q)
 
         return qs
 
