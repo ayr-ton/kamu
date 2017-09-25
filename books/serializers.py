@@ -1,8 +1,8 @@
 from hashlib import md5
 
 from django.contrib.auth.models import User
-from django.db.models import Count
 from rest_framework import serializers
+from rest_framework.reverse import reverse
 
 from books.models import *
 
@@ -46,10 +46,15 @@ class LibraryBookSerializer(serializers.ModelSerializer):
 
 
 class LibraryCompactSerializer(serializers.HyperlinkedModelSerializer):
+    books = serializers.SerializerMethodField()
+
     class Meta:
         model = Library
         extra_kwargs = {'url': {'lookup_field': 'slug'}}
-        fields = ('id', 'url', 'name', 'slug')
+        fields = ('id', 'url', 'name', 'slug', 'books')
+
+    def get_books(self, obj):
+        return reverse('library-books', args=[obj.slug], request=self.context['request'])
 
 
 class LibrarySerializer(serializers.ModelSerializer):
@@ -57,10 +62,4 @@ class LibrarySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Library
-        fields = ('id', 'name', 'slug', 'books')
-
-    def get_books(self, obj):
-        self.context['library'] = obj
-        books = obj.books.annotate(copies=Count('id'))
-        serializer = LibraryBookSerializer(books, many=True, context=self.context)
-        return serializer.data
+        fields = ('id', 'name', 'slug')

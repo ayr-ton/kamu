@@ -1,6 +1,7 @@
 from django.http import Http404
 from django.utils import timezone
 from rest_framework import viewsets
+from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -26,10 +27,14 @@ class LibraryViewSet(viewsets.ModelViewSet):
     serializer_class = LibraryCompactSerializer
     lookup_field = 'slug'
 
-    def retrieve(self, request, slug=None):
-        library = Library.objects.get(slug=slug)
-        serializer = LibrarySerializer(library, context={'request': request})
-        return Response(serializer.data)
+    @detail_route(methods=['get'], url_name='books')
+    def books(self, request, slug=None):
+        self.pagination_class.size = 1
+        books = BookCopy.objects.filter(library__slug__exact=slug)
+        page = self.paginate_queryset(books)
+        serializer = BookCopySerializer(page, many=True, context={'request': request})
+
+        return self.get_paginated_response(serializer.data)
 
 
 class BookCopyViewSet(viewsets.ModelViewSet):
