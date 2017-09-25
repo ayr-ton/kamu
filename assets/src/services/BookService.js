@@ -6,7 +6,7 @@ import { fetchFromAPI } from './helpers';
 export default class BookService {
     getLibraries() {
         return fetchFromAPI('/libraries').then(data => {
-            return data;
+            return data.results;
         });
     }
 
