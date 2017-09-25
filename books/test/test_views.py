@@ -2,8 +2,8 @@ import json
 
 from django.contrib.auth.models import User
 from django.test import TestCase, Client
-from django.utils import timezone
 from django.urls import reverse
+from django.utils import timezone
 
 from books.models import Book, Library, BookCopy
 
@@ -127,13 +127,25 @@ class LibraryViewSet(TestCase):
     def test_user_can_retrieve_library_information_with_existing_slug(self):
         self.request = self.client.get("/api/libraries/" + self.library.slug + "/")
 
+        self.assertEqual(self.request.status_code, 200)
+
         library_json = json.loads(json.dumps(self.request.data))
 
         self.assertEqual(self.library.name, library_json['name'])
         self.assertEqual(self.library.slug, library_json['slug'])
-        self.assertEqual(1, len(library_json['books']))
-        self.assertEqual(1, len(library_json['books'][0]['copies']))
+
+        print(library_json)
+
+        # Get the books
+        self.request = self.client.get(library_json['books'])
+
         self.assertEqual(self.request.status_code, 200)
+
+        library_json = json.loads(json.dumps(self.request.data))
+        print(library_json["results"][0])
+
+        self.assertEqual(1, library_json['count'])
+        self.assertEqual(1, len(library_json['results'][0]['copies']))
 
 
 class UserView(TestCase):
