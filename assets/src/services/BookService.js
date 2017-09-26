@@ -1,5 +1,5 @@
 import Book from '../models/Book';
-import { fetchFromAPI } from './helpers';
+import {fetchFromAPI} from './helpers';
 
 // TODO: Add tests to this class
 
@@ -11,13 +11,21 @@ export default class BookService {
     }
 
     getBooks(librarySlug) {
-        return fetchFromAPI(`/libraries/${librarySlug}/books`).then(data => {
+        return fetchFromAPI(`/libraries/${librarySlug}/books/`).then(data => {
             let books = [];
             for (const bookJson of data.results) {
                 let book = Object.assign(new Book(), bookJson);
                 books.push(book);
             }
-            return books;
+
+            let returnObj = {
+                count: data.count,
+                next: data.next,
+                previous: data.previous,
+                results: books
+            };
+
+            return returnObj;
         });
     }
 
@@ -47,8 +55,8 @@ export default class BookService {
                 }
             }
             return false;
-        }).catch(()=>{
+        }).catch(() => {
             return false;
         });
-	}
+    }
 }

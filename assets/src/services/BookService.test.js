@@ -75,7 +75,12 @@ function generateBooks() {
     }];
     books.push(book2);
 
-    return books;
+    return {
+        count: 2,
+        next: null,
+        previous: null,
+        results: books
+    };
 }
 
 describe('BookService', () => {
@@ -118,9 +123,9 @@ describe('BookService', () => {
             sandbox.stub(
                 require("./helpers")
                 , "fetchFromAPI"
-            ).withArgs(`/libraries/${slug}`)
+            ).withArgs(`/libraries/${slug}/books/`)
                 .returns(
-                    Promise.resolve({books: books})
+                    Promise.resolve(books)
                 );
         });
 
@@ -131,14 +136,14 @@ describe('BookService', () => {
         it("Should return books", () => {
             let bookService = new BookService();
 
-            return bookService.getBooks(slug).then(booksReturned => {
-                expect(booksReturned).to.deep.equal(books);
+            return bookService.getBooks(slug).then(data => {
+                expect(data).to.deep.equal(books);
             });
         });
     });
 
     describe('Borrow book', () => {
-        let book = generateBooks()[0];
+        let book = generateBooks().results[0];
         let user = generateUser();
 
 
@@ -201,7 +206,7 @@ describe('BookService', () => {
     });
 
     describe('Borrow book II', () => {
-        let book = generateBooks()[0];
+        let book = generateBooks().results[0];
         let user = generateUser();
 
 
@@ -254,7 +259,7 @@ describe('BookService', () => {
     });
 
     describe('Return book', () => {
-        let book = generateBooks()[0];
+        let book = generateBooks().results[0];
         let user = generateUser();
 
         let sandbox;
@@ -314,7 +319,7 @@ describe('BookService', () => {
 
 
     describe('Return book II', () => {
-        let book = generateBooks()[0];
+        let book = generateBooks().results[0];
         let user = generateUser();
 
         let sandbox;
