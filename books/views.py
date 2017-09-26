@@ -1,3 +1,4 @@
+from django.db.models import Count
 from django.http import Http404
 from django.utils import timezone
 from rest_framework import viewsets
@@ -30,9 +31,15 @@ class LibraryViewSet(viewsets.ModelViewSet):
     @detail_route(methods=['get'], url_name='books')
     def books(self, request, slug=None):
         self.pagination_class.size = 1
-        books = BookCopy.objects.filter(library__slug__exact=slug)
+
+        library = Library.objects.filter(slug=slug)[0]
+
+        books = Book.objects.filter(bookcopy__library__slug__exact=slug)
+        books = books.annotate(copies=Count('id'))
+
         page = self.paginate_queryset(books)
-        serializer = BookCopySerializer(page, many=True, context={'request': request})
+
+        serializer = LibraryBookSerializer(page, many=True, context={'request': request, 'library': library})
 
         return self.get_paginated_response(serializer.data)
 
