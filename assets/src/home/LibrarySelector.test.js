@@ -35,6 +35,7 @@ describe('LibrarySelector', () => {
 		const setRegion = sinon.spy(profileService, 'setRegion');
 
 		await librarySelector.instance()._loadLibraries();
+
 		librarySelector.find('ListItem').first().simulate('click');
 		
 		expect(setRegion.calledWith('bh')).to.be.true;
