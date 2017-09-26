@@ -11,9 +11,9 @@ export default class BookService {
     }
 
     getBooks(librarySlug) {
-        return fetchFromAPI(`/libraries/${librarySlug}`).then(data => {
+        return fetchFromAPI(`/libraries/${librarySlug}/books`).then(data => {
             let books = [];
-            for (const bookJson of data.books) {
+            for (const bookJson of data.results) {
                 let book = Object.assign(new Book(), bookJson);
                 books.push(book);
             }

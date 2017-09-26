@@ -22,8 +22,8 @@ export default class LibrarySelector extends Component {
 	}
 
 	_loadLibraries() {
-		return this.props.bookService.getLibraries().then(libraries => {
-			this.setState({ libraries });
+		return this.props.bookService.getLibraries().then(data => {
+			this.setState({ libraries: data.results });
 		}).catch(() => {
 			return false;
 		});
