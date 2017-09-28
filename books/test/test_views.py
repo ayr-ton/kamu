@@ -125,6 +125,8 @@ class LibraryViewSet(TestCase):
         self.bookCopy = BookCopy.objects.create(book=self.book, library=self.library)
 
     def test_user_can_retrieve_library_information_with_existing_slug(self):
+        """tests the following url: /api/libraries/(?P<slug>)/books/"""
+        
         self.request = self.client.get("/api/libraries/" + self.library.slug + "/")
 
         self.assertEqual(self.request.status_code, 200)
@@ -134,18 +136,33 @@ class LibraryViewSet(TestCase):
         self.assertEqual(self.library.name, library_json['name'])
         self.assertEqual(self.library.slug, library_json['slug'])
 
-        print(library_json)
-
         # Get the books
         self.request = self.client.get(library_json['books'])
 
         self.assertEqual(self.request.status_code, 200)
 
         library_json = json.loads(json.dumps(self.request.data))
-        print(library_json["results"][0])
 
         self.assertEqual(1, library_json['count'])
         self.assertEqual(1, len(library_json['results'][0]['copies']))
+
+    def test_user_can_retrieve_books_from_library(self):
+        self.request = self.client.get("/api/libraries/" + self.library.slug + "/books/")
+
+        self.assertEqual(self.request.status_code, 200)
+
+        request_data = json.loads(json.dumps(self.request.data))
+
+        self.assertEqual(request_data['count'], 1)
+        self.assertIsNone(request_data['next'])
+        self.assertIsNone(request_data['previous'])
+        self.assertEqual(len(request_data['results']), 1)
+
+        book = request_data['results'][0]
+
+        self.assertEqual(book['title'], self.book.title)
+        self.assertEqual(book['author'], self.book.author)
+        self.assertEqual(book['subtitle'], self.book.subtitle)
 
 
 class UserView(TestCase):
