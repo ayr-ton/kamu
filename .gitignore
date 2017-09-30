@@ -115,6 +115,7 @@ yarn-error.log*
 webpack-stats.json
 public/
 export-vars.sh
+.envrc
 
 #PyVenv
 kamu/bin
