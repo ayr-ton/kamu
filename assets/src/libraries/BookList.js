@@ -22,7 +22,7 @@ export default class BookList extends Component {
 
 	_loadBooks() {
 		return this.props.service.getBooks(this.props.librarySlug).then(data => {
-			this.setState({ books: data.results });
+			this.setState({ books: data });
 		}).catch(() => {
 			return false;
 		});
