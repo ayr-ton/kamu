@@ -90,7 +90,7 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PAGINATION_CLASS': ('rest_framework.pagination.PageNumberPagination'),
     # TODO lmonteir: reduce pagination
-    'PAGE_SIZE': 999999
+    'PAGE_SIZE': 50
 }
 
 if os.environ.get("OKTA_METADATA_URL") != None:

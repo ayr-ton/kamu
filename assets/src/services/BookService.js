@@ -3,6 +3,32 @@ import {fetchFromAPI} from './helpers';
 
 // TODO: Add tests to this class
 
+
+const formatBooksRequest = (data) => {
+    let books = [];
+    for (const bookJson of data.results) {
+        let book = Object.assign(new Book(), bookJson);
+        books.push(book);
+    }
+
+    return {
+        count: data.count,
+        next: data.next,
+        previous: data.previous,
+        results: books
+    };
+};
+
+const getBooksByPage = (librarySlug, page) => {
+    return fetchFromAPI(`/libraries/${librarySlug}/books/?page=${page}`).then(data => {
+        return formatBooksRequest(data);
+    });
+};
+
+const parseBooksRequest = (values) => {
+    return values.reduce((prev, curr) => prev.concat(curr.results), []);
+};
+
 export default class BookService {
     getLibraries() {
         return fetchFromAPI('/libraries').then(data => {
@@ -11,21 +37,22 @@ export default class BookService {
     }
 
     getBooks(librarySlug) {
+
+        let promises = [];
+
         return fetchFromAPI(`/libraries/${librarySlug}/books/`).then(data => {
-            let books = [];
-            for (const bookJson of data.results) {
-                let book = Object.assign(new Book(), bookJson);
-                books.push(book);
+            let formatedData = formatBooksRequest(data);
+
+            promises.push(Promise.resolve(formatedData));
+
+            let count = formatedData.count;
+            let pendingRequests = Math.ceil(count / formatedData.results.length) - 1;
+
+            for (let i = 0; i < pendingRequests; i++) {
+                promises.push(getBooksByPage(librarySlug, i + 2));
             }
 
-            let returnObj = {
-                count: data.count,
-                next: data.next,
-                previous: data.previous,
-                results: books
-            };
-
-            return returnObj;
+            return Promise.all(promises).then(parseBooksRequest);
         });
     }
 
