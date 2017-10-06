@@ -197,6 +197,10 @@ class LibraryViewSetQueryParameters(TestCase):
 
         self.assertEqual(self.request.status_code, 200)
 
+    def test_empty_search(self):
+        books = self.get_request_result_as_json(self.base_url + "book_title=&book_author=")
+        self.assertEqual(len(books), 4)
+
     def test_search_for_books_title(self):
 
         books = self.get_request_result_as_json(self.base_url + "book_title=invalid")
