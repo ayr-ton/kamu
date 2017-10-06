@@ -19,12 +19,6 @@ const formatBooksRequest = (data) => {
     };
 };
 
-const getBooksByPage = (librarySlug, page) => {
-    return fetchFromAPI(`/libraries/${librarySlug}/books/?page=${page}`).then(data => {
-        return formatBooksRequest(data);
-    });
-};
-
 const parseBooksRequest = (values) => {
     return values.reduce((prev, curr) => prev.concat(curr.results), []);
 };
@@ -49,10 +43,16 @@ export default class BookService {
             let pendingRequests = Math.ceil(count / formatedData.results.length) - 1;
 
             for (let i = 0; i < pendingRequests; i++) {
-                promises.push(getBooksByPage(librarySlug, i + 2));
+                promises.push(this.getBooksByPage(librarySlug, i + 2));
             }
 
             return Promise.all(promises).then(parseBooksRequest);
+        });
+    }
+
+    getBooksByPage(librarySlug, page) {
+        return fetchFromAPI(`/libraries/${librarySlug}/books/?page=${page}`).then(data => {
+            return formatBooksRequest(data);
         });
     }
 
