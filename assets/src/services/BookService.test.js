@@ -76,7 +76,7 @@ function generateBooks() {
     books.push(book2);
 
     return {
-        count: 2,
+        count: books.length,
         next: null,
         previous: null,
         results: books
@@ -123,7 +123,7 @@ describe('BookService', () => {
             sandbox.stub(
                 require("./helpers")
                 , "fetchFromAPI"
-            ).withArgs(`/libraries/${slug}/books/`)
+            ).withArgs(`/libraries/${slug}/books/?page=1`)
                 .returns(
                     Promise.resolve(books)
                 );
@@ -133,10 +133,11 @@ describe('BookService', () => {
             sandbox.restore();
         });
 
-        it("Should return books", () => {
+        it("Should return books by page", () => {
             let bookService = new BookService();
+            const page = 1;
 
-            return bookService.getBooks(slug).then(data => {
+            return bookService.getBooksByPage(slug, page).then(data => {
                 expect(data).to.deep.equal(books);
             });
         });
@@ -316,7 +317,6 @@ describe('BookService', () => {
 
         //ToDo: Add a test for the case that the user doesnt have copies of the book
     });
-
 
     describe('Return book II', () => {
         let book = generateBooks().results[0];
