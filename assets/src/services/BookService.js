@@ -23,8 +23,8 @@ export default class BookService {
         });
     }
 
-    getBooksByPage(librarySlug, page) {
-        return fetchFromAPI(`/libraries/${librarySlug}/books/?page=${page}`).then(data => {
+    getBooksByPage(librarySlug, page, filter = "") {
+        return fetchFromAPI(`/libraries/${librarySlug}/books/?page=${page}&book_title=${filter}&book_author=${filter}`).then(data => {
             return formatBooksRequest(data);
         });
     }

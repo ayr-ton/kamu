@@ -14,11 +14,15 @@ export default class BookList extends Component {
             currentBook: {},
             hasMoreItems: true,
             isLoading: false,
-            currentPage: 1
+            nextPage: 1,
+            searchTerm: ""
         };
 
         this._loadBooks = this._loadBooks.bind(this);
-        this._onLoadBooksComplete = this._onLoadBooksComplete.bind(this);
+        this._handleSearch = this._handleSearch.bind(this);
+        this._loadMoreBooks = this._loadMoreBooks.bind(this);
+        this._onLoadMoreBooksComplete = this._onLoadMoreBooksComplete.bind(this);
+        this._onLoadWithSearchTerm = this._onLoadWithSearchTerm.bind(this);
         this._renderBookItem = this._renderBookItem.bind(this);
     }
 
@@ -26,27 +30,53 @@ export default class BookList extends Component {
         injectTapEventPlugin();
     }
 
-    _loadBooks() {
-        const {isLoading, currentPage} = this.state;
+    _loadBooks(page, callback , searchTerm = "") {
+        const {isLoading} = this.state;
         const {service, librarySlug} = this.props;
 
         if (!isLoading) {
             this.setState({isLoading: true});
 
-            service.getBooksByPage(librarySlug, currentPage).then(this._onLoadBooksComplete);
+            return service.getBooksByPage(librarySlug, page, searchTerm).then(callback);
         }
     }
 
-    _onLoadBooksComplete(response) {
+    _handleSearch(event) {
+        let searchTerm = event.target.value;
+
+        this.setState({searchTerm});
+
+        this._loadBooks(1, this._onLoadWithSearchTerm, searchTerm);
+    }
+
+    _onLoadWithSearchTerm(response) {
+        this.setState({
+            hasMoreItems: !!response.next,
+            books: response.results,
+            isLoading: false,
+            nextPage: 2
+        })
+    };
+
+
+    _loadMoreBooks() {
+        const {nextPage, searchTerm} = this.state;
+
+        this._loadBooks(nextPage, this._onLoadMoreBooksComplete, searchTerm);
+
+    }
+
+    _onLoadMoreBooksComplete(response) {
         this.setState((previous) => {
             return {
                 hasMoreItems: !!response.next,
                 books: previous.books.concat(response.results),
                 isLoading: false,
-                currentPage: ++previous.currentPage
+                nextPage: ++previous.nextPage
             };
         });
     }
+
 
     render() {
         let content;
@@ -59,16 +89,19 @@ export default class BookList extends Component {
         }
 
         return (
-            <InfiniteScroll
-                pageStart={0}
-                loadMore={this._loadBooks}
-                hasMore={this.state.hasMoreItems}
-                threshold={950}
-                loader={loader}>
-                <div className="book-list">
-                    {content}
-                </div>
-            </InfiniteScroll>
+            <div>
+                <input type="text" onKeyUp={this._handleSearch}/>
+                <InfiniteScroll
+                    pageStart={0}
+                    loadMore={this._loadMoreBooks}
+                    hasMore={this.state.hasMoreItems}
+                    threshold={950}
+                    loader={loader}>
+                    <div className="book-list">
+                        {content}
+                    </div>
+                </InfiniteScroll>
+            </div>
         );
     }
 
