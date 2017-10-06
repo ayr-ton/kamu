@@ -240,6 +240,19 @@ class LibraryViewSetQueryParameters(TestCase):
         books = self.get_request_result_as_json(self.base_url + " book_author=author amazing ")
         self.assertEqual(len(books), 1)
 
+    def test_search_for_books_author_or_books_title(self):
+        books = self.get_request_result_as_json(self.base_url + "book_author=a&book_title=book a")
+        self.assertEqual(len(books), 4)
+
+        books = self.get_request_result_as_json(self.base_url + "book_author=author a&book_title=book a")
+        self.assertEqual(len(books), 2)
+
+        books = self.get_request_result_as_json(self.base_url + "book_author=author amazing&book_title=book a")
+        self.assertEqual(len(books), 2)
+
+        books = self.get_request_result_as_json(self.base_url + "book_author=author amazing&book_title=book amazing")
+        self.assertEqual(len(books), 1)
+
 
 class UserView(TestCase):
     def setUp(self):
