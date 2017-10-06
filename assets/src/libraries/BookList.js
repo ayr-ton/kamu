@@ -90,7 +90,9 @@ export default class BookList extends Component {
 
         return (
             <div>
-                <input type="text" onKeyUp={this._handleSearch}/>
+                <div style={{backgroundColor: 'red', position: 'fixed', zIndex: 2, width: '100%'}}>
+                    <input  style={{width: '100%'}} type="text" onKeyUp={this._handleSearch}/>
+                </div>
                 <InfiniteScroll
                     pageStart={0}
                     loadMore={this._loadMoreBooks}

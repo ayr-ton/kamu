@@ -3,6 +3,7 @@ import {fetchFromAPI} from './helpers';
 
 const formatBooksRequest = (data) => {
     let books = [];
+
     for (const bookJson of data.results) {
         let book = Object.assign(new Book(), bookJson);
         books.push(book);
