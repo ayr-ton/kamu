@@ -187,7 +187,7 @@ describe('BookService', () => {
         it("Should borrow copy", () => {
             let bookService = new BookService();
 
-            return bookService.borrowBook(book).then(data => {
+            return bookService.borrowCopy(book).then(data => {
                 expect(data).to.be.true
                 expect(book.copies[1].user).to.deep.equal(user);
             });
@@ -198,7 +198,7 @@ describe('BookService', () => {
 
             book.copies.pop();
 
-            return bookService.borrowBook(book).then(data => {
+            return bookService.borrowCopy(book).then(data => {
                 expect(data).to.be.false
             });
         })
@@ -250,7 +250,7 @@ describe('BookService', () => {
         it("Shouldn't borrow copy because backend fails", () => {
             let bookService = new BookService();
 
-            return bookService.borrowBook(book).then(data => {
+            return bookService.borrowCopy(book).then(data => {
                 expect(data).to.be.false
             });
         })
