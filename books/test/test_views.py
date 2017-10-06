@@ -167,7 +167,6 @@ class LibraryViewSet(TestCase):
 
 class LibraryViewSetQueryParameters(TestCase):
     def setUp(self):
-        print("\n\n\n\n\n\n\n>>>>>")
         self.user = User.objects.create_user(username="claudia")
         self.user.set_password("123")
         self.user.save()
@@ -219,6 +218,26 @@ class LibraryViewSetQueryParameters(TestCase):
         self.assertEqual(len(books), 1)
 
         books = self.get_request_result_as_json(self.base_url + "book_title=book amazing")
+        self.assertEqual(len(books), 1)
+
+    def test_search_for_books_author(self):
+
+        books = self.get_request_result_as_json(self.base_url + "book_author=invalid")
+        self.assertEqual(len(books), 0)
+
+        books = self.get_request_result_as_json(self.base_url + "book_author=a")
+        self.assertEqual(len(books), 4)
+
+        books = self.get_request_result_as_json(self.base_url + "book_author=author a")
+        self.assertEqual(len(books), 2)
+
+        books = self.get_request_result_as_json(self.base_url + "book_author=ot")
+        self.assertEqual(len(books), 1)
+
+        books = self.get_request_result_as_json(self.base_url + "book_author=author b")
+        self.assertEqual(len(books), 1)
+
+        books = self.get_request_result_as_json(self.base_url + " book_author=author amazing ")
         self.assertEqual(len(books), 1)
 
 
