@@ -36,8 +36,10 @@ def get_book_filters_from_request(request, filters=('book_title', 'book_author')
     """
     query = Q()
 
-    query_filters = {filter[5:] + "__icontains": request.query_params.get(filter) for filter in filters if
-            filter in request.query_params}
+    query_params = {query_param.strip(): request.query_params.get(query_param).strip() for query_param in request.query_params}
+
+    query_filters = {filter[5:] + "__icontains": query_params.get(filter) for filter in filters if
+            filter in query_params}
 
     for key in query_filters:
         query.add(Q(**{key: query_filters[key]}), Q.OR)
