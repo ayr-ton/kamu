@@ -72,7 +72,7 @@ class LibraryViewSet(FiltersMixin, viewsets.ModelViewSet):
         book_filters = get_book_filters_from_request(request, ('book_title', 'book_author'))
         book_filters.add(Q(bookcopy__library__slug__exact=slug), Q.AND)
 
-        books = Book.objects.filter(book_filters)
+        books = Book.objects.filter(book_filters).order_by('title')
         books = books.annotate(copies=Count('id'))
 
         page = self.paginate_queryset(books)
