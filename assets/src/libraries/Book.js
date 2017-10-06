@@ -25,7 +25,7 @@ export default class Book extends Component {
 	onMouseOut() { this.setState({ zDepth: 1 }); }
 
 	_borrow() {
-		this.props.service.borrowBook(this.props.book).then(() => {
+		this.props.service.borrowCopy(this.props.book).then(() => {
 			this.setState({ available: false, borrowedByMe: true });
 			window.ga('send', 'event', 'Borrow', this.props.book.title, this.props.library);
 		});
