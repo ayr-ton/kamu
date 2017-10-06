@@ -8,6 +8,8 @@ from rest_framework import viewsets, filters
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.db.models import Q
+
 
 from books.serializers import *
 
@@ -32,8 +34,15 @@ def get_book_filters_from_request(request, filters=('book_title', 'book_author')
     Example:
         > filters=('book_title') returns {title__icontains} if request has a book_title attribute
     """
-    return {filter[5:] + "__icontains": request.query_params.get(filter) for filter in filters if
+    query = Q()
+
+    query_filters = {filter[5:] + "__icontains": request.query_params.get(filter) for filter in filters if
             filter in request.query_params}
+
+    for key in query_filters:
+        query.add(Q(**{key: query_filters[key]}), Q.OR)
+
+    return query
 
 
 class LibraryViewSet(FiltersMixin, viewsets.ModelViewSet):
@@ -61,8 +70,9 @@ class LibraryViewSet(FiltersMixin, viewsets.ModelViewSet):
         library = Library.objects.filter(slug=slug)[0]
 
         book_filters = get_book_filters_from_request(request, ('book_title', 'book_author'))
+        book_filters.add(Q(bookcopy__library__slug__exact=slug), Q.AND)
 
-        books = Book.objects.filter(bookcopy__library__slug__exact=slug, **book_filters)
+        books = Book.objects.filter(book_filters)
         books = books.annotate(copies=Count('id'))
 
         page = self.paginate_queryset(books)
