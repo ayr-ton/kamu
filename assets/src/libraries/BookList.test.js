@@ -28,7 +28,7 @@ describe('<BookList />', () => {
 
     beforeEach(() => {
         bookService = {
-            getBooks: () => {
+            getBooksByPage: () => {
                 return Promise.resolve(books);
             }
         };
@@ -41,22 +41,17 @@ describe('<BookList />', () => {
         expect(bookList.find('Book')).to.have.length(books.results.length);
     });
 
-    it('should call _loadBooks() when mounting the component', () => {
-        const spy = sinon.spy(bookList.instance(), '_loadBooks');
-        bookList.instance().componentWillMount();
-        expect(spy.called).to.be.true;
-        bookList.instance()._loadBooks.restore();
-    });
-
     it('should read the books from an API and set the state', async () => {
         await bookList.instance()._loadBooks();
-        expect(bookList.state('books')).to.equal(books.results);
+        expect(bookList.state('books')).to.deep.equal(books.results);
     });
 
-    it('should pass the library slug to getBooks', () => {
-        const spy = sinon.spy(bookService, 'getBooks');
+    it('should pass the library slug to getBooksByPage', () => {
+        const spy = sinon.spy(bookService, 'getBooksByPage');
+        const page = 1;
+
         bookList.instance()._loadBooks();
-        expect(spy.calledWith(librarySlug)).to.be.true;
-        bookService.getBooks.restore();
+        expect(spy.calledWith(librarySlug, page)).to.be.true;
+        bookService.getBooksByPage.restore();
     });
 });

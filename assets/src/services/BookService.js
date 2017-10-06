@@ -1,9 +1,6 @@
 import Book from '../models/Book';
 import {fetchFromAPI} from './helpers';
 
-// TODO: Add tests to this class
-
-
 const formatBooksRequest = (data) => {
     let books = [];
     for (const bookJson of data.results) {
@@ -19,34 +16,10 @@ const formatBooksRequest = (data) => {
     };
 };
 
-const parseBooksRequest = (values) => {
-    return values.reduce((prev, curr) => prev.concat(curr.results), []);
-};
-
 export default class BookService {
     getLibraries() {
         return fetchFromAPI('/libraries').then(data => {
             return data;
-        });
-    }
-
-    getBooks(librarySlug) {
-
-        let promises = [];
-
-        return fetchFromAPI(`/libraries/${librarySlug}/books/`).then(data => {
-            let formatedData = formatBooksRequest(data);
-
-            promises.push(Promise.resolve(formatedData));
-
-            let count = formatedData.count;
-            let pendingRequests = Math.ceil(count / formatedData.results.length) - 1;
-
-            for (let i = 0; i < pendingRequests; i++) {
-                promises.push(this.getBooksByPage(librarySlug, i + 2));
-            }
-
-            return Promise.all(promises).then(parseBooksRequest);
         });
     }
 
