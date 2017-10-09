@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import Search from 'material-ui/svg-icons/action/search';
 import Close from 'material-ui/svg-icons/navigation/close';
 import TextField from 'material-ui/TextField';
@@ -61,3 +61,7 @@ export default class SearchBar extends Component {
         )
     }
 }
+
+SearchBar.propTypes = {
+    onChange: PropTypes.func.isRequired,
+};

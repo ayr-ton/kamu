@@ -59,7 +59,6 @@ export default class BookList extends Component {
         })
     };
 
-
     _loadMoreBooks() {
         const {nextPage, searchTerm} = this.state;
 
@@ -77,7 +76,6 @@ export default class BookList extends Component {
             };
         });
     }
-
 
     render() {
         let content;
