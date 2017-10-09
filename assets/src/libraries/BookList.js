@@ -7,6 +7,63 @@ import CircularProgress from 'material-ui/CircularProgress';
 import debounce from 'lodash/debounce'
 import Search from 'material-ui/svg-icons/action/search';
 import Close from 'material-ui/svg-icons/navigation/close';
+import TextField from 'material-ui/TextField';
+import Paper from 'material-ui/Paper';
+
+
+
+class SearchBar extends Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            searchTerm: ""
+        };
+
+        this._onChange = this._onChange.bind(this);
+        this._onClear = this._onClear.bind(this);
+    }
+
+    _onChange(event, searchTerm) {
+        this.setState({searchTerm});
+        this.props.onChange(searchTerm);
+    }
+
+    _onClear() {
+        this.setState({searchTerm: ""});
+        this.props.onChange("");
+    }
+
+    render() {
+        return (
+            <Paper zDepth={3}>
+                <div style={{position: 'fixed', zIndex: 3, width: '100%', height: 50, top: 64, backgroundColor: 'white'}}>
+                <div style={{position: 'relative', width: '90%', height: 50}}>
+                    <div style={{display: 'inline-block', verticalAlign: 'middle'}}>
+                        <Search style={{color: 'gray', marginLeft: 5}}/>
+                    </div>
+                    <TextField value={this.state.searchTerm} hintText="Search"
+                               onChange={this._onChange}
+                               underlineShow={false}
+                               style={{
+                                   marginLeft: 10,
+                                   width: '90%',
+                                   height: '96%',
+                                   fontSize: 'larger',
+                                   border: 'none',
+                                   outline: 'none'
+                               }}/>
+                    {this.state.searchTerm !== "" &&
+                    <div style={{display: 'inline-block', verticalAlign: 'middle'}}>
+                        <Close style={{color: 'gray', cursor: 'pointer'}} onClick={this._onClear}/>
+                    </div>}
+                </div>
+            </div>
+            </Paper>
+        )
+    }
+}
 
 export default class BookList extends Component {
     constructor(props) {
@@ -44,8 +101,8 @@ export default class BookList extends Component {
         }
     }
 
-    _handleSearch(event) {
-        let searchTerm = event.target.value;
+    _handleSearch(searchTerm) {
+        // let searchTerm = event.target.value;
 
         this.setState({searchTerm});
 
@@ -91,28 +148,9 @@ export default class BookList extends Component {
             content = this.state.books.map(book => this._renderBookItem(book, library));
         }
 
-        const SearchBar = (props) => {
-            return (
-                 <div style={{position: 'fixed', zIndex: 3, width: '100%', height: 50, top: 50}}>
-                    <input style={{width: '100%', height: '100%'}} type="text" onKeyUp={props._handleSearch}/>
-                </div>
-            )
-        };
-
         return (
             <div>
-                {/*<SearchBar _handleSearch={this._handleSearch}/>*/}
-                <div style={{position: 'fixed', zIndex: 3, width: '100%', height: 50, top: 64, backgroundColor: 'white'}}>
-                    <div style={{position: 'relative', width: '80%', height: 50, left: 80}}>
-                        <div style={{display: 'inline-block', verticalAlign: 'middle'}}>
-                            <Search style={{color: 'gray', marginLeft: 5}}/>
-                        </div>
-                        <input style={{marginLeft: 10, width: '90%', height: '96%', fontSize: 'larger', border: 'none', outline: 'none'}} type="text" onKeyUp={this._handleSearch}/>
-                        <div style={{display: 'inline-block', verticalAlign: 'middle'}}>
-                            <Close style={{color: 'gray'}}/>
-                        </div>
-                    </div>
-                </div>
+                <SearchBar onChange={this._handleSearch}/>
                 <InfiniteScroll
                     pageStart={0}
                     loadMore={this._loadMoreBooks}
