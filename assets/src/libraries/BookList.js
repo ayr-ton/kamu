@@ -11,7 +11,6 @@ import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 
 
-
 class SearchBar extends Component {
 
     constructor(props) {
@@ -37,10 +36,16 @@ class SearchBar extends Component {
 
     render() {
         return (
-            <Paper zDepth={3}>
-                <div style={{position: 'fixed', zIndex: 3, width: '100%', height: 50, top: 64, backgroundColor: 'white'}}>
-                <div style={{position: 'relative', width: '90%', height: 50}}>
-                    <div style={{display: 'inline-block', verticalAlign: 'middle'}}>
+            <Paper zDepth={3} style={{
+                position: 'fixed',
+                zIndex: 3,
+                width: '100%',
+                height: 50,
+                top: 64,
+                backgroundColor: 'white'
+            }}>
+                <div style={{position: 'relative', width: '80%', height: 50, left: 80}}>
+                    <div style={{display: 'inline-block', verticalAlign: 'middle', marginLeft: 5}}>
                         <Search style={{color: 'gray', marginLeft: 5}}/>
                     </div>
                     <TextField value={this.state.searchTerm} hintText="Search"
@@ -59,7 +64,6 @@ class SearchBar extends Component {
                         <Close style={{color: 'gray', cursor: 'pointer'}} onClick={this._onClear}/>
                     </div>}
                 </div>
-            </div>
             </Paper>
         )
     }
