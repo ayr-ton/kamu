@@ -123,7 +123,7 @@ describe('BookService', () => {
             sandbox.stub(
                 require("./helpers")
                 , "fetchFromAPI"
-            ).withArgs(`/libraries/${slug}/books/?page=1`)
+            ).withArgs(`/libraries/${slug}/books/`)
                 .returns(
                     Promise.resolve(books)
                 );
