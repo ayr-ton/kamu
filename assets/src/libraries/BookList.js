@@ -4,6 +4,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import ProfileService from '../services/ProfileService';
 import InfiniteScroll from 'react-infinite-scroller';
 import CircularProgress from 'material-ui/CircularProgress';
+import debounce from 'lodash/debounce'
 
 export default class BookList extends Component {
     constructor(props) {
@@ -30,7 +31,7 @@ export default class BookList extends Component {
         injectTapEventPlugin();
     }
 
-    _loadBooks(page, callback , searchTerm = "") {
+    _loadBooks(page, callback, searchTerm = "") {
         const {isLoading} = this.state;
         const {service, librarySlug} = this.props;
 
@@ -46,7 +47,7 @@ export default class BookList extends Component {
 
         this.setState({searchTerm});
 
-        this._loadBooks(1, this._onLoadWithSearchTerm, searchTerm);
+        debounce(() => this._loadBooks(1, this._onLoadWithSearchTerm, searchTerm), 500)();
     }
 
     _onLoadWithSearchTerm(response) {
@@ -91,7 +92,7 @@ export default class BookList extends Component {
         return (
             <div>
                 <div style={{backgroundColor: 'red', position: 'fixed', zIndex: 2, width: '100%'}}>
-                    <input  style={{width: '100%'}} type="text" onKeyUp={this._handleSearch}/>
+                    <input style={{width: '100%'}} type="text" onKeyUp={this._handleSearch}/>
                 </div>
                 <InfiniteScroll
                     pageStart={0}
