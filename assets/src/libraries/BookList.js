@@ -37,7 +37,7 @@ export default class BookList extends Component {
         const {service, librarySlug} = this.props;
 
         if (!isLoading) {
-            this.setState({isLoading: true});
+            this.setState({isLoading: true, hasMoreItems: false});
 
             return service.getBooksByPage(librarySlug, page, searchTerm).then(callback);
         }
@@ -47,7 +47,9 @@ export default class BookList extends Component {
 
         this.setState({searchTerm});
 
-        debounce(() => this._loadBooks(1, this._onLoadWithSearchTerm, searchTerm), 500)();
+        window.scroll(0, 0);
+
+        this._loadBooks(1, this._onLoadWithSearchTerm, searchTerm);
     }
 
     _onLoadWithSearchTerm(response) {
@@ -89,7 +91,7 @@ export default class BookList extends Component {
 
         return (
             <div>
-                <SearchBar onChange={this._handleSearch}/>
+                <SearchBar onChange={debounce(this._handleSearch, 300)}/>
                 <InfiniteScroll
                     pageStart={0}
                     loadMore={this._loadMoreBooks}

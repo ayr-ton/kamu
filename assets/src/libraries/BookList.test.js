@@ -42,7 +42,7 @@ describe('<BookList />', () => {
     });
 
     it('should read the books from an API and set the state', async () => {
-        await bookList.instance()._loadBooks();
+        await bookList.instance()._loadMoreBooks();
         expect(bookList.state('books')).to.deep.equal(books.results);
     });
 
@@ -50,7 +50,7 @@ describe('<BookList />', () => {
         const spy = sinon.spy(bookService, 'getBooksByPage');
         const page = 1;
 
-        bookList.instance()._loadBooks();
+        bookList.instance()._loadMoreBooks();
         expect(spy.calledWith(librarySlug, page)).to.be.true;
         bookService.getBooksByPage.restore();
     });
