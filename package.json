@@ -5,7 +5,7 @@
   "scripts": {
     "build": "webpack -p",
     "start": "NODE_ENV=development concurrently --raw --kill-others \"node dev-server.js\" \"python manage.py runserver\"",
-    "test": "mocha --require ignore-styles --no-deprecation --recursive --reporter spec --watch-extensions js,jsx --require babel-polyfill --compilers js:babel-core/register assets/src/**/*.test.js",
+    "test": "mocha --require ignore-styles --no-deprecation --recursive --reporter spec --watch-extensions js,jsx --require babel-polyfill --compilers js:babel-core/register assets/src/**/*.test.js assets/src/**/**/*.test.js",
     "test:watch": "yarn test -- --watch",
     "lint": "eslint ."
   },
