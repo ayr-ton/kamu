@@ -116,17 +116,19 @@ describe('BookService', () => {
         let books = generateBooks();
 
         const slug = "quito";
+        const page = 1;
+        const filter = "";
 
         let sandbox;
         beforeEach(() => {
             sandbox = sinon.sandbox.create();
+
             sandbox.stub(
                 require("./helpers")
                 , "fetchFromAPI"
-            ).withArgs(`/libraries/${slug}/books/`)
-                .returns(
-                    Promise.resolve(books)
-                );
+            ).withArgs(`/libraries/${slug}/books/?page=${page}&book_title=${filter}&book_author=${filter}`)
+                .returns(Promise.resolve(books));
+
         });
 
         afterEach(() => {
@@ -137,7 +139,9 @@ describe('BookService', () => {
             let bookService = new BookService();
             const page = 1;
 
-            return bookService.getBooksByPage(slug, page).then(data => {
+            const {getBooksByPage} = bookService;
+
+            return getBooksByPage(slug, page).then(data => {
                 expect(data).to.deep.equal(books);
             });
         });
