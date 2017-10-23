@@ -41,7 +41,7 @@ export default class SearchBar extends Component {
                     <div style={{display: 'inline-block', verticalAlign: 'middle', marginLeft: 5}}>
                         <Search style={{color: 'gray', marginLeft: 5}}/>
                     </div>
-                    <TextField value={this.state.searchTerm} hintText="Search"
+                    <TextField value={this.state.searchTerm} hintText="Search by book title or author"
                                onChange={this._onChange}
                                underlineShow={false}
                                style={{
