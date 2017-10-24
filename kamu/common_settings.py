@@ -89,7 +89,6 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_PAGINATION_CLASS': ('rest_framework.pagination.PageNumberPagination'),
-    # TODO lmonteir: reduce pagination
     'PAGE_SIZE': 50
 }
 
