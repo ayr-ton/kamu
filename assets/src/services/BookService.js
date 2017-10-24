@@ -26,6 +26,12 @@ export default class BookService {
 
     getBooksByPage(librarySlug, page, filter = "") {
         return fetchFromAPI(`/libraries/${librarySlug}/books/?page=${page}&book_title=${filter}&book_author=${filter}`).then(data => {
+
+            // If data has no results, returns an empty array
+            if (!data.results) {
+                return null;
+            }
+
             return formatBooksRequest(data);
         });
     }
