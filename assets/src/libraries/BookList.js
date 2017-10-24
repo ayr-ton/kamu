@@ -69,14 +69,23 @@ export default class BookList extends Component {
     }
 
     _onLoadMoreBooksComplete(response) {
-        this.setState((previous) => {
-            return {
-                hasMoreItems: !!response.next,
-                books: previous.books.concat(response.results),
+
+        if (!response) {
+            this.setState({
+                hasMoreItems: false,
                 isLoading: false,
-                nextPage: ++previous.nextPage
-            };
-        });
+            });
+        }
+        else {
+            this.setState((previous) => {
+                return {
+                    hasMoreItems: !!response.next,
+                    books: previous.books.concat(response.results),
+                    isLoading: false,
+                    nextPage: ++previous.nextPage
+                };
+            });
+        }
     }
 
     render() {
