@@ -3,6 +3,7 @@ import BookList from './BookList';
 import {shallow} from 'enzyme';
 import {expect} from 'chai';
 import sinon from 'sinon';
+require('jsdom-global')()
 
 describe('<BookList />', () => {
     let bookList;
