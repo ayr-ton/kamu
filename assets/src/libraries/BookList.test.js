@@ -3,9 +3,9 @@ import BookList from './BookList';
 import {shallow} from 'enzyme';
 import {expect} from 'chai';
 import sinon from 'sinon';
-import jsdom from 'jsdom-global';
+import globalJsdom from 'jsdom-global';
 
-jsdom();
+globalJsdom();
 
 describe('<BookList />', () => {
     let bookList;
