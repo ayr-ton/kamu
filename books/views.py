@@ -69,7 +69,7 @@ class LibraryViewSet(FiltersMixin, viewsets.ModelViewSet):
         self.ordering_fields = ()
         self.ordering = ()
 
-        library = Library.objects.filter(slug=slug)[0]
+        library = Library.objects.get(slug=slug)
 
         book_filters = get_book_filters_from_request(request, ('book_title', 'book_author'))
         book_filters.add(Q(bookcopy__library__slug__exact=slug), Q.AND)
