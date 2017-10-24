@@ -7,7 +7,7 @@ import sinon from 'sinon';
 describe('<Search />', () => {
 
     let searchBarComponent;
-    const searchTerm = 'texto de teste';
+    const searchTerm = 'search term text';
     const onChange = () => {
     };
 
