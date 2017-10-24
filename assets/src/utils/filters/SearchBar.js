@@ -29,32 +29,19 @@ export default class SearchBar extends Component {
 
     render() {
         return (
-            <Paper zDepth={3} style={{
-                position: 'fixed',
-                zIndex: 3,
-                width: '100%',
-                height: 50,
-                top: 64,
-                backgroundColor: 'white'
-            }}>
-                <div style={{position: 'relative', width: '80%', height: 50, left: 80}}>
-                    <div style={{display: 'inline-block', verticalAlign: 'middle', marginLeft: 5}}>
-                        <Search style={{color: 'gray', marginLeft: 5}}/>
+            <Paper zDepth={3} className="search-bar-paper">
+                <div className="search-bar-container">
+                    <div className="search-bar-search-icon-container">
+                        <Search className="search-bar-icon"/>
                     </div>
-                    <TextField value={this.state.searchTerm} hintText="Search by book title or author"
+                    <TextField value={this.state.searchTerm}
+                               hintText="Search by book title or author"
                                onChange={this._onChange}
                                underlineShow={false}
-                               style={{
-                                   marginLeft: 10,
-                                   width: '90%',
-                                   height: '96%',
-                                   fontSize: 'larger',
-                                   border: 'none',
-                                   outline: 'none'
-                               }}/>
+                               className="search-bar-input"/>
                     {this.state.searchTerm !== "" &&
-                    <div style={{display: 'inline-block', verticalAlign: 'middle'}}>
-                        <Close style={{color: 'gray', cursor: 'pointer'}} onClick={this._onClear}/>
+                    <div className="search-bar-close-icon-container">
+                        <Close className="search-bar-close-icon" onClick={this._onClear}/>
                     </div>}
                 </div>
             </Paper>
