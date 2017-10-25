@@ -1,55 +1,70 @@
 import React from 'react';
 import BookList from './BookList';
-import { shallow } from 'enzyme';
-import { expect } from 'chai';
+import {shallow} from 'enzyme';
+import {expect} from 'chai';
 import sinon from 'sinon';
 
 describe('<BookList />', () => {
-	let bookList;
-	let bookService;
-	const librarySlug = 'slug';
-	const books = [
-		{
-			id: 1,
-			title: "book 1",
-			author: "author 1"
-		},
-		{
-			id: 2,
-			title: "book 2",
-			author: "author 2"
-		},
-	];
+    let bookList;
+    let bookService;
+    const librarySlug = 'slug';
+    const books = {
+        count: 2,
+        previous: null,
+        next: null,
+        results: [
+            {
+                id: 1,
+                title: "book 1",
+                author: "author 1"
+            },
+            {
+                id: 2,
+                title: "book 2",
+                author: "author 2"
+            },
+        ]
+    };
+    let sessionStorage = {};
 
-	beforeEach(() => {
-		bookService = {
-			getBooks: () => { return Promise.resolve(books); }
-		};
+    beforeEach(() => {
 
-		bookList = shallow(<BookList service={bookService} librarySlug='slug' />);
-	});
+        global.sessionStorage = {
+            getItem: (key) => {
+                return sessionStorage[key];
+            },
+            setItem: (key, value) => {
+                sessionStorage[key] = value;
+            }
+        };
 
-	it('should render the list of books in its state', () => {
-		bookList.instance().setState({ books });
-		expect(bookList.find('Book')).to.have.length(books.length);
-	});
+        global.window = {};
 
-	it('should call _loadBooks() when mounting the component', () => {
-		const spy = sinon.spy(bookList.instance(), '_loadBooks');
-		bookList.instance().componentWillMount();
-		expect(spy.called).to.be.true;
-		bookList.instance()._loadBooks.restore();
-	});
+        bookService = {
+            getBooksByPage: () => {
+                return Promise.resolve(books);
+            }
+        };
 
-	it('should read the books from an API and set the state', async () => {
-		await bookList.instance()._loadBooks();
-		expect(bookList.state('books')).to.equal(books);
-	});
+        bookList = shallow(<BookList service={bookService} librarySlug='slug'/>);
+    });
 
-	it('should pass the library slug to getBooks', () => {
-		const spy = sinon.spy(bookService, 'getBooks');
-		bookList.instance()._loadBooks();
-		expect(spy.calledWith(librarySlug)).to.be.true;
-		bookService.getBooks.restore();
-	});
+    it('should render the list of books in its state', () => {
+        bookList.instance().setState({books: books.results});
+        expect(bookList.find('Book')).to.have.length(books.results.length);
+    });
+
+    it('should read the books from an API and set the state', async () => {
+        await bookList.instance()._loadMoreBooks();
+        expect(bookList.state('books')).to.deep.equal(books.results);
+    });
+
+    it('should pass the library slug to getBooksByPage', () => {
+        const spy = sinon.spy(bookService, 'getBooksByPage');
+        const page = 1;
+
+        bookList.instance()._loadMoreBooks();
+        expect(spy.calledWith(librarySlug, page)).to.be.true;
+        bookService.getBooksByPage.restore();
+    });
 });

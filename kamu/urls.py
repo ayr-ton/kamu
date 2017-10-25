@@ -11,6 +11,7 @@ from rest_framework import routers
 from books import views
 
 router = routers.DefaultRouter()
+
 router.register(r'libraries', views.LibraryViewSet)
 router.register(r'copies', views.BookCopyViewSet)
 
@@ -28,7 +29,7 @@ urlpatterns = [
     url(r'^favicon\.ico$', RedirectView.as_view(url=settings.STATIC_URL + 'images/favicon.ico'))
 ]
 
-if os.environ.get("OKTA_METADATA_URL") == None:
+if os.environ.get("OKTA_METADATA_URL") is None:
     urlpatterns.append(url(r'^accounts/login', admin.site.login))
 else:
     urlpatterns.append(url(r'^accounts/login', django_saml2_auth.views.signin))

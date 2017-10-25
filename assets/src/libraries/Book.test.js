@@ -66,7 +66,7 @@ describe('<Book />', () => {
 
         sandbox.stub(
             bookService
-            , "borrowBook"
+            , "borrowCopy"
         ).returns({
             then: (f) => {
                 f();
