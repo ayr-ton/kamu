@@ -1,7 +1,21 @@
 import Book from '../models/Book';
-import { fetchFromAPI } from './helpers';
+import {fetchFromAPI} from './helpers';
 
-// TODO: Add tests to this class
+const formatBooksRequest = (data) => {
+    let books = [];
+
+    for (const bookJson of data.results) {
+        let book = Object.assign(new Book(), bookJson);
+        books.push(book);
+    }
+
+    return {
+        count: data.count,
+        next: data.next,
+        previous: data.previous,
+        results: books
+    };
+};
 
 export default class BookService {
     getLibraries() {
@@ -10,19 +24,19 @@ export default class BookService {
         });
     }
 
-    getBooks(librarySlug) {
-        return fetchFromAPI(`/libraries/${librarySlug}`).then(data => {
-            let books = [];
-            for (const bookJson of data.books) {
-                let book = Object.assign(new Book(), bookJson);
-                books.push(book);
+    getBooksByPage(librarySlug, page, filter = "") {
+        return fetchFromAPI(`/libraries/${librarySlug}/books/?page=${page}&book_title=${filter}&book_author=${filter}`).then(data => {
+
+            // If data has no results, returns an empty array
+            if (!data.results) {
+                return null;
             }
-            return books;
+
+            return formatBooksRequest(data);
         });
     }
 
-    //TODO: Refactor name to borrowCopy
-    borrowBook(book) {
+    borrowCopy(book) {
         const copyID = book.getAvailableCopyID();
         return fetchFromAPI(`/copies/${copyID}/borrow`, 'POST').then(() => {
             for (let copy of book.copies) {
@@ -47,8 +61,8 @@ export default class BookService {
                 }
             }
             return false;
-        }).catch(()=>{
+        }).catch(() => {
             return false;
         });
-	}
+    }
 }

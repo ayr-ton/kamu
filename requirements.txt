@@ -27,3 +27,4 @@ whitenoise==3.3.0
 zope.interface==4.3.3
 django-crontab==0.7.1
 django-autocomplete-light==3.2.10
+drf-url-filters==0.5.1

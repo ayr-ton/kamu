@@ -16,6 +16,7 @@ INSTALLED_APPS = [
     'books',
     'django_saml2_auth',
     'django_crontab',
+    'filters',
 ]
 
 MIDDLEWARE = [
@@ -87,6 +88,8 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
+    'DEFAULT_PAGINATION_CLASS': ('rest_framework.pagination.PageNumberPagination'),
+    'PAGE_SIZE': 50
 }
 
 if os.environ.get("OKTA_METADATA_URL") != None:
