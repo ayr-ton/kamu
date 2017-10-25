@@ -3,9 +3,6 @@ import BookList from './BookList';
 import {shallow} from 'enzyme';
 import {expect} from 'chai';
 import sinon from 'sinon';
-import globalJsdom from 'jsdom-global';
-
-globalJsdom();
 
 describe('<BookList />', () => {
     let bookList;
@@ -28,8 +25,21 @@ describe('<BookList />', () => {
             },
         ]
     };
+    let sessionStorage = {};
 
     beforeEach(() => {
+
+        global.sessionStorage = {
+            getItem: (key) => {
+                return sessionStorage[key];
+            },
+            setItem: (key, value) => {
+                sessionStorage[key] = value;
+            }
+        };
+
+        global.window = {};
+
         bookService = {
             getBooksByPage: () => {
                 return Promise.resolve(books);
