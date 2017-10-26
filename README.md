@@ -138,3 +138,4 @@ python manage.py crontab run hash-of-the-cronjob
 
 If there's a problem during the job execution it will create a text in /var/mail/username that content the error.
 Most errors will come because the env vars are not set globally, due to the fact that crontab run in its own session.
+
