@@ -19,9 +19,7 @@
     display: inline-flex;
     justify-content: space-evenly;
     flex-wrap: wrap;
-    margin-top: 70px;
-    padding-left: 30px;
-    padding-right: 30px;
+    margin-top: 50px;
 }
 
 .book {
