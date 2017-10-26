@@ -143,7 +143,7 @@
 }
 
 .search-bar-container > .search-bar-search-icon-container > .search-bar-icon {
-    color: gray;
+    fill: gray !important;
     margin-left: 5px;
 }
 
@@ -163,7 +163,7 @@
 }
 
 .search-bar-container > .search-bar-close-icon-container > .search-bar-close-icon{
-    color: gray;
+    fill: gray !important;
     cursor: pointer;
 }
 
