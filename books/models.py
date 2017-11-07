@@ -1,6 +1,9 @@
 from dal import autocomplete
 from django.conf import settings
 from django.db import models
+from isbn_field import ISBNField 
+
+
 
 
 class Book(models.Model):
@@ -9,7 +12,7 @@ class Book(models.Model):
     subtitle = models.CharField(max_length=255, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     image_url = models.TextField(null=True, blank=True)
-    isbn = models.CharField(max_length=255, null=True, blank=True)
+    isbn = ISBNField(max_length=255, null=True, blank=True)
     number_of_pages = models.IntegerField(null=True, blank=True)
     publication_date = models.DateField(null=True, blank=True)
     publisher = models.CharField(max_length=255, null=True, blank=True)
