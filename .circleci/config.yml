@@ -8,7 +8,7 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
-          command: chmod +x ci/security-checks.sh
+          command: sh ci/security-checks.sh
       - store_artifacts:
           path: /tmp/artifacts/hawkeye_report.json
   build_backend:
