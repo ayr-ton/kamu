@@ -5,7 +5,6 @@ decorator==4.0.11
 Django==1.11.1
 django-autocomplete-light==3.2.10
 django-crontab==0.7.1
-django-isbn-field==0.5
 django-saml2-auth==2.1.0
 django-webpack-loader==0.4.1
 djangorestframework==3.6.2
@@ -14,7 +13,6 @@ flake8==3.3.0
 future==0.16.0
 gunicorn==19.7.1
 idna==2.5
-isbnlib==3.7.2
 mccabe==0.6.1
 packaging==16.8
 Paste==2.0.3
@@ -27,7 +25,6 @@ pyOpenSSL==16.2.0
 pyparsing==2.2.0
 pysaml2==4.0.5
 python-dateutil==2.6.0
-python-stdnum==1.7
 pytz==2016.10
 repoze.who==2.3
 requests==2.13.0

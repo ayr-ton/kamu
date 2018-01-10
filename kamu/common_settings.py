@@ -17,7 +17,6 @@ INSTALLED_APPS = [
     'django_saml2_auth',
     'django_crontab',
     'filters',
-    'isbn_field',
 ]
 
 MIDDLEWARE = [
