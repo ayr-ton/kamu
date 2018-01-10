@@ -54,7 +54,7 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - security-checks
+      # - security-checks
       - build_backend
       - build_frontend
 notify:
