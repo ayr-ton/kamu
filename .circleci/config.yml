@@ -49,6 +49,8 @@ jobs:
           paths:
             - ./node_modules
       - run:
+          command: yarn lint
+      - run:
           command: yarn test
 workflows:
   version: 2
