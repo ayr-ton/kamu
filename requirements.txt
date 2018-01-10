@@ -2,7 +2,7 @@ asn1crypto==0.22.0
 cffi==1.10.0
 cryptography==1.8.1
 decorator==4.0.11
-Django==1.11.5
+Django==1.11.1
 django-autocomplete-light==3.2.10
 django-crontab==0.7.1
 django-isbn-field==0.5
