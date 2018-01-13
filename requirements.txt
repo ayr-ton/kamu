@@ -2,7 +2,7 @@ asn1crypto==0.22.0
 cffi==1.10.0
 cryptography==1.8.1
 decorator==4.0.11
-Django==1.11.1
+Django==1.11.5
 django-autocomplete-light==3.2.10
 django-crontab==0.7.1
 django-saml2-auth==2.1.0
@@ -25,7 +25,7 @@ pyOpenSSL==16.2.0
 pyparsing==2.2.0
 pysaml2==4.0.5
 python-dateutil==2.6.0
-pytz==2016.10
+pytz==2017.3
 repoze.who==2.3
 requests==2.13.0
 six==1.10.0
