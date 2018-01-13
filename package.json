@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "babel": "^6.3.26",
-    "babel-preset-airbnb": "^1.0.1",
+    "babel-preset-airbnb": "2.4.0",
     "babel-register": "^6.4.3",
     "chai": "^3.5.0",
     "enzyme": "^2.8.1",
