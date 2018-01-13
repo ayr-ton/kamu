@@ -31,7 +31,7 @@ jobs:
       - run:
           command: |
               . venv/bin/activate
-              DISABLE_SAML2=true python manage.py test
+              python manage.py test
   build_frontend:
     working_directory: ~/kamu
     docker:
