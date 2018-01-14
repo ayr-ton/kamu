@@ -10,52 +10,6 @@ from books.models import Book, Library, BookCopy
 
 # VIEWS
 
-class BookCopyAutocompleteView(TestCase):
-    def setUp(self):
-        self.client = Client()
-        self.endpoint = reverse('book-autocomplete')
-
-    def test_endpoint_working(self):
-        """Tests if the endpoint book-autocomplete/ is working"""
-        response = self.client.get(self.endpoint)
-
-        self.assertEqual(200, response.status_code)
-
-    def test_user_not_logged_in(self):
-        """Tests if request that has no user logged in returns nothing"""
-        response = self.client.get(self.endpoint)
-
-        response = json.loads(response.content)
-
-        # Asserts that no result is returned
-        self.assertTrue(len(response.get('results')) == 0)
-        self.assertFalse(response.get('pagination').get('more'))
-
-    def test_user_logged_in_receives_result(self):
-        """Tests if a user can receive results when logged in"""
-
-        # creates and logs user
-        self.user = User.objects.create_user(username="user")
-        self.user.set_password("user")
-        self.user.save()
-        self.client.force_login(user=self.user)
-
-        # saves a library
-        self.library = Library.objects.create(name="Santiago", slug="slug")
-
-        # saves a new book
-        title = "the title of my new super book"
-        self.book = Book.objects.create(author="Author", title=title, subtitle="The subtitle",
-                                        publication_date=timezone.now())
-
-        # creates a book copy
-        self.bookCopy = BookCopy.objects.create(book=self.book, library=self.library)
-
-        response = self.client.get(self.endpoint)
-
-        self.assertContains(response, title)
-
-
 class BookCopyBorrowViewCase(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username="claudia")
