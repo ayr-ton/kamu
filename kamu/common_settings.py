@@ -15,7 +15,6 @@ INSTALLED_APPS = [
     'webpack_loader',
     'books',
     'django_saml2_auth',
-    'django_crontab',
     'filters',
 ]
 
