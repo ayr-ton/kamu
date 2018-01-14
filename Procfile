@@ -1,1 +1,1 @@
-web: make prod
+web: gunicorn kamu.wsgi --log-file -
