@@ -14,20 +14,6 @@ from django.db.models import Q
 from books.serializers import *
 
 
-class BookAutocomplete(autocomplete.Select2QuerySetView):
-    def get_queryset(self):
-        # Don't forget to filter out results depending on the visitor !
-        if not self.request.user.is_authenticated():
-            return Book.objects.none()
-
-        qs = Book.objects.order_by('title')
-
-        if self.q:
-            qs = qs.filter(title__icontains=self.q)
-
-        return qs
-
-
 def get_book_filters_from_request(request, filters=('book_title', 'book_author')):
     """Get book filters from a request
     Given a request, return all filters with __icontains
