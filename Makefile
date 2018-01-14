@@ -1,8 +1,7 @@
 prod:
-	python manage.py migrate &
+	python manage.py migrate
 	yarn build
-	python manage.py collectstatic --noinput &
-	gunicorn kamu.wsgi --log-file -
+	python manage.py collectstatic --noinput
 
 dev:
 	yarn start
