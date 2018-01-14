@@ -29,7 +29,7 @@ pyflakes==1.6.0
 pylint==1.8.1
 pyOpenSSL==17.5.0
 pyparsing==2.2.0
-pysaml2==4.0.5
+pysaml2==4.5.0
 python-dateutil==2.6.1
 pytz==2017.3
 repoze.who==2.3
