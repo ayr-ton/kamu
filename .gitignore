@@ -116,6 +116,7 @@ webpack-stats.json
 public/
 export-vars.sh
 .envrc
+.vscode
 
 #PyVenv
 kamu/bin
