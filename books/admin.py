@@ -20,9 +20,9 @@ class LibraryAdmin(admin.ModelAdmin):
 
 class BookAdmin(admin.ModelAdmin):
     inlines = [BookCopyInline]
-    list_display = ['title', 'author']
+    list_display = ['isbn', 'title', 'author']
     list_per_page = 20
-    search_fields = ['title', 'author']
+    search_fields = ['title', 'author', 'isbn']
 
 
 class BookCopyAdmin(admin.ModelAdmin):
