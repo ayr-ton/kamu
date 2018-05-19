@@ -68,6 +68,7 @@ export default class BookDetail extends Component {
 		let publicationDate;
 		let numberOfPages;
 		let bookDescription;
+		let goodReadsLink;
 
 		if(book.image_url) imageUrl = <img src={book.image_url} className="modal-book__image"/>
 
@@ -89,12 +90,17 @@ export default class BookDetail extends Component {
 							</div>
 
 		if(publisherName || publicationDate || numberOfPages) {
-			publisherWrapper = 
+			publisherWrapper =
 				<div className="modal-book__publisher-wrapper">
 					{publisherName}
 					{publicationDate}
 					{numberOfPages}
-				</div>			
+				</div>
+		}
+
+		if (book.isbn) {
+			const goodReadsIsbnUrl = "https://www.goodreads.com/search?q=" + book.isbn;
+			goodReadsLink = <a href={goodReadsIsbnUrl} target="_blank">View on GoodReads</a>;
 		}
 
 		return (
@@ -127,19 +133,23 @@ export default class BookDetail extends Component {
 							<div className="modal-book__detail-label">Availability</div>
 							<div className="modal-book__detail-value">{copiesAvailable} of {book.copies.length}</div>
 						</div>
-						
+
 						{publisherWrapper}
-						
+
 					</div>
 
 					<div className="modal-book__description-wrapper">
 						{bookDescription}
+
+						<div className="modal-book__goodreads">
+							{goodReadsLink}
+						</div>
 					</div>
 
 					<div className="modal-book__status">
 						<div className="modal-book__borrowed-informations">
 							{borrowers}
-						</div>						
+						</div>
 					</div>
 				</div>
 			</div>
