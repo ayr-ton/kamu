@@ -16,13 +16,6 @@ Kamu is an application that focus on managing a physical library where you can a
 
 Here is a quick step-by-step minimal setup, to get the app up and running in your local workstation:
 
-Clone this repo and open the root folder:
-
-```shell
-git clone https://github.com/twlabs/kamu.git
-cd kamu
-```
-
 Create Python virtual enviroment:
 
 ```shell
