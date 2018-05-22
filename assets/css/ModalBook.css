@@ -122,6 +122,11 @@
   font-weight: 1.1em;
 }
 
+.modal-book__goodreads {
+  margin-top: 10px;
+
+}
+
 .modal-book__borrowed-with-wrapper {
   display: flex;
   flex-flow: row nowrap;
