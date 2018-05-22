@@ -69,6 +69,12 @@ In case of need authenticate without Okta preview again, execute:
   unset OKTA_METADATA_URL
 ```
 
+Create database tables:
+
+```shell
+python manage.py migrate
+```
+
 Create a super user:
 
 ```shell
@@ -77,11 +83,6 @@ python manage.py createsuperuser
 
 You will use this super user to login as administrator in your local kamu application.
 
-Create database tables:
-
-```shell
-python manage.py migrate
-```
 
 Seed the database with initial dump data:
 
