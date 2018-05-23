@@ -42,7 +42,7 @@ module.exports = {
 
     plugins: [
       new webpack.HotModuleReplacementPlugin(),
-      new webpack.NoErrorsPlugin(),
+      new webpack.NoEmitOnErrorsPlugin(),
       new BundleTracker({filename: './webpack-stats.json'}),
       new ExtractTextPlugin('[name]-[hash].css'),
       new webpack.DefinePlugin({
@@ -51,24 +51,27 @@ module.exports = {
     ],
 
     module: {
-      loaders: [
+      rules: [
         {
           test: /\.js$/,
           exclude: /node_modules/,
-          loader: 'babel',
+          loader: 'babel-loader',
           query: {
              presets: ['es2015', 'react']
           }
         },
         {
           test: /\.css$/,
-          loaders: ['style', 'css']
+          use: [
+            { loader: 'style-loader' },
+            { loader: 'css-loader' }
+          ]
         }
       ],
     },
 
     resolve: {
-      modulesDirectories: ['node_modules'],
-      extensions: ['', '.js']
+      modules: ['node_modules'],
+      extensions: ['.js']
     }
 };
