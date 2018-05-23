@@ -1,7 +1,7 @@
 prod:
 	python manage.py migrate
-	yarn build
+	npm run-script build
 	python manage.py collectstatic --noinput
 
 dev:
-	yarn start
+	npm run-script start

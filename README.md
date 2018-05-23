@@ -35,18 +35,12 @@ Install backend dependencies using pip:
 pip install -r requirements.txt
 ```
 
-Install frontend dependencies using [Yarn](http://yarnpkg.com):
-
-```shell
-yarn install
-```
-
 **For setup local with authenticate with Okta Preview:**
 Use the "OKTA_METADATA_URL='url-of-okta-saml'" concatenating with the python's commands:
 
 ```shell
   Examples:  
-  OKTA_METADATA_URL='url-of-okta-saml' yarn start
+  OKTA_METADATA_URL='url-of-okta-saml' npm run-script start
   OKTA_METADATA_URL='url-of-okta-saml' python manage.py migrate
 ```
 
@@ -54,7 +48,7 @@ Another way is to export the var and then execute the commands:
 
 ```shell
   export OKTA_METADATA_URL='url-of-okta-saml'
-  yarn start
+  npm run-script start
   python manage.py migrate
 ```
 In case of need authenticate without Okta preview again, execute:
@@ -87,7 +81,7 @@ python manage.py loaddata dump_data/*.json
 Start your local server:
 
 ```shell
-yarn start
+npm run-script start
 ```
 
 Now just go to [http://localhost:8000](http://localhost:8000) in your browser :)
