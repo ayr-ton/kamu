@@ -3,7 +3,8 @@
 > – Ralph Waldo Emerson
 
 [![Build Status](https://circleci.com/gh/twlabs/kamu.svg?style=shield&circle-token=82f9dc80bdaf1915cafb41223eb942b3e8373217)](https://circleci.com/gh/twlabs/kamu)
-[![Join the chat at https://gitter.im/pykamu/Lobby](https://badges.gitter.im/pykamu/Lobby.svg)](https://gitter.im/pykamu/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+Join the Telegram contributors chat at https://t.me/joinchat/AfhaV0XSlMQFRcYnMddG8w
 
 Kamu is an application that focus on managing a physical library where you can add books, borrow and return them.
 
