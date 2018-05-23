@@ -38,20 +38,18 @@ jobs:
       - image: circleci/node:7
     steps:
       - checkout
-      - run:
-          command: 'sudo npm install -g yarn@latest'
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
-          command: yarn install
+          command: npm i
       - save_cache:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
             - ./node_modules
       - run:
-          command: yarn lint
+          command: npm run-script lint
       - run:
-          command: yarn test
+          command: npm run-script test
 workflows:
   version: 2
   build_and_test:
@@ -59,6 +57,3 @@ workflows:
       - security-checks
       - build_backend
       - build_frontend
-notify:
-  webhooks:
-    - url: https://webhooks.gitter.im/e/032e112573c8a1eafc93
