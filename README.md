@@ -2,7 +2,7 @@
 > "Some books leave us free and some books make us free."
 > – Ralph Waldo Emerson
 
-[![Build Status](https://circleci.com/gh/twlabs/kamu.svg?style=shield&circle-token=82f9dc80bdaf1915cafb41223eb942b3e8373217)](https://circleci.com/gh/twlabs/kamu)
+[![CircleCI](https://circleci.com/gh/ayr-ton/kamu.svg?style=svg)](https://circleci.com/gh/ayr-ton/kamu)
 
 Join the Telegram contributors chat at https://t.me/joinchat/AfhaV0XSlMQFRcYnMddG8w
 
