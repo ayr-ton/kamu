@@ -17,6 +17,18 @@ Kamu is an application that focus on managing a physical library where you can a
 
 Here is a quick step-by-step minimal setup, to get the app up and running in your local workstation:
 
+### MacOS specific
+To install node.js and its package manager ```npm``` you can either download it from the [node.js homepage](https://nodejs.org/en/download/) or use a package manager like:
+- [homebrew](https://brew.sh)
+```shell
+brew install node
+```
+- [macports](https://www.macports.org/install.php)
+```shell
+port install nodejs
+```
+
+### Platform independent
 Create Python virtual enviroment:
 
 ```shell
@@ -35,26 +47,10 @@ Install backend dependencies using pip:
 pip install -r requirements.txt
 ```
 
-**For setup local with authenticate with Okta Preview:**
-Use the "OKTA_METADATA_URL='url-of-okta-saml'" concatenating with the python's commands:
+Install frontend dependencies using npm:
 
 ```shell
-  Examples:  
-  OKTA_METADATA_URL='url-of-okta-saml' npm run-script start
-  OKTA_METADATA_URL='url-of-okta-saml' python manage.py migrate
-```
-
-Another way is to export the var and then execute the commands:
-
-```shell
-  export OKTA_METADATA_URL='url-of-okta-saml'
-  npm run-script start
-  python manage.py migrate
-```
-In case of need authenticate without Okta preview again, execute:
-
-```shell
-  unset OKTA_METADATA_URL
+npm install package.json
 ```
 
 Create database tables:
@@ -85,6 +81,28 @@ npm run-script start
 ```
 
 Now just go to [http://localhost:8000](http://localhost:8000) in your browser :)
+
+**For setup local with authenticate with Okta Preview:**
+Use the "OKTA_METADATA_URL='url-of-okta-saml'" concatenating with the python's commands:
+
+```shell
+  Examples:
+  OKTA_METADATA_URL='url-of-okta-saml' npm run-script start
+  OKTA_METADATA_URL='url-of-okta-saml' python manage.py migrate
+```
+
+Another way is to export the var and then execute the commands:
+
+```shell
+  export OKTA_METADATA_URL='url-of-okta-saml'
+  npm run-script start
+  python manage.py migrate
+```
+In case of need authenticate without Okta preview again, execute:
+
+```shell
+  unset OKTA_METADATA_URL
+```
 
 ## Running and configuring cronjobs
 
