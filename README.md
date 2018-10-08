@@ -35,6 +35,12 @@ Install backend dependencies using pip:
 pip install -r requirements.txt
 ```
 
+Install frontend dependencies using npm:
+
+```shell
+npm install package.json
+```
+
 **For setup local with authenticate with Okta Preview:**
 Use the "OKTA_METADATA_URL='url-of-okta-saml'" concatenating with the python's commands:
 
