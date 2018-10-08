@@ -41,28 +41,6 @@ Install frontend dependencies using npm:
 npm install package.json
 ```
 
-**For setup local with authenticate with Okta Preview:**
-Use the "OKTA_METADATA_URL='url-of-okta-saml'" concatenating with the python's commands:
-
-```shell
-  Examples:  
-  OKTA_METADATA_URL='url-of-okta-saml' npm run-script start
-  OKTA_METADATA_URL='url-of-okta-saml' python manage.py migrate
-```
-
-Another way is to export the var and then execute the commands:
-
-```shell
-  export OKTA_METADATA_URL='url-of-okta-saml'
-  npm run-script start
-  python manage.py migrate
-```
-In case of need authenticate without Okta preview again, execute:
-
-```shell
-  unset OKTA_METADATA_URL
-```
-
 Create database tables:
 
 ```shell
@@ -91,6 +69,28 @@ npm run-script start
 ```
 
 Now just go to [http://localhost:8000](http://localhost:8000) in your browser :)
+
+**For setup local with authenticate with Okta Preview:**
+Use the "OKTA_METADATA_URL='url-of-okta-saml'" concatenating with the python's commands:
+
+```shell
+  Examples:
+  OKTA_METADATA_URL='url-of-okta-saml' npm run-script start
+  OKTA_METADATA_URL='url-of-okta-saml' python manage.py migrate
+```
+
+Another way is to export the var and then execute the commands:
+
+```shell
+  export OKTA_METADATA_URL='url-of-okta-saml'
+  npm run-script start
+  python manage.py migrate
+```
+In case of need authenticate without Okta preview again, execute:
+
+```shell
+  unset OKTA_METADATA_URL
+```
 
 ## Running and configuring cronjobs
 
