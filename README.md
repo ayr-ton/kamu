@@ -17,6 +17,18 @@ Kamu is an application that focus on managing a physical library where you can a
 
 Here is a quick step-by-step minimal setup, to get the app up and running in your local workstation:
 
+### MacOS specific
+To install node.js and its package manager ```npm``` you can either download it from the [node.js homepage](https://nodejs.org/en/download/) or use a package manager like:
+- [homebrew](https://brew.sh)
+```shell
+brew install node
+```
+- [macports](https://www.macports.org/install.php)
+```shell
+port install nodejs
+```
+
+### Platform independent
 Create Python virtual enviroment:
 
 ```shell
