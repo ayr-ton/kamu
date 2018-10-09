@@ -1,6 +1,5 @@
 var path = require('path')
 var webpack = require('webpack')
-var BundleTracker = require('webpack-bundle-tracker')
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 function isDevelopmentEnvironment(){
@@ -43,7 +42,6 @@ module.exports = {
     plugins: [
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NoEmitOnErrorsPlugin(),
-      new BundleTracker({filename: './webpack-stats.json'}),
       new ExtractTextPlugin('[name]-[hash].css'),
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
