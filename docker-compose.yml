@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  app:
+    image: kamu
+    container_name: kamu
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    volumes:
+      - .:/home/node/kamu
+    ports:
+      - 8000:8000
+      - 3000:3000
+    tty: true
+    environment:
+      NODE_ENV: local
+      CONTAINER_ROLE: app
