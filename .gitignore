@@ -122,6 +122,8 @@ export-vars.sh
 kamu/bin
 kamu/pip-selfcheck.json
 kamu/pyvenv.cfg
+pyvenv.cfg
+bin
 
 #PyCharm
 .idea/
