@@ -4,8 +4,11 @@
 
 [![CircleCI](https://circleci.com/gh/ayr-ton/kamu.svg?style=svg)](https://circleci.com/gh/ayr-ton/kamu)
 
-[![Test Coverage](https://codeclimate.com/github/flavia-by-flavia/kamu/badges/coverage.svg)](https://codeclimate.com/github/flavia-by-flavia/kamu/coverage)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/c17888b95f8b8e9668b8/test_coverage)](https://codeclimate.com/github/flavia-by-flavia/kamu/test_coverage)
+
 [![Code Climate](https://codeclimate.com/github/codeclimate/codeclimate/badges/gpa.svg)](https://codeclimate.com/github/flavia-by-flavia/kamu)
+
+
 
 Join the Telegram contributors chat at https://t.me/joinchat/AfhaV0XSlMQFRcYnMddG8w
 
