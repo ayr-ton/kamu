@@ -4,6 +4,9 @@
 
 [![CircleCI](https://circleci.com/gh/ayr-ton/kamu.svg?style=svg)](https://circleci.com/gh/ayr-ton/kamu)
 
+[![Test Coverage](https://codeclimate.com/github/flavia-by-flavia/kamu/badges/coverage.svg)](https://codeclimate.com/github/flavia-by-flavia/kamu/coverage)
+[![Code Climate](https://codeclimate.com/github/codeclimate/codeclimate/badges/gpa.svg)](https://codeclimate.com/github/flavia-by-flavia/kamu)
+
 Join the Telegram contributors chat at https://t.me/joinchat/AfhaV0XSlMQFRcYnMddG8w
 
 Kamu is an application that focus on managing a physical library where you can add books, borrow and return them.
