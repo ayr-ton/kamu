@@ -4,7 +4,7 @@
 
 [![CircleCI](https://circleci.com/gh/ayr-ton/kamu.svg?style=svg)](https://circleci.com/gh/ayr-ton/kamu)
 
-<a href="https://codeclimate.com/github/flavia-by-flavia/kamu/test_coverage"><img src="https://api.codeclimate.com/v1/badges/c17888b95f8b8e9668b8/test_coverage" /></a>
+[![Test Coverage](https://api.codeclimate.com/v1/badges/c17888b95f8b8e9668b8/test_coverage)](https://codeclimate.com/github/flavia-by-flavia/kamu/test_coverage)
 
 [![Code Climate](https://codeclimate.com/github/codeclimate/codeclimate/badges/gpa.svg)](https://codeclimate.com/github/flavia-by-flavia/kamu)
 
