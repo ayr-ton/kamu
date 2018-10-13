@@ -56,7 +56,7 @@ pip install -r requirements.txt
 Install frontend dependencies using npm:
 
 ```shell
-npm install package.json
+npm install
 ```
 
 Create database tables:
