@@ -38,7 +38,7 @@ port install nodejs
 Create Python virtual enviroment:
 
 ```shell
-python3 -m venv kamu
+python3 -m venv venv
 ```
 
 Activate virtual enviroment (this command can change based on OS):
