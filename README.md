@@ -35,6 +35,11 @@ Create Python virtual enviroment:
 python3 -m venv venv
 ```
 
+(Optional) In some operational systems you need to create your virtualenv manually with the command:
+```shell
+virtualenv kamu/
+```
+
 Activate virtual enviroment (this command can change based on OS):
 
 ```shell
