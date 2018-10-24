@@ -41,6 +41,12 @@ Activate virtual enviroment (this command can change based on OS):
 source kamu/bin/activate
 ```
 
+- MacOS
+
+```shell
+source venv/bin/activate
+```
+
 Install backend dependencies using pip:
 
 ```shell
