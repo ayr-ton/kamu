@@ -8,6 +8,10 @@ Join the Telegram contributors chat at https://t.me/joinchat/AfhaV0XSlMQFRcYnMdd
 
 Kamu is an application that focus on managing a physical library where you can add books, borrow and return them.
 
+In the main page you can see the libraries shared between users. The libraries can be different unities, cities or name of friends that wants to share books. In the Screenshoot bellow, you can see an example of multiple libraries. 
+
+![Screenshoot for Kamu's multiple libraries](https://github.com/flavia-by-flavia/kamu/raw/b8c728301b9647e092c06aff6ed26a7bd7922397/Screen%20Shot%202018-10-18%20at%2018.47.23.png)
+
 ## Requirements
 
 - Python 3.6+ for Django backend
