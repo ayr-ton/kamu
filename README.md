@@ -38,12 +38,6 @@ python3 -m venv venv
 Activate virtual enviroment (this command can change based on OS):
 
 ```shell
-source kamu/bin/activate
-```
-
-- MacOS
-
-```shell
 source venv/bin/activate
 ```
 
