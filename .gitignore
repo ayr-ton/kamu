@@ -123,5 +123,8 @@ kamu/bin
 kamu/pip-selfcheck.json
 kamu/pyvenv.cfg
 
-#PyCharm
+# PyCharm
 .idea/
+
+# Docker
+docker_env
