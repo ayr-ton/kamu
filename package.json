@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "webpack -p",
-    "start": "NODE_ENV=development concurrently --raw --kill-others \"node dev-server.js\" \"python manage.py runserver\"",
+    "start": "NODE_ENV=development concurrently --raw --kill-others \"node dev-server.js\" \"python manage.py runserver 0.0.0.0:8000\"",
     "test": "mocha --require ignore-styles --no-deprecation --recursive --reporter spec --watch-extensions js,jsx --require babel-polyfill --compilers js:babel-core/register $(find assets/src/ -name '*.test.js')",
     "test:watch": "npm run-script test -- --watch",
     "lint": "eslint ."
