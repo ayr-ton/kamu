@@ -32,7 +32,6 @@ class BookCopyAdmin(admin.ModelAdmin):
     autocomplete_fields = ['book', 'library', 'user']
 
     def add_view(self, request):
-        self.exclude = ['user', 'borrow_date']
         return super(BookCopyAdmin, self).add_view(request)
 
 

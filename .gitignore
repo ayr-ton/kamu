@@ -125,5 +125,11 @@ kamu/pyvenv.cfg
 pyvenv.cfg
 bin
 
-#PyCharm
+# PyCharm
 .idea/
+
+# Docker
+docker_env
+
+# vim
+tags
