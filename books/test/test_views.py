@@ -1,8 +1,8 @@
 import json
 
+import httpretty
 from django.contrib.auth.models import User
-from django.test import TestCase, Client
-from django.urls import reverse
+from django.test import TestCase
 from django.utils import timezone
 
 from books.models import Book, Library, BookCopy
@@ -224,3 +224,84 @@ class UserView(TestCase):
         user_json = json.loads(json.dumps(self.request.data))
 
         self.assertEqual(self.user.username, user_json['user']['username'])
+
+class IsbnViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="claudia", is_staff=True, is_superuser=True)
+        self.user.set_password("pwd12345")
+        self.user.save()
+        self.client.force_login(user=self.user)
+
+        self.url = '/admin/books/book/isbn/'
+
+    def test_get_should_render_isbn_template(self):
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertTemplateUsed(response, 'isbn.html')
+        self.assertTemplateUsed(response, 'admin/app_index.html')
+
+    def test_post_should_render_isbn_form_when_input_is_not_provided(self):
+        response = self.client.post(self.url)
+
+        self.assertTemplateUsed(response, 'isbn.html')
+        self.assertTemplateUsed(response, 'admin/app_index.html')
+        self.assertContains(response, 'Invalid ISBN provided!')
+
+    @httpretty.activate
+    def test_post_should_show_failure_message_on_book_add_form_when_isbn_is_not_found(self):
+        httpretty.register_uri(
+            httpretty.GET,
+            "https://www.googleapis.com/books/v1/volumes?q=isbn:9780133065268",
+            body='{"kind": "books#volumes", "totalItems": 0}',
+            status=200)
+
+        response = self.client.post(self.url, data={'isbn': '9780133065268'}, follow=True)
+
+        self.assertRedirects(response, '/admin/books/book/add/?', status_code=302, target_status_code=200)
+        self.assertContains(response, 'Sorry! We could not find the book with the ISBN provided.')
+        self.assertTemplateUsed(response, 'admin/change_form.html')
+
+    @httpretty.activate
+    def test_post_should_show_success_message_on_book_add_form_when_isbn_is_found(self):
+        content = {
+            "kind": "books#volumes",
+            "totalItems": 1,
+            "items": [
+                {
+                    "volumeInfo": {
+                        "title": "Refactoring",
+                        "subtitle": "Improving the Design of Existing Code",
+                        "authors": [
+                            "Martin Fowler"
+                        ],
+                        "publisher": "Addison-Wesley",
+                        "publishedDate": "2012-03-09",
+                        "description": "As the application of object technology--particularly bla bla bla",
+                        "pageCount": 455,
+                        "imageLinks": {
+                            "thumbnail": "http://books.google.com/books/content?id=HmrDHwgkbPsC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+                        }
+                    }
+                }
+            ]
+        }
+
+        httpretty.register_uri(
+            httpretty.GET,
+            "https://www.googleapis.com/books/v1/volumes?q=isbn:9780133065268",
+            body=json.dumps(content),
+            status=200)
+
+        response = self.client.post(self.url, data={'isbn': '9780133065268'}, follow=True)
+
+        self.assertRedirects(response, '/admin/books/book/add/?isbn=9780133065268&author=Martin+Fowler&description=As'
+                                       '+the+application+of+object+technology--particularly+bla+bla+bla&image_url'
+                                       '=http%3A%2F%2Fbooks.google.com%2Fbooks%2Fcontent%3Fid%3DHmrDHwgkbPsC'
+                                       '%26printsec%3Dfrontcover%26img%3D1%26zoom%3D1%26edge%3Dcurl%26source'
+                                       '%3Dgbs_api&number_of_pages=455&publication_date=2012-03-09&publisher=Addison'
+                                       '-Wesley&subtitle=Improving+the+Design+of+Existing+Code&title=Refactoring',
+                             status_code=302, target_status_code=200)
+        self.assertContains(response, 'Found! Go ahead, modify book template and save.')
+        self.assertTemplateUsed(response, 'admin/change_form.html')
