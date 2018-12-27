@@ -1,6 +1,11 @@
+from django.contrib import messages, admin
 from django.db.models import Count
+from django.db.models import Q
 from django.http import Http404
+from django.shortcuts import render, redirect
 from django.utils import timezone
+from django.utils.http import urlencode
+from django.views.generic.base import View
 from filters.mixins import (
     FiltersMixin,
 )
@@ -8,10 +13,38 @@ from rest_framework import viewsets, filters
 from rest_framework.decorators import detail_route
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from django.db.models import Q
 
-
+from books.google import BookFinder
 from books.serializers import *
+from .forms import IsbnForm
+
+
+class IsbnFormView(View):
+    def get(self, request):
+        form = IsbnForm()
+
+        return render(request, 'isbn.html', {
+            'form': form,
+            'site_header': admin.site.site_header,
+            'books_isbn_url': reverse('admin:books_book_isbn')
+        })
+
+    def post(self, request):
+        form = IsbnForm(request.POST)
+        if form.is_valid():
+            isbn = form.cleaned_data["isbn"]
+            book = BookFinder.fetch(isbn)
+
+            if book == {}:
+                messages.warning(request, 'Sorry! We could not find the book with the ISBN provided.')
+            else:
+                messages.info(request, "Found! Go ahead, modify book template and save.")
+
+            return redirect('{}?{}'.format(reverse('admin:books_book_add'), urlencode(book)))
+        else:
+            messages.error(request, 'Invalid ISBN provided!')
+
+            return self.get(request)
 
 
 def get_book_filters_from_request(request, filters=('book_title', 'book_author')):
