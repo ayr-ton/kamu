@@ -93,21 +93,6 @@ describe('<Book />', () => {
        sandbox.restore();
     });
 
-    it('should change zDepth to 2 onMouseOver', () => {
-        bookComponent = shallow(<Book key={bookModel.id} book={bookModel} />);
-        expect(bookComponent.state().zDepth).to.equal(1);
-        bookComponent.simulate('mouseover');
-        expect(bookComponent.state().zDepth).to.equal(2);
-    });
-
-    it('should change zDepth to 1 onMouseOut', () => {
-        bookComponent = shallow(<Book key={bookModel.id} book={bookModel} />);
-        bookComponent.setState({zDepth: 2});
-        expect(bookComponent.state().zDepth).to.equal(2);
-        bookComponent.simulate('mouseout');
-        expect(bookComponent.state().zDepth).to.equal(1);
-    });
-
     it('should contain an img as background-image', () => {
         bookComponent = shallow(<Book key={bookModel.id} book={bookModel} />);
         expect(bookComponent.find(".book-cover").props().style.backgroundImage).to.equal(`url('${bookModel.image_url}')`)
