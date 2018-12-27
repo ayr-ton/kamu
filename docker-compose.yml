@@ -1,0 +1,12 @@
+version: '3.7'
+services:
+  api:
+    build:
+      context: .
+    env_file: docker_env
+    command: npm run-script start
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+      - "3000:3000"
