@@ -128,3 +128,6 @@ kamu/pyvenv.cfg
 
 # Docker
 docker_env
+
+# vim
+tags
