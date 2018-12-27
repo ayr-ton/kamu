@@ -4,7 +4,7 @@ services:
     build:
       context: .
     env_file: docker_env
-    command: python manage.py runserver 0.0.0.0:8000
+    command: npm run-script start
     volumes:
       - .:/app
     ports:
