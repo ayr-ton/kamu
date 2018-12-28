@@ -26,6 +26,10 @@ export default class Header extends Component {
 		window.location.href = '/';
 	}
 
+	_addBook() {
+		window.location.href = '/admin/books/book/isbn/';
+	}	
+
 	render() {
 		let menu;
 		if (this.state.displaysMenu) {
@@ -36,6 +40,7 @@ export default class Header extends Component {
 					anchorOrigin={{horizontal: 'right', vertical: 'top'}}
 				>
 					<MenuItem primaryText="Change library" id="change-region" onClick={this._changeRegion} />
+					<MenuItem primaryText="Add Book" id="add-book" onClick={this._addBook} />
 				</IconMenu>
             );
         }
