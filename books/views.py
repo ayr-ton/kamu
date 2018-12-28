@@ -17,6 +17,7 @@ from rest_framework.views import APIView
 from books.google import BookFinder
 from books.serializers import *
 from .forms import IsbnForm
+from .models import Book as BookModel
 
 
 class IsbnFormView(View):
@@ -33,7 +34,12 @@ class IsbnFormView(View):
         form = IsbnForm(request.POST)
         if form.is_valid():
             isbn = form.cleaned_data["isbn"]
+            book_from_db = BookModel.objects.filter(isbn=isbn).distinct()
             book = BookFinder.fetch(isbn)
+            
+            if book_from_db:
+                 messages.warning(request, 'The requested book is already on the database.')
+                 return self.get(request)
 
             if book == {}:
                 messages.warning(request, 'Sorry! We could not find the book with the ISBN provided.')
