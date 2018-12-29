@@ -38,7 +38,7 @@ class IsbnFormView(View):
             book = BookFinder.fetch(isbn)
             
             if book_from_db:
-                 messages.warning(request, 'The requested book is already on the database.')
+                 messages.warning(request, 'The requested book is on the table.')
                  return self.get(request)
 
             if book == {}:
