@@ -20,16 +20,18 @@ class ResponseParser(object):
         return self._build(self.content['items'][-1])
 
     def _build(self, data):
+
+        volume_info = {
+            'authors': '',
+            'description': '',
+            'imageLinks': {'thumbnail': ''},
+            'pageCount': '',
+            'publishedDate': '',
+            'publisher': '',
+            'title': ''
+        }
+
         volume_info = data['volumeInfo']
-        # Avoiding null pointer beautifully 
-        volume_info['authors'] = volume_info['authors'] or ''
-        volume_info['description'] = volume_info['description'] or ''
-        volume_info['imageLinks']['thumbnail'] = volume_info['imageLinks']['thumbnail'] or ''
-        volume_info['pageCount'] = volume_info['pageCount'] or ''
-        volume_info['publishedDate'] = volume_info['publishedDate'] or ''
-        volume_info['publisher'] = volume_info['publisher'] or ''
-        volume_info['subtitle'] = volume_info['subtitle'] or ''
-        volume_info['title'] = volume_info['title'] or ''
 
         return {
             'isbn': self.isbn,
