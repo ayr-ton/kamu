@@ -15,7 +15,6 @@ djangorestframework==3.7.7
 drf-url-filters==0.5.1
 flake8==3.5.0
 future==0.16.0
-fake-useragent
 gunicorn==19.7.1
 httpretty==0.9.6
 idna==2.6
