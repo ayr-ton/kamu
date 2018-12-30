@@ -1,5 +1,7 @@
 import requests
 
+from fake_useragent import UserAgent
+
 
 class ResponseParser(object):
     def __init__(self, isbn, content):
@@ -41,8 +43,10 @@ class BookFinder(object):
 
     @classmethod
     def fetch(cls, isbn):
+        user_agent = UserAgent(use_cache_server=False)
+        headers = {'User-Agent': user_agent.chrome}
         url = "{}?q=isbn:{}".format(cls.GOOGLE_BOOKS_URL, isbn)
-        response = requests.get(url)
+        response = requests.get(url, headers=headers, verify=False)
 
         if response.status_code != cls.OK:
             return {}
