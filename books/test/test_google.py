@@ -141,3 +141,38 @@ class ResponseParserTest(TestCase):
             "subtitle": "Improving the Design of Existing Code the New Way",
             "title": "Refactoring II"
         })
+
+    def test_should_not_raise_exception_when_fields_are_missing(self):
+        # content without authors and description
+        content = {
+            "kind": "books#volumes",
+            "totalItems": 2,
+            "items": [
+                {
+                    "volumeInfo": {
+                        "title": "Refactoring II",
+                        "subtitle": "Improving the Design of Existing Code the New Way",
+                        "publisher": "Addison-Wesley",
+                        "publishedDate": "2018-12-09",
+                        "pageCount": 455,
+                        "imageLinks": {
+                            "thumbnail": "http://books.google.com/books/content?id=HmrDHwgkbPsC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"
+                        }
+                    }
+                }
+            ]
+        }
+
+        book = ResponseParser('9780133065268', content).extract_book()
+
+        self.assertDictEqual(book, {
+            "author": "",
+            "description": "",
+            "image_url": "http://books.google.com/books/content?id=HmrDHwgkbPsC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+            "isbn": "9780133065268",
+            "number_of_pages": 455,
+            "publication_date": "2018-12-09",
+            "publisher": "Addison-Wesley",
+            "subtitle": "Improving the Design of Existing Code the New Way",
+            "title": "Refactoring II"
+        })
