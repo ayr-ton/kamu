@@ -143,7 +143,7 @@ class ResponseParserTest(TestCase):
         })
 
     def test_should_not_raise_exception_when_fields_are_missing(self):
-        # content without authors and description
+        # content without subtitle, authors and description
         content = {
             "kind": "books#volumes",
             "totalItems": 2,
@@ -151,7 +151,6 @@ class ResponseParserTest(TestCase):
                 {
                     "volumeInfo": {
                         "title": "Refactoring II",
-                        "subtitle": "Improving the Design of Existing Code the New Way",
                         "publisher": "Addison-Wesley",
                         "publishedDate": "2018-12-09",
                         "pageCount": 455,
@@ -173,6 +172,6 @@ class ResponseParserTest(TestCase):
             "number_of_pages": 455,
             "publication_date": "2018-12-09",
             "publisher": "Addison-Wesley",
-            "subtitle": "Improving the Design of Existing Code the New Way",
+            "subtitle": "",
             "title": "Refactoring II"
         })
