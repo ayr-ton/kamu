@@ -53,8 +53,9 @@ class BookFinder(object):
 
     @classmethod
     def fetch(cls, isbn):
+        headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36'}
         url = "{}?q=isbn:{}".format(cls.GOOGLE_BOOKS_URL, isbn)
-        response = requests.get(url)
+        response = requests.get(url, headers=headers, verify=False)
 
         if response.status_code != cls.OK:
             return {}
