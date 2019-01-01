@@ -28,10 +28,11 @@ class ResponseParser(object):
             'pageCount': '',
             'publishedDate': '',
             'publisher': '',
-            'title': ''
+            'title': '',
+            'subtitle': ''
         }
 
-        volume_info = data['volumeInfo']
+        volume_info = {**volume_info, **data['volumeInfo']}
 
         return {
             'isbn': self.isbn,
