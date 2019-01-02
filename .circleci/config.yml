@@ -31,7 +31,8 @@ jobs:
       - run:
           command: |
               . venv/bin/activate
-              python manage.py test
+              coverage run manage.py test
+              codeclimate-test-reporter
   build_frontend:
     working_directory: ~/kamu
     docker:
