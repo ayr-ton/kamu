@@ -43,8 +43,11 @@ class BookCopy(models.Model):
 
 
 class WishList(models.Model):
+    STATES = (('PENDING', 'PENDING'),
+              ('PROCESSING', 'PROCESSING'),
+              ('DONE', 'DONE'))
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     library = models.ForeignKey(Library, related_name='copies', on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
-    status = models.CharField(max_length=255)
+    state = models.CharField(max_length=255, choices=STATES, default='PENDING')
 

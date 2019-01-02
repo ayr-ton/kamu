@@ -75,7 +75,7 @@ class WishListTestCase(TestCase):
 
     def test_can_create_a_wishlist(self):
         self.wishlist = WishList.objects.create(book=self.book, library=self.library, user=self.user,
-                                                status="PENDING")
+                                                state="PENDING")
         self.assertEqual(self.wishlist.book, self.book)
         self.assertEqual(self.wishlist.user, self.user)
         self.assertEqual(self.wishlist.library, self.library)

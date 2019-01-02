@@ -63,3 +63,8 @@ class LibrarySerializer(serializers.ModelSerializer):
     class Meta:
         model = Library
         fields = ('id', 'name', 'slug')
+
+class WishListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WishList
+        fields = ('id', 'book', 'user', 'library', 'state')
