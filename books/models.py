@@ -2,6 +2,9 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
 
 class Book(models.Model):
     author = models.CharField(max_length=255)
@@ -60,3 +63,11 @@ class WishList(models.Model):
             raise ValidationError('This book copy already exists.')
 
 
+@receiver(post_save, sender=BookCopy)
+def update_wishlist_book(sender, **kwargs):
+    book_in_wishlist = WishList.objects.filter(book=kwargs['instance'].book,
+                                               library=kwargs['instance'].library).first()
+    if not book_in_wishlist:
+        return
+    book_in_wishlist.state = 'DONE'
+    book_in_wishlist.save()
