@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db import models
 
 
@@ -50,4 +51,12 @@ class WishList(models.Model):
     library = models.ForeignKey(Library, related_name='copies', on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
     state = models.CharField(max_length=255, choices=STATES, default='PENDING')
+
+    class Meta:
+        unique_together = ('book', 'library')
+
+    def clean(self):
+        if BookCopy.objects.filter(book=self.book):
+            raise ValidationError('This book copy already exists.')
+
 

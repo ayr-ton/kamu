@@ -45,6 +45,12 @@ class BookCopyAdmin(admin.ModelAdmin):
     def add_view(self, request):
         return super(BookCopyAdmin, self).add_view(request)
 
+class WishListAdmin(admin.ModelAdmin):
+    list_display = ['id', 'book', 'user', 'library', 'state']
+    autocomplete_fields = ['book', 'library', 'user']
+    search_fields = ['book__title', 'user__username']
+
+
 
 admin.site.site_header = 'Kamu administration'
 admin.site.site_title = 'Kamu administration'
@@ -52,3 +58,4 @@ admin.site.index_title = 'Kamu'
 admin.site.register(Book, BookAdmin)
 admin.site.register(Library, LibraryAdmin)
 admin.site.register(BookCopy, BookCopyAdmin)
+admin.site.register(WishList, WishListAdmin)
