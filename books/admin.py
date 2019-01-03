@@ -1,4 +1,5 @@
-from django.contrib import admin
+from django import forms
+from django.contrib import admin, messages
 from django.urls import path
 
 from books import views
@@ -31,10 +32,11 @@ class BookAdmin(admin.ModelAdmin):
         info = self.model._meta.app_label, self.model._meta.model_name
 
         my_urls = [
-            path('isbn/', views.IsbnFormView.as_view(),  name='%s_%s_isbn' % info),
+            path('isbn/', views.IsbnFormView.as_view(), name='%s_%s_isbn' % info),
         ]
 
         return my_urls + urls
+
 
 class BookCopyAdmin(admin.ModelAdmin):
     list_display = ['id', 'book', 'library', 'user']
@@ -45,10 +47,26 @@ class BookCopyAdmin(admin.ModelAdmin):
     def add_view(self, request):
         return super(BookCopyAdmin, self).add_view(request)
 
+
 class WishListAdmin(admin.ModelAdmin):
-    list_display = ['id', 'book', 'user', 'library', 'state']
+    list_display = ['book', 'user', 'library', 'state']
     autocomplete_fields = ['book', 'library', 'user']
-    search_fields = ['book__title', 'user__username']
+    search_fields = ['book__title', 'user__username', 'state']
+    list_per_page = 20
+    list_display_links = None
+
+    def save_form(self, request, form, change):
+        if change:
+            messages.error(request,'You cannot edit this.')
+        else:
+            super().save_form(request,  form, change)
+
+    def save_model(self, request, obj, form, change):
+        if change:
+            messages.error(request,'You cannot edit this.')
+        else:
+            super().save_model(request, obj, form, change)
+
 
 
 
