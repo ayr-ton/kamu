@@ -108,8 +108,9 @@ workflows:
           requires:
              - backend-tests
              - frontend-tests
-
   nightly:
+    jobs:
+      - security-checks
     triggers:
       - schedule:
           cron: "0 0 * * *"
@@ -117,6 +118,3 @@ workflows:
             branches:
               only:
                 - master
-    jobs:
-      - security-checks
-
