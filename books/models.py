@@ -48,7 +48,6 @@ class BookCopy(models.Model):
 
 class WishList(models.Model):
     STATES = (('PENDING', 'PENDING'),
-              ('PROCESSING', 'PROCESSING'),
               ('DONE', 'DONE'))
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     library = models.ForeignKey(Library, related_name='copies', on_delete=models.CASCADE)
@@ -58,9 +57,16 @@ class WishList(models.Model):
     class Meta:
         unique_together = ('book', 'library')
 
+    def full_clean(self, exclude=None, validate_unique=True):
+        if not self._state.adding:
+            raise ValidationError('You cannot Edit this.')
+
     def clean(self):
         if BookCopy.objects.filter(book=self.book):
             raise ValidationError('This book copy already exists.')
+
+    def __str__(self):
+        return self.book.title
 
 
 @receiver(post_save, sender=BookCopy)
