@@ -140,6 +140,6 @@ On non Okta based deployments, you should run either `dokku run kamu /bin/bash` 
 ```shell
 python manage.py createsuperuser
 ```
-See #74 
+See [#74](https://github.com/ayr-ton/kamu/issues/74) 
 
 ![Thanks!](http://gifgifmagazine.com/wp-content/uploads/2018/11/macka-daj-pet-jea.gif)
