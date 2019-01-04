@@ -20,8 +20,16 @@ class LibraryAdmin(admin.ModelAdmin):
     search_fields = ['name']
 
 
+class WishListInline(admin.TabularInline):
+    model = WishList
+    extra = 0
+    max_num = 0
+    can_delete = False
+    readonly_fields = ['book', 'user', 'library', 'state']
+
+
 class BookAdmin(admin.ModelAdmin):
-    inlines = [BookCopyInline]
+    inlines = [BookCopyInline, WishListInline]
     list_display = ['isbn', 'title', 'author']
     list_per_page = 20
     search_fields = ['title', 'author', 'isbn']
@@ -53,21 +61,6 @@ class WishListAdmin(admin.ModelAdmin):
     autocomplete_fields = ['book', 'library', 'user']
     search_fields = ['book__title', 'user__username', 'state']
     list_per_page = 20
-    list_display_links = None
-
-    def save_form(self, request, form, change):
-        if change:
-            messages.error(request,'You cannot edit this.')
-        else:
-            super().save_form(request,  form, change)
-
-    def save_model(self, request, obj, form, change):
-        if change:
-            messages.error(request,'You cannot edit this.')
-        else:
-            super().save_model(request, obj, form, change)
-
-
 
 
 admin.site.site_header = 'Kamu administration'
