@@ -51,7 +51,8 @@ jobs:
           command: |
               . venv/bin/activate
               coverage run manage.py test
-              ./tmp/cc-test-reporter format-coverage -t coverage.py -o tmp/codeclimate.backend.json .coverage
+              coverage xml
+              ./tmp/cc-test-reporter format-coverage -t coverage.py -o tmp/codeclimate.backend.json coverage.xml
       - persist_to_workspace:
           root: tmp
           paths: 
@@ -97,7 +98,6 @@ workflows:
   build_and_test:
     jobs:
       - build
-      - security-checks
       - backend-tests:
           requires:
             - build
@@ -108,4 +108,15 @@ workflows:
           requires:
              - backend-tests
              - frontend-tests
+
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - security-checks
 
