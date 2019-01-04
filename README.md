@@ -112,7 +112,6 @@ In case of need authenticate without Okta preview again, execute:
 
 We now support Docker =), just go to your favorite console and type:
 ```
-cd docker
 docker-compose build
 docker-compose up
 ```

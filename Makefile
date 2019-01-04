@@ -4,3 +4,7 @@ prod:
 
 dev:
 	npm run-script start
+
+sync-upstream:
+	@git fetch upstream
+	@git rebase upstream/master
