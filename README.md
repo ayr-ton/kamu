@@ -108,10 +108,35 @@ In case of need authenticate without Okta preview again, execute:
   unset OKTA_METADATA_URL
 ```
 
-## Executing using docker
+## Executing using docker for local development
 
 We now support Docker =), just go to your favorite console and type:
 ```
+cd docker
 docker-compose build
 docker-compose up
+```
+
+## Deployment 
+
+We have out of the box support for [Heroku :dragon:](https://www.heroku.com/) and [Dokku :whale:](http://dokku.viewdocs.io/dokku/)
+
+For deployment, create a new Python app and set the remote origin from Dokku or Heroku, push it and enable the Postgres plugin.
+
+The buildpacks should configure all the necessary libraries for you.
+
+Now, we need the following environment variables before running Kamu for the first time:
+```shell
+SECRET_KEY="django-secret-key" # https://duckduckgo.com/?q=django+secret+key+generator
+DEBUG="true" # Or false, depending if is a testing or production app
+DJANGO_SETTINGS_MODULE="kamu.prod_settings" # If you plan to run a testing version with sqlite, this is not necessary
+DATABASE_URL="" # This variable should be automatically configured by the postgres extension. See prod_settings.py for reference.
+ALLOWED_HOSTS="kamu.example.com" # At this moment, only one domain is supported
+OKTA_METADATA_URL="SECRET-OKTA-STUFF" # On the case of Okta Authentication support 
+```
+See [Dokku environment variables](http://dokku.viewdocs.io/dokku/configuration/environment-variables/) or [Heroku Config Vars](https://devcenter.heroku.com/articles/config-vars) for more details.
+
+On non Okta based deployments, you should run either `dokku run kamu /bin/bash` or `heroku run /bin/bash -a kamu` (On this case, kamu is app name)
+```shell
+python manage.py createsuperuser
 ```
