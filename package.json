@@ -5,7 +5,7 @@
   "scripts": {
     "build": "webpack -p",
     "start": "NODE_ENV=development concurrently --raw --kill-others \"node dev-server.js\" \"python manage.py runserver 0.0.0.0:8000\"",
-    "test": "mocha --require ignore-styles --no-deprecation --recursive --reporter spec --watch-extensions js,jsx --require babel-polyfill --compilers js:babel-core/register $(find assets/src/ -name '*.test.js')",
+    "test": "nyc --reporter=lcov mocha --require ignore-styles --no-deprecation --recursive --reporter spec --watch-extensions js,jsx --require babel-polyfill --compilers js:babel-core/register $(find assets/src/ -name '*.test.js')",
     "test:watch": "npm run-script test -- --watch",
     "lint": "eslint .",
     "heroku-prebuild": "npm install --dev",
@@ -43,6 +43,7 @@
     "ignore-styles": "^5.0.1",
     "istanbul": "^0.4.5",
     "mocha": "^5.2.0",
+    "nyc": "^13.1.0",
     "react-addons-test-utils": "^15.3.0",
     "sinon": "^1.17.5",
     "webpack": "^4.8.3",
