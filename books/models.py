@@ -21,6 +21,7 @@ class Library(models.Model):
     name = models.CharField(max_length=255)
     slug = models.CharField(max_length=255)
     books = models.ManyToManyField(Book, through='BookCopy')
+    waitlist_items = models.ManyToManyField(Book, related_name='waitlist_items', through='WaitlistItem')
 
     class Meta:
         verbose_name_plural = 'libraries'
@@ -40,3 +41,11 @@ class BookCopy(models.Model):
 
     def __str__(self):
         return self.book.title
+
+
+class WaitlistItem(models.Model):
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    library = models.ForeignKey(Library, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="waitlist_items", on_delete=models.CASCADE)
+    added_date = models.DateField()
+
