@@ -79,7 +79,7 @@ class LibraryViewSet(TestCase):
         self.bookCopy = BookCopy.objects.create(book=self.book, library=self.library)
 
     def test_user_can_retrieve_library_information_with_existing_slug(self):
-        """tests the following url: /api/libraries/(?P<slug>)/books/"""
+        """tests the following url: /api/libraries/(?P<library_slug>)/books/"""
 
         self.request = self.client.get("/api/libraries/" + self.library.slug + "/")
 

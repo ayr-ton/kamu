@@ -54,7 +54,7 @@ class LibraryCompactSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'url', 'name', 'slug', 'books')
 
     def get_books(self, obj):
-        return reverse('library-books', args=[obj.slug], request=self.context['request'])
+        return reverse('books-list', args=[obj.slug], request=self.context['request'])
 
 
 class LibrarySerializer(serializers.ModelSerializer):
