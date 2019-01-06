@@ -14,7 +14,6 @@ router = routers.DefaultRouter()
 
 router.register(r'libraries', views.LibraryViewSet)
 router.register(r'copies', views.BookCopyViewSet)
-router.register(r'wishlist', views.WishListViewSet)
 
 urlpatterns = [
     url(r'^$', login_required(TemplateView.as_view(template_name='home.html'))),

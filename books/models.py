@@ -1,9 +1,5 @@
 from django.conf import settings
-from django.core.exceptions import ValidationError
 from django.db import models
-
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
 
 class Book(models.Model):
@@ -35,7 +31,7 @@ class Library(models.Model):
 
 class BookCopy(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    library = models.ForeignKey(Library, related_name='wishes_copies', on_delete=models.CASCADE)
+    library = models.ForeignKey(Library, related_name='copies', on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
     borrow_date = models.DateField(null=True, blank=True)
 
@@ -44,36 +40,3 @@ class BookCopy(models.Model):
 
     def __str__(self):
         return self.book.title
-
-
-class WishList(models.Model):
-    STATES = (('PENDING', 'PENDING'),
-              ('DONE', 'DONE'))
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    library = models.ForeignKey(Library, related_name='copies', on_delete=models.CASCADE)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
-    state = models.CharField(max_length=255, choices=STATES, default='PENDING')
-
-    class Meta:
-        unique_together = ('book', 'library')
-
-    def full_clean(self, exclude=None, validate_unique=True):
-        if not self._state.adding:
-            raise ValidationError('You cannot Edit this.')
-
-    def clean(self):
-        if BookCopy.objects.filter(book=self.book):
-            raise ValidationError('This book copy already exists.')
-
-    def __str__(self):
-        return self.book.title
-
-
-@receiver(post_save, sender=BookCopy)
-def update_wishlist_book(sender, **kwargs):
-    book_in_wishlist = WishList.objects.filter(book=kwargs['instance'].book,
-                                               library=kwargs['instance'].library).first()
-    if not book_in_wishlist:
-        return
-    book_in_wishlist.state = 'DONE'
-    book_in_wishlist.save()
