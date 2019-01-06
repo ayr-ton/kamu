@@ -3,6 +3,8 @@ import SearchBar from './SearchBar'
 import {shallow} from 'enzyme';
 import {expect} from 'chai';
 import sinon from 'sinon';
+import Close from '@material-ui/icons/Close';
+import { TextField } from '@material-ui/core';
 
 describe('<Search />', () => {
 
@@ -16,15 +18,14 @@ describe('<Search />', () => {
         expect(searchBarComponent.state().searchTerm).to.equal("");
     });
 
-    it('should clear search term when click in NavigationClose icon', () => {
-
+    it('should clear search term when click in close icon', () => {
         searchBarComponent = shallow(<SearchBar onChange={onChange}/>);
 
         searchBarComponent.setState({searchTerm});
 
         expect(searchBarComponent.state().searchTerm).to.be.equal(searchTerm);
 
-        const clear = searchBarComponent.find('NavigationClose');
+        const clear = searchBarComponent.find(Close);
 
         clear.simulate('click');
 
@@ -32,18 +33,20 @@ describe('<Search />', () => {
 
     });
 
-    it('should call onchange function passing the search term', () => {
-
+    it('should call onchange function passing the search term when textfield changes', () => {
         const onChangeSpy = sinon.spy(onChange);
+        const textfieldChangeEvent = {
+            target: {
+                value: searchTerm
+            }
+        };
 
         searchBarComponent = shallow(<SearchBar onChange={onChangeSpy}/>);
+        const textField = searchBarComponent.find(TextField);
 
-        const textField = searchBarComponent.find('TextField');
-
-        textField.props().onChange({}, searchTerm);
+        textField.props().onChange(textfieldChangeEvent);
 
         expect(onChangeSpy.calledWith(searchTerm)).to.be.true;
-
         expect(searchBarComponent.state().searchTerm).to.be.equal(searchTerm);
     })
 });

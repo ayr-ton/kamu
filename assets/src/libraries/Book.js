@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Paper from 'material-ui/Paper';
-import RaisedButton from 'material-ui/RaisedButton';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
 import BookDetail from './BookDetail';
 
 export default class Book extends Component {
@@ -21,7 +21,7 @@ export default class Book extends Component {
 		this.changeOpenStatus = this.changeOpenStatus.bind(this);
 	}
 
-	onMouseOver() { return this.setState({ zDepth: 2 }); }
+	onMouseOver() { return this.setState({ zDepth: 5 }); }
 	onMouseOut() { this.setState({ zDepth: 1 }); }
 
 	_borrow() {
@@ -40,9 +40,9 @@ export default class Book extends Component {
 
 	_actionButtons() {
 		if (this.state.available) {
-			return <RaisedButton label="Borrow" className="btn-borrow" onTouchTap={this._borrow} />;
+			return <Button className="btn-borrow" onClick={this._borrow}>Borrow</Button>;
 		} else if (this.state.borrowedByMe) {
-			return <RaisedButton label="Return" className="btn-return" onTouchTap={this._return} />;
+			return <Button className="btn-return" onClick={this._return}>Return</Button>;
 		}
 
 		return null;
@@ -71,7 +71,7 @@ export default class Book extends Component {
 		};
 
 		return (		
-			<Paper className="book" zDepth={this.state.zDepth} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut}>
+			<Paper className="book" elevation={this.state.zDepth} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut}>
 				<div className="book-info" onClick={this.changeOpenStatus}>
 
 					<div className="book-cover" style={bookCover}>
