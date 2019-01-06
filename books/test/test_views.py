@@ -233,10 +233,12 @@ class WaitlistViewSetTest(TestCase):
 
     def test_add_book_to_waitlist_should_return_created_item(self):
         response = self.client.post(self.base_url)
-        self.assertEqual(response.data['user']['username'], 'claudia')
-        self.assertIsNotNone(response.data['added_date'])
-        self.assertEqual(response.data['library']['slug'], self.library.slug)
-        self.assertEqual(response.data['book'], self.book.id)
+
+        waitlist_item = response.data['waitlist_item']
+        self.assertEqual(waitlist_item['user']['username'], 'claudia')
+        self.assertIsNotNone(waitlist_item['added_date'])
+        self.assertEqual(waitlist_item['library']['slug'], self.library.slug)
+        self.assertEqual(waitlist_item['book'], self.book.id)
 
     def test_add_book_to_waitlist_should_create_an_waitlist_item(self):
         self.assertEqual(self.user.waitlist_items.count(), 0)

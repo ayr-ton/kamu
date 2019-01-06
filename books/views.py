@@ -125,7 +125,9 @@ class WaitlistViewSet(FiltersMixin, viewsets.ModelViewSet):
             added_date=timezone.now(),
         )
         data = WaitlistItemSerializer(item, context={'request': request}).data
-        return Response(data,status=201)
+        return Response({
+            'waitlist_item': data,
+        },status=201)
 
 
 class BookCopyViewSet(viewsets.ModelViewSet):
