@@ -212,6 +212,23 @@ class LibraryViewSetQueryParameters(TestCase):
         self.assertEqual(len(books), 1)
 
 
+class WaitlistViewSetTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="claudia")
+        self.user.set_password("123")
+        self.user.save()
+        self.client.force_login(user=self.user)
+
+        self.library = Library.objects.create(name="My library", slug="myslug")
+
+        self.base_url = "/api/libraries/" + self.library.slug + "/books/1/waitlist/"
+
+    def test_add_book_to_waitlist_should_return_201_code(self):
+        response = self.client.post(self.base_url)
+        self.assertEqual(response.status_code, 201)
+
+
+
 class UserView(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username="claudia")

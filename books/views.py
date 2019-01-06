@@ -113,6 +113,14 @@ class BookViewSet(FiltersMixin, viewsets.ModelViewSet):
         return self.get_paginated_response(serializer.data)
 
 
+class WaitlistViewSet(FiltersMixin, viewsets.ModelViewSet):
+    serializer_class = WaitlistItemSerializer
+    queryset = Book.objects.filter()
+
+    def create(self, request, library_slug=None, book_pk=None):
+        return Response(status=201)
+
+
 class BookCopyViewSet(viewsets.ModelViewSet):
     queryset = BookCopy.objects.all()
     serializer_class = BookCopySerializer
