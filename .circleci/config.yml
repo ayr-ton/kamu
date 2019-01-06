@@ -108,6 +108,9 @@ workflows:
           requires:
              - backend-tests
              - frontend-tests
+          filters:
+             branches:
+               only: master
   nightly:
     jobs:
       - security-checks
