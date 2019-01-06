@@ -1,7 +1,10 @@
 .header {
-    background-color: #FFFFFF !important;
-    position: fixed !important;
-    top: 0;
+    background-color: #FFFFFF;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 6px, rgba(0, 0, 0, 0.12) 0px 1px 4px;
+}
+
+.header-menu {
+    margin-left: auto;
 }
 
 .header-content,
@@ -115,7 +118,9 @@
 }
 
 .library {
-    text-align: center;
+    justify-content: center;
+    font-size: 16px;
+    padding: 1em;
 }
 
 /*SEARCH BAR - START*/
@@ -133,10 +138,11 @@
     width: 80%;
     left: 10%;
     height: 50px;
+    display: flex;
+    align-items: center;
 }
 
 .search-bar-container > .search-bar-search-icon-container {
-    display: inline-flex;
     vertical-align: middle;
     margin-left: 5px;
     width: 25px;
@@ -160,11 +166,17 @@
     display: inline-flex;
     vertical-align: middle;
     width: 25px;
+    height: 25px;
 }
 
 .search-bar-container > .search-bar-close-icon-container > .search-bar-close-icon{
     fill: gray !important;
     cursor: pointer;
+}
+
+.MuiInput-underline-45::after,
+.MuiInput-underline-45::before {
+    content: none;
 }
 
 /*SEARCH BAR - END*/

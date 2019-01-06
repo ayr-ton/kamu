@@ -5,6 +5,7 @@ import BookService from '../services/BookService';
 import { shallow } from 'enzyme';
 import { expect } from 'chai';
 import sinon from 'sinon';
+import { Button } from '@material-ui/core';
 
 function generateBooks() {
     let bookModel = new BookModel();
@@ -31,7 +32,7 @@ function generateUser(){
     };
 }
 
-describe('<Book />', () => {
+describe('Book', () => {
     let bookModel = generateBooks();
     let user = generateUser();
     let bookComponent;
@@ -98,25 +99,25 @@ describe('<Book />', () => {
         expect(bookComponent.find(".book-cover").props().style.backgroundImage).to.equal(`url('${bookModel.image_url}')`)
     });
 
-    it('should borrow a book and change available to false and borrowedByMe to true on TouchTap', () => {
+    it('should borrow a book and change available to false and borrowedByMe to true on click', () => {
         bookComponent = shallow(<Book key={bookModel.id} book={bookModel} service={bookService} library='bh'/>);
         expect(bookComponent.state().available).to.be.true;
         expect(bookComponent.state().borrowedByMe).to.be.false;
 
-        bookComponent.find("RaisedButton").simulate('touchTap');
+        bookComponent.find(Button).simulate('click');
 
         expect(bookComponent.state().available).to.be.false;
         expect(bookComponent.state().borrowedByMe).to.be.true;
     });
 
-    it('should return a book and change available to true and borrowedByMe to false on TouchTap', () => {
+    it('should return a book and change available to true and borrowedByMe to false on click', () => {
         bookComponent = shallow(<Book key={bookModel.id} book={bookModel} service={bookService}/>);
         bookComponent.setState({available : false, borrowedByMe: true});
 
         expect(bookComponent.state().available).to.be.false;
         expect(bookComponent.state().borrowedByMe).to.be.true;
 
-        bookComponent.find("RaisedButton").simulate('touchTap');
+        bookComponent.find(Button).simulate('click');
 
         expect(bookComponent.state().available).to.be.true;
         expect(bookComponent.state().borrowedByMe).to.be.false;
