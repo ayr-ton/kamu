@@ -68,7 +68,8 @@ class LibrarySerializer(serializers.ModelSerializer):
 class WaitlistItemSerializer(serializers.ModelSerializer):
     user = UserSerializer()
     library = LibraryCompactSerializer()
+    book = LibraryBookSerializer
 
     class Meta:
         model = WaitlistItem
-        fields = ('id', 'user', 'library', 'added_date')
+        fields = ('id', 'user', 'book', 'library', 'added_date')

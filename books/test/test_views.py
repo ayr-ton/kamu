@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 from django.utils import timezone
 
-from books.models import Book, Library, BookCopy
+from books.models import Book, Library, BookCopy, WaitlistItem
 
 
 # VIEWS
@@ -220,13 +220,33 @@ class WaitlistViewSetTest(TestCase):
         self.client.force_login(user=self.user)
 
         self.library = Library.objects.create(name="My library", slug="myslug")
+        self.book = Book.objects.create(author="Author", title="the title", subtitle="The subtitle",
+                                        publication_date=timezone.now())
 
-        self.base_url = "/api/libraries/" + self.library.slug + "/books/1/waitlist/"
+        self.base_url = "/api/libraries/" + self.library.slug + \
+            "/books/" + str(self.book.id) + \
+            "/waitlist/"
 
     def test_add_book_to_waitlist_should_return_201_code(self):
         response = self.client.post(self.base_url)
         self.assertEqual(response.status_code, 201)
 
+    def test_add_book_to_waitlist_should_return_created_item(self):
+        response = self.client.post(self.base_url)
+        self.assertEqual(response.data['user']['username'], 'claudia')
+        self.assertIsNotNone(response.data['added_date'])
+        self.assertEqual(response.data['library']['slug'], self.library.slug)
+        self.assertEqual(response.data['book'], self.book.id)
+
+    def test_add_book_to_waitlist_should_create_an_waitlist_item(self):
+        self.assertEqual(self.user.waitlist_items.count(), 0)
+        initialCount = WaitlistItem.objects.all().count()
+
+        response = self.client.post(self.base_url)
+
+        finalCount = WaitlistItem.objects.all().count()
+        self.assertEqual(self.user.waitlist_items.count(), 1)
+        self.assertEqual(initialCount + 1, finalCount)
 
 
 class UserView(TestCase):
