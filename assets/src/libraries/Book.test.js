@@ -87,7 +87,7 @@ describe('Book', () => {
             getItem : () => { return null }
         }
 
-        window.ga = function() { }
+        global.window.ga = function() { }
     });
 
     afterEach(() => {
