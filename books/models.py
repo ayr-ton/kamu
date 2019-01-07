@@ -85,8 +85,6 @@ def skip_load_data(signal_handler):
 @skip_load_data
 @receiver(post_save, sender=BookCopy)
 def update_wishlist_book(sender, **kwargs):
-    if kwargs.get('raw'):
-        return
     book_in_wishlist = WishList.objects.filter(book=kwargs['instance'].book,
                                                library=kwargs['instance'].library).first()
     if not book_in_wishlist:
