@@ -45,8 +45,8 @@ class BookCopy(models.Model):
 
     def __str__(self):
         return self.book.title
-      
-      
+
+
 class WishList(models.Model):
     STATES = (('PENDING', 'PENDING'),
               ('DONE', 'DONE'))
