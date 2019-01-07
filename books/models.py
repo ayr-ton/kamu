@@ -1,3 +1,5 @@
+from functools import wraps
+
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -69,8 +71,26 @@ class WishList(models.Model):
         return self.book.title
 
 
+def skip_load_data(signal_handler):
+    """
+    Decorator that turns off signal handlers when loading fixture data.
+    https://stackoverflow.com/posts/15625121/revisions
+    """
+
+    @wraps(signal_handler)
+    def wrapper(*args, **kwargs):
+        if kwargs['raw']:
+            return
+        signal_handler(*args, **kwargs)
+
+    return wrapper
+
+
+@skip_load_data
 @receiver(post_save, sender=BookCopy)
 def update_wishlist_book(sender, **kwargs):
+    if kwargs.get('raw'):
+        return
     book_in_wishlist = WishList.objects.filter(book=kwargs['instance'].book,
                                                library=kwargs['instance'].library).first()
     if not book_in_wishlist:
