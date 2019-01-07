@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
 import Book from './Book';
-import injectTapEventPlugin from 'react-tap-event-plugin';
 import ProfileService from '../services/ProfileService';
 import InfiniteScroll from 'react-infinite-scroller';
-import CircularProgress from 'material-ui/CircularProgress';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import debounce from 'lodash/debounce'
 import SearchBar from '../utils/filters/SearchBar';
 
@@ -26,10 +25,6 @@ export default class BookList extends Component {
         this._onLoadMoreBooksComplete = this._onLoadMoreBooksComplete.bind(this);
         this._onLoadWithSearchTerm = this._onLoadWithSearchTerm.bind(this);
         this._renderBookItem = this._renderBookItem.bind(this);
-    }
-
-    componentDidMount() {
-        injectTapEventPlugin();
     }
 
     _loadBooks(page, callback, searchTerm = "") {
@@ -92,7 +87,10 @@ export default class BookList extends Component {
         let content;
         const profileService = new ProfileService();
         const library = profileService.getRegion();
-        const loader = <div style={{padding: 10, textAlign: "center"}}><CircularProgress/></div>;
+        const loader = (
+            <div style={{padding: 10, textAlign: "center"}} key='booklist-loader'>
+                <CircularProgress/>
+        </div>);
 
         if (this.state.books) {
             content = this.state.books.map(book => this._renderBookItem(book, library));

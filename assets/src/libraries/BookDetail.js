@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { IconButton, Dialog, Avatar } from 'material-ui';
+import { IconButton, Dialog, Avatar, DialogContent, DialogActions } from '@material-ui/core';
 import '../../css/ModalBook.css';
 import moment from 'moment';
-import Clear from 'material-ui/svg-icons/content/clear';
+import Clear from '@material-ui/icons/Clear';
 
 export default class BookDetail extends Component {
 	constructor(props) {
@@ -26,7 +26,7 @@ export default class BookDetail extends Component {
 		};
 
 		const actions = [
-			<IconButton iconStyle={styles.largeIcon} style={styles.large} onTouchTap={this.changeOpenStatus}>
+			<IconButton iconStyle={styles.largeIcon} style={styles.large} onClick={this.changeOpenStatus}>
 				<Clear />
 			</IconButton>
 		];
@@ -105,54 +105,55 @@ export default class BookDetail extends Component {
 
 		return (
 			<Dialog
-				actions={actions}
 				modal={false}
 				open={this.props.open}
-				onRequestClose={this.changeOpenStatus}
-				contentStyle={{width: "90%", maxWidth: "none"}} 
-				autoScrollBodyContent={true} 
-				actionsContainerClassName="modal-actions" 
-				contentClassName="modal-container" 
+				onClose={this.changeOpenStatus}
+				maxWidth='md'
 			>
+			<DialogActions>
+				{actions}
+			</DialogActions>
 
-			<div className="modal-book">
-				<div className="modal-book__image-box">
-					{imageUrl}
+			<DialogContent className="modal-container">
+				<div className="modal-book">
+					<div className="modal-book__image-box">
+						{imageUrl}
 
-					<div className="modal-book__actions-buttons">
-						{this.actionButtons()}
+						<div className="modal-book__actions-buttons">
+							{this.actionButtons()}
+						</div>
+					</div>
+
+					<div className="modal-book__details">
+						<div className="modal-book__title">{book.title}</div>
+						<div className="modal-book__author">{book.author}</div>
+
+						<div className="modal-book__details-container">
+							<div className="modal-book__available-wrapper">
+								<div className="modal-book__detail-label">Availability</div>
+								<div className="modal-book__detail-value">{copiesAvailable} of {book.copies.length}</div>
+							</div>
+
+							{publisherWrapper}
+
+						</div>
+
+						<div className="modal-book__description-wrapper">
+							{bookDescription}
+
+							<div className="modal-book__goodreads">
+								{goodReadsLink}
+							</div>
+						</div>
+
+						<div className="modal-book__status">
+							<div className="modal-book__borrowed-informations">
+								{borrowers}
+							</div>
+						</div>
 					</div>
 				</div>
-
-				<div className="modal-book__details">
-					<div className="modal-book__title">{book.title}</div>
-					<div className="modal-book__author">{book.author}</div>
-
-					<div className="modal-book__details-container">
-						<div className="modal-book__available-wrapper">
-							<div className="modal-book__detail-label">Availability</div>
-							<div className="modal-book__detail-value">{copiesAvailable} of {book.copies.length}</div>
-						</div>
-
-						{publisherWrapper}
-
-					</div>
-
-					<div className="modal-book__description-wrapper">
-						{bookDescription}
-
-						<div className="modal-book__goodreads">
-							{goodReadsLink}
-						</div>
-					</div>
-
-					<div className="modal-book__status">
-						<div className="modal-book__borrowed-informations">
-							{borrowers}
-						</div>
-					</div>
-				</div>
-			</div>
+				</DialogContent>
 			</Dialog>
 		);
 	}

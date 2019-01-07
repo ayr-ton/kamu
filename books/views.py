@@ -144,8 +144,3 @@ class UserView(APIView):
             'user': UserSerializer(request.user).data
         }
         return Response(content)
-
-
-class WishListViewSet(viewsets.ModelViewSet):
-    queryset = WishList.objects.all()
-    serializer_class = WishListSerializer
