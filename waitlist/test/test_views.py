@@ -16,6 +16,7 @@ class WaitlistViewSetTest(TestCase):
         self.library = Library.objects.create(name="My library", slug="myslug")
         self.book = Book.objects.create(author="Author", title="the title", subtitle="The subtitle",
                                         publication_date=timezone.now())
+        self.copy = BookCopy.objects.create(book=self.book, library=self.library, borrow_date=timezone.now())
 
         self.base_url = "/api/libraries/" + self.library.slug + \
             "/books/" + str(self.book.id) + \
@@ -56,7 +57,6 @@ class WaitlistViewSetTest(TestCase):
 
     def test_should_add_book_to_waitlist_if_there_are_no_copies_available(self):
         initialCount = WaitlistItem.objects.all().count()
-        BookCopy.objects.create(book=self.book, library=self.library, borrow_date=timezone.now())
 
         response = self.client.post(self.base_url)
 
