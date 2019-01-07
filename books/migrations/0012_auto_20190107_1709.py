@@ -7,10 +7,6 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('books', '0011_auto_20190103_1945'),
-    ]
-
     operations = [
         migrations.AlterField(
             model_name='wishlist',
