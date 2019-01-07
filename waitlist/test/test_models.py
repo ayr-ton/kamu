@@ -6,6 +6,7 @@ from django.db.utils import IntegrityError
 from books.models import Book, BookCopy, Library
 from waitlist.models import WaitlistItem
 
+
 class WaitlistItemTestCase(TestCase):
     def setUp(self):
         self.book = Book.objects.create(author="Author", title="the title", subtitle="The subtitle",

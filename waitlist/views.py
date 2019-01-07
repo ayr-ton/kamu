@@ -8,7 +8,7 @@ from books.models import Book, Library, BookCopy
 from .models import WaitlistItem
 from .serializers import WaitlistItemSerializer
 
-# Create your views here.
+
 class WaitlistViewSet(FiltersMixin, viewsets.ModelViewSet):
     serializer_class = WaitlistItemSerializer
     queryset = WaitlistItem.objects.filter()

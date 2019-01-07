@@ -5,6 +5,7 @@ from django.utils import timezone
 from books.models import Book, BookCopy, Library
 from waitlist.models import WaitlistItem
 
+
 class WaitlistViewSetTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username="claudia")
