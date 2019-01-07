@@ -250,6 +250,26 @@ class WaitlistViewSetTest(TestCase):
         self.assertEqual(self.user.waitlist_items.count(), 1)
         self.assertEqual(initialCount + 1, finalCount)
 
+    def test_should_not_add_book_to_waitlist_if_there_are_copies_available(self):
+        initialCount = WaitlistItem.objects.all().count()
+        BookCopy.objects.create(book=self.book, library=self.library)
+
+        response = self.client.post(self.base_url)
+
+        self.assertEqual(response.status_code, 404)
+        finalCount = WaitlistItem.objects.all().count()
+        self.assertEqual(initialCount, finalCount)
+
+    def test_should_add_book_to_waitlist_if_there_are_no_copies_available(self):
+        initialCount = WaitlistItem.objects.all().count()
+        BookCopy.objects.create(book=self.book, library=self.library, borrow_date=timezone.now())
+
+        response = self.client.post(self.base_url)
+
+        self.assertEqual(response.status_code, 201)
+        finalCount = WaitlistItem.objects.all().count()
+        self.assertEqual(initialCount + 1, finalCount)
+
 
 class UserView(TestCase):
     def setUp(self):

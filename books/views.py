@@ -118,16 +118,28 @@ class WaitlistViewSet(FiltersMixin, viewsets.ModelViewSet):
     queryset = WaitlistItem.objects.filter()
 
     def create(self, request, library_slug=None, book_pk=None):
-        item = WaitlistItem.objects.create(
-            book=Book.objects.get(pk=book_pk),
-            user=request.user,
-            library=Library.objects.get(slug=library_slug),
-            added_date=timezone.now(),
-        )
-        data = WaitlistItemSerializer(item, context={'request': request}).data
-        return Response({
-            'waitlist_item': data,
-        },status=201)
+        book = Book.objects.get(pk=book_pk)
+        library=Library.objects.get(slug=library_slug)
+
+        try:
+            available_copies = BookCopy.objects.get(
+                borrow_date=None,
+                book=book, library=library,
+            )
+            return Response({
+                'message': 'There are available copies of this book.',
+            }, status=404)
+        except BookCopy.DoesNotExist:
+            item = WaitlistItem.objects.create(
+                book=book,
+                user=request.user,
+                library=library,
+                added_date=timezone.now(),
+            )
+            data = WaitlistItemSerializer(item, context={'request': request}).data
+            return Response({
+                'waitlist_item': data,
+            }, status=201)
 
 
 class BookCopyViewSet(viewsets.ModelViewSet):
