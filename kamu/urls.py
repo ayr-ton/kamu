@@ -9,6 +9,7 @@ from django.views.generic import TemplateView, RedirectView
 from rest_framework_nested import routers
 
 from books import views
+from waitlist.views import WaitlistViewSet
 
 router = routers.DefaultRouter()
 
@@ -19,7 +20,7 @@ library_routers = routers.NestedSimpleRouter(router, r'libraries', lookup='libra
 library_routers.register(r'books', views.BookViewSet, base_name='books')
 
 book_routers = routers.NestedSimpleRouter(library_routers, r'books', lookup='book')
-book_routers.register(r'waitlist', views.WaitlistViewSet, base_name='waitlist')
+book_routers.register(r'waitlist', WaitlistViewSet, base_name='waitlist')
 
 urlpatterns = [
     url(r'^$', login_required(TemplateView.as_view(template_name='home.html'))),
