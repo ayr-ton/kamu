@@ -5,7 +5,8 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 from django.utils import timezone
 
-from books.models import Book, Library, BookCopy, WaitlistItem
+from books.models import Book, Library, BookCopy
+from waitlist.models import WaitlistItem
 
 
 # VIEWS

@@ -5,6 +5,7 @@ from rest_framework import serializers
 from rest_framework.reverse import reverse
 
 from books.models import *
+from waitlist.models import *
 
 
 class UserSerializer(serializers.ModelSerializer):
