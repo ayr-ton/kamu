@@ -31,7 +31,7 @@ jobs:
   backend-tests:
     <<: *defaults
     docker:
-      - image: circleci/python:3.7.1
+      - image: python:3.6.0
     steps:
       - checkout
       - attach_workspace:
