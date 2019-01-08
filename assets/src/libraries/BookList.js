@@ -5,6 +5,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import debounce from 'lodash/debounce'
 import SearchBar from '../utils/filters/SearchBar';
+import Button from "@material-ui/core/Button";
 
 export default class BookList extends Component {
     constructor(props) {
@@ -70,8 +71,7 @@ export default class BookList extends Component {
                 hasMoreItems: false,
                 isLoading: false,
             });
-        }
-        else {
+        } else {
             this.setState((previous) => {
                 return {
                     hasMoreItems: !!response.next,
@@ -83,6 +83,10 @@ export default class BookList extends Component {
         }
     }
 
+    _redirectToAddWishlist(){
+        window.location.href = "/admin/books/wishlist/add/"
+    }
+
     render() {
         let content;
         const profileService = new ProfileService();
@@ -90,11 +94,15 @@ export default class BookList extends Component {
         const loader = (
             <div style={{padding: 10, textAlign: "center"}} key='booklist-loader'>
                 <CircularProgress/>
-        </div>);
-
+            </div>);
         if (this.state.books) {
-            content = this.state.books.map(book => this._renderBookItem(book, library));
+            if (this.state.books.length == 0 && !this.state.isLoading) {
+                content = <Button className="btn-borrow" onClick={this._redirectToAddWishlist}>Add book to Wishlist</Button>;
+            } else {
+                content = this.state.books.map(book => this._renderBookItem(book, library));
+            }
         }
+
 
         return (
             <div>
