@@ -36,7 +36,11 @@ export default class Header extends Component {
 
 	_addBook() {
 		window.location.href = '/admin/books/book/isbn/';
-	}	
+	}
+
+	_showWishList(){
+		window.location.href = '/admin/books/wishlist/';
+	}
 
 	_handleMenuClick(event) {
 		this.setState({ menuAnchorElement: event.currentTarget });
@@ -45,6 +49,7 @@ export default class Header extends Component {
 	_handleMenuClose() {
 		this.setState({ menuAnchorElement: null });
 	}
+
 
 	render() {
 		let menu;
@@ -66,6 +71,7 @@ export default class Header extends Component {
 						<MenuItem id="admin" onClick={this._admin}>Admin</MenuItem>
 						<MenuItem id="change-region" onClick={this._changeRegion}>Change library</MenuItem>
 						<MenuItem id="add-book" onClick={this._addBook}>Add book</MenuItem>
+						<MenuItem id="wishlist" onClick={this._showWishList}>Show Wishlist</MenuItem>
 					</Menu>
 				</div>
 			);
