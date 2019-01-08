@@ -1,10 +1,10 @@
 from functools import wraps
 
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
 
 
 class Book(models.Model):
@@ -85,8 +85,8 @@ def skip_load_data(signal_handler):
     return wrapper
 
 
-@skip_load_data
 @receiver(post_save, sender=BookCopy)
+@skip_load_data
 def update_wishlist_book(sender, **kwargs):
     book_in_wishlist = WishList.objects.filter(book=kwargs['instance'].book,
                                                library=kwargs['instance'].library).first()

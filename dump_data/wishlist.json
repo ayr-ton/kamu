@@ -1,0 +1,1 @@
+[{"model": "books.wishlist", "pk": 1, "fields": {"book": 119, "library": 5, "user": null, "state": "PENDING"}}, {"model": "books.wishlist", "pk": 2, "fields": {"book": 262, "library": 5, "user": null, "state": "PENDING"}}]
