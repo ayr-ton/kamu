@@ -14,10 +14,9 @@ class WaitlistViewSet(FiltersMixin, viewsets.ModelViewSet):
     queryset = WaitlistItem.objects.filter()
 
     def create(self, request, library_slug=None, book_pk=None):
-        library = Library.objects.get(slug=library_slug)
         try:
             item = WaitlistItem.create_item(
-                library,
+                Library.objects.get(slug=library_slug),
                 Book.objects.get(pk=book_pk),
                 request.user,
             )
