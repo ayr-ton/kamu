@@ -14,13 +14,14 @@ class WaitlistViewSet(FiltersMixin, viewsets.ModelViewSet):
     queryset = WaitlistItem.objects.filter()
 
     def create(self, request, library_slug=None, book_pk=None):
+        library = Library.objects.get(slug=library_slug)
         try:
             item = WaitlistItem.create_item(
-                Library.objects.get(slug=library_slug),
+                library,
                 Book.objects.get(pk=book_pk),
                 request.user,
             )
-            data = WaitlistItemSerializer(item, context={'request': request}).data
+            data = WaitlistItemSerializer(item).data
             return Response({
                 'waitlist_item': data,
             }, status=201)

@@ -46,6 +46,12 @@ class LibraryBookSerializer(serializers.ModelSerializer):
         return serializer.data
 
 
+class BookCompactSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Book
+        fields = ('id', 'author', 'title')
+
+
 class LibraryCompactSerializer(serializers.HyperlinkedModelSerializer):
     books = serializers.SerializerMethodField()
 
@@ -59,8 +65,6 @@ class LibraryCompactSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class LibrarySerializer(serializers.ModelSerializer):
-    books = serializers.SerializerMethodField()
-
     class Meta:
         model = Library
         fields = ('id', 'name', 'slug')

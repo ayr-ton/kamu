@@ -42,7 +42,7 @@ class WaitlistViewSetTest(TestCase):
         self.assertEqual(waitlist_item['user']['username'], 'claudia')
         self.assertIsNotNone(waitlist_item['added_date'])
         self.assertEqual(waitlist_item['library']['slug'], self.library.slug)
-        self.assertEqual(waitlist_item['book'], self.book.id)
+        self.assertEqual(waitlist_item['book']['id'], self.book.id)
 
 
     def test_should_return_404_response_when_create_item_raises_value_error(self):
