@@ -11,6 +11,7 @@
     "start": "NODE_ENV=development concurrently --raw --kill-others \"node dev-server.js\" \"python manage.py runserver 0.0.0.0:8000\"",
     "test": "nyc --reporter=lcov mocha --require ignore-styles --no-deprecation --recursive --reporter spec --watch-extensions js,jsx --require babel-polyfill --compilers js:babel-core/register assets/src/testSetup.js $(find assets/src/ -name '*.test.js')",
     "test:watch": "npm run-script test -- --watch",
+    "debug-test": "nyc --reporter=lcov mocha $NODE_DEBUG_OPTION --require ignore-styles --no-deprecation --recursive --reporter spec --watch-extensions js,jsx --require babel-polyfill --compilers js:babel-core/register assets/src/testSetup.js $(find assets/src/ -name '*.test.js')",
     "lint": "eslint .",
     "heroku-prebuild": "npm install --dev",
     "heroku-postbuild": "npm run-script build"

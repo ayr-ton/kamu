@@ -67,4 +67,16 @@ describe('<BookList />', () => {
         expect(spy.calledWith(librarySlug, page)).to.be.true;
         bookService.getBooksByPage.restore();
     });
+
+    it('should show wishlist button when there is search results', () => {
+        bookList.instance().setState({books: [], isLoading: false, searchTerm: "A Book that does not exists"});
+        let button = bookList.find('.wishlist').children().children()
+        expect(button.contains('Add book to Wishlist')).to.equal(true)
+    });
+
+    it('should not show wishlist button when there is search results', () => {
+        bookList.instance().setState({books: books.results, isLoading: false, searchTerm: "book 1"});
+        let button = bookList.find('.wishlist').children().children()
+        expect(button.contains('Add book to Wishlist')).to.equal(false)
+    });
 });
