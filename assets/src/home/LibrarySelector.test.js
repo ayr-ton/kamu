@@ -3,6 +3,7 @@ import LibrarySelector from './LibrarySelector';
 import {shallow} from 'enzyme';
 import {expect} from 'chai';
 import sinon from 'sinon';
+import { ListItem } from '@material-ui/core';
 
 describe('LibrarySelector', () => {
     let librarySelector;
@@ -42,14 +43,14 @@ describe('LibrarySelector', () => {
 
         await librarySelector.instance()._loadLibraries();
 
-        librarySelector.find('ListItem').first().simulate('click');
+        librarySelector.find(ListItem).first().simulate('click');
 
         expect(setRegion.calledWith('bh')).to.be.true;
     });
 
     it('should redirect to the library page when choosing a library', async () => {
         await librarySelector.instance()._loadLibraries();
-        librarySelector.find('ListItem').first().simulate('click');
+        librarySelector.find(ListItem).first().simulate('click');
 
         expect(global.window.location.href).to.equal('/libraries/bh');
     });

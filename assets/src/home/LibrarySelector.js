@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { List, ListItem } from 'material-ui/List';
-import injectTapEventPlugin from 'react-tap-event-plugin';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
 
 
 export default class LibrarySelector extends Component {
@@ -11,10 +11,6 @@ export default class LibrarySelector extends Component {
 		};
 
 		this._selectLibrary = this._selectLibrary.bind(this);
-	}
-	
-	componentDidMount() {
-		injectTapEventPlugin();
 	}
 
 	componentWillMount() {
@@ -39,7 +35,9 @@ export default class LibrarySelector extends Component {
 		if (this.state.libraries) {
 			content = this.state.libraries.map(library => {
 				return (
-					<ListItem className='library' key={library.id} primaryText={library.name} onClick={() => this._selectLibrary(library)} />
+					<ListItem button className='library' key={library.id} onClick={() => this._selectLibrary(library)} alignItems=''>
+						{library.name}
+					</ListItem>
 				);
 			});
 			content = (<List>{content}</List>);

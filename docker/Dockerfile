@@ -2,7 +2,7 @@ FROM ubuntu:bionic
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y xmlsec1 \
                     python3 python3-pip curl wget
 WORKDIR /app
-COPY . $WORKDIR
+COPY .. $WORKDIR
 RUN ln -s /usr/bin/python3 /usr/bin/python
 ENV VERSION=v10.15.0
 ENV DISTRO=linux-x64

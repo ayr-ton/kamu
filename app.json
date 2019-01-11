@@ -3,28 +3,22 @@
   "scripts": {
   },
   "env": {
-    "DATABASE_HOST": {
-      "required": true
-    },
-    "DATABASE_NAME": {
-      "required": true
-    },
-    "DATABASE_PASSWORD": {
-      "required": true
-    },
-    "DATABASE_USER": {
+    "DATABASE_URL": {
       "required": true
     },
     "DJANGO_SETTINGS_MODULE": {
       "required": true
     },
-    "NODE_ENV": {
-      "required": true
-    },
-    "NODE_MODULES_CACHE": {
-      "required": true
-    },
     "OKTA_METADATA_URL": {
+      "required": false
+    },
+    "SECRET_KEY": {
+      "required": true
+    },
+    "DEBUG": {
+      "required": true
+    },
+    "ALLOWED_HOSTS": {
       "required": true
     }
   },

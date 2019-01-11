@@ -1,7 +1,24 @@
 version: 2
+defaults: &defaults
+  working_directory: ~/kamu
+  docker:
+    - image: circleci/python:3.7.0
 jobs:
+  build:
+    <<: *defaults
+    steps:
+      - run:
+          name:  Download cc-test-reporter
+          command: |
+            mkdir -p tmp/
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./tmp/cc-test-reporter
+            chmod +x ./tmp/cc-test-reporter
+      - persist_to_workspace:
+          root: tmp
+          paths:
+            - cc-test-reporter
   security-checks:
-    working_directory: ~/kamu
+    <<: *defaults
     docker:
       - image: docker:stable
     steps:
@@ -11,12 +28,14 @@ jobs:
           command: sh ci/security-checks.sh
       - store_artifacts:
           path: /tmp/artifacts/hawkeye_report.json
-  build_backend:
-    working_directory: ~/kamu
+  backend-tests:
+    <<: *defaults
     docker:
       - image: python:3.6.0
     steps:
       - checkout
+      - attach_workspace:
+          at: ~/kamu/tmp
       - restore_cache:
           key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
       - run:
@@ -32,13 +51,20 @@ jobs:
           command: |
               . venv/bin/activate
               coverage run manage.py test
-              codeclimate-test-reporter
-  build_frontend:
-    working_directory: ~/kamu
+              coverage xml
+              ./tmp/cc-test-reporter format-coverage -t coverage.py -o tmp/codeclimate.backend.json coverage.xml
+      - persist_to_workspace:
+          root: tmp
+          paths: 
+            - codeclimate.backend.json
+  frontend-tests:
+    <<: *defaults
     docker:
       - image: circleci/node:7
     steps:
       - checkout
+      - attach_workspace:
+          at: ~/kamu/tmp
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
@@ -50,11 +76,48 @@ jobs:
       - run:
           command: npm run-script lint
       - run:
-          command: npm run-script test
+          command: |
+              npm run-script test
+              ./tmp/cc-test-reporter format-coverage -t lcov -o tmp/codeclimate.frontend.json coverage/lcov.info
+      - persist_to_workspace:
+          root: tmp
+          paths: 
+            - codeclimate.frontend.json
+  upload-coverage:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/kamu/tmp
+      - run:
+          name: Upload coverage results to Code Climate
+          command: |
+            ./tmp/cc-test-reporter sum-coverage tmp/codeclimate.*.json -p 2 -o tmp/codeclimate.total.json
+            ./tmp/cc-test-reporter upload-coverage -i tmp/codeclimate.total.json
 workflows:
   version: 2
   build_and_test:
     jobs:
+      - build
+      - backend-tests:
+          requires:
+            - build
+      - frontend-tests:
+          requires: 
+             - build
+      - upload-coverage:
+          requires:
+             - backend-tests
+             - frontend-tests
+          filters:
+             branches:
+               only: master
+  nightly:
+    jobs:
       - security-checks
-      - build_backend
-      - build_frontend
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - master

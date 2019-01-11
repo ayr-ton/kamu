@@ -146,19 +146,6 @@
   margin-left: 3px;  
 }
 
-.modal-actions {
-  position: absolute;
-  top: 0;
-}
-
-.modal-actions__btn-close {
-  font-size: 3em;
-}
-
-.modal-actions__btn-close:hover {
-  background-color: none;
-}
-
 .modal-book__borrowed-with {
   margin-bottom: 10px;
 }
