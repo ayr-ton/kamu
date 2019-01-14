@@ -6,6 +6,7 @@ from django.test import TestCase
 from django.utils import timezone
 
 from books.models import Book, Library, BookCopy
+from waitlist.models import WaitlistItem
 
 
 # VIEWS
@@ -79,7 +80,7 @@ class LibraryViewSet(TestCase):
         self.bookCopy = BookCopy.objects.create(book=self.book, library=self.library)
 
     def test_user_can_retrieve_library_information_with_existing_slug(self):
-        """tests the following url: /api/libraries/(?P<slug>)/books/"""
+        """tests the following url: /api/libraries/(?P<library_slug>)/books/"""
 
         self.request = self.client.get("/api/libraries/" + self.library.slug + "/")
 
