@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.utils import timezone
+from django.db.utils import IntegrityError
 
 from books.models import Book, BookCopy, Library
 

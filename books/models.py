@@ -26,6 +26,7 @@ class Library(models.Model):
     name = models.CharField(max_length=255)
     slug = models.CharField(max_length=255)
     books = models.ManyToManyField(Book, through='BookCopy')
+    waitlist_items = models.ManyToManyField(Book, related_name='waitlist_items', through='waitlist.WaitlistItem')
 
     class Meta:
         verbose_name_plural = 'libraries'

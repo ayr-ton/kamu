@@ -12,6 +12,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'webpack_loader',
     'books',
+    'waitlist',
     'django_saml2_auth',
     'filters',
 ]

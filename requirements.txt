@@ -47,4 +47,5 @@ WebOb==1.7.4
 whitenoise==3.3.1
 wrapt==1.10.11
 zope.interface==4.4.3
+drf-nested-routers==0.91
 dj-database-url==0.5.0

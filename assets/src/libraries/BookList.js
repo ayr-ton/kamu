@@ -97,13 +97,15 @@ export default class BookList extends Component {
     );
     if (this.state.books) {
       if (this.state.books.length == 0 && !this.state.isLoading) {
-        content = (
+        
+        content = [
+          <label className="title_notfound">There is no results for your search =(</label>,
           <div className="wishlist">
             <Button onClick={this._redirectToAddWishlist}>
               Add book to Wishlist
             </Button>
           </div>
-        );
+        ];
       } else {
         content = this.state.books.map(book =>
           this._renderBookItem(book, library)
