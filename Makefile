@@ -8,3 +8,6 @@ dev:
 sync-upstream:
 	@git fetch upstream
 	@git rebase upstream/master
+
+test:
+	npm run-script test
