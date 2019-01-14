@@ -5,6 +5,7 @@ from rest_framework import serializers
 from rest_framework.reverse import reverse
 
 from books.models import *
+from waitlist.models import *
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -45,6 +46,12 @@ class LibraryBookSerializer(serializers.ModelSerializer):
         return serializer.data
 
 
+class BookCompactSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Book
+        fields = ('id', 'author', 'title')
+
+
 class LibraryCompactSerializer(serializers.HyperlinkedModelSerializer):
     books = serializers.SerializerMethodField()
 
@@ -54,12 +61,10 @@ class LibraryCompactSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'url', 'name', 'slug', 'books')
 
     def get_books(self, obj):
-        return reverse('library-books', args=[obj.slug], request=self.context['request'])
+        return reverse('books-list', args=[obj.slug], request=self.context['request'])
 
 
 class LibrarySerializer(serializers.ModelSerializer):
-    books = serializers.SerializerMethodField()
-
     class Meta:
         model = Library
         fields = ('id', 'name', 'slug')

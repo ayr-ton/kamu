@@ -87,19 +87,23 @@ class LibraryViewSet(FiltersMixin, viewsets.ModelViewSet):
         'slug': 'slug__icontains'
     }
 
-    @detail_route(methods=['get'], url_name='books')
-    def books(self, request, slug=None):
+
+class BookViewSet(FiltersMixin, viewsets.ModelViewSet):
+    serializer_class = LibraryBookSerializer
+    queryset = Book.objects.filter()
+
+    def list(self, request, library_slug=None):
         self.pagination_class.size = 1
         self.filter_backends = ()
         self.ordering_fields = ()
         self.ordering = ()
 
-        library = Library.objects.get(slug=slug)
+        library = Library.objects.get(slug=library_slug)
 
         book_filters = get_book_filters_from_request(request, ('book_title', 'book_author'))
-        book_filters.add(Q(bookcopy__library__slug__exact=slug), Q.AND)
+        book_filters.add(Q(bookcopy__library__slug__exact=library_slug), Q.AND)
 
-        books = Book.objects.filter(book_filters).order_by('title')
+        books = self.queryset.filter(book_filters).order_by('title')
         books = books.annotate(copies=Count('id'))
 
         page = self.paginate_queryset(books)
