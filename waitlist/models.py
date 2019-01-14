@@ -15,9 +15,7 @@ class WaitlistItem(models.Model):
         copies = BookCopy.objects.filter(
             book=book, library=library,
         )
-        if copies.count() is 0:
-            raise ValueError('There are no copies of this book for your library.')
-        else:
+        if copies.count():
             available_copies = copies.filter(borrow_date=None)
             if available_copies.count() is 0:
                 return WaitlistItem.objects.create(
@@ -28,3 +26,5 @@ class WaitlistItem(models.Model):
                 )
             else:
                 raise ValueError('There are available copies of this book.')
+        else:
+            raise ValueError('There are no copies of this book for your library.')
