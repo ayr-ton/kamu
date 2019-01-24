@@ -25,7 +25,6 @@ describe('Library', () => {
   });
 
   it('should fetch the list of books for that library', async () => {
-  
     const library = await createComponent({ slug: 'bh' });
 
     expect(getBooksMock.calledWith('bh', 1)).to.be.true;
