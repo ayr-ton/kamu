@@ -1,7 +1,6 @@
 import React from 'react';
 import BookList from './BookList';
 import {shallow} from 'enzyme';
-import {expect} from 'chai';
 import sinon from 'sinon';
 
 describe('<BookList />', () => {
@@ -51,12 +50,12 @@ describe('<BookList />', () => {
 
     it('should render the list of books in its state', () => {
         bookList.instance().setState({books: books.results});
-        expect(bookList.find('Book')).to.have.length(books.results.length);
+        expect(bookList.find('Book')).toHaveLength(books.results.length);
     });
 
     it('should read the books from an API and set the state', async () => {
         await bookList.instance()._loadMoreBooks();
-        expect(bookList.state('books')).to.deep.equal(books.results);
+        expect(bookList.state('books')).toEqual(books.results);
     });
 
     it('should pass the library slug to getBooksByPage', () => {
@@ -64,7 +63,7 @@ describe('<BookList />', () => {
         const page = 1;
 
         bookList.instance()._loadMoreBooks();
-        expect(spy.calledWith(librarySlug, page)).to.be.true;
+        expect(spy.calledWith(librarySlug, page)).toEqual(true);
         bookService.getBooksByPage.restore();
     });
 });

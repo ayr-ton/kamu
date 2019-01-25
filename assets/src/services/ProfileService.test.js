@@ -1,5 +1,4 @@
 import sinon from 'sinon';
-import { expect } from 'chai';
 import ProfileService from './ProfileService';
 
 function generateUser(){
@@ -22,7 +21,7 @@ describe('ProfileService', () => {
 
         it("Should get user from session Storage", () => {
             return profileService.getLoggedUser().then((userReturned) => {
-                expect(userReturned).to.deep.equal(user);
+                expect(userReturned).toEqual(user);
             });
         });
     });
@@ -53,7 +52,7 @@ describe('ProfileService', () => {
 
         it("Should get user from backend", () => {
             return profileService.getLoggedUser().then((userReturned) => {
-                expect(userReturned).to.deep.equal(user);
+                expect(userReturned).toEqual(user);
             });
         });
     });
@@ -77,7 +76,7 @@ describe('ProfileService', () => {
             profileService.setRegion(newRegion);
             
             let region = profileService.getRegion();
-            expect(region).to.deep.equal(newRegion);
+            expect(region).toEqual(newRegion);
         });
     });
 });

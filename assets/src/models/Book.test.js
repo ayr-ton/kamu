@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import Book from './Book';
 
 describe('Book', () => {
@@ -15,23 +14,23 @@ describe('Book', () => {
 		book4.copies = [ { id: 5, user: {} }, { id: 6, user: {} }];
 
 		it('should return true when the book has at least one copy without a user', () => {
-			expect(book1.isAvailable()).to.be.true;
-			expect(book2.isAvailable()).to.be.true;
+			expect(book1.isAvailable()).toBeTruthy();
+			expect(book2.isAvailable()).toBeTruthy();
 		});
 
 		it('should return false when the book does not have a copy without a user', () => {
-			expect(book3.isAvailable()).to.be.false;
-			expect(book4.isAvailable()).to.be.false;
+			expect(book3.isAvailable()).toBeFalsy();
+			expect(book4.isAvailable()).toBeFalsy();
 		});
 
 		it('should return the first available book copy id without a user', () => {
-			expect(book1.getAvailableCopyID()).to.equal(1);
-			expect(book2.getAvailableCopyID()).to.equal(3);
+			expect(book1.getAvailableCopyID()).toEqual(1);
+			expect(book2.getAvailableCopyID()).toEqual(3);
 		});
 
 		it('should return null when the book does not have a copy without a user', () => {
-			expect(book3.getAvailableCopyID()).to.be.null;
-			expect(book4.getAvailableCopyID()).to.be.null;
+			expect(book3.getAvailableCopyID()).toBeNull();
+			expect(book4.getAvailableCopyID()).toBeNull();
 		});
 	});
 
@@ -40,40 +39,40 @@ describe('Book', () => {
 			global.currentUser = { username: 1 };
 			const book = new Book();
 			book.copies = [ { id: 1, user: global.currentUser } ];
-			expect(book.belongsToUser()).to.be.true;
+			expect(book.belongsToUser()).toBeTruthy();
 
 			book.copies = [ { id: 2, user: global.currentUser }, { id: 3, user: null } ];
-			expect(book.belongsToUser()).to.be.true;
+			expect(book.belongsToUser()).toBeTruthy();
 		});
 
 		it('should return false if the book does not have a copy that belongs to the user', () => {
 			global.currentUser = { username: 1 };
 			const book = new Book();
 			book.copies = [ { id: 4, user: { username: 2 } } ];
-			expect(book.belongsToUser()).to.be.false;
+			expect(book.belongsToUser()).toBeFalsy();
 
 			book.copies = [];
-			expect(book.belongsToUser()).to.be.false;
+			expect(book.belongsToUser()).toBeFalsy();
 		});
 
 		it('should return the id of the copy that belongs to the user', () => {
 			global.currentUser = { username: 1 };
 			const book = new Book();
 			book.copies = [ { id: 1, user: global.currentUser } ];
-			expect(book.getBorrowedCopyID()).to.equal(1);
+			expect(book.getBorrowedCopyID()).toEqual(1);
 
 			book.copies = [ { id: 2, user: global.currentUser }, { id: 3, user: null } ];
-			expect(book.getBorrowedCopyID()).to.equal(2);
+			expect(book.getBorrowedCopyID()).toEqual(2);
 		});
 
 		it('should return null if the book does not have a copy that belongs to the user', () => {
 			global.currentUser = { username: 1 };
 			const book = new Book();
 			book.copies = [ { id: 4, user: { username: 2 } } ];
-			expect(book.getBorrowedCopyID()).to.be.null;
+			expect(book.getBorrowedCopyID()).toBeNull();
 
 			book.copies = [];
-			expect(book.getBorrowedCopyID()).to.be.null;
+			expect(book.getBorrowedCopyID()).toBeNull();
 		});
 	});
 });

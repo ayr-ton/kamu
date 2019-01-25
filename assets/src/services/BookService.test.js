@@ -1,5 +1,4 @@
 import sinon from "sinon";
-import {expect} from "chai";
 import BookService from "./BookService";
 import Book from "../models/Book";
 
@@ -107,7 +106,7 @@ describe('BookService', () => {
             let bookService = new BookService();
 
             return bookService.getLibraries().then(data => {
-                expect(data.results).to.deep.equal(libraries.results);
+                expect(data.results).toEqual(libraries.results);
             });
         });
     });
@@ -142,7 +141,7 @@ describe('BookService', () => {
             const {getBooksByPage} = bookService;
 
             return getBooksByPage(slug, page).then(data => {
-                expect(data).to.deep.equal(books);
+                expect(data).toEqual(books);
             });
         });
     });
@@ -192,8 +191,8 @@ describe('BookService', () => {
             let bookService = new BookService();
 
             return bookService.borrowCopy(book).then(data => {
-                expect(data).to.be.true
-                expect(book.copies[1].user).to.deep.equal(user);
+                expect(data).toBeTruthy()
+                expect(book.copies[1].user).toEqual(user);
             });
         });
 
@@ -203,7 +202,7 @@ describe('BookService', () => {
             book.copies.pop();
 
             return bookService.borrowCopy(book).then(data => {
-                expect(data).to.be.false
+                expect(data).toBeFalsy()
             });
         })
 
@@ -255,7 +254,7 @@ describe('BookService', () => {
             let bookService = new BookService();
 
             return bookService.borrowCopy(book).then(data => {
-                expect(data).to.be.false
+                expect(data).toBeFalsy()
             });
         })
 
@@ -306,8 +305,8 @@ describe('BookService', () => {
         it("Should return copy", () => {
             let bookService = new BookService();
             return bookService.returnBook(book).then(data => {
-                expect(data).to.be.true;
-                expect(book.copies[1].user).to.deep.equal(null);
+                expect(data).toBeTruthy();
+                expect(book.copies[1].user).toEqual(null);
             });
         });
 
@@ -315,7 +314,7 @@ describe('BookService', () => {
             let bookService = new BookService();
             book.copies.pop();
             return bookService.returnBook(book).then(data => {
-                expect(data).to.be.false;
+                expect(data).toBeFalsy();
             });
         });
 
@@ -365,7 +364,7 @@ describe('BookService', () => {
         it("Shouldn't return copy because backend fail", () => {
             let bookService = new BookService();
             return bookService.returnBook(book).then(data => {
-                expect(data).to.be.false;
+                expect(data).toBeFalsy();
             });
         });
 
