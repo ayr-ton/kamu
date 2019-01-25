@@ -17,11 +17,7 @@ describe('ProfileService', () => {
         let user = generateUser();
 
         beforeEach(() => {
-            global.sessionStorage = {
-                getItem : () => {
-                    return JSON.stringify(user);
-                }
-            };
+            sessionStorage.setItem('user', JSON.stringify(user));
         });
 
         it("Should get user from session Storage", () => {

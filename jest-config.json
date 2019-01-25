@@ -1,0 +1,31 @@
+{
+  "collectCoverageFrom": [
+    "assets/src/**/*.{js,jsx,mjs}"
+  ],
+  "coveragePathIgnorePatterns": [
+    "<rootDir>/assets/src/index.js",
+    "<rootDir>/assets/src/combineReducers.js",
+    "<rootDir>/assets/src/store/store.js"
+  ],
+  "setupFiles": [
+    "<rootDir>/config/polyfills.js"
+  ],
+  "setupTestFrameworkScriptFile": "<rootDir>/assets/src/testSetup.js",
+  "testMatch": [
+    "<rootDir>/assets/src/**/__tests__/**/*.{js,jsx,mjs}",
+    "<rootDir>/assets/src/**/?(*.)test.{js,jsx,mjs}",
+    "<rootDir>/assets/src/**/?(*.)test.integration.{js,jsx,mjs}",
+    "<rootDir>/assets/test/**/?(*.)test.{js,jsx,mjs}",
+    "<rootDir>/assets/test/**/?(*.)test.integration.{js,jsx,mjs}"
+  ],
+  "testEnvironment": "jsdom",
+  "testURL": "http://localhost:8080",
+  "transform": {
+    "^.+\\.(js|jsx|mjs)$": "<rootDir>/node_modules/babel-jest",
+    "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
+    "^(?!.*\\.(js|jsx|mjs|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
+  },
+  "transformIgnorePatterns": [
+    "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs)$"
+  ]
+}

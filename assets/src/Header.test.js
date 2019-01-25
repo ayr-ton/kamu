@@ -1,7 +1,6 @@
 import React from "react";
 import Header from "./Header";
 import {shallow} from "enzyme";
-import {expect} from "chai";
 import sinon from "sinon";
 
 describe('Header', () => {
@@ -9,7 +8,7 @@ describe('Header', () => {
 	let header;
 
     beforeEach(() => {
-		global.window = { location: { href: '' }};
+		window.location.assign = jest.fn();
 
         profileService = {
             getLoggedUser: () => Promise.resolve({}),
@@ -18,8 +17,8 @@ describe('Header', () => {
         };
     });
 
-    function renderHeader() {
-        header = shallow(<Header service={profileService}/>);
+    function renderHeader(props) {
+        header = shallow(<Header service={profileService} {...props} />);
     }
 
     it('should clear the region and redirect to home', () => {
@@ -28,19 +27,17 @@ describe('Header', () => {
         renderHeader();
 		header.instance()._changeRegion();
 
-		expect(clearRegion.called).to.be.true;
-        expect(global.window.location.href).to.equal('/');
+		expect(clearRegion.called).toBeTruthy();
+        expect(window.location.assign).toHaveBeenCalledWith('/');
 	});
 
-	it('should display the change library menu', () => {
-		global.window.location.pathname = '/foo';
+	it('should display the menu', () => {
         renderHeader();
-        expect(header.state('displaysMenu')).to.be.true;
+        expect(header.find('.header-menu').exists()).toBeTruthy();
 	});
 
-    it('should not display the change library menu in home', () => {
-		global.window.location.pathname = '/';
-        renderHeader();
-        expect(header.state('displaysMenu')).to.be.false;
+    it('should not display the menu when showMenu is false', () => {
+        renderHeader({ showMenu: false });
+        expect(header.find('.header-menu').exists()).toBeFalsy();
     });
 });

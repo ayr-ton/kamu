@@ -27,7 +27,7 @@ export default class LibrarySelector extends Component {
 
 	_selectLibrary(library) {
 		this.props.profileService.setRegion(library.slug);
-		window.location.href = `/libraries/${library.slug}`;
+		window.location.assign(`/libraries/${library.slug}`);
 	}
 
 	render() {

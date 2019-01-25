@@ -6,6 +6,6 @@ import '../css/index.css';
 import '../css/App.css'
 
 ReactDOM.render(
-  <Header service={new ProfileService()} />,
+  <Header service={new ProfileService()} showMenu={window.location.pathname !== '/'} />,
   document.getElementById('app-bar')
 );
