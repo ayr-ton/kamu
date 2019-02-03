@@ -1,16 +1,14 @@
 import React from 'react';
 import SearchBar from './SearchBar'
 import {shallow} from 'enzyme';
-import sinon from 'sinon';
 import Close from '@material-ui/icons/Close';
 import { TextField } from '@material-ui/core';
 
-describe('<Search />', () => {
+describe('SearchBar', () => {
 
     let searchBarComponent;
     const searchTerm = 'search term text';
-    const onChange = () => {
-    };
+    const onChange = jest.fn();
 
     it('should render with empty search term', () => {
         searchBarComponent = shallow(<SearchBar onChange={onChange}/>);
@@ -33,19 +31,18 @@ describe('<Search />', () => {
     });
 
     it('should call onchange function passing the search term when textfield changes', () => {
-        const onChangeSpy = sinon.spy(onChange);
         const textfieldChangeEvent = {
             target: {
                 value: searchTerm
             }
         };
 
-        searchBarComponent = shallow(<SearchBar onChange={onChangeSpy}/>);
+        searchBarComponent = shallow(<SearchBar onChange={onChange}/>);
         const textField = searchBarComponent.find(TextField);
 
         textField.props().onChange(textfieldChangeEvent);
 
-        expect(onChangeSpy.calledWith(searchTerm)).toBeTruthy();
+        expect(onChange).toHaveBeenCalledWith(searchTerm);
         expect(searchBarComponent.state().searchTerm).toEqual(searchTerm);
     })
 });

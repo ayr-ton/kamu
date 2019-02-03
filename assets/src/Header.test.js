@@ -1,7 +1,6 @@
 import React from "react";
 import Header from "./Header";
 import {shallow} from "enzyme";
-import sinon from "sinon";
 
 describe('Header', () => {
     let profileService;
@@ -11,9 +10,8 @@ describe('Header', () => {
 		window.location.assign = jest.fn();
 
         profileService = {
-            getLoggedUser: () => Promise.resolve({}),
-            clearRegion: () => {
-            }
+            getLoggedUser: jest.fn().mockResolvedValue({}),
+            clearRegion: jest.fn()
         };
     });
 
@@ -22,12 +20,10 @@ describe('Header', () => {
     }
 
     it('should clear the region and redirect to home', () => {
-		const clearRegion = sinon.spy(profileService, 'clearRegion');
-
         renderHeader();
 		header.instance()._changeRegion();
 
-		expect(clearRegion.called).toBeTruthy();
+		expect(profileService.clearRegion).toHaveBeenCalled();
         expect(window.location.assign).toHaveBeenCalledWith('/');
 	});
 

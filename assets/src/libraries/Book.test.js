@@ -3,7 +3,6 @@ import Book from './Book';
 import BookModel from '../models/Book';
 import BookService from '../services/BookService';
 import { shallow } from 'enzyme';
-import sinon from 'sinon';
 import { Button } from '@material-ui/core';
 
 function generateBooks() {
@@ -36,7 +35,6 @@ describe('Book', () => {
     let user = generateUser();
     let bookComponent;
     let bookService = new BookService();
-    let sandbox;
 
     beforeEach(() => {
         bookModel.copies = [
@@ -54,34 +52,12 @@ describe('Book', () => {
             }
         ];
     
-        sandbox = sinon.sandbox.create();
-        sandbox.stub(
-            bookModel
-            , "isAvailable"
-        ).returns(true);
-        sandbox.stub(
-            bookModel
-            , "belongsToUser"
-        ).returns(false);
+        bookModel.isAvailable = jest.fn().mockReturnValue(true);
+        bookModel.belongsToUser = jest.fn().mockReturnValue(false);
 
-        sandbox.stub(
-            bookService
-            , "borrowCopy"
-        ).returns({
-            then: (f) => {
-                f();
-            }
-        });
+        bookService.borrowCopy = jest.fn().mockResolvedValue();
+        bookService.returnBook = jest.fn().mockResolvedValue();
 
-        sandbox.stub(
-            bookService
-            , "returnBook"
-        ).returns({
-            then: (f) => {
-                f();
-            }
-        });
-        
         global.sessionStorage = { 
             getItem : () => { return null }
         }
@@ -89,34 +65,30 @@ describe('Book', () => {
         global.window.ga = function() { }
     });
 
-    afterEach(() => {
-       sandbox.restore();
-    });
-
     it('should contain an img as background-image', () => {
         bookComponent = shallow(<Book key={bookModel.id} book={bookModel} />);
         expect(bookComponent.find(".book-cover").props().style.backgroundImage).toEqual(`url('${bookModel.image_url}')`)
     });
 
-    it('should borrow a book and change available to false and borrowedByMe to true on click', () => {
+    it('should borrow a book and change available to false and borrowedByMe to true on click', async () => {
         bookComponent = shallow(<Book key={bookModel.id} book={bookModel} service={bookService} library='bh'/>);
         expect(bookComponent.state().available).toBeTruthy();
         expect(bookComponent.state().borrowedByMe).toBeFalsy();
 
-        bookComponent.find(Button).simulate('click');
+        await bookComponent.find(Button).simulate('click');
 
         expect(bookComponent.state().available).toBeFalsy();
         expect(bookComponent.state().borrowedByMe).toBeTruthy();
     });
 
-    it('should return a book and change available to true and borrowedByMe to false on click', () => {
+    it('should return a book and change available to true and borrowedByMe to false on click', async () => {
         bookComponent = shallow(<Book key={bookModel.id} book={bookModel} service={bookService}/>);
         bookComponent.setState({available : false, borrowedByMe: true});
 
         expect(bookComponent.state().available).toBeFalsy();
         expect(bookComponent.state().borrowedByMe).toBeTruthy();
 
-        bookComponent.find(Button).simulate('click');
+        await bookComponent.find(Button).simulate('click');
 
         expect(bookComponent.state().available).toBeTruthy();
         expect(bookComponent.state().borrowedByMe).toBeFalsy();

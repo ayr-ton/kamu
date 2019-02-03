@@ -1,9 +1,8 @@
 import React from 'react';
 import BookList from './BookList';
 import {shallow} from 'enzyme';
-import sinon from 'sinon';
 
-describe('<BookList />', () => {
+describe('BookList', () => {
     let bookList;
     let bookService;
     const librarySlug = 'slug';
@@ -37,12 +36,8 @@ describe('<BookList />', () => {
             }
         };
 
-        global.window = {};
-
         bookService = {
-            getBooksByPage: () => {
-                return Promise.resolve(books);
-            }
+            getBooksByPage: jest.fn().mockResolvedValue(books)
         };
 
         bookList = shallow(<BookList service={bookService} librarySlug='slug'/>);
@@ -59,11 +54,7 @@ describe('<BookList />', () => {
     });
 
     it('should pass the library slug to getBooksByPage', () => {
-        const spy = sinon.spy(bookService, 'getBooksByPage');
-        const page = 1;
-
         bookList.instance()._loadMoreBooks();
-        expect(spy.calledWith(librarySlug, page)).toEqual(true);
-        bookService.getBooksByPage.restore();
+        expect(bookService.getBooksByPage).toHaveBeenCalledWith(librarySlug, 1, '');
     });
 });
