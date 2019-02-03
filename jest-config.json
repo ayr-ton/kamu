@@ -3,14 +3,12 @@
     "assets/src/**/*.{js,jsx,mjs}"
   ],
   "coveragePathIgnorePatterns": [
-    "<rootDir>/assets/src/index.js",
-    "<rootDir>/assets/src/combineReducers.js",
-    "<rootDir>/assets/src/store/store.js"
+    "<rootDir>/assets/src/.*index.js"
   ],
   "setupFiles": [
     "<rootDir>/config/polyfills.js"
   ],
-  "setupTestFrameworkScriptFile": "<rootDir>/assets/src/testSetup.js",
+  "setupTestFrameworkScriptFile": "<rootDir>/config/testSetup.js",
   "testMatch": [
     "<rootDir>/assets/src/**/__tests__/**/*.{js,jsx,mjs}",
     "<rootDir>/assets/src/**/?(*.)test.{js,jsx,mjs}",
