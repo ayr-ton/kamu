@@ -16,7 +16,7 @@
     "heroku-postbuild": "npm run-script build"
   },
   "jest": {
-    "preset": "./jest-config.json"
+    "preset": "./config/jest/jest-config.json"
   },
   "dependencies": {
     "@material-ui/codemod": "^1.1.0",
