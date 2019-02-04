@@ -1,4 +1,3 @@
-import Book from './Book';
 import { someBook } from '../../test/booksHelper';
 
 describe('Book model', () => {
