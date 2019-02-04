@@ -58,14 +58,16 @@ const someBookWithACopyFromMe = () => someBook([
 jest.mock('./helpers');
 
 describe('BookService', () => {
+    let bookService;
+
     beforeEach(() => {
         jest.resetAllMocks();
 
+        bookService = new BookService();
         global.currentUser = currentUser();
     });
 
     describe('should return libraries', () => {
-        let bookService = new BookService();
         fetchFromAPI.mockResolvedValue(mockLibraries);
 
         return bookService.getLibraries().then(data => {
@@ -75,7 +77,6 @@ describe('BookService', () => {
     });
 
     it('should return list of books by page', () => {
-        const bookService = new BookService();
         const books = [ someBookWithAvailableCopies() ];
         const slug = "quito";
         const filter = "";
@@ -97,7 +98,6 @@ describe('BookService', () => {
 
     describe('Borrow book', () => {
         it('should borrow a book that has an available copy and update the book copies with the user', () => {
-            const bookService = new BookService();
             const book = someBookWithAvailableCopies();
 
             fetchFromAPI.mockResolvedValue({});
@@ -110,7 +110,6 @@ describe('BookService', () => {
         });
 
         it('shouldnt borrow a book when all copies are borrowed', () => {
-            let bookService = new BookService();
             const book = someBookWithNoAvailableCopies();
 
             return bookService.borrowCopy(book).then(data => {
@@ -121,7 +120,6 @@ describe('BookService', () => {
         });
 
         it('shouldnt mark the book as borrowed when the request fails', () => {
-            let bookService = new BookService();
             const book = someBookWithAvailableCopies();
 
             fetchFromAPI.mockRejectedValue(new Error('some error'));
@@ -136,7 +134,6 @@ describe('BookService', () => {
 
     describe('Return book', () => {
         it('should return the book copy and remove the user from the copies', () => {
-            const bookService = new BookService();
             const book = someBookWithACopyFromMe();
 
             fetchFromAPI.mockResolvedValue({});
@@ -149,7 +146,6 @@ describe('BookService', () => {
         });
 
         it('shouldnt return a book when doesnt belong to user', () => {
-            let bookService = new BookService();
             const book = someBookWithNoAvailableCopies();
 
             return bookService.returnBook(book).then(data => {
@@ -160,7 +156,6 @@ describe('BookService', () => {
         });
 
         it('shouldnt mark the book as returned when the request fails', () => {
-            let bookService = new BookService();
             const book = someBookWithACopyFromMe();
             fetchFromAPI.mockRejectedValue(new Error('some error'));
 
