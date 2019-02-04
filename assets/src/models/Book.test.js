@@ -37,6 +37,11 @@ describe('Book model', () => {
 			const book = someBook([ { id: 5, user: {} }, { id: 6, user: {} }]);
 			expect(book.getAvailableCopyID()).toBeNull();
 		});
+
+		it('should return the number of available copies', () => {
+			const book = someBook([ { id: 5, user: null }, { id: 6, user: {} }, { id: 7, user: null }]);
+			expect(book.getCountBookCopiesAvailable()).toEqual(2);
+		});
 	});
 
 	describe('checking if the user owns a copy of the book', () => {
