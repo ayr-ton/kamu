@@ -1,87 +1,52 @@
-import sinon from 'sinon';
-import { expect } from 'chai';
 import ProfileService from './ProfileService';
+import { fetchFromAPI } from './helpers';
 
-function generateUser(){
-    return {
-        username: "test@thoughtsworks.com"
-        , email: "test@thoughtsworks.com"
-        , image_url: ""
-    };
-}
+jest.mock('./helpers');
+
+const region = 'quito';
+
+const user = {
+    username: "currentuser@example.com",
+    email: "currentuser@example.com",
+    image_url: ""
+};
 
 describe('ProfileService', () => {
-    let profileService = new ProfileService();
+    beforeEach(() => {
+        jest.resetAllMocks();
+        sessionStorage.clear();
+    });
 
-    describe('Get user from sessionStorage', () => {
-        let user = generateUser();
+    it("should get the current user from session storage", () => {
+        const profileService = new ProfileService();
+        sessionStorage.setItem('user', JSON.stringify(user));
 
-        beforeEach(() => {
-            global.sessionStorage = {
-                getItem : () => {
-                    return JSON.stringify(user);
-                }
-            };
-        });
-
-        it("Should get user from session Storage", () => {
-            return profileService.getLoggedUser().then((userReturned) => {
-                expect(userReturned).to.deep.equal(user);
-            });
+        return profileService.getLoggedUser().then((userReturned) => {
+            expect(userReturned).toEqual(user);
         });
     });
 
-    describe('Get user from backend', () => {
-        let user = generateUser();
+    it("should get the current user from the API when not present in session storage", () => {
+        const profileService = new ProfileService();
+        fetchFromAPI.mockResolvedValue({ user });
 
-        let sandbox;
-        beforeEach(() => {
-            sandbox = sinon.sandbox.create();
-            sandbox.stub(
-                require("./helpers")
-                , "fetchFromAPI"
-            ).withArgs(`/profile`)
-            .returns(Promise.resolve({user: user}));
-
-            global.sessionStorage = {
-                setItem : () => {},
-                getItem : () => {
-                    return null;
-                }
-            };
-        });
-
-        afterEach(() => {
-           sandbox.restore();
-        });
-
-        it("Should get user from backend", () => {
-            return profileService.getLoggedUser().then((userReturned) => {
-                expect(userReturned).to.deep.equal(user);
-            });
+        return profileService.getLoggedUser().then((userReturned) => {
+            expect(fetchFromAPI).toHaveBeenCalledWith('/profile');
+            expect(userReturned).toEqual(user);
         });
     });
 
-    describe("Region", () => {
-        let expectedRegion = null;
-        beforeEach(() => {
-            global.sessionStorage = {
-                setItem : (key, data) => {
-                    if (key == 'region') expectedRegion = data;
-                },
-                getItem : (key) => {
-                    if (key == 'region') return expectedRegion;
-                    return null;
-                }
-            };
-        });
+    it("should get the region from session storage", () => {
+        const profileService = new ProfileService();
+        sessionStorage.setItem('region', region);
 
-        it("Should set and retrieve the region in sessionStorage", () => {
-            let newRegion = 'quito';
-            profileService.setRegion(newRegion);
-            
-            let region = profileService.getRegion();
-            expect(region).to.deep.equal(newRegion);
-        });
+        expect(profileService.getRegion()).toEqual(region);
+    });
+
+    it("should set the region in session storage", () => {
+        const profileService = new ProfileService();
+
+        profileService.setRegion(region);
+        expect(sessionStorage.getItem('region')).toEqual(region);
     });
 });

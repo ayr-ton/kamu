@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import PropTypes from "prop-types";
 import AppBar from "@material-ui/core/AppBar";
 import IconButton from "@material-ui/core/IconButton";
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -10,7 +11,6 @@ export default class Header extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			displaysMenu: window.location.pathname !== '/',
 			menuAnchorElement: null,
 		};
 
@@ -26,16 +26,16 @@ export default class Header extends Component {
 	}
 
 	_admin() {
-		window.location.href = '/admin/';
+		window.location.assign('/admin/');
 	}
 
 	_changeRegion() {
 		this.props.service.clearRegion();
-		window.location.href = '/';
+		window.location.assign('/');
 	}
 
 	_addBook() {
-		window.location.href = '/admin/books/book/isbn/';
+		window.location.assign('/admin/books/book/isbn/');
 	}	
 
 	_handleMenuClick(event) {
@@ -48,7 +48,7 @@ export default class Header extends Component {
 
 	render() {
 		let menu;
-		if (this.state.displaysMenu) {
+		if (this.props.showMenu) {
 			menu = (
 				<div className="header-menu">
 					<IconButton
@@ -85,4 +85,12 @@ export default class Header extends Component {
 				</AppBar>
 		);
 	}
+}
+
+Header.propTypes = {
+	showMenu: PropTypes.bool
+};
+
+Header.defaultProps = {
+	showMenu: true
 }

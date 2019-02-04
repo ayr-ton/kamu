@@ -1,15 +1,13 @@
 import React from 'react';
 import LibraryRedirector from './LibraryRedirector';
 import { shallow } from 'enzyme';
-import { expect } from 'chai';
 
 describe('LibraryRedirector', () => {
 	let librarySelector;
 	
 	describe('when a region is set', () => {
-		
 		beforeEach(() => {
-			global.window = { location: { href: '' } };
+			window.location.assign = jest.fn();
 			let profileService = {
 				getRegion: () => 'bh'
 			};
@@ -18,18 +16,18 @@ describe('LibraryRedirector', () => {
 		});
 
 		it('should redirect to the correct library', () => {
-			expect(global.window.location.href).to.equal('/libraries/bh');
+			expect(window.location.assign).toHaveBeenCalledWith('/libraries/bh');
 		});
 
 		it('should not render any children', () => {
-			expect(librarySelector.children()).to.have.length.of(0);
+			expect(librarySelector.children()).toHaveLength(0);
 		});
 	});
 
 	describe('when a region is not set', () => {
 
 		beforeEach(() => {
-			global.window = { location: { href: '' } };
+			window.location.assign = jest.fn();
 			let profileService = {
 				getRegion: () => null
 			};
@@ -38,11 +36,11 @@ describe('LibraryRedirector', () => {
 		});
 
 		it('should not redirect', () => {
-			expect(global.window.location.href).to.equal('');
+			expect(window.location.assign).not.toHaveBeenCalled();
 		});
 
 		it('should render its children', () => {
-			expect(librarySelector.children()).to.have.length.of(1);
+			expect(librarySelector.children()).toHaveLength(1);
 		});
 	});
 

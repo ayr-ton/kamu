@@ -1,376 +1,168 @@
-import sinon from "sinon";
-import {expect} from "chai";
 import BookService from "./BookService";
-import Book from "../models/Book";
+import { fetchFromAPI } from "./helpers";
+import { someBook } from "../../test/booksHelper";
 
-function generateLibraries() {
-    return {
-        count: 2,
-        next: null,
-        previous: null,
-        results: [
-            {
-                id: 1,
-                url: "http://localhost:8000/api/libraries/quito/",
-                me: "Quito",
-                slug: "quito"
-            },
-            {
-                id: 2,
-                url: "http://localhost:8000/api/libraries/bh/",
-                name: "Belo Horizonte",
-                slug: "bh"
-            }
-        ]
-    }
-}
-
-function generateUser() {
-    return {
-        username: "test@thoughtsworks.com"
-        , email: "test@thoughtsworks.com"
-        , image_url: ""
-    };
-}
-
-function generateBooks() {
-    let books = [];
-    let book1 = new Book();
-    book1.id = 1;
-    book1.author = "Kent Beck";
-    book1.title = "Test Driven Development";
-    book1.subtitle = "By Example";
-    book1.desciption = "Lorem ipsum...";
-    book1.image_url = "http://books.google.com.br/books/content?id=gFgnde_vwMAC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api";
-    book1.isbn = "9780321146533";
-    book1.number_of_pages = 220;
-    book1.publication_date = "2003-05-17";
-    book1.publisher = "Addison-Wesley Professional";
-
-    book1.copies = [{
-        "id": 1348,
-        "user": {
-            "username": "bherrera@thoughtworks.com",
-            "email": "bherrera@thoughtworks.com",
-            "image_url": "https://www.gravatar.com/avatar/5cf7021537744b09534beb1d66adfbea?size=100"
+const mockLibraries = {
+    count: 2,
+    next: null,
+    previous: null,
+    results: [
+        {
+            id: 1,
+            url: "http://localhost:8000/api/libraries/quito/",
+            me: "Quito",
+            slug: "quito"
+        },
+        {
+            id: 2,
+            url: "http://localhost:8000/api/libraries/bh/",
+            name: "Belo Horizonte",
+            slug: "bh"
         }
-    }];
-    books.push(book1);
+    ]
+};
 
-    let book2 = new Book();
-    book2.id = 2;
-    book2.author = "Robert Martin";
-    book2.title = "Clean Code";
-    book2.subtitle = "A Handbook of Agile Software Craftsmanship";
-    book2.desciption = "Lorem ipsum...";
-    book2.image_url = "http://books.google.com.br/books/content?id=gFgnde_vwMAC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api";
-    book2.isbn = "9780132350884";
-    book2.number_of_pages = 431;
-    book2.publication_date = "2009-05-17";
-    book2.publisher = "Pearson Education";
+const currentUser = () => ({
+    username: "currentuser@example.com",
+    email: "currentuser@example.com",
+    image_url: ""
+});
 
-    book2.copies = [{
-        "id": 1349,
-        "user": null
-    }];
-    books.push(book2);
+const someUser = () => ({
+    username: "someuser@example.com",
+    email: "someuser@example.com",
+    image_url: ""
+});
 
-    return {
-        count: books.length,
-        next: null,
-        previous: null,
-        results: books
-    };
-}
+const someBookWithNoAvailableCopies = () => someBook([
+    {
+        id: 1,
+        user: someUser()
+    }
+]);
+
+const someBookWithAvailableCopies = () => someBook([
+    {
+        id: 1,
+        user: null
+    }
+]);
+
+const someBookWithACopyFromMe = () => someBook([
+    {
+        id: 1,
+        user: currentUser()
+    }
+]);
+
+jest.mock('./helpers');
 
 describe('BookService', () => {
-    describe('Get Libraries', () => {
-        const libraries = generateLibraries();
+    let bookService;
 
-        let sandbox;
-        beforeEach(() => {
-            sandbox = sinon.sandbox.create();
-            sandbox.stub(
-                require("./helpers")
-                , "fetchFromAPI"
-            ).withArgs('/libraries')
-                .returns(
-                    Promise.resolve(libraries)
-                );
-        });
+    beforeEach(() => {
+        jest.resetAllMocks();
 
-        afterEach(() => {
-            sandbox.restore();
-        });
+        bookService = new BookService();
+        global.currentUser = currentUser();
+    });
 
-        it("Should return libraries", () => {
-            let bookService = new BookService();
+    it('should return libraries', () => {
+        fetchFromAPI.mockResolvedValue(mockLibraries);
 
-            return bookService.getLibraries().then(data => {
-                expect(data.results).to.deep.equal(libraries.results);
-            });
+        return bookService.getLibraries().then(data => {
+            expect(fetchFromAPI).toHaveBeenCalledWith('/libraries');
+            expect(data.results).toEqual(mockLibraries.results);
         });
     });
 
-    describe('Get Books', () => {
-        let books = generateBooks();
-
+    it('should return list of books by page', () => {
+        const books = [ someBookWithAvailableCopies() ];
         const slug = "quito";
-        const page = 1;
         const filter = "";
+        const page = 1;
 
-        let sandbox;
-        beforeEach(() => {
-            sandbox = sinon.sandbox.create();
+        const mockResponse = {
+            count: books.length,
+            next: null,
+            previous: null,
+            results: books
+        };
+        fetchFromAPI.mockResolvedValue(mockResponse);
 
-            sandbox.stub(
-                require("./helpers")
-                , "fetchFromAPI"
-            ).withArgs(`/libraries/${slug}/books/?page=${page}&book_title=${filter}&book_author=${filter}`)
-                .returns(Promise.resolve(books));
-
-        });
-
-        afterEach(() => {
-            sandbox.restore();
-        });
-
-        it("Should return books by page", () => {
-            let bookService = new BookService();
-            const page = 1;
-
-            const {getBooksByPage} = bookService;
-
-            return getBooksByPage(slug, page).then(data => {
-                expect(data).to.deep.equal(books);
-            });
+        return bookService.getBooksByPage(slug, page).then(data => {
+            expect(fetchFromAPI).toHaveBeenCalledWith(`/libraries/${slug}/books/?page=${page}&book_title=${filter}&book_author=${filter}`);
+            expect(data).toEqual(mockResponse);
         });
     });
 
     describe('Borrow book', () => {
-        let book = generateBooks().results[0];
-        let user = generateUser();
+        it('should borrow a book that has an available copy and update the book copies with the user', () => {
+            const book = someBookWithAvailableCopies();
 
-
-        let sandbox;
-        beforeEach(() => {
-            book.copies = [
-                {
-                    "id": 1348,
-                    "user": {
-                        "username": "bherrera@thoughtworks.com",
-                        "email": "bherrera@thoughtworks.com",
-                        "image_url": "https://www.gravatar.com/avatar/5cf7021537744b09534beb1d66adfbea?size=100"
-                    }
-                }
-                , {
-                    "id": 1349,
-                    "user": null
-                }
-            ];
-
-            sandbox = sinon.sandbox.create();
-            sandbox.stub(
-                require("./helpers")
-                , "fetchFromAPI"
-            ).withArgs(`/copies/${book.copies[1].id}/borrow`)
-                .returns(Promise.resolve({}));
-
-            sandbox.stub(
-                book
-                , "getAvailableCopyID"
-            ).returns(book.copies[1].id);
-
-            global.currentUser = user;
-        });
-
-        afterEach(() => {
-            sandbox.restore();
-        });
-
-        it("Should borrow copy", () => {
-            let bookService = new BookService();
-
+            fetchFromAPI.mockResolvedValue({});
+            
             return bookService.borrowCopy(book).then(data => {
-                expect(data).to.be.true
-                expect(book.copies[1].user).to.deep.equal(user);
+                expect(data).toBeTruthy();
+                expect(book.copies[0].user).toEqual(currentUser());
+                expect(fetchFromAPI).toHaveBeenCalledWith(`/copies/${book.copies[0].id}/borrow`, 'POST');
             });
         });
 
-        it("Shouldn't borrow copy because all copies are borrowed", () => {
-            let bookService = new BookService();
-
-            book.copies.pop();
+        it('shouldnt borrow a book when all copies are borrowed', () => {
+            const book = someBookWithNoAvailableCopies();
 
             return bookService.borrowCopy(book).then(data => {
-                expect(data).to.be.false
+                expect(data).toBeFalsy();
+                expect(book.copies[0].user).toEqual(someUser());
+                expect(fetchFromAPI).not.toHaveBeenCalled();
+            });
+        });
+
+        it('shouldnt mark the book as borrowed when the request fails', () => {
+            const book = someBookWithAvailableCopies();
+
+            fetchFromAPI.mockRejectedValue(new Error('some error'));
+
+            return bookService.borrowCopy(book).then(data => {
+                expect(data).toBeFalsy();
+                expect(book.copies[0].user).toBeNull();
             });
         })
-
-        //ToDo: Add a test for the case that no copies are available, expect return False from the method
-    });
-
-    describe('Borrow book II', () => {
-        let book = generateBooks().results[0];
-        let user = generateUser();
-
-
-        let sandbox;
-        beforeEach(() => {
-            book.copies = [
-                {
-                    "id": 1348,
-                    "user": {
-                        "username": "bherrera@thoughtworks.com",
-                        "email": "bherrera@thoughtworks.com",
-                        "image_url": "https://www.gravatar.com/avatar/5cf7021537744b09534beb1d66adfbea?size=100"
-                    }
-                }
-                , {
-                    "id": 1349,
-                    "user": null
-                }
-            ];
-
-            sandbox = sinon.sandbox.create();
-            sandbox.stub(
-                require("./helpers")
-                , "fetchFromAPI"
-            ).withArgs(`/copies/${book.copies[1].id}/borrow`)
-                .returns(Promise.reject(new Error("Because yes")));
-
-            sandbox.stub(
-                book
-                , "getAvailableCopyID"
-            ).returns(book.copies[1].id);
-
-            global.currentUser = user;
-        });
-
-        afterEach(() => {
-            sandbox.restore();
-        });
-
-        it("Shouldn't borrow copy because backend fails", () => {
-            let bookService = new BookService();
-
-            return bookService.borrowCopy(book).then(data => {
-                expect(data).to.be.false
-            });
-        })
-
-
-        //ToDo: Add a test for the case that no copies are available, expect return False from the method
     });
 
     describe('Return book', () => {
-        let book = generateBooks().results[0];
-        let user = generateUser();
+        it('should return the book copy and remove the user from the copies', () => {
+            const book = someBookWithACopyFromMe();
 
-        let sandbox;
-        beforeEach(() => {
-            book.copies = [
-                {
-                    "id": 1348,
-                    "user": {
-                        "username": "bherrera@thoughtworks.com",
-                        "email": "bherrera@thoughtworks.com",
-                        "image_url": "https://www.gravatar.com/avatar/5cf7021537744b09534beb1d66adfbea?size=100"
-                    }
-                }
-                , {
-                    "id": 1349,
-                    "user": user
-                }
-            ];
-
-            sandbox = sinon.sandbox.create();
-            sandbox.stub(
-                require("./helpers")
-                , "fetchFromAPI"
-            ).withArgs(`/copies/${book.copies[1].id}/return`)
-                .returns(Promise.resolve({}));
-
-            sandbox.stub(
-                book
-                , "getBorrowedCopyID"
-            ).returns(book.copies[1].id);
-
-            global.currentUser = user;
-        });
-
-        afterEach(() => {
-            sandbox.restore();
-        });
-
-        it("Should return copy", () => {
-            let bookService = new BookService();
+            fetchFromAPI.mockResolvedValue({});
+            
             return bookService.returnBook(book).then(data => {
-                expect(data).to.be.true;
-                expect(book.copies[1].user).to.deep.equal(null);
+                expect(data).toBeTruthy();
+                expect(book.copies[0].user).toBeNull();
+                expect(fetchFromAPI).toHaveBeenCalledWith(`/copies/${book.copies[0].id}/return`, 'POST');
             });
         });
 
-        it("Shouldn't return copy", () => {
-            let bookService = new BookService();
-            book.copies.pop();
+        it('shouldnt return a book when doesnt belong to user', () => {
+            const book = someBookWithNoAvailableCopies();
+
             return bookService.returnBook(book).then(data => {
-                expect(data).to.be.false;
+                expect(data).toBeFalsy();
+                expect(book.copies[0].user).toEqual(someUser());
+                expect(fetchFromAPI).not.toHaveBeenCalled();
             });
         });
 
-        //ToDo: Add a test for the case that the user doesnt have copies of the book
-    });
+        it('shouldnt mark the book as returned when the request fails', () => {
+            const book = someBookWithACopyFromMe();
+            fetchFromAPI.mockRejectedValue(new Error('some error'));
 
-    describe('Return book II', () => {
-        let book = generateBooks().results[0];
-        let user = generateUser();
-
-        let sandbox;
-        beforeEach(() => {
-            book.copies = [
-                {
-                    "id": 1348,
-                    "user": {
-                        "username": "bherrera@thoughtworks.com",
-                        "email": "bherrera@thoughtworks.com",
-                        "image_url": "https://www.gravatar.com/avatar/5cf7021537744b09534beb1d66adfbea?size=100"
-                    }
-                }
-                , {
-                    "id": 1349,
-                    "user": user
-                }
-            ];
-
-            sandbox = sinon.sandbox.create();
-            sandbox.stub(
-                require("./helpers")
-                , "fetchFromAPI"
-            ).withArgs(`/copies/${book.copies[1].id}/return`)
-                .returns(Promise.reject(new Error("Because backend fail")));
-
-            sandbox.stub(
-                book
-                , "getBorrowedCopyID"
-            ).returns(book.copies[1].id);
-
-            global.currentUser = user;
-        });
-
-        afterEach(() => {
-            sandbox.restore();
-        });
-
-        it("Shouldn't return copy because backend fail", () => {
-            let bookService = new BookService();
             return bookService.returnBook(book).then(data => {
-                expect(data).to.be.false;
+                expect(data).toBeFalsy();
+                expect(book.copies[0].user).toEqual(currentUser());
             });
-        });
-
-
-        //ToDo: Add a test for the case that the user doesnt have copies of the book
+        })
     });
 
 });

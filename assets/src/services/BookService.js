@@ -38,6 +38,8 @@ export default class BookService {
 
     borrowCopy(book) {
         const copyID = book.getAvailableCopyID();
+        if (!copyID) return Promise.resolve(null);
+
         return fetchFromAPI(`/copies/${copyID}/borrow`, 'POST').then(() => {
             for (let copy of book.copies) {
                 if (copy.id == copyID) {
@@ -53,6 +55,8 @@ export default class BookService {
 
     returnBook(book) {
         const copyID = book.getBorrowedCopyID();
+        if (!copyID) return Promise.resolve(null);
+
         return fetchFromAPI(`/copies/${copyID}/return`, 'POST').then(() => {
             for (let copy of book.copies) {
                 if (copy.id == copyID) {

@@ -1,8 +1,6 @@
 import React from 'react';
 import LibrarySelector from './LibrarySelector';
 import {shallow} from 'enzyme';
-import {expect} from 'chai';
-import sinon from 'sinon';
 import { ListItem } from '@material-ui/core';
 
 describe('LibrarySelector', () => {
@@ -24,34 +22,31 @@ describe('LibrarySelector', () => {
     };
 
     beforeEach(() => {
-        global.window = {location: {href: ''}};
+        window.location.assign = jest.fn();
 
         bookService = {
             getLibraries: () => Promise.resolve(libraries)
         };
 
         profileService = {
-            setRegion: () => {
-            }
+            setRegion: jest.fn()
         };
 
         librarySelector = shallow(<LibrarySelector bookService={bookService} profileService={profileService}/>);
     });
 
     it('should set the region in ProfileService when choosing a library', async () => {
-        const setRegion = sinon.spy(profileService, 'setRegion');
-
         await librarySelector.instance()._loadLibraries();
 
         librarySelector.find(ListItem).first().simulate('click');
 
-        expect(setRegion.calledWith('bh')).to.be.true;
+        expect(profileService.setRegion).toHaveBeenCalledWith('bh');
     });
 
     it('should redirect to the library page when choosing a library', async () => {
         await librarySelector.instance()._loadLibraries();
         librarySelector.find(ListItem).first().simulate('click');
 
-        expect(global.window.location.href).to.equal('/libraries/bh');
+        expect(window.location.assign).toHaveBeenCalledWith('/libraries/bh');
     });
 });
