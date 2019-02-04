@@ -67,7 +67,7 @@ describe('BookService', () => {
         global.currentUser = currentUser();
     });
 
-    describe('should return libraries', () => {
+    it('should return libraries', () => {
         fetchFromAPI.mockResolvedValue(mockLibraries);
 
         return bookService.getLibraries().then(data => {
@@ -130,7 +130,6 @@ describe('BookService', () => {
             });
         })
     });
-
 
     describe('Return book', () => {
         it('should return the book copy and remove the user from the copies', () => {
