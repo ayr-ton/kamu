@@ -1,26 +1,9 @@
 import React from 'react';
 import Book from './Book';
-import BookModel from '../models/Book';
 import BookService from '../services/BookService';
 import { shallow } from 'enzyme';
 import { Button } from '@material-ui/core';
-
-function generateBooks() {
-    let bookModel = new BookModel();
-
-    bookModel.id = 1;
-    bookModel.author = "Kent Beck";
-    bookModel.title = "Test Driven Development";
-    bookModel.subtitle = "By Example";
-    bookModel.desciption = "Lorem ipsum...";
-    bookModel.image_url = "http://books.google.com.br/books/content?id=gFgnde_vwMAC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api";
-    bookModel.isbn = "9780321146533";
-    bookModel.number_of_pages = 220;
-    bookModel.publication_date = "2003-05-17";
-    bookModel.publisher = "Addison-Wesley Professional";
-
-    return bookModel;
-}
+import { someBook } from '../../test/booksHelper';
 
 function generateUser(){
     return {
@@ -31,26 +14,26 @@ function generateUser(){
 }
 
 describe('Book', () => {
-    let bookModel = generateBooks();
+    let bookModel;
     let user = generateUser();
     let bookComponent;
     let bookService = new BookService();
 
     beforeEach(() => {
-        bookModel.copies = [
+        bookModel = someBook([
             {
               "id": 1348,
               "user": {
-                "username": "bherrera@thoughtworks.com",
-                "email": "bherrera@thoughtworks.com",
-                "image_url": "https://www.gravatar.com/avatar/5cf7021537744b09534beb1d66adfbea?size=100"
+                "username": "user@example.com",
+                "email": "user@example.com.com",
+                "image_url": ""
               }
-            }
-            ,{
+            },
+            {
               "id": 1349,
               "user": user
             }
-        ];
+        ]);
     
         bookModel.isAvailable = jest.fn().mockReturnValue(true);
         bookModel.belongsToUser = jest.fn().mockReturnValue(false);
@@ -58,9 +41,7 @@ describe('Book', () => {
         bookService.borrowCopy = jest.fn().mockResolvedValue();
         bookService.returnBook = jest.fn().mockResolvedValue();
 
-        global.sessionStorage = { 
-            getItem : () => { return null }
-        }
+        sessionStorage.clear();
 
         global.window.ga = function() { }
     });
