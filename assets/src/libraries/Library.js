@@ -10,18 +10,16 @@ class Library extends Component {
     super(props);
     this.state = {
       books: [],
-      page: 1,
       hasNextPage: true,
     };
 
     this.loadBooks = this.loadBooks.bind(this);
   }
 
-  async loadBooks() {
-    const booksResponse = await getBooksByPage(this.props.slug, this.state.page);
+  async loadBooks(page) {
+    const booksResponse = await getBooksByPage(this.props.slug, page);
     this.setState((currentState) => ({
       books: currentState.books.concat(booksResponse.results),
-      page: currentState.page + 1,
       hasNextPage: !!booksResponse.next
     }));
   }
@@ -29,7 +27,6 @@ class Library extends Component {
   render() {
     return (
       <InfiniteScroll
-        pageStart={1}
         loadMore={this.loadBooks}
         hasMore={this.state.hasNextPage}
         threshold={950}

@@ -1,6 +1,5 @@
 import React from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
-import { CircularProgress } from '@material-ui/core';
 import { shallow } from 'enzyme';
 import Library from './Library';
 import { getBooksByPage } from '../services/BookService';
@@ -26,7 +25,7 @@ describe('Library', () => {
     const library = createComponent({ slug: 'bh' });
 
     const infiniteScroll = library.find(InfiniteScroll);
-    infiniteScroll.props().loadMore();
+    infiniteScroll.props().loadMore(1);
 
     expect(getBooksByPage).toHaveBeenCalledWith('bh', 1);
   });
@@ -35,8 +34,8 @@ describe('Library', () => {
     const library = createComponent({ slug: 'bh' });
 
     const infiniteScroll = library.find(InfiniteScroll);
-    await infiniteScroll.props().loadMore();
-    await infiniteScroll.props().loadMore();
+    await infiniteScroll.props().loadMore(1);
+    await infiniteScroll.props().loadMore(2);
 
     expect(getBooksByPage).toHaveBeenCalledWith('bh', 2);
   });
@@ -45,7 +44,7 @@ describe('Library', () => {
     const library = createComponent();
 
     const infiniteScroll = library.find(InfiniteScroll);
-    await infiniteScroll.props().loadMore();
+    await infiniteScroll.props().loadMore(1);
 
     expect(library.find(BookList).props().books).toEqual(mockGetBooksByPageResponse.results);
   });
@@ -54,8 +53,8 @@ describe('Library', () => {
     const library = createComponent();
 
     const infiniteScroll = library.find(InfiniteScroll);
-    await infiniteScroll.props().loadMore();
-    await infiniteScroll.props().loadMore();
+    await infiniteScroll.props().loadMore(1);
+    await infiniteScroll.props().loadMore(2);
 
     expect(library.find(BookList).props().books).toHaveLength(4);
   });
@@ -68,7 +67,7 @@ describe('Library', () => {
     });
 
     const infiniteScroll = library.find(InfiniteScroll);
-    await infiniteScroll.props().loadMore();
+    await infiniteScroll.props().loadMore(1);
 
     expect(library.update().find(InfiniteScroll).props().hasMore).toBeTruthy();
   });
@@ -81,7 +80,7 @@ describe('Library', () => {
     });
 
     const infiniteScroll = library.find(InfiniteScroll);
-    await infiniteScroll.props().loadMore();
+    await infiniteScroll.props().loadMore(1);
 
     expect(library.update().find(InfiniteScroll).props().hasMore).toBeFalsy();
   });
