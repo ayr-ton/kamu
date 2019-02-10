@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import BookService from '../services/BookService';
+import { getBooksByPage } from '../services/BookService';
 import BookList from './DumbBookList';
 
 class Library extends Component {
@@ -12,8 +12,7 @@ class Library extends Component {
   }
 
   async componentDidMount() {
-    const bookService = new BookService();
-    const booksResponse = await bookService.getBooksByPage(this.props.slug, 1);
+    const booksResponse = await getBooksByPage(this.props.slug, 1);
     this.setState({
       books: booksResponse.results
     });
