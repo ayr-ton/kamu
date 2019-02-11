@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 import Library from './Library';
 import { getBooksByPage } from '../services/BookService';
 import { mockGetBooksByPageResponse, mockGetBooksByPageEmptyResponse } from '../../test/mockBookService';
-import BookList from './DumbBookList';
+import BookList from './BookList';
 import SearchBar from '../utils/filters/SearchBar';
 
 jest.mock('../services/BookService');

@@ -3,7 +3,7 @@ import { CircularProgress } from '@material-ui/core';
 import InfiniteScroll from 'react-infinite-scroller';
 import PropTypes from 'prop-types';
 import { getBooksByPage } from '../services/BookService';
-import BookList from './DumbBookList';
+import BookList from './BookList';
 import SearchBar from '../utils/filters/SearchBar';
 
 class Library extends Component {
