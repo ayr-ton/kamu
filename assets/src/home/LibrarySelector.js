@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+import { getLibraries } from '../services/BookService';
+import { setRegion } from '../services/ProfileService';
 
+const selectLibrary = (library) => {
+	setRegion(library.slug);
+	window.location.assign(`/libraries/${library.slug}`);
+};
 
 export default class LibrarySelector extends Component {
 	constructor(props) {
@@ -9,8 +15,6 @@ export default class LibrarySelector extends Component {
 		this.state = {
 			libraries: []
 		};
-
-		this._selectLibrary = this._selectLibrary.bind(this);
 	}
 
 	componentWillMount() {
@@ -18,34 +22,26 @@ export default class LibrarySelector extends Component {
 	}
 
 	_loadLibraries() {
-		return this.props.bookService.getLibraries().then(data => {
-			this.setState({ libraries: data.results });
-		}).catch(() => {
-			return false;
+		return getLibraries().then(response => {
+			this.setState({ libraries: response.results });
 		});
 	}
 
-	_selectLibrary(library) {
-		this.props.profileService.setRegion(library.slug);
-		window.location.assign(`/libraries/${library.slug}`);
-	}
-
 	render() {
-		let content;
-		if (this.state.libraries) {
-			content = this.state.libraries.map(library => {
-				return (
-					<ListItem button className='library' key={library.id} onClick={() => this._selectLibrary(library)} alignItems=''>
-						{library.name}
-					</ListItem>
-				);
-			});
-			content = (<List>{content}</List>);
-		}
-
 		return (
 			<div className="library-list">
-				{content}
+				<List>
+					{this.state.libraries.map(library =>
+						<ListItem
+							className='library'
+							key={library.id}
+							onClick={() => selectLibrary(library)}
+							button
+						>
+							{library.name}
+						</ListItem>
+					)}
+				</List>
 			</div>
 		);
 	}

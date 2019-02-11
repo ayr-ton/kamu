@@ -1,5 +1,9 @@
 import { fetchFromAPI } from './helpers';
 
+export const setRegion = (region) => {
+	sessionStorage.setItem('region', region);
+};
+
 export default class ProfileService {
 	getLoggedUser() {
 		const user = JSON.parse(sessionStorage.getItem('user'));
@@ -19,7 +23,7 @@ export default class ProfileService {
 	}
 
 	setRegion(region) {
-		sessionStorage.setItem('region', region);
+		setRegion(region);
 	}
 
 	clearRegion() {
