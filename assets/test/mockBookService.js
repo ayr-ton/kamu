@@ -50,3 +50,11 @@ export const mockGetBooksByPageResponse = {
   next: null,
   results: generateBooks()
 };
+
+export const mockGetBooksByPageEmptyResponse = {
+  count: 0,
+  previous: null,
+  next: null,
+  results: []
+};
+  
