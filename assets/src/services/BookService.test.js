@@ -93,14 +93,23 @@ describe('Book Service', () => {
         });
     });
 
+    it('returns null when response to get books does not have results', () => {
+        fetchFromAPI.mockResolvedValue({
+            error: 'some error'
+        });
+
+        return getBooksByPage('bh', 1).then(data => {
+            expect(data).toBeNull();
+        });
+    });
+
     describe('Borrow book', () => {
         it('should borrow a book that has an available copy and update the book copies with the user', () => {
             const book = someBookWithAvailableCopies();
 
             fetchFromAPI.mockResolvedValue({});
             
-            return borrowCopy(book).then(data => {
-                expect(data).toBeTruthy();
+            return borrowCopy(book).then(() => {
                 expect(book.copies[0].user).toEqual(currentUser());
                 expect(fetchFromAPI).toHaveBeenCalledWith(`/copies/${book.copies[0].id}/borrow`, 'POST');
             });
@@ -109,8 +118,7 @@ describe('Book Service', () => {
         it('shouldnt borrow a book when all copies are borrowed', () => {
             const book = someBookWithNoAvailableCopies();
 
-            return borrowCopy(book).then(data => {
-                expect(data).toBeFalsy();
+            return borrowCopy(book).then(() => {
                 expect(book.copies[0].user).toEqual(someUser());
                 expect(fetchFromAPI).not.toHaveBeenCalled();
             });
@@ -121,8 +129,7 @@ describe('Book Service', () => {
 
             fetchFromAPI.mockRejectedValue(new Error('some error'));
 
-            return borrowCopy(book).then(data => {
-                expect(data).toBeFalsy();
+            return borrowCopy(book).catch(() => {
                 expect(book.copies[0].user).toBeNull();
             });
         })
@@ -134,8 +141,7 @@ describe('Book Service', () => {
 
             fetchFromAPI.mockResolvedValue({});
             
-            return returnBook(book).then(data => {
-                expect(data).toBeTruthy();
+            return returnBook(book).then(() => {
                 expect(book.copies[0].user).toBeNull();
                 expect(fetchFromAPI).toHaveBeenCalledWith(`/copies/${book.copies[0].id}/return`, 'POST');
             });
@@ -144,8 +150,7 @@ describe('Book Service', () => {
         it('shouldnt return a book when doesnt belong to user', () => {
             const book = someBookWithNoAvailableCopies();
 
-            return returnBook(book).then(data => {
-                expect(data).toBeFalsy();
+            return returnBook(book).then(() => {
                 expect(book.copies[0].user).toEqual(someUser());
                 expect(fetchFromAPI).not.toHaveBeenCalled();
             });
@@ -155,8 +160,7 @@ describe('Book Service', () => {
             const book = someBookWithACopyFromMe();
             fetchFromAPI.mockRejectedValue(new Error('some error'));
 
-            return returnBook(book).then(data => {
-                expect(data).toBeFalsy();
+            return returnBook(book).catch(() => {
                 expect(book.copies[0].user).toEqual(currentUser());
             });
         })
