@@ -1,47 +1,46 @@
 import React from 'react';
 import LibraryRedirector from './LibraryRedirector';
 import { shallow } from 'enzyme';
+import { getRegion } from '../services/ProfileService';
 
-describe('LibraryRedirector', () => {
-	let librarySelector;
+jest.mock('../services/ProfileService');
+
+const createComponent = () => shallow(<LibraryRedirector><div>some element</div></LibraryRedirector>);
+
+describe('Library Redirector', () => {
+	beforeEach(() => {
+		window.location.assign = jest.fn();
+	});
 	
-	describe('when a region is set', () => {
-		beforeEach(() => {
-			window.location.assign = jest.fn();
-			let profileService = {
-				getRegion: () => 'bh'
-			};
+	it('should redirect to the library when a region is set', () => {
+		getRegion.mockReturnValueOnce('bh');
 
-			librarySelector = shallow(<LibraryRedirector profileService={profileService}><div></div></LibraryRedirector>);	
-		});
+		createComponent();
 
-		it('should redirect to the correct library', () => {
-			expect(window.location.assign).toHaveBeenCalledWith('/libraries/bh');
-		});
-
-		it('should not render any children', () => {
-			expect(librarySelector.children()).toHaveLength(0);
-		});
+		expect(window.location.assign).toHaveBeenCalledWith('/libraries/bh');
 	});
 
-	describe('when a region is not set', () => {
+	it('should not redirect when a region is not set', () => {
+		getRegion.mockReturnValueOnce(null);
+	
+		createComponent();
 
-		beforeEach(() => {
-			window.location.assign = jest.fn();
-			let profileService = {
-				getRegion: () => null
-			};
-
-			librarySelector = shallow(<LibraryRedirector profileService={profileService}><div></div></LibraryRedirector>);	
-		});
-
-		it('should not redirect', () => {
-			expect(window.location.assign).not.toHaveBeenCalled();
-		});
-
-		it('should render its children', () => {
-			expect(librarySelector.children()).toHaveLength(1);
-		});
+		expect(window.location.assign).not.toHaveBeenCalled();
 	});
 
+	it('should not render any children when a region is set', () => {
+		getRegion.mockReturnValueOnce('bh');
+
+		const	libraryRedirector = createComponent();
+
+		expect(libraryRedirector.children()).toHaveLength(0);
+	});
+
+	it('should render its children when a region is not set', () => {
+		getRegion.mockReturnValueOnce(null);
+
+		const	libraryRedirector = createComponent();
+
+		expect(libraryRedirector.children()).toHaveLength(1);
+	});
 });

@@ -6,6 +6,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from "@material-ui/core/MenuItem";
 import { Toolbar } from "@material-ui/core";
+import { clearRegion, getLoggedUser } from './services/ProfileService';
 
 export default class Header extends Component {
 	constructor(props) {
@@ -20,7 +21,7 @@ export default class Header extends Component {
 	}
 
 	componentWillMount() {
-		return this.props.service.getLoggedUser().then(user => {
+		return getLoggedUser().then(user => {
 			window.currentUser = user;
 		});
 	}
@@ -30,7 +31,7 @@ export default class Header extends Component {
 	}
 
 	_changeRegion() {
-		this.props.service.clearRegion();
+		clearRegion();
 		window.location.assign('/');
 	}
 

@@ -1,39 +1,33 @@
 import React from "react";
 import Header from "./Header";
-import {shallow} from "enzyme";
+import { shallow } from "enzyme";
+import { clearRegion, getLoggedUser } from './services/ProfileService';
+
+jest.mock('./services/ProfileService');
+
+const createComponent = (props) => shallow(<Header {...props} />);
 
 describe('Header', () => {
-    let profileService;
-	let header;
-
     beforeEach(() => {
-		window.location.assign = jest.fn();
-
-        profileService = {
-            getLoggedUser: jest.fn().mockResolvedValue({}),
-            clearRegion: jest.fn()
-        };
+        window.location.assign = jest.fn();
+        getLoggedUser.mockResolvedValue({});
     });
 
-    function renderHeader(props) {
-        header = shallow(<Header service={profileService} {...props} />);
-    }
-
-    it('should clear the region and redirect to home', () => {
-        renderHeader();
+    it('should clear the region and redirect to home when changing region', () => {
+        const header = createComponent();
 		header.instance()._changeRegion();
 
-		expect(profileService.clearRegion).toHaveBeenCalled();
+		expect(clearRegion).toHaveBeenCalled();
         expect(window.location.assign).toHaveBeenCalledWith('/');
 	});
 
 	it('should display the menu', () => {
-        renderHeader();
+        const header = createComponent();
         expect(header.find('.header-menu').exists()).toBeTruthy();
 	});
 
     it('should not display the menu when showMenu is false', () => {
-        renderHeader({ showMenu: false });
+        const header = createComponent({ showMenu: false });
         expect(header.find('.header-menu').exists()).toBeFalsy();
     });
 });
