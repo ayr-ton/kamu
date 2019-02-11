@@ -65,9 +65,7 @@ class Library extends Component {
             </div>
           )}
         >
-          <div className="book-list">
-            <BookList books={this.state.books} />
-          </div>
+          <BookList books={this.state.books} />
         </InfiniteScroll>
       </React.Fragment>
     );
