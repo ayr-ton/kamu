@@ -61,21 +61,3 @@ export const returnBook = (book) => {
     return false;
   });
 };
-
-export default class BookService {
-  getLibraries() {
-    return getLibraries();
-  }
-  
-  getBooksByPage(librarySlug, page, filter = "") {
-    return getBooksByPage(librarySlug, page, filter);
-  }
-  
-  borrowCopy(book) {
-    return borrowCopy(book);
-  }
-  
-  returnBook(book) {
-    return returnBook(book);
-  }
-}

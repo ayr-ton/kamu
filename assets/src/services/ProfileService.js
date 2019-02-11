@@ -22,21 +22,3 @@ export const setRegion = (region) => {
 export const clearRegion = () => {
 	sessionStorage.removeItem('region');
 };
-
-export default class ProfileService {
-	getLoggedUser() {
-		return getLoggedUser();
-	}
-
-	getRegion() {
-		return getRegion();
-	}
-
-	setRegion(region) {
-		setRegion(region);
-	}
-
-	clearRegion() {
-		clearRegion();
-	}
-}
