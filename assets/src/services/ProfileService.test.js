@@ -1,4 +1,4 @@
-import { getLoggedUser, getRegion, setRegion } from './ProfileService';
+import { getLoggedUser, getRegion, setRegion, clearRegion } from './ProfileService';
 import { fetchFromAPI } from './helpers';
 
 jest.mock('./helpers');
@@ -42,5 +42,10 @@ describe('Profile Service', () => {
     it("should set the region in session storage", () => {
         setRegion(region);
         expect(sessionStorage.getItem('region')).toEqual(region);
+    });
+
+    it("should clear the region in session storage", () => {
+        clearRegion();
+        expect(sessionStorage.getItem('region')).toBeNull;
     });
 });
