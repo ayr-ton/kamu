@@ -2,11 +2,14 @@ import React from 'react';
 import LibrarySelector from './LibrarySelector';
 import {shallow} from 'enzyme';
 import { ListItem } from '@material-ui/core';
+import { getLibraries } from '../services/BookService';
+import { setRegion } from '../services/ProfileService';
+
+jest.mock('../services/BookService');
+jest.mock('../services/ProfileService');
 
 describe('LibrarySelector', () => {
     let librarySelector;
-    let bookService;
-    let profileService;
     const libraries = {
         count: 1,
         next: null,
@@ -23,16 +26,8 @@ describe('LibrarySelector', () => {
 
     beforeEach(() => {
         window.location.assign = jest.fn();
-
-        bookService = {
-            getLibraries: () => Promise.resolve(libraries)
-        };
-
-        profileService = {
-            setRegion: jest.fn()
-        };
-
-        librarySelector = shallow(<LibrarySelector bookService={bookService} profileService={profileService}/>);
+        getLibraries.mockResolvedValue(libraries);
+        librarySelector = shallow(<LibrarySelector />);
     });
 
     it('should set the region in ProfileService when choosing a library', async () => {
@@ -40,11 +35,12 @@ describe('LibrarySelector', () => {
 
         librarySelector.find(ListItem).first().simulate('click');
 
-        expect(profileService.setRegion).toHaveBeenCalledWith('bh');
+        expect(setRegion).toHaveBeenCalledWith('bh');
     });
 
     it('should redirect to the library page when choosing a library', async () => {
         await librarySelector.instance()._loadLibraries();
+
         librarySelector.find(ListItem).first().simulate('click');
 
         expect(window.location.assign).toHaveBeenCalledWith('/libraries/bh');

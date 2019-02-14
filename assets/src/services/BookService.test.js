@@ -1,4 +1,4 @@
-import BookService from "./BookService";
+import { getLibraries, getBooksByPage, borrowCopy, returnBook } from "./BookService";
 import { fetchFromAPI } from "./helpers";
 import { someBook } from "../../test/booksHelper";
 
@@ -57,20 +57,17 @@ const someBookWithACopyFromMe = () => someBook([
 
 jest.mock('./helpers');
 
-describe('BookService', () => {
-    let bookService;
-
+describe('Book Service', () => {
     beforeEach(() => {
         jest.resetAllMocks();
 
-        bookService = new BookService();
         global.currentUser = currentUser();
     });
 
     it('should return libraries', () => {
         fetchFromAPI.mockResolvedValue(mockLibraries);
 
-        return bookService.getLibraries().then(data => {
+        return getLibraries().then(data => {
             expect(fetchFromAPI).toHaveBeenCalledWith('/libraries');
             expect(data.results).toEqual(mockLibraries.results);
         });
@@ -90,9 +87,19 @@ describe('BookService', () => {
         };
         fetchFromAPI.mockResolvedValue(mockResponse);
 
-        return bookService.getBooksByPage(slug, page).then(data => {
+        return getBooksByPage(slug, page).then(data => {
             expect(fetchFromAPI).toHaveBeenCalledWith(`/libraries/${slug}/books/?page=${page}&book_title=${filter}&book_author=${filter}`);
             expect(data).toEqual(mockResponse);
+        });
+    });
+
+    it('returns null when response to get books does not have results', () => {
+        fetchFromAPI.mockResolvedValue({
+            error: 'some error'
+        });
+
+        return getBooksByPage('bh', 1).then(data => {
+            expect(data).toBeNull();
         });
     });
 
@@ -102,8 +109,7 @@ describe('BookService', () => {
 
             fetchFromAPI.mockResolvedValue({});
             
-            return bookService.borrowCopy(book).then(data => {
-                expect(data).toBeTruthy();
+            return borrowCopy(book).then(() => {
                 expect(book.copies[0].user).toEqual(currentUser());
                 expect(fetchFromAPI).toHaveBeenCalledWith(`/copies/${book.copies[0].id}/borrow`, 'POST');
             });
@@ -112,8 +118,7 @@ describe('BookService', () => {
         it('shouldnt borrow a book when all copies are borrowed', () => {
             const book = someBookWithNoAvailableCopies();
 
-            return bookService.borrowCopy(book).then(data => {
-                expect(data).toBeFalsy();
+            return borrowCopy(book).then(() => {
                 expect(book.copies[0].user).toEqual(someUser());
                 expect(fetchFromAPI).not.toHaveBeenCalled();
             });
@@ -124,8 +129,7 @@ describe('BookService', () => {
 
             fetchFromAPI.mockRejectedValue(new Error('some error'));
 
-            return bookService.borrowCopy(book).then(data => {
-                expect(data).toBeFalsy();
+            return borrowCopy(book).catch(() => {
                 expect(book.copies[0].user).toBeNull();
             });
         })
@@ -137,8 +141,7 @@ describe('BookService', () => {
 
             fetchFromAPI.mockResolvedValue({});
             
-            return bookService.returnBook(book).then(data => {
-                expect(data).toBeTruthy();
+            return returnBook(book).then(() => {
                 expect(book.copies[0].user).toBeNull();
                 expect(fetchFromAPI).toHaveBeenCalledWith(`/copies/${book.copies[0].id}/return`, 'POST');
             });
@@ -147,8 +150,7 @@ describe('BookService', () => {
         it('shouldnt return a book when doesnt belong to user', () => {
             const book = someBookWithNoAvailableCopies();
 
-            return bookService.returnBook(book).then(data => {
-                expect(data).toBeFalsy();
+            return returnBook(book).then(() => {
                 expect(book.copies[0].user).toEqual(someUser());
                 expect(fetchFromAPI).not.toHaveBeenCalled();
             });
@@ -158,8 +160,7 @@ describe('BookService', () => {
             const book = someBookWithACopyFromMe();
             fetchFromAPI.mockRejectedValue(new Error('some error'));
 
-            return bookService.returnBook(book).then(data => {
-                expect(data).toBeFalsy();
+            return returnBook(book).catch(() => {
                 expect(book.copies[0].user).toEqual(currentUser());
             });
         })

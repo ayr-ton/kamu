@@ -1,17 +1,13 @@
-import React, { Component } from 'react';
+import { getRegion } from '../services/ProfileService';
 
-export default class LibraryRedirector extends Component {
-	render() {
-		const region = this.props.profileService.getRegion();
-		if (region != null) {
-			window.location.assign(`/libraries/${region}`);
-			return null;
-		}
-
-		return (
-			<div>
-				{this.props.children}
-			</div>
-		);
+function LibraryRedirector(props) {
+	const region = getRegion();
+	if (region != null) {
+		window.location.assign(`/libraries/${region}`);
+		return null;
 	}
+
+	return props.children;
 }
+
+export default LibraryRedirector;

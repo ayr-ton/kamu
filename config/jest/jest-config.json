@@ -8,7 +8,9 @@
   "setupFiles": [
     "<rootDir>/config/polyfills.js"
   ],
-  "setupTestFrameworkScriptFile": "<rootDir>/config/testSetup.js",
+  "setupFilesAfterEnv": [
+    "<rootDir>/config/testSetup.js"
+  ],
   "testMatch": [
     "<rootDir>/assets/src/**/__tests__/**/*.{js,jsx,mjs}",
     "<rootDir>/assets/src/**/?(*.)test.{js,jsx,mjs}",

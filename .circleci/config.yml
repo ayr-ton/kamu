@@ -60,7 +60,7 @@ jobs:
   frontend-tests:
     <<: *defaults
     docker:
-      - image: circleci/node:7
+      - image: circleci/node:8
     steps:
       - checkout
       - attach_workspace:
@@ -74,10 +74,10 @@ jobs:
           paths:
             - ./node_modules
       - run:
-          command: npm run-script lint
+          command: npm run lint
       - run:
           command: |
-              npm run-script test
+              npm test
               ./tmp/cc-test-reporter format-coverage -t lcov -o tmp/codeclimate.frontend.json coverage/lcov.info
       - persist_to_workspace:
           root: tmp

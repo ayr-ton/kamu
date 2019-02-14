@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import BookDetail from './BookDetail';
+import { borrowCopy, returnBook } from '../services/BookService';
 
 export default class Book extends Component {
 	constructor(props) {
@@ -25,14 +26,14 @@ export default class Book extends Component {
 	onMouseOut() { this.setState({ zDepth: 1 }); }
 
 	_borrow() {
-		this.props.service.borrowCopy(this.props.book).then(() => {
+		borrowCopy(this.props.book).then(() => {
 			this.setState({ available: false, borrowedByMe: true });
 			window.ga('send', 'event', 'Borrow', this.props.book.title, this.props.library);
 		});
 	}
 
 	_return() {
-		this.props.service.returnBook(this.props.book).then(() => {
+		returnBook(this.props.book).then(() => {
 			this.setState({ available: true, borrowedByMe: false });
 			window.ga('send', 'event', 'Return', this.props.book.title, this.props.library);
 		});

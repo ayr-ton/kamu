@@ -1,28 +1,24 @@
 import { fetchFromAPI } from './helpers';
 
-export default class ProfileService {
-	getLoggedUser() {
-		const user = JSON.parse(sessionStorage.getItem('user'));
-		if (user) {
-			return Promise.resolve(user);
-		}
-
-		return fetchFromAPI('/profile').then(data => {
-			const user = data.user;
-			sessionStorage.setItem('user', JSON.stringify(user));
-			return user;
-		});
+export const getLoggedUser = () => {
+	const user = JSON.parse(sessionStorage.getItem('user'));
+	if (user) {
+		return Promise.resolve(user);
 	}
 
-	getRegion() {
-		return sessionStorage.getItem('region');
-	}
+	return fetchFromAPI('/profile').then(data => {
+		const user = data.user;
+		sessionStorage.setItem('user', JSON.stringify(user));
+		return user;
+	});
+};
 
-	setRegion(region) {
-		sessionStorage.setItem('region', region);
-	}
+export const getRegion = () => sessionStorage.getItem('region');
 
-	clearRegion() {
-		sessionStorage.removeItem('region');
-	}
-}
+export const setRegion = (region) => {
+	sessionStorage.setItem('region', region);
+};
+
+export const clearRegion = () => {
+	sessionStorage.removeItem('region');
+};
