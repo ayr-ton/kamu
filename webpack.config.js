@@ -74,5 +74,7 @@ module.exports = {
     resolve: {
       modules: ['node_modules'],
       extensions: ['.js']
-    }
+    },
+
+    mode: process.env.NODE_ENV || 'development'
 };
