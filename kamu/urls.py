@@ -29,7 +29,8 @@ urlpatterns = [
     url(r'^api/', include(router.urls)),
     url(r'^api/', include(library_routers.urls)),
     url(r'^api/', include(book_routers.urls)),
-    url(r'^api/profile', views.UserView.as_view()),
+    url(r'^api/profile/?$', views.UserView.as_view()),
+    url(r'^api/profile/books', views.UserBooksView.as_view()),
     url(r'^api/copies/(?P<id>.+)/borrow', views.BookCopyBorrowView.as_view()),
     url(r'^api/copies/(?P<id>.+)/return', views.BookCopyReturnView.as_view()),
     url(r'^favicon\.ico$', RedirectView.as_view(url=settings.STATIC_URL + 'images/favicon.ico'))

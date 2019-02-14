@@ -32,7 +32,7 @@ class BookCopySerializer(serializers.ModelSerializer):
         fields = ('id', 'user', 'borrow_date')
 
 
-class LibraryBookSerializer(serializers.ModelSerializer):
+class BookSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
     copies = serializers.SerializerMethodField()
 
@@ -41,7 +41,10 @@ class LibraryBookSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def get_copies(self, obj):
-        copies = obj.bookcopy_set.filter(library=self.context['library'])
+        if 'library' in self.context:
+            copies = obj.bookcopy_set.filter(library=self.context['library'])
+        else:
+            copies = obj.bookcopy_set.all()
         serializer = BookCopySerializer(copies, many=True, context=self.context)
         return serializer.data
 
