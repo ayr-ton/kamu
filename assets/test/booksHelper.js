@@ -1,4 +1,5 @@
 import Book from "../src/models/Book";
+import { currentUser, someUser } from './userHelper';
 
 export const someBook = (copies = []) => {
   let book = new Book();
@@ -18,3 +19,24 @@ export const someBook = (copies = []) => {
   
   return book;
 }
+
+export const someBookWithNoAvailableCopies = () => someBook([
+  {
+    id: 1,
+    user: someUser
+  }
+]);
+
+export const someBookWithAvailableCopies = () => someBook([
+  {
+    id: 1,
+    user: null
+  }
+]);
+
+export const someBookWithACopyFromMe = () => someBook([
+  {
+    id: 1,
+    user: currentUser
+  }
+]);

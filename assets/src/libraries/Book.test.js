@@ -1,100 +1,105 @@
 import React from 'react';
 import Book from './Book';
 import { shallow } from 'enzyme';
-import { Button } from '@material-ui/core';
-import { someBook } from '../../test/booksHelper';
+import Button from '@material-ui/core/Button';
+import { currentUser } from '../../test/userHelper';
+import { someBook, someBookWithAvailableCopies, someBookWithNoAvailableCopies, someBookWithACopyFromMe } from '../../test/booksHelper';
 import { borrowCopy, returnBook } from '../services/BookService';
 
 jest.mock('../services/BookService');
 
-function generateUser(){
-    return {
-        username: "test@thoughtsworks.com"
-        , email: "test@thoughtsworks.com"
-        , image_url: ""
-    };
-}
+expect.extend({
+    toHaveBorrowButton(received) {
+        const pass = received.find(Button).exists()
+            && received.find(Button).hasClass('btn-borrow')
+            && !received.find(Button).hasClass('btn-return');
+        return { pass, message: () => `expected component to have a borrow button` }
+    },
+
+    toHaveReturnButton(received) {
+        const pass = received.find(Button).exists()
+            && !received.find(Button).hasClass('btn-borrow')
+            && received.find(Button).hasClass('btn-return');
+        return { pass, message: () => `expected component to have a return button` }
+    }
+});
+
+const createComponent = (book) => shallow(<Book book={book} library="bh" />);
 
 describe('Book', () => {
-    let bookModel;
-    let user = generateUser();
-    let bookComponent;
-
     beforeEach(() => {
-        bookModel = someBook([
-            {
-              "id": 1348,
-              "user": {
-                "username": "user@example.com",
-                "email": "user@example.com.com",
-                "image_url": ""
-              }
-            },
-            {
-              "id": 1349,
-              "user": user
-            }
-        ]);
-    
-        bookModel.isAvailable = jest.fn().mockReturnValue(true);
-        bookModel.belongsToUser = jest.fn().mockReturnValue(false);
-
-        bookComponent = shallow(<Book key={bookModel.id} book={bookModel} library='bh'/>);
-
         borrowCopy.mockResolvedValue();
         returnBook.mockResolvedValue();
 
         sessionStorage.clear();
+        global.currentUser = currentUser;
 
         global.window.ga = function() { }
     });
 
-    it('should contain an img as background-image', () => {
-        expect(bookComponent.find(".book-cover").props().style.backgroundImage).toEqual(`url('${bookModel.image_url}')`)
+    it('should contain the book cover as background image', () => {
+        const book = someBook();
+
+        const bookComponent = createComponent(book);
+
+        expect(bookComponent.find(".book-cover").props().style.backgroundImage).toEqual(`url('${book.image_url}')`);
     });
 
-    it('should borrow a book and change available to false and borrowedByMe to true on click', async () => {
-        expect(bookComponent.state().available).toBeTruthy();
-        expect(bookComponent.state().borrowedByMe).toBeFalsy();
+    it('shows the borrow button when the book has available copies', () => {
+        const book = someBookWithAvailableCopies();
+        const bookComponent = createComponent(book);
+
+        expect(bookComponent).toHaveBorrowButton();
+    });
+
+    it('shows the return button when clicking borrow', async () => {
+        const book = someBookWithAvailableCopies();
+        const bookComponent = createComponent(book);
 
         await bookComponent.find(Button).simulate('click');
 
-        expect(bookComponent.state().available).toBeFalsy();
-        expect(bookComponent.state().borrowedByMe).toBeTruthy();
+        expect(bookComponent).toHaveReturnButton();
     });
 
-    it('calls the borrow function on click when book is available', async () => {
-        await bookComponent.find(Button).simulate('click');
-
-        expect(borrowCopy).toHaveBeenCalledWith(bookModel);
-    });
-
-    it('should return a book and change available to true and borrowedByMe to false on click', async () => {
-        bookComponent.setState({available : false, borrowedByMe: true});
-
-        expect(bookComponent.state().available).toBeFalsy();
-        expect(bookComponent.state().borrowedByMe).toBeTruthy();
+    it('calls the borrow function when clicking on the borrow button', async () => {
+        const book = someBookWithAvailableCopies();
+        const bookComponent = createComponent(book);
 
         await bookComponent.find(Button).simulate('click');
 
-        expect(bookComponent.state().available).toBeTruthy();
-        expect(bookComponent.state().borrowedByMe).toBeFalsy();
+        expect(borrowCopy).toHaveBeenCalledWith(book);
     });
 
-    it('calls the return function on click when book is borrowedByMe', async () => {
-        bookComponent.setState({available : false, borrowedByMe: true});
+    it('shows the return button when the book is borrowed by me', () => {
+        const book = someBookWithACopyFromMe();
+        const bookComponent = createComponent(book);
+
+        expect(bookComponent).toHaveReturnButton();
+    });
+
+    it('shows the borrow button when clicking return', async () => {
+        const book = someBookWithACopyFromMe();
+        const bookComponent = createComponent(book);
 
         await bookComponent.find(Button).simulate('click');
 
-        expect(returnBook).toHaveBeenCalledWith(bookModel);
+        expect(bookComponent).toHaveBorrowButton();
     });
 
-    it('should not render FlatButton when available and borrowByMe is false', () => {
-        bookComponent.setState({available : false, borrowedByMe: false});
+    it('calls the return function when clicking on the return button', async () => {
+        const book = someBookWithACopyFromMe();
+        const bookComponent = createComponent(book);
 
-        expect(bookComponent.state().available).toBeFalsy();
-        expect(bookComponent.state().borrowedByMe).toBeFalsy();
+        await bookComponent.find(Button).simulate('click');
 
-        expect(bookComponent.find("FlatButton").length).toEqual(0);
+        expect(returnBook).toHaveBeenCalledWith(book);
+    });
+
+    it('does not show the buttons when the book does not have available copies', () => {
+        const book = someBookWithNoAvailableCopies();
+        const bookComponent = createComponent(book);
+
+        expect(bookComponent).not.toHaveBorrowButton();
+        expect(bookComponent).not.toHaveReturnButton();
     });
 });

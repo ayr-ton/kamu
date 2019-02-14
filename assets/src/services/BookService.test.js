@@ -1,6 +1,7 @@
 import { getLibraries, getBooksByPage, getMyBooks, borrowCopy, returnBook } from "./BookService";
 import { fetchFromAPI } from "./helpers";
-import { someBook } from "../../test/booksHelper";
+import { someBookWithAvailableCopies, someBookWithACopyFromMe, someBookWithNoAvailableCopies } from "../../test/booksHelper";
+import { currentUser, someUser } from '../../test/userHelper';
 
 const mockLibraries = {
     count: 2,
@@ -22,46 +23,13 @@ const mockLibraries = {
     ]
 };
 
-const currentUser = () => ({
-    username: "currentuser@example.com",
-    email: "currentuser@example.com",
-    image_url: ""
-});
-
-const someUser = () => ({
-    username: "someuser@example.com",
-    email: "someuser@example.com",
-    image_url: ""
-});
-
-const someBookWithNoAvailableCopies = () => someBook([
-    {
-        id: 1,
-        user: someUser()
-    }
-]);
-
-const someBookWithAvailableCopies = () => someBook([
-    {
-        id: 1,
-        user: null
-    }
-]);
-
-const someBookWithACopyFromMe = () => someBook([
-    {
-        id: 1,
-        user: currentUser()
-    }
-]);
-
 jest.mock('./helpers');
 
 describe('Book Service', () => {
     beforeEach(() => {
         jest.resetAllMocks();
 
-        global.currentUser = currentUser();
+        global.currentUser = currentUser;
     });
 
     it('should return libraries', () => {
@@ -121,7 +89,7 @@ describe('Book Service', () => {
             fetchFromAPI.mockResolvedValue({});
             
             return borrowCopy(book).then(() => {
-                expect(book.copies[0].user).toEqual(currentUser());
+                expect(book.copies[0].user).toEqual(currentUser);
                 expect(fetchFromAPI).toHaveBeenCalledWith(`/copies/${book.copies[0].id}/borrow`, 'POST');
             });
         });
@@ -130,7 +98,7 @@ describe('Book Service', () => {
             const book = someBookWithNoAvailableCopies();
 
             return borrowCopy(book).then(() => {
-                expect(book.copies[0].user).toEqual(someUser());
+                expect(book.copies[0].user).toEqual(someUser);
                 expect(fetchFromAPI).not.toHaveBeenCalled();
             });
         });
@@ -162,7 +130,7 @@ describe('Book Service', () => {
             const book = someBookWithNoAvailableCopies();
 
             return returnBook(book).then(() => {
-                expect(book.copies[0].user).toEqual(someUser());
+                expect(book.copies[0].user).toEqual(someUser);
                 expect(fetchFromAPI).not.toHaveBeenCalled();
             });
         });
@@ -172,7 +140,7 @@ describe('Book Service', () => {
             fetchFromAPI.mockRejectedValue(new Error('some error'));
 
             return returnBook(book).catch(() => {
-                expect(book.copies[0].user).toEqual(currentUser());
+                expect(book.copies[0].user).toEqual(currentUser);
             });
         })
     });
