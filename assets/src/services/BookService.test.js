@@ -1,4 +1,4 @@
-import { getLibraries, getBooksByPage, borrowCopy, returnBook } from "./BookService";
+import { getLibraries, getBooksByPage, getMyBooks, borrowCopy, returnBook } from "./BookService";
 import { fetchFromAPI } from "./helpers";
 import { someBook } from "../../test/booksHelper";
 
@@ -100,6 +100,17 @@ describe('Book Service', () => {
 
         return getBooksByPage('bh', 1).then(data => {
             expect(data).toBeNull();
+        });
+    });
+
+    it('returns the list of books I borrowed', () => {
+        const response = {
+            results: [ someBookWithACopyFromMe() ]
+        };
+        fetchFromAPI.mockResolvedValue(response);
+
+        return getMyBooks().then(data => {
+            expect(data).toEqual(response);
         });
     });
 

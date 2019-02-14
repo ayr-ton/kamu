@@ -7,6 +7,10 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from "@material-ui/core/MenuItem";
 import { Toolbar } from "@material-ui/core";
 import { clearRegion, getLoggedUser } from './services/ProfileService';
+import { HOME_URL, ADMIN_URL, MY_BOOKS_URL, ADD_BOOK_URL } from './utils/constants';
+
+const redirect = (url) => window.location.assign(url);
+const clearRegionAndRedirect = () => { clearRegion(); redirect(HOME_URL); }
 
 export default class Header extends Component {
 	constructor(props) {
@@ -15,7 +19,6 @@ export default class Header extends Component {
 			menuAnchorElement: null,
 		};
 
-		this._changeRegion = this._changeRegion.bind(this);
 		this._handleMenuClick = this._handleMenuClick.bind(this);
 		this._handleMenuClose = this._handleMenuClose.bind(this);
 	}
@@ -26,19 +29,6 @@ export default class Header extends Component {
 		});
 	}
 
-	_admin() {
-		window.location.assign('/admin/');
-	}
-
-	_changeRegion() {
-		clearRegion();
-		window.location.assign('/');
-	}
-
-	_addBook() {
-		window.location.assign('/admin/books/book/isbn/');
-	}	
-
 	_handleMenuClick(event) {
 		this.setState({ menuAnchorElement: event.currentTarget });
 	}
@@ -48,40 +38,33 @@ export default class Header extends Component {
 	}
 
 	render() {
-		let menu;
-		if (this.props.showMenu) {
-			menu = (
-				<div className="header-menu">
-					<IconButton
-						onClick={this._handleMenuClick}
-					>
-						<MoreVertIcon />
-					</IconButton>
-					<Menu
-						transformOrigin={{horizontal: 'right', vertical: 'top'}}
-						anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-						anchorEl={this.state.menuAnchorElement}
-						open={Boolean(this.state.menuAnchorElement)}
-						onClose={this._handleMenuClose}
-					>
-						<MenuItem id="admin" onClick={this._admin}>Admin</MenuItem>
-						<MenuItem id="change-region" onClick={this._changeRegion}>Change library</MenuItem>
-						<MenuItem id="add-book" onClick={this._addBook}>Add book</MenuItem>
-					</Menu>
-				</div>
-			);
-		}
-
 		return (
-				<AppBar
-					className="header"
-				>
+				<AppBar	className="header">
 					<Toolbar>
-						<a href="/" className="header-content">
+						<a href={HOME_URL} className="header-content">
 							<img src="/static/images/logo.svg" alt="Kamu logo" />
 						</a>
-
-						{menu}
+						{this.props.showMenu && (
+							<div className="header-menu">
+								<IconButton
+									onClick={this._handleMenuClick}
+								>
+									<MoreVertIcon />
+								</IconButton>
+								<Menu
+									transformOrigin={{horizontal: 'right', vertical: 'top'}}
+									anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+									anchorEl={this.state.menuAnchorElement}
+									open={Boolean(this.state.menuAnchorElement)}
+									onClose={this._handleMenuClose}
+								>
+									<MenuItem id="admin-button" onClick={() => redirect(ADMIN_URL)}>Admin</MenuItem>
+									<MenuItem id="change-region-button" onClick={clearRegionAndRedirect}>Change library</MenuItem>
+									<MenuItem id="add-book-button" onClick={() => redirect(ADD_BOOK_URL)}>Add book</MenuItem>
+									<MenuItem id="my-books-button" onClick={() => redirect(MY_BOOKS_URL)}>My books</MenuItem>
+								</Menu>
+							</div>
+						)}
 					</Toolbar>
 				</AppBar>
 		);

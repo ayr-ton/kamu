@@ -25,6 +25,7 @@ book_routers.register(r'waitlist', WaitlistViewSet, base_name='waitlist')
 urlpatterns = [
     url(r'^$', login_required(TemplateView.as_view(template_name='home.html'))),
     url(r'^libraries/(?P<slug>.+)/', login_required(TemplateView.as_view(template_name='libraries.html'))),
+    url(r'^my-books', login_required(TemplateView.as_view(template_name='mybooks.html'))),
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include(router.urls)),
     url(r'^api/', include(library_routers.urls)),
