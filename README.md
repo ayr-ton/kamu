@@ -15,7 +15,7 @@ In the main page you can see the libraries shared between users. The libraries c
 ## Requirements
 
 - Python 3.6+ for Django backend
-- Node.js 6.10+ for frontend assets
+- Node.js 8+ for frontend assets
 
 ## Installation / Getting started
 
@@ -81,7 +81,7 @@ python manage.py loaddata dump_data/*.json
 Start your local server:
 
 ```shell
-npm run-script start
+npm start
 ```
 
 Now just go to [http://localhost:8000](http://localhost:8000) in your browser :)
@@ -91,7 +91,7 @@ Use the "OKTA_METADATA_URL='url-of-okta-saml'" concatenating with the python's c
 
 ```shell
   Examples:
-  OKTA_METADATA_URL='url-of-okta-saml' npm run-script start
+  OKTA_METADATA_URL='url-of-okta-saml' npm start
   OKTA_METADATA_URL='url-of-okta-saml' python manage.py migrate
 ```
 
@@ -99,7 +99,7 @@ Another way is to export the var and then execute the commands:
 
 ```shell
   export OKTA_METADATA_URL='url-of-okta-saml'
-  npm run-script start
+  npm start
   python manage.py migrate
 ```
 In case of need authenticate without Okta preview again, execute:
@@ -110,7 +110,7 @@ In case of need authenticate without Okta preview again, execute:
 
 ## Executing using docker for local development
 
-We now support Docker =), just go to your favorite console and type:
+We support Docker =), just go to your favorite console and type:
 ```
 cd docker
 docker-compose build
