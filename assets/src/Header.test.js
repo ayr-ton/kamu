@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "./Header";
 import { shallow } from "enzyme";
-import { clearRegion, getLoggedUser } from './services/ProfileService';
+import { getRegion, clearRegion, getLoggedUser } from './services/ProfileService';
 
 jest.mock('./services/ProfileService');
 
@@ -38,5 +38,31 @@ describe('Header', () => {
     header.find('#my-books-button').simulate('click');
 
     expect(window.location.assign).toHaveBeenCalledWith('/my-books');
+  });
+
+  it('redirects to admin page when clicking on admin button', () => {
+    const header = createComponent();
+
+    header.find('#admin-button').simulate('click');
+
+    expect(window.location.assign).toHaveBeenCalledWith('/admin');
+  });
+
+  it('redirects to library page when clicking on home button', () => {
+    getRegion.mockReturnValueOnce('bh');
+    const header = createComponent();
+
+    header.find('#home-button').simulate('click');
+
+    expect(window.location.assign).toHaveBeenCalledWith('/libraries/bh');
+  });
+
+  it('redirects to add book page when clicking on add book button', () => {
+    getRegion.mockReturnValueOnce('bh');
+    const header = createComponent();
+
+    header.find('#add-book-button').simulate('click');
+
+    expect(window.location.assign).toHaveBeenCalledWith('/admin/books/book/isbn/');
   });
 });

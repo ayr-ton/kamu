@@ -5,9 +5,9 @@ import IconButton from "@material-ui/core/IconButton";
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from "@material-ui/core/MenuItem";
-import { Toolbar } from "@material-ui/core";
-import { clearRegion, getLoggedUser } from './services/ProfileService';
-import { HOME_URL, ADMIN_URL, MY_BOOKS_URL, ADD_BOOK_URL } from './utils/constants';
+import { Toolbar, Icon } from "@material-ui/core";
+import { clearRegion, getLoggedUser, getRegion } from './services/ProfileService';
+import { HOME_URL, ADMIN_URL, MY_BOOKS_URL, ADD_BOOK_URL, LIBRARY_URL_PREFIX } from './utils/constants';
 
 const redirect = (url) => window.location.assign(url);
 const clearRegionAndRedirect = () => { clearRegion(); redirect(HOME_URL); }
@@ -23,7 +23,7 @@ export default class Header extends Component {
 		this._handleMenuClose = this._handleMenuClose.bind(this);
 	}
 
-	componentWillMount() {
+	componentDidMount() {
 		return getLoggedUser().then(user => {
 			window.currentUser = user;
 		});
@@ -44,25 +44,30 @@ export default class Header extends Component {
 						<a href={HOME_URL} className="header-content">
 							<img src="/static/images/logo.svg" alt="Kamu logo" />
 						</a>
+
+						<div style={{flexGrow: 1}} />
+
 						{this.props.showMenu && (
 							<div className="header-menu">
-								<IconButton
-									onClick={this._handleMenuClick}
-								>
-									<MoreVertIcon />
+								<IconButton title="Library home" id="home-button" onClick={() => redirect(`${LIBRARY_URL_PREFIX}/${getRegion()}`)}>
+									<Icon className="fa fa-home" />
 								</IconButton>
-								<Menu
-									transformOrigin={{horizontal: 'right', vertical: 'top'}}
-									anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-									anchorEl={this.state.menuAnchorElement}
-									open={Boolean(this.state.menuAnchorElement)}
-									onClose={this._handleMenuClose}
-								>
-									<MenuItem id="admin-button" onClick={() => redirect(ADMIN_URL)}>Admin</MenuItem>
-									<MenuItem id="change-region-button" onClick={clearRegionAndRedirect}>Change library</MenuItem>
-									<MenuItem id="add-book-button" onClick={() => redirect(ADD_BOOK_URL)}>Add book</MenuItem>
-									<MenuItem id="my-books-button" onClick={() => redirect(MY_BOOKS_URL)}>My books</MenuItem>
-								</Menu>
+
+								<IconButton title="My books" id="my-books-button" onClick={() => redirect(MY_BOOKS_URL)}>
+									<Icon className="fa fa-book-reader" />
+								</IconButton>
+
+								<IconButton title="Add a book" id="add-book-button" onClick={() => redirect(ADD_BOOK_URL)}>
+									<Icon className="fa fa-plus-circle" />
+								</IconButton>
+
+								<IconButton title="Change region" id="change-region-button" onClick={clearRegionAndRedirect}>
+									<Icon className="fa fa-map-marker-alt" />
+								</IconButton>
+
+								<IconButton title="Administration" id="admin-button" onClick={() => redirect(ADMIN_URL)}>
+									<Icon className="fa fa-cog" />
+								</IconButton>
 							</div>
 						)}
 					</Toolbar>
