@@ -227,6 +227,16 @@ class UserViewTest(TestCase):
 
         self.assertEqual(self.user.username, user_json['user']['username'])
 
+    def test_user_profile_includes_borrowed_books_count(self):
+        library = Library.objects.create(name="Santiago", slug="slug")
+        book = Book.objects.create(author="Author", title="the title", subtitle="The subtitle")
+        BookCopy.objects.create(book=book, library=library, user=self.user)
+
+        self.request = self.client.get("/api/profile")
+        user_json = json.loads(json.dumps(self.request.data))
+
+        self.assertEqual(1, user_json['user']['borrowed_books_count'])
+
 
 class UserBooksViewTest(TestCase):
     def setUp(self):
