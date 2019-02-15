@@ -13,12 +13,8 @@ export default class Header extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			menuAnchorElement: null,
 			borrowedBooksCount: 0,
 		};
-
-		this._handleMenuClick = this._handleMenuClick.bind(this);
-		this._handleMenuClose = this._handleMenuClose.bind(this);
 	}
 
 	componentDidMount() {
@@ -28,14 +24,6 @@ export default class Header extends Component {
 				borrowedBooksCount: user.borrowed_books_count,
 			});
 		});
-	}
-
-	_handleMenuClick(event) {
-		this.setState({ menuAnchorElement: event.currentTarget });
-	}
-
-	_handleMenuClose() {
-		this.setState({ menuAnchorElement: null });
 	}
 
 	render() {
