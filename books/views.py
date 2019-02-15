@@ -144,14 +144,13 @@ class BookCopyReturnView(APIView):
 
 class UserView(APIView):
     def get(self, request, format=None):
-        content = {
-            'user': UserSerializer(request.user).data
-        }
-        return Response(content)
+        return Response({
+            'user': UserSerializer(request.user).data,
+        })
 
 class UserBooksView(APIView):
     def get(self, request, format=None):
-        books = Book.objects.filter(bookcopy__user=1)
+        books = Book.objects.filter(bookcopy__user=request.user)
         return Response({
             'results': BookSerializer(books, many=True).data
         })
