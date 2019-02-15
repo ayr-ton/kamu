@@ -1,7 +1,9 @@
 import React from "react";
-import Header from "./Header";
 import { shallow } from "enzyme";
+import Badge from '@material-ui/core/Badge';
+import Header from "./Header";
 import { getRegion, clearRegion, getLoggedUser } from './services/ProfileService';
+import { currentUser } from "../test/userHelper";
 
 jest.mock('./services/ProfileService');
 
@@ -10,7 +12,7 @@ const createComponent = (props) => shallow(<Header {...props} />);
 describe('Header', () => {
   beforeEach(() => {
     window.location.assign = jest.fn();
-    getLoggedUser.mockResolvedValue({});
+    getLoggedUser.mockResolvedValue(currentUser);
   });
 
   it('clears the region and redirects to home when clicking change region', () => {
@@ -64,5 +66,15 @@ describe('Header', () => {
     header.find('#add-book-button').simulate('click');
 
     expect(window.location.assign).toHaveBeenCalledWith('/admin/books/book/isbn/');
+  });
+
+  it('has a badge with the borrowed book count in my books button', async () => {
+    getRegion.mockReturnValueOnce('bh');
+    const header = await createComponent();
+
+    const badge = header.find('#my-books-button').find(Badge);
+
+    expect(badge.exists()).toBeTruthy();
+    expect(badge.props().badgeContent).toEqual(currentUser.borrowed_books_count);
   });
 });
