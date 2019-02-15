@@ -40,12 +40,11 @@ export default class Book extends Component {
 	}
 
 	_actionButtons() {
-		if (this.state.available) {
-			return <Button className="btn-borrow" onClick={this._borrow}>Borrow</Button>;
-		} else if (this.state.borrowedByMe) {
+		if (this.state.borrowedByMe) {
 			return <Button className="btn-return" onClick={this._return}>Return</Button>;
+		} else if (this.state.available) {
+			return <Button className="btn-borrow" onClick={this._borrow}>Borrow</Button>;
 		}
-
 		return null;
 	}
 

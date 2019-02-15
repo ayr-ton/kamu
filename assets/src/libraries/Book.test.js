@@ -77,6 +77,16 @@ describe('Book', () => {
         expect(bookComponent).toHaveReturnButton();
     });
 
+    it('shows the return button when the book is borrowed by me but still has available copies', () => {
+        const book = someBook([
+            { id: 1, user: currentUser },
+            { id: 2, user: null }
+        ]);
+        const bookComponent = createComponent(book);
+
+        expect(bookComponent).toHaveReturnButton();
+    });
+
     it('shows the borrow button when clicking return', async () => {
         const book = someBookWithACopyFromMe();
         const bookComponent = createComponent(book);
