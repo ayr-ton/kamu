@@ -1,9 +1,11 @@
-var webpack = require('webpack');
-var WebpackDevServer = require('webpack-dev-server');
-var config = require('./webpack.config');
-var PORT = 3000;
+const webpack = require('webpack');
+const WebpackDevServer = require('webpack-dev-server');
+const config = require('./webpack.config');
+const PORT = 3000;
 
-var devServerConfig = {
+const options = {
+  host: 'localhost',
+  port: PORT,
   publicPath: config.output.publicPath,
   hot: true,
   historyApiFallback: true,
@@ -20,7 +22,7 @@ var devServerConfig = {
   }
 };
 
-function listenHandler(err, result) {
+function listenHandler(err) {
   if (err) {
     console.error(err);
     return;
@@ -28,5 +30,6 @@ function listenHandler(err, result) {
   console.log('WebpackDevServer listening at localhost:%s', PORT);
 };
 
-var devServer = new WebpackDevServer(webpack(config), devServerConfig);
+WebpackDevServer.addDevServerEntrypoints(config, options);
+const devServer = new WebpackDevServer(webpack(config), options);
 devServer.listen(PORT, '0.0.0.0', listenHandler);
