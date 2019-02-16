@@ -3,3 +3,6 @@ plugins:
     enabled: true
     config:
       python_version: 3
+exclude_patterns:
+- "**/*.test.js"
+- "**/test/"
