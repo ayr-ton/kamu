@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+import { Link } from 'react-router-dom';
 import { getLibraries } from '../services/BookService';
 import { setRegion } from '../services/ProfileService';
-
-const selectLibrary = (library) => {
-	setRegion(library.slug);
-	window.location.assign(`/libraries/${library.slug}`);
-};
 
 export default class LibrarySelector extends Component {
 	constructor(props) {
@@ -32,13 +28,10 @@ export default class LibrarySelector extends Component {
 			<div className="library-list">
 				<List>
 					{this.state.libraries.map(library =>
-						<ListItem
-							className='library'
-							key={library.id}
-							onClick={() => selectLibrary(library)}
-							button
-						>
-							{library.name}
+						<ListItem className='library' key={library.id} button>
+							<Link to={`/libraries/${library.slug}`} onClick={setRegion(library.slug)}>
+								{library.name}
+							</Link>
 						</ListItem>
 					)}
 				</List>

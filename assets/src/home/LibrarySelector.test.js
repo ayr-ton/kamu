@@ -1,7 +1,8 @@
 import React from 'react';
+import { shallow } from 'enzyme';
+import { Link } from 'react-router-dom';
+import ListItem from '@material-ui/core/ListItem';
 import LibrarySelector from './LibrarySelector';
-import {shallow} from 'enzyme';
-import { ListItem } from '@material-ui/core';
 import { getLibraries } from '../services/BookService';
 import { setRegion } from '../services/ProfileService';
 
@@ -38,11 +39,11 @@ describe('LibrarySelector', () => {
         expect(setRegion).toHaveBeenCalledWith('bh');
     });
 
-    it('should redirect to the library page when choosing a library', async () => {
+    it('should have a link to the library page ', async () => {
         await librarySelector.instance()._loadLibraries();
 
-        librarySelector.find(ListItem).first().simulate('click');
+        const libraryItem = librarySelector.find(ListItem).first();
 
-        expect(window.location.assign).toHaveBeenCalledWith('/libraries/bh');
+        expect(libraryItem.find(Link).props().to).toEqual('/libraries/bh');
     });
 });
