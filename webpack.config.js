@@ -13,6 +13,7 @@ function buildEntry(){
     home: [ './src/home/index.js'],
     libraries: [ './src/libraries/index.js' ],
     mybooks: [ './src/mybooks/index.js' ],
+    spa: [ './src/spa.js' ],
   }
 
   if (isDevelopmentEnvironment()) {
