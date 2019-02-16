@@ -25,14 +25,27 @@
 }
 
 #content {
-    margin-top: 15px;
+    margin-top: 65px;
+}
+
+.page-title {
+    display: flex;
+    padding: 15px 30px;
+    font-size: 1.2em;
+    color: #999;
+    text-transform: lowercase;
+}
+
+.page-title .material-icons {
+    font-size: 1.2em;
+    margin-right: 10px;
+    color: #cccccc;
 }
 
 .book-list {
-    display: inline-flex;
+    display: flex;
     justify-content: space-evenly;
     flex-wrap: wrap;
-    margin-top: 50px;
 }
 
 .book {
