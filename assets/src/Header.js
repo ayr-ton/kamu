@@ -2,12 +2,12 @@ import React, {Component} from "react";
 import PropTypes from "prop-types";
 import AppBar from "@material-ui/core/AppBar";
 import IconButton from "@material-ui/core/IconButton";
+import { Link } from 'react-router-dom';
 import { Toolbar, Icon, Badge } from "@material-ui/core";
 import { clearRegion, getLoggedUser, getRegion } from './services/ProfileService';
 import { HOME_URL, ADMIN_URL, MY_BOOKS_URL, ADD_BOOK_URL, LIBRARY_URL_PREFIX } from './utils/constants';
 
 const redirect = (url) => window.location.assign(url);
-const clearRegionAndRedirect = () => { clearRegion(); redirect(HOME_URL); }
 
 export default class Header extends Component {
 	constructor(props) {
@@ -38,13 +38,17 @@ export default class Header extends Component {
 
 						{this.props.showMenu && (
 							<div className="header-menu">
-								<IconButton title="Library home" id="home-button" onClick={() => redirect(`${LIBRARY_URL_PREFIX}/${getRegion()}`)}>
-									<Icon className="fa fa-home" />
+								<IconButton title="Library home" id="home-button">
+									<Link to={`${LIBRARY_URL_PREFIX}/${getRegion()}`}>
+										<Icon className="fa fa-home" />
+									</Link>
 								</IconButton>
 
-								<IconButton title="My books" id="my-books-button" onClick={() => redirect(MY_BOOKS_URL)}>
+								<IconButton title="My books" id="my-books-button">
 									<Badge badgeContent={this.state.borrowedBooksCount} color="secondary">
-										<Icon className="fa fa-book-reader" />
+										<Link to={MY_BOOKS_URL}>
+											<Icon className="fa fa-book-reader" />
+										</Link>
 									</Badge>
 								</IconButton>
 
@@ -52,8 +56,10 @@ export default class Header extends Component {
 									<Icon className="fa fa-plus-circle" />
 								</IconButton>
 
-								<IconButton title="Change region" id="change-region-button" onClick={clearRegionAndRedirect}>
-									<Icon className="fa fa-map-marker-alt" />
+								<IconButton title="Change region" id="change-region-button" onClick={clearRegion}>
+									<Link to={HOME_URL}>
+										<Icon className="fa fa-map-marker-alt" />
+									</Link>
 								</IconButton>
 
 								<IconButton title="Administration" id="admin-button" onClick={() => redirect(ADMIN_URL)}>

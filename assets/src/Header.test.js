@@ -11,17 +11,18 @@ const createComponent = (props) => shallow(<Header {...props} />);
 
 describe('Header', () => {
   beforeEach(() => {
-    window.location.assign = jest.fn();
     getLoggedUser.mockResolvedValue(currentUser);
+    window.location.assign = jest.fn();
   });
 
   it('clears the region and redirects to home when clicking change region', () => {
     const header = createComponent();
 
-    header.find('#change-region-button').simulate('click');
+    const button = header.find('#change-region-button');
+    button.simulate('click');
 
     expect(clearRegion).toHaveBeenCalled();
-    expect(window.location.assign).toHaveBeenCalledWith('/');
+    expect(button).toHaveLinkTo('/');
 	});
 
 	it('displays the menu', () => {
@@ -36,10 +37,7 @@ describe('Header', () => {
 
   it('redirects to my books page when clicking on my books', () => {
     const header = createComponent();
-
-    header.find('#my-books-button').simulate('click');
-
-    expect(window.location.assign).toHaveBeenCalledWith('/my-books');
+    expect(header.find('#my-books-button')).toHaveLinkTo('/my-books');
   });
 
   it('redirects to admin page when clicking on admin button', () => {
@@ -54,9 +52,7 @@ describe('Header', () => {
     getRegion.mockReturnValueOnce('bh');
     const header = createComponent();
 
-    header.find('#home-button').simulate('click');
-
-    expect(window.location.assign).toHaveBeenCalledWith('/libraries/bh');
+    expect(header.find('#home-button')).toHaveLinkTo('/libraries/bh');
   });
 
   it('redirects to add book page when clicking on add book button', () => {
