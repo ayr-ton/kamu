@@ -1,13 +1,14 @@
 import React from "react";
 import { shallow } from "enzyme";
 import Badge from '@material-ui/core/Badge';
-import Header from "./Header";
+import { Header } from './Header';
 import { getRegion, clearRegion, getLoggedUser } from './services/ProfileService';
 import { currentUser } from "../test/userHelper";
 
 jest.mock('./services/ProfileService');
 
-const createComponent = (props) => shallow(<Header {...props} />);
+const history = { push: jest.fn() };
+const createComponent = (props) => shallow(<Header history={history} {...props} />);
 
 describe('Header', () => {
   beforeEach(() => {
@@ -18,11 +19,10 @@ describe('Header', () => {
   it('clears the region and redirects to home when clicking change region', () => {
     const header = createComponent();
 
-    const button = header.find('#change-region-button');
-    button.simulate('click');
+    header.find('#change-region-button').simulate('click');
 
     expect(clearRegion).toHaveBeenCalled();
-    expect(button).toHaveLinkTo('/');
+    expect(history.push).toHaveBeenCalledWith('/');
 	});
 
 	it('displays the menu', () => {
@@ -37,7 +37,10 @@ describe('Header', () => {
 
   it('redirects to my books page when clicking on my books', () => {
     const header = createComponent();
-    expect(header.find('#my-books-button')).toHaveLinkTo('/my-books');
+
+    header.find('#my-books-button').simulate('click');
+
+    expect(history.push).toHaveBeenCalledWith('/my-books');
   });
 
   it('redirects to admin page when clicking on admin button', () => {
@@ -52,7 +55,9 @@ describe('Header', () => {
     getRegion.mockReturnValueOnce('bh');
     const header = createComponent();
 
-    expect(header.find('#home-button')).toHaveLinkTo('/libraries/bh');
+    header.find('#home-button').simulate('click');
+    
+    expect(history.push).toHaveBeenCalledWith('/libraries/bh');
   });
 
   it('redirects to add book page when clicking on add book button', () => {
