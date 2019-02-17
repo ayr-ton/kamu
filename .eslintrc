@@ -8,7 +8,8 @@
   },
   "globals": {
     "currentUser": true,
-    "global": true
+    "global": true,
+    "module": true
   },
   "plugins": [
     "react"
