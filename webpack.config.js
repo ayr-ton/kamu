@@ -9,11 +9,7 @@ function isDevelopmentEnvironment(){
 
 function buildEntry(){
   entry = {
-    app: [ './src/index.js'],
-    home: [ './src/home/index.js'],
-    libraries: [ './src/libraries/index.js' ],
-    mybooks: [ './src/mybooks/index.js' ],
-    spa: [ './src/spa.js' ],
+    app: [ './src/index.js' ],
   }
 
   if (isDevelopmentEnvironment()) {

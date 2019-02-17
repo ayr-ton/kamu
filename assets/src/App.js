@@ -5,7 +5,7 @@ import LibrarySelector from './home/LibrarySelector';
 import Library from './libraries/Library';
 import MyBooks from './mybooks/MyBooks';
 
-function Main() {
+function App() {
   return (
     <BrowserRouter>
       <div>
@@ -22,4 +22,4 @@ function Main() {
   );
 }
 
-export default Main;
+export default App;

@@ -1,11 +1,11 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import Header from "./Header";
-import Main from "./Main";
+import App from "./App";
 
-const createComponent = (props) => shallow(<Main {...props} />);
+const createComponent = (props) => shallow(<App {...props} />);
 
-describe('Main', () => {
+describe('App', () => {
   let component;
 
   beforeEach(() => {

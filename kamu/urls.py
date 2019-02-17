@@ -23,7 +23,7 @@ book_routers = routers.NestedSimpleRouter(library_routers, r'books', lookup='boo
 book_routers.register(r'waitlist', WaitlistViewSet, base_name='waitlist')
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    url(r'^admin/?', admin.site.urls),
     url(r'^api/', include(router.urls)),
     url(r'^api/', include(library_routers.urls)),
     url(r'^api/', include(book_routers.urls)),
@@ -32,7 +32,7 @@ urlpatterns = [
     url(r'^api/copies/(?P<id>.+)/borrow', views.BookCopyBorrowView.as_view()),
     url(r'^api/copies/(?P<id>.+)/return', views.BookCopyReturnView.as_view()),
     url(r'^favicon\.ico$', RedirectView.as_view(url=settings.STATIC_URL + 'images/favicon.ico')),
-    url(r'^', login_required(TemplateView.as_view(template_name='spa.html'))),
+    url(r'^', login_required(TemplateView.as_view(template_name='index.html'))),
 ]
 
 if os.environ.get("OKTA_METADATA_URL") is None:
