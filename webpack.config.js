@@ -11,7 +11,8 @@ function buildEntry(){
   entry = {
     app: [ './src/index.js'],
     home: [ './src/home/index.js'],
-    libraries: [ './src/libraries/index.js' ]
+    libraries: [ './src/libraries/index.js' ],
+    mybooks: [ './src/mybooks/index.js' ],
   }
 
   if (isDevelopmentEnvironment()) {
@@ -73,5 +74,7 @@ module.exports = {
     resolve: {
       modules: ['node_modules'],
       extensions: ['.js']
-    }
+    },
+
+    mode: process.env.NODE_ENV || 'development'
 };

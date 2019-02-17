@@ -33,6 +33,11 @@ export const getBooksByPage = (librarySlug, page, filter = '') =>
     return formatBooksRequest(data);
   });
 
+export const getMyBooks = () =>
+  fetchFromAPI(`/profile/books`).then(data => {
+    return formatBooksRequest(data);
+  });
+
 export const borrowCopy = (book) => {
   const copyID = book.getAvailableCopyID();
   if (!copyID) return Promise.resolve(null);

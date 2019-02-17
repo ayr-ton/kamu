@@ -89,7 +89,7 @@ class LibraryViewSet(FiltersMixin, viewsets.ModelViewSet):
 
 
 class BookViewSet(FiltersMixin, viewsets.ModelViewSet):
-    serializer_class = LibraryBookSerializer
+    serializer_class = BookSerializer
     queryset = Book.objects.filter()
 
     def list(self, request, library_slug=None):
@@ -108,7 +108,7 @@ class BookViewSet(FiltersMixin, viewsets.ModelViewSet):
 
         page = self.paginate_queryset(books)
 
-        serializer = LibraryBookSerializer(page, many=True, context={'request': request, 'library': library})
+        serializer = BookSerializer(page, many=True, context={'request': request, 'library': library})
 
         return self.get_paginated_response(serializer.data)
 
@@ -144,7 +144,13 @@ class BookCopyReturnView(APIView):
 
 class UserView(APIView):
     def get(self, request, format=None):
-        content = {
-            'user': UserSerializer(request.user).data
-        }
-        return Response(content)
+        return Response({
+            'user': UserSerializer(request.user).data,
+        })
+
+class UserBooksView(APIView):
+    def get(self, request, format=None):
+        books = Book.objects.filter(bookcopy__user=request.user)
+        return Response({
+            'results': BookSerializer(books, many=True).data
+        })

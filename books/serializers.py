@@ -11,10 +11,11 @@ from waitlist.models import *
 class UserSerializer(serializers.ModelSerializer):
     image_url = serializers.SerializerMethodField()
     name = serializers.SerializerMethodField()
+    borrowed_books_count = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'image_url', 'first_name', 'last_name', 'name')
+        fields = ('username', 'email', 'image_url', 'first_name', 'last_name', 'name', 'borrowed_books_count')
 
     def get_image_url(self, obj):
         email_hash = md5(obj.email.strip().lower().encode()).hexdigest()
@@ -22,6 +23,9 @@ class UserSerializer(serializers.ModelSerializer):
 
     def get_name(self, obj):
         return obj.first_name + " " + obj.last_name
+
+    def get_borrowed_books_count(self, obj):
+        return Book.objects.filter(bookcopy__user=obj).count()
 
 
 class BookCopySerializer(serializers.ModelSerializer):
@@ -32,7 +36,7 @@ class BookCopySerializer(serializers.ModelSerializer):
         fields = ('id', 'user', 'borrow_date')
 
 
-class LibraryBookSerializer(serializers.ModelSerializer):
+class BookSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
     copies = serializers.SerializerMethodField()
 
@@ -41,7 +45,10 @@ class LibraryBookSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def get_copies(self, obj):
-        copies = obj.bookcopy_set.filter(library=self.context['library'])
+        if 'library' in self.context:
+            copies = obj.bookcopy_set.filter(library=self.context['library'])
+        else:
+            copies = obj.bookcopy_set.all()
         serializer = BookCopySerializer(copies, many=True, context=self.context)
         return serializer.data
 

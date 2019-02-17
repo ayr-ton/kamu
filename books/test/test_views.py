@@ -6,6 +6,7 @@ from django.test import TestCase
 from django.utils import timezone
 
 from books.models import Book, Library, BookCopy
+from books.serializers import BookSerializer
 from waitlist.models import WaitlistItem
 
 
@@ -213,7 +214,7 @@ class LibraryViewSetQueryParameters(TestCase):
         self.assertEqual(len(books), 1)
 
 
-class UserView(TestCase):
+class UserViewTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username="claudia")
         self.user.set_password("123")
@@ -225,6 +226,38 @@ class UserView(TestCase):
         user_json = json.loads(json.dumps(self.request.data))
 
         self.assertEqual(self.user.username, user_json['user']['username'])
+
+    def test_user_profile_includes_borrowed_books_count(self):
+        library = Library.objects.create(name="Santiago", slug="slug")
+        book = Book.objects.create(author="Author", title="the title", subtitle="The subtitle")
+        BookCopy.objects.create(book=book, library=library, user=self.user)
+
+        self.request = self.client.get("/api/profile")
+        user_json = json.loads(json.dumps(self.request.data))
+
+        self.assertEqual(1, user_json['user']['borrowed_books_count'])
+
+
+class UserBooksViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="claudia")
+        self.user.set_password("123")
+        self.user.save()
+        self.client.force_login(user=self.user)
+
+    def test_user_should_get_their_borrowed_books(self):
+        library = Library.objects.create(name="Santiago", slug="slug")
+        book = Book.objects.create(author="Author", title="the title", subtitle="The subtitle")
+        BookCopy.objects.create(book=book, library=library, user=self.user)
+        availableBook = Book.objects.create(author="Author", title="the title", subtitle="The subtitle")
+        BookCopy.objects.create(book=availableBook, library=library)
+
+        response = self.client.get("/api/profile/books")
+
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(len(response.data['results']), 1)
+        self.assertEqual(BookSerializer(book).data, response.data['results'][0])
+
 
 class IsbnViewTest(TestCase):
     def setUp(self):
