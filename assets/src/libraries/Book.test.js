@@ -8,7 +8,7 @@ import { someBook,
   someBookWithNoAvailableCopies,
   someBookWithACopyFromMe,
   someBookThatCanBeAddedToWaitlist } from '../../test/booksHelper';
-import { borrowCopy, returnBook } from '../services/BookService';
+import { borrowCopy, returnBook, joinWaitlist } from '../services/BookService';
 
 jest.mock('../services/BookService');
 
@@ -42,6 +42,7 @@ describe('Book', () => {
     beforeEach(() => {
         borrowCopy.mockResolvedValue();
         returnBook.mockResolvedValue();
+        joinWaitlist.mockResolvedValue();
 
         sessionStorage.clear();
         global.currentUser = currentUser;
@@ -121,10 +122,21 @@ describe('Book', () => {
       const book = someBookThatCanBeAddedToWaitlist();
       const bookComponent = createComponent(book);
 
+      expect(bookComponent.state('canBeAddedToWaitlist')).toBeTruthy();
       expect(bookComponent).toHaveJoinWaitlistButton();
+    });
+
+    it('calls the joinWaitlist method when clicking on the join the waitlist button', async () => {
+      const book = someBookThatCanBeAddedToWaitlist();
+      const bookComponent = createComponent(book);
+
+      await bookComponent.find(Button).simulate('click');
+
+      expect(joinWaitlist).toHaveBeenCalledWith('bh', book);
+      expect(bookComponent.state('canBeAddedToWaitlist')).toBeFalsy();
   });
 
-    it('does not show the buttons when the book does not have available copies', () => {
+    it('does not show the buttons when the book does not have available copies, ', () => {
         const book = someBookWithNoAvailableCopies();
         const bookComponent = createComponent(book);
 

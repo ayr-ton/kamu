@@ -55,3 +55,7 @@ export const returnBook = (book) => {
     updateBookCopyUser(book, copyID, null);
   });
 };
+
+export const joinWaitlist = (library, book) => {
+  return Promise.resolve();
+}
