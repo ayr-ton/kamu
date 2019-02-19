@@ -4,28 +4,12 @@ import AppBar from "@material-ui/core/AppBar";
 import IconButton from "@material-ui/core/IconButton";
 import { withRouter } from 'react-router';
 import { Toolbar, Icon, Badge } from "@material-ui/core";
-import { clearRegion, getLoggedUser, getRegion } from './services/ProfileService';
+import { clearRegion, getRegion } from './services/ProfileService';
 import { HOME_URL, ADMIN_URL, MY_BOOKS_URL, ADD_BOOK_URL, LIBRARY_URL_PREFIX } from './utils/constants';
 
 const redirectExternal = (url) => window.location.assign(url);
 
 class Header extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			borrowedBooksCount: 0,
-		};
-	}
-
-	componentDidMount() {
-		return getLoggedUser().then(user => {
-			window.currentUser = user;
-			this.setState({
-				borrowedBooksCount: user.borrowed_books_count,
-			});
-		});
-	}
-
 	redirect(url) {
 		this.props.history.push(url);
 	}
@@ -47,7 +31,7 @@ class Header extends Component {
 								</IconButton>
 
 								<IconButton title="My books" id="my-books-button" onClick={() => this.redirect(MY_BOOKS_URL) }>
-									<Badge badgeContent={this.state.borrowedBooksCount} color="secondary">
+									<Badge badgeContent={this.props.borrowedBooksCount} color="secondary">
 										<Icon className="fa fa-book-reader" />
 									</Badge>
 								</IconButton>
@@ -73,11 +57,13 @@ class Header extends Component {
 
 Header.propTypes = {
 	showMenu: PropTypes.bool,
+	borrowedBooksCount: PropTypes.number,
 	history: PropTypes.shape({}).isRequired,
 };
 
 Header.defaultProps = {
-	showMenu: true
+	showMenu: true,
+	borrowedBooksCount: 0,
 }
 
 export { Header };

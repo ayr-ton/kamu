@@ -2,8 +2,7 @@ import React from "react";
 import { shallow } from "enzyme";
 import Badge from '@material-ui/core/Badge';
 import { Header } from './Header';
-import { getRegion, clearRegion, getLoggedUser } from './services/ProfileService';
-import { currentUser } from "../test/userHelper";
+import { getRegion, clearRegion } from './services/ProfileService';
 
 jest.mock('./services/ProfileService');
 
@@ -12,7 +11,6 @@ const createComponent = (props) => shallow(<Header history={history} {...props} 
 
 describe('Header', () => {
   beforeEach(() => {
-    getLoggedUser.mockResolvedValue(currentUser);
     window.location.assign = jest.fn();
   });
 
@@ -56,12 +54,11 @@ describe('Header', () => {
     const header = createComponent();
 
     header.find('#home-button').simulate('click');
-    
+
     expect(history.push).toHaveBeenCalledWith('/libraries/bh');
   });
 
   it('redirects to add book page when clicking on add book button', () => {
-    getRegion.mockReturnValueOnce('bh');
     const header = createComponent();
 
     header.find('#add-book-button').simulate('click');
@@ -70,12 +67,12 @@ describe('Header', () => {
   });
 
   it('has a badge with the borrowed book count in my books button', async () => {
-    getRegion.mockReturnValueOnce('bh');
-    const header = await createComponent();
+    const borrowedBooksCount = 5;
+    const header = await createComponent({ borrowedBooksCount });
 
     const badge = header.find('#my-books-button').find(Badge);
 
     expect(badge.exists()).toBeTruthy();
-    expect(badge.props().badgeContent).toEqual(currentUser.borrowed_books_count);
+    expect(badge.props().badgeContent).toEqual(borrowedBooksCount);
   });
 });
