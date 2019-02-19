@@ -3,7 +3,11 @@ import Book from './Book';
 import { shallow } from 'enzyme';
 import Button from '@material-ui/core/Button';
 import { currentUser } from '../../test/userHelper';
-import { someBook, someBookWithAvailableCopies, someBookWithNoAvailableCopies, someBookWithACopyFromMe } from '../../test/booksHelper';
+import { someBook,
+  someBookWithAvailableCopies,
+  someBookWithNoAvailableCopies,
+  someBookWithACopyFromMe,
+  someBookThatCanBeAddedToWaitlist } from '../../test/booksHelper';
 import { borrowCopy, returnBook } from '../services/BookService';
 
 jest.mock('../services/BookService');
@@ -21,7 +25,15 @@ expect.extend({
             && !received.find(Button).hasClass('btn-borrow')
             && received.find(Button).hasClass('btn-return');
         return { pass, message: () => `expected component to have a return button` }
-    }
+    },
+
+    toHaveJoinWaitlistButton(received) {
+      const button = received.find(Button);
+      const pass = button.exists()
+          && button.hasClass('btn-waitlist')
+          && button.length === 1;
+      return { pass, message: () => `expected component to have a waitlist button` }
+  }
 });
 
 const createComponent = (book) => shallow(<Book book={book} library="bh" />);
@@ -104,6 +116,13 @@ describe('Book', () => {
 
         expect(returnBook).toHaveBeenCalledWith(book);
     });
+
+    it('shows the join waitlist button when book can be added to waitlist', async () => {
+      const book = someBookThatCanBeAddedToWaitlist();
+      const bookComponent = createComponent(book);
+
+      expect(bookComponent).toHaveJoinWaitlistButton();
+  });
 
     it('does not show the buttons when the book does not have available copies', () => {
         const book = someBookWithNoAvailableCopies();

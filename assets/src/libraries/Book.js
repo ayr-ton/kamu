@@ -11,6 +11,7 @@ export default class Book extends Component {
 			zDepth: 1,
 			available: props.book.isAvailable(),
 			borrowedByMe: props.book.belongsToUser(),
+			canBeAddedToWaitlist: props.book.canBeAddedToWaitlist(),
 			open: false
 		};
 
@@ -44,6 +45,8 @@ export default class Book extends Component {
 			return <Button className="btn-return" onClick={this._return}>Return</Button>;
 		} else if (this.state.available) {
 			return <Button className="btn-borrow" onClick={this._borrow}>Borrow</Button>;
+		} else if (this.state.canBeAddedToWaitlist) {
+			return <Button className="btn-waitlist">Join the waitlist</Button>;
 		}
 		return null;
 	}
