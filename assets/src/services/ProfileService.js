@@ -1,16 +1,7 @@
 import { fetchFromAPI } from './helpers';
 
 export const getLoggedUser = () => {
-	const user = JSON.parse(sessionStorage.getItem('user'));
-	if (user) {
-		return Promise.resolve(user);
-	}
-
-	return fetchFromAPI('/profile').then(data => {
-		const user = data.user;
-		sessionStorage.setItem('user', JSON.stringify(user));
-		return user;
-	});
+	return fetchFromAPI('/profile').then(data => data.user);
 };
 
 export const getRegion = () => sessionStorage.getItem('region');

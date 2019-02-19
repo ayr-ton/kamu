@@ -1,14 +1,10 @@
 import { getLoggedUser, getRegion, setRegion, clearRegion } from './ProfileService';
 import { fetchFromAPI } from './helpers';
+import { currentUser } from '../../test/userHelper';
 
 jest.mock('./helpers');
 
 const region = 'quito';
-const user = {
-    username: "currentuser@example.com",
-    email: "currentuser@example.com",
-    image_url: ""
-};
 
 describe('Profile Service', () => {
     beforeEach(() => {
@@ -16,20 +12,12 @@ describe('Profile Service', () => {
         sessionStorage.clear();
     });
 
-    it("should get the current user from session storage", () => {
-        sessionStorage.setItem('user', JSON.stringify(user));
-
-        return getLoggedUser().then((userReturned) => {
-            expect(userReturned).toEqual(user);
-        });
-    });
-
-    it("should get the current user from the API when not present in session storage", () => {
-        fetchFromAPI.mockResolvedValue({ user });
+    it("gets the current user from the API", () => {
+        fetchFromAPI.mockResolvedValue({ user: currentUser });
 
         return getLoggedUser().then((userReturned) => {
             expect(fetchFromAPI).toHaveBeenCalledWith('/profile');
-            expect(userReturned).toEqual(user);
+            expect(userReturned).toEqual(currentUser);
         });
     });
 
