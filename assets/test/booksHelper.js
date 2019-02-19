@@ -1,7 +1,7 @@
 import Book from "../src/models/Book";
 import { currentUser, someUser } from './userHelper';
 
-export const someBook = (copies = []) => {
+export const someBook = (copies = [], waitlist_users = []) => {
   let book = new Book();
 
   book.id = 1;
@@ -16,7 +16,8 @@ export const someBook = (copies = []) => {
   book.publisher = "Addison-Wesley Professional";
 
   book.copies = copies;
-  
+  book.waitlist_users = waitlist_users;
+
   return book;
 }
 
@@ -40,3 +41,5 @@ export const someBookWithACopyFromMe = () => someBook([
     user: currentUser
   }
 ]);
+
+export const someBookThatCanBeAddedToWaitlist = () => someBookWithNoAvailableCopies();
