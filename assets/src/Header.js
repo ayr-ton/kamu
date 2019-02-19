@@ -8,6 +8,7 @@ import { clearRegion, getRegion } from './services/ProfileService';
 import { HOME_URL, ADMIN_URL, MY_BOOKS_URL, ADD_BOOK_URL, LIBRARY_URL_PREFIX } from './utils/constants';
 
 const redirectExternal = (url) => window.location.assign(url);
+const getHomeEndpoint = () => getRegion() ? `${LIBRARY_URL_PREFIX}/${getRegion()}` : HOME_URL;
 
 class Header extends Component {
 	redirect(url) {
@@ -26,7 +27,7 @@ class Header extends Component {
 
 						{this.props.showMenu && (
 							<div className="header-menu">
-								<IconButton title="Library home" id="home-button" onClick={() => this.redirect(`${LIBRARY_URL_PREFIX}/${getRegion()}`) }>
+								<IconButton title="Library home" id="home-button" onClick={() => this.redirect(getHomeEndpoint()) }>
 									<Icon className="fa fa-home" />
 								</IconButton>
 

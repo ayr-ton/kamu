@@ -12,6 +12,7 @@ const createComponent = (props) => shallow(<Header history={history} {...props} 
 describe('Header', () => {
   beforeEach(() => {
     window.location.assign = jest.fn();
+    jest.resetAllMocks();
   });
 
   it('clears the region and redirects to home when clicking change region', () => {
@@ -50,12 +51,21 @@ describe('Header', () => {
   });
 
   it('redirects to library page when clicking on home button', () => {
-    getRegion.mockReturnValueOnce('bh');
+    getRegion.mockReturnValue('bh');
     const header = createComponent();
 
     header.find('#home-button').simulate('click');
 
     expect(history.push).toHaveBeenCalledWith('/libraries/bh');
+  });
+
+  it('redirects to home page when clicking on home button and no region is set', () => {
+    getRegion.mockReturnValue(null);
+    const header = createComponent();
+
+    header.find('#home-button').simulate('click');
+
+    expect(history.push).toHaveBeenCalledWith('/');
   });
 
   it('redirects to add book page when clicking on add book button', () => {

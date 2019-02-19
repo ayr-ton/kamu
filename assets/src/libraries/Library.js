@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { getBooksByPage } from '../services/BookService';
 import BookList from './BookList';
 import SearchBar from '../utils/filters/SearchBar';
+import { setRegion } from '../services/ProfileService';
 
 class Library extends Component {
   constructor(props) {
@@ -19,6 +20,10 @@ class Library extends Component {
 
     this.loadBooks = this.loadBooks.bind(this);
     this.searchTermChanged = this.searchTermChanged.bind(this);
+  }
+
+  componentDidMount() {
+    setRegion(this.props.slug);
   }
 
   async loadBooks() {
