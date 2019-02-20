@@ -29,11 +29,6 @@ describe('Header', () => {
     expect(header.find('.header-menu').exists()).toBeTruthy();
 	});
 
-  it('does not display the menu when showMenu is false', () => {
-    const header = createComponent({ showMenu: false });
-    expect(header.find('.header-menu').exists()).toBeFalsy();
-  });
-
   it('redirects to my books page when clicking on my books', () => {
     const header = createComponent();
 
