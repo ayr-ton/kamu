@@ -15,7 +15,7 @@ function Header({ showMenu, borrowedBooksCount, history }) {
   return (
     <AppBar	className="header">
       <Toolbar>
-        <a href={HOME_URL} className="header-content">
+        <a href="#" className="header-content" onClick={(e) => { e.preventDefault(); redirect(getHomeEndpoint()); }}>
           <img src="/static/images/logo.svg" alt="Kamu logo" />
         </a>
 
@@ -23,11 +23,11 @@ function Header({ showMenu, borrowedBooksCount, history }) {
 
         {showMenu && (
           <div className="header-menu">
-            <IconButton title="Library home" id="home-button" onClick={() => redirect(getHomeEndpoint()) }>
+            <IconButton title="Library home" id="home-button" onClick={() => redirect(getHomeEndpoint())}>
               <Icon className="fa fa-home" />
             </IconButton>
 
-            <IconButton title="My books" id="my-books-button" onClick={() => redirect(MY_BOOKS_URL) }>
+            <IconButton title="My books" id="my-books-button" onClick={() => redirect(MY_BOOKS_URL)}>
               <Badge badgeContent={borrowedBooksCount} color="secondary">
                 <Icon className="fa fa-book-reader" />
               </Badge>
