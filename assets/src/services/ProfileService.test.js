@@ -9,7 +9,7 @@ const region = 'quito';
 describe('Profile Service', () => {
     beforeEach(() => {
         jest.resetAllMocks();
-        sessionStorage.clear();
+        localStorage.clear();
     });
 
     it("gets the current user from the API", () => {
@@ -22,18 +22,18 @@ describe('Profile Service', () => {
     });
 
     it("should get the region from session storage", () => {
-        sessionStorage.setItem('region', region);
+        localStorage.setItem('region', region);
 
         expect(getRegion()).toEqual(region);
     });
 
     it("should set the region in session storage", () => {
         setRegion(region);
-        expect(sessionStorage.getItem('region')).toEqual(region);
+        expect(localStorage.getItem('region')).toEqual(region);
     });
 
     it("should clear the region in session storage", () => {
         clearRegion();
-        expect(sessionStorage.getItem('region')).toBeNull;
+        expect(localStorage.getItem('region')).toBeNull;
     });
 });

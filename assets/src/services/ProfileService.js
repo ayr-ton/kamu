@@ -4,12 +4,12 @@ export const getLoggedUser = () => {
 	return fetchFromAPI('/profile').then(data => data.user);
 };
 
-export const getRegion = () => sessionStorage.getItem('region');
+export const getRegion = () => localStorage.getItem('region');
 
 export const setRegion = (region) => {
-	sessionStorage.setItem('region', region);
+	localStorage.setItem('region', region);
 };
 
 export const clearRegion = () => {
-	sessionStorage.removeItem('region');
+	localStorage.removeItem('region');
 };
