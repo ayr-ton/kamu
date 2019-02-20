@@ -28,19 +28,27 @@ class App extends Component {
       <BrowserRouter>
         <React.Fragment>
           <Header borrowedBooksCount={this.state.user ? this.state.user.borrowed_books_count : 0} />
-            {this.state.user && (
-              <div id="content">
-                <Route exact path="/" render={() => (
-                  <LibraryRedirector>
-                    <LibrarySelector />
-                  </LibraryRedirector>
-                )} />
-                <Route exact path="/my-books" component={MyBooks} />
-                <Route path="/libraries/:slug" render={({ match }) => (
-                  <Library slug={match.params.slug} />
-                )} />
-              </div>
-            )}
+          {this.state.user && (
+            <div id="content">
+              <Route exact path="/" render={() => (
+                <LibraryRedirector>
+                  <LibrarySelector />
+                </LibraryRedirector>
+              )} />
+              <Route exact path="/my-books" component={MyBooks} />
+              <Route path="/libraries/:slug" render={({ match }) => (
+                <Library slug={match.params.slug} />
+              )} />
+            </div>
+          )}
+
+          <Route path="/" render={({location}) => {
+            if (typeof window.ga === 'function') {
+              window.ga('set', 'page', location.pathname + location.search);
+              window.ga('send', 'pageview');
+            }
+            return null;
+          }} />
         </React.Fragment>
       </BrowserRouter>
     );
