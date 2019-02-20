@@ -23,13 +23,13 @@ describe('App', () => {
 
   it('has a header', () => {
     expect(component.find(Header).exists()).toBeTruthy();
-	});
+  });
 
   it('loads the user profile', () => {
     expect(getLoggedUser).toHaveBeenCalled();
-	});
+  });
 
   it('passes the users borrowed books count to the header', () => {
     expect(component.find(Header).props().borrowedBooksCount).toEqual(currentUser.borrowed_books_count);
-	});
+  });
 });
