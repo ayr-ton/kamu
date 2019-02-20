@@ -49,6 +49,13 @@ describe('Library', () => {
     expect(library.find(BookList).props().books).toEqual(mockGetBooksByPageResponse.results);
   });
 
+  it('passes the library slug to the book list component', async () => {
+    const infiniteScroll = library.find(InfiniteScroll);
+    await infiniteScroll.props().loadMore();
+
+    expect(library.find(BookList).props().library).toEqual('bh');
+  });
+
   it('appends the other fetched books to the book list component', async () => {
     const infiniteScroll = library.find(InfiniteScroll);
     await infiniteScroll.props().loadMore();

@@ -16,13 +16,14 @@ describe('Book list', () => {
     const bookList = shallowBookList();
     expect(bookList.exists()).toBeTruthy();
   });
-  
+
   it('should render the list of books', () => {
-    const bookList = shallowBookList({ books });
-    
+    const bookList = shallowBookList({ books, library: 'poa' });
+
     const bookComponents = bookList.find('Book');
-    
+
     expect(bookComponents).toHaveLength(books.length);
     expect(bookComponents.at(0).props().book).toEqual(books[0]);
+    expect(bookComponents.at(0).props().library).toEqual('poa');
   });
 });
