@@ -23,7 +23,8 @@ book_routers = routers.NestedSimpleRouter(library_routers, r'books', lookup='boo
 book_routers.register(r'waitlist', WaitlistViewSet, base_name='waitlist')
 
 urlpatterns = [
-    url(r'^admin/?', admin.site.urls),
+    url(r'^admin$', RedirectView.as_view(url = '/admin/')),
+    url(r'^admin/', admin.site.urls),
     url(r'^api/', include(router.urls)),
     url(r'^api/', include(library_routers.urls)),
     url(r'^api/', include(book_routers.urls)),
