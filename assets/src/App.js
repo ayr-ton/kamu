@@ -31,8 +31,8 @@ class App extends Component {
           <Header borrowedBooksCount={this.state.user ? this.state.user.borrowed_books_count : 0} />
           {this.state.user && (
             <div id="content">
-              <Route exact path="/" render={() => (
-                <LibraryRedirector>
+              <Route exact path="/" render={({ history }) => (
+                <LibraryRedirector history={history}>
                   <LibrarySelector />
                 </LibraryRedirector>
               )} />
