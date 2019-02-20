@@ -6,6 +6,7 @@ import LibraryRedirector from './home/LibraryRedirector';
 import Library from './libraries/Library';
 import MyBooks from './mybooks/MyBooks';
 import { getLoggedUser } from './services/ProfileService';
+import { trackAnalyticsPageView } from './utils/analytics';
 
 class App extends Component {
   constructor(props) {
@@ -41,14 +42,7 @@ class App extends Component {
               )} />
             </div>
           )}
-
-          <Route path="/" render={({location}) => {
-            if (typeof window.ga === 'function') {
-              window.ga('set', 'page', location.pathname + location.search);
-              window.ga('send', 'pageview');
-            }
-            return null;
-          }} />
+          <Route path="/" render={trackAnalyticsPageView} />
         </React.Fragment>
       </BrowserRouter>
     );
