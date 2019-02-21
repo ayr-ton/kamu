@@ -4,6 +4,8 @@ plugins:
     enabled: true
     config:
       python_version: 3
+  pep8:
+    enabled: true
 exclude_patterns:
 - "**/*.test.js"
 - "**/test/"
