@@ -9,6 +9,8 @@ plugins:
 exclude_patterns:
 - "**/*.test.js"
 - "**/test/"
-similar-code:
+checks:
+  similar-code:
+    enabled: true
     config:
       threshold: 3
