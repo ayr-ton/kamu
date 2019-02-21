@@ -14,3 +14,7 @@ checks:
     enabled: true
     config:
       threshold: 3
+  method-lines:
+    enabled: true
+    config:
+      threshold: 40
