@@ -1,8 +1,20 @@
+version: "2"
 plugins:
   bandit:
     enabled: true
     config:
       python_version: 3
+  pep8:
+    enabled: true
 exclude_patterns:
 - "**/*.test.js"
 - "**/test/"
+checks:
+  similar-code:
+    enabled: true
+    config:
+      threshold: 3
+  method-lines:
+    enabled: true
+    config:
+      threshold: 40

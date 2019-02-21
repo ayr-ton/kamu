@@ -36,7 +36,7 @@ describe('Book Service', () => {
         fetchFromAPI.mockResolvedValue(mockLibraries);
 
         return getLibraries().then(data => {
-            expect(fetchFromAPI).toHaveBeenCalledWith('/libraries');
+            expect(fetchFromAPI).toHaveBeenCalledWith('/libraries/');
             expect(data.results).toEqual(mockLibraries.results);
         });
     });

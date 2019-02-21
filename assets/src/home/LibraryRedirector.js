@@ -1,13 +1,18 @@
+import PropTypes from 'prop-types';
 import { getRegion } from '../services/ProfileService';
 
-function LibraryRedirector(props) {
+function LibraryRedirector({ history, children }) {
 	const region = getRegion();
-	if (region != null) {
-		window.location.assign(`/libraries/${region}`);
+	if (region) {
+		history.push(`/libraries/${region}`);
 		return null;
 	}
 
-	return props.children;
+	return children;
 }
+
+LibraryRedirector.propTypes = {
+	history: PropTypes.shape({}).isRequired,
+};
 
 export default LibraryRedirector;

@@ -2,7 +2,7 @@ import React from 'react';
 import SearchBar from './SearchBar'
 import {shallow} from 'enzyme';
 import Close from '@material-ui/icons/Close';
-import { TextField } from '@material-ui/core';
+import TextField from '@material-ui/core/TextField';
 
 describe('SearchBar', () => {
 

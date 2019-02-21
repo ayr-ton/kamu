@@ -1,18 +1,18 @@
 import React from "react";
 import { shallow } from "enzyme";
 import Badge from '@material-ui/core/Badge';
-import Header from "./Header";
-import { getRegion, clearRegion, getLoggedUser } from './services/ProfileService';
-import { currentUser } from "../test/userHelper";
+import { Header } from './Header';
+import { getRegion, clearRegion } from './services/ProfileService';
 
 jest.mock('./services/ProfileService');
 
-const createComponent = (props) => shallow(<Header {...props} />);
+const history = { push: jest.fn() };
+const createComponent = (props) => shallow(<Header history={history} {...props} />);
 
 describe('Header', () => {
   beforeEach(() => {
     window.location.assign = jest.fn();
-    getLoggedUser.mockResolvedValue(currentUser);
+    jest.resetAllMocks();
   });
 
   it('clears the region and redirects to home when clicking change region', () => {
@@ -21,7 +21,7 @@ describe('Header', () => {
     header.find('#change-region-button').simulate('click');
 
     expect(clearRegion).toHaveBeenCalled();
-    expect(window.location.assign).toHaveBeenCalledWith('/');
+    expect(history.push).toHaveBeenCalledWith('/');
 	});
 
 	it('displays the menu', () => {
@@ -29,17 +29,12 @@ describe('Header', () => {
     expect(header.find('.header-menu').exists()).toBeTruthy();
 	});
 
-  it('does not display the menu when showMenu is false', () => {
-    const header = createComponent({ showMenu: false });
-    expect(header.find('.header-menu').exists()).toBeFalsy();
-  });
-
   it('redirects to my books page when clicking on my books', () => {
     const header = createComponent();
 
     header.find('#my-books-button').simulate('click');
 
-    expect(window.location.assign).toHaveBeenCalledWith('/my-books');
+    expect(history.push).toHaveBeenCalledWith('/my-books');
   });
 
   it('redirects to admin page when clicking on admin button', () => {
@@ -51,16 +46,24 @@ describe('Header', () => {
   });
 
   it('redirects to library page when clicking on home button', () => {
-    getRegion.mockReturnValueOnce('bh');
+    getRegion.mockReturnValue('bh');
     const header = createComponent();
 
     header.find('#home-button').simulate('click');
 
-    expect(window.location.assign).toHaveBeenCalledWith('/libraries/bh');
+    expect(history.push).toHaveBeenCalledWith('/libraries/bh');
+  });
+
+  it('redirects to home page when clicking on home button and no region is set', () => {
+    getRegion.mockReturnValue(null);
+    const header = createComponent();
+
+    header.find('#home-button').simulate('click');
+
+    expect(history.push).toHaveBeenCalledWith('/');
   });
 
   it('redirects to add book page when clicking on add book button', () => {
-    getRegion.mockReturnValueOnce('bh');
     const header = createComponent();
 
     header.find('#add-book-button').simulate('click');
@@ -69,12 +72,12 @@ describe('Header', () => {
   });
 
   it('has a badge with the borrowed book count in my books button', async () => {
-    getRegion.mockReturnValueOnce('bh');
-    const header = await createComponent();
+    const borrowedBooksCount = 5;
+    const header = await createComponent({ borrowedBooksCount });
 
     const badge = header.find('#my-books-button').find(Badge);
 
     expect(badge.exists()).toBeTruthy();
-    expect(badge.props().badgeContent).toEqual(currentUser.borrowed_books_count);
+    expect(badge.props().badgeContent).toEqual(borrowedBooksCount);
   });
 });

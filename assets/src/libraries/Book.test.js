@@ -44,7 +44,6 @@ describe('Book', () => {
         returnBook.mockResolvedValue();
         joinWaitlist.mockResolvedValue();
 
-        sessionStorage.clear();
         global.currentUser = currentUser;
 
         global.window.ga = function() { }

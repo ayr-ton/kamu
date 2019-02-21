@@ -3,11 +3,13 @@ import InfiniteScroll from 'react-infinite-scroller';
 import { shallow } from 'enzyme';
 import Library from './Library';
 import { getBooksByPage } from '../services/BookService';
+import { setRegion } from '../services/ProfileService';
 import { mockGetBooksByPageResponse, mockGetBooksByPageEmptyResponse } from '../../test/mockBookService';
 import BookList from './BookList';
 import SearchBar from '../utils/filters/SearchBar';
 
 jest.mock('../services/BookService');
+jest.mock('../services/ProfileService');
 
 const createComponent = (props) => shallow(<Library slug='bh' {...props} />);
 
@@ -22,11 +24,11 @@ describe('Library', () => {
   afterEach(() => {
     jest.resetAllMocks();
   });
-  
+
   it('has the book list inside an infinite scroll', () => {
     expect(library.find(InfiniteScroll).find(BookList).exists()).toBeTruthy();
   });
-  
+
   it('fetches the first page of books for that library from infinite scroll component', () => {
     const infiniteScroll = library.find(InfiniteScroll);
     infiniteScroll.props().loadMore();
@@ -131,5 +133,9 @@ describe('Library', () => {
     await infiniteScroll.props().loadMore();
 
     expect(library.state().books).toEqual(mockGetBooksByPageResponse.results);
+  });
+
+  it('sets the library in the users preferences', () => {
+    expect(setRegion).toHaveBeenCalledWith('bh');
   });
 });
