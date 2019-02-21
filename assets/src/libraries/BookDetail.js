@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
-import { IconButton, Dialog, Avatar, DialogContent, DialogActions } from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
+import Dialog from '@material-ui/core/Dialog';
+import Avatar from '@material-ui/core/Avatar';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
 import '../../css/ModalBook.css';
 import moment from 'moment';
 import Clear from '@material-ui/icons/Clear';

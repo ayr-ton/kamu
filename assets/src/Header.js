@@ -2,8 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import AppBar from "@material-ui/core/AppBar";
 import IconButton from "@material-ui/core/IconButton";
+import Toolbar from '@material-ui/core/Toolbar';
+import Icon from '@material-ui/core/Icon';
+import Badge from '@material-ui/core/Badge';
 import { withRouter } from 'react-router';
-import { Toolbar, Icon, Badge } from "@material-ui/core";
 import { clearRegion, getRegion } from './services/ProfileService';
 import { HOME_URL, ADMIN_URL, MY_BOOKS_URL, ADD_BOOK_URL, LIBRARY_URL_PREFIX } from './utils/constants';
 
