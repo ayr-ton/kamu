@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { CircularProgress } from '@material-ui/core';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import InfiniteScroll from 'react-infinite-scroller';
 import PropTypes from 'prop-types';
 import { getBooksByPage } from '../services/BookService';
