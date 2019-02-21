@@ -1,4 +1,13 @@
 version: "2"
+checks:
+  similar-code:
+    enabled: true
+    config:
+      threshold: 3
+  method-lines:
+    enabled: true
+    config:
+      threshold: 40
 plugins:
   bandit:
     enabled: true
@@ -9,12 +18,3 @@ plugins:
 exclude_patterns:
 - "**/*.test.js"
 - "**/test/"
-checks:
-  similar-code:
-    enabled: true
-    config:
-      threshold: 3
-  method-lines:
-    enabled: true
-    config:
-      threshold: 40
