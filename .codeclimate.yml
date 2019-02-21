@@ -1,3 +1,4 @@
+version: "2"
 plugins:
   bandit:
     enabled: true
@@ -6,3 +7,6 @@ plugins:
 exclude_patterns:
 - "**/*.test.js"
 - "**/test/"
+similar-code:
+    config:
+      threshold: 3
