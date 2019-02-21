@@ -39,7 +39,8 @@
     "react-event-listener": "^0.6.5",
     "react-infinite-scroller": "^1.2.4",
     "react-motion": "^0.4.4",
-    "style-loader": "^0.13.1"
+    "style-loader": "^0.13.1",
+    "url-parse": "^1.4.4"
   },
   "devDependencies": {
     "babel": "^6.3.26",

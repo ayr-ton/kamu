@@ -4,6 +4,13 @@ import Button from '@material-ui/core/Button';
 import BookDetail from './BookDetail';
 import { borrowCopy, returnBook, joinWaitlist } from '../services/BookService';
 
+import parse from 'url-parse';
+
+const isWaitlistFeatureActive = () => {
+	const { query } = parse(window.location.href, true);
+	return 'waitlist' in query && query.waitlist === 'active';
+}
+
 export default class Book extends Component {
 	constructor(props) {
 		super(props);
@@ -11,7 +18,7 @@ export default class Book extends Component {
 			zDepth: 1,
 			available: props.book.isAvailable(),
 			borrowedByMe: props.book.belongsToUser(),
-			canBeAddedToWaitlist: props.book.canBeAddedToWaitlist(),
+			canBeAddedToWaitlist: isWaitlistFeatureActive() && props.book.canBeAddedToWaitlist(),
 			open: false
 		};
 

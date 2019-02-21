@@ -118,23 +118,42 @@ describe('Book', () => {
         expect(returnBook).toHaveBeenCalledWith(book);
     });
 
-    it('shows the join waitlist button when book can be added to waitlist', async () => {
-      const book = someBookThatCanBeAddedToWaitlist();
-      const bookComponent = createComponent(book);
+    describe('if waitlist feature is enabled', () => {
+      beforeAll(() => {
+        window.history.pushState({}, 'Testing with Waitlist Enabled', '/?waitlist=active');
+      });
 
-      expect(bookComponent.state('canBeAddedToWaitlist')).toBeTruthy();
-      expect(bookComponent).toHaveJoinWaitlistButton();
+      it('shows the join waitlist button when book can be added to waitlist', async () => {
+        const book = someBookThatCanBeAddedToWaitlist();
+        const bookComponent = createComponent(book);
+
+        expect(bookComponent.state('canBeAddedToWaitlist')).toBeTruthy();
+        expect(bookComponent).toHaveJoinWaitlistButton();
+      });
+
+      it('calls the joinWaitlist method when clicking on the join the waitlist button', async () => {
+        const book = someBookThatCanBeAddedToWaitlist();
+        const bookComponent = createComponent(book);
+
+        await bookComponent.find(Button).simulate('click');
+
+        expect(joinWaitlist).toHaveBeenCalledWith('bh', book);
+        expect(bookComponent.state('canBeAddedToWaitlist')).toBeFalsy();
+      });
     });
 
-    it('calls the joinWaitlist method when clicking on the join the waitlist button', async () => {
-      const book = someBookThatCanBeAddedToWaitlist();
-      const bookComponent = createComponent(book);
+    describe('if waitlist feature is disabled', () => {
+      beforeAll(() => {
+        window.history.pushState({}, 'Testing with Waitlist Disabled', '/');
+      });
 
-      await bookComponent.find(Button).simulate('click');
+      it('does not show the join waitlist button when book can be added to waitlist', async () => {
+        const book = someBookThatCanBeAddedToWaitlist();
+        const bookComponent = createComponent(book);
 
-      expect(joinWaitlist).toHaveBeenCalledWith('bh', book);
-      expect(bookComponent.state('canBeAddedToWaitlist')).toBeFalsy();
-  });
+        expect(bookComponent).not.toHaveJoinWaitlistButton();
+      });
+    });
 
     it('does not show the buttons when the book does not have available copies, ', () => {
         const book = someBookWithNoAvailableCopies();
