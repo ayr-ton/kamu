@@ -3,7 +3,7 @@ checks:
   similar-code:
     enabled: true
     config:
-      threshold: 3
+      threshold: 4
   method-lines:
     enabled: true
     config:
