@@ -13,7 +13,7 @@ const books = [
 
 describe('Book list', () => {
   it('renders without crashing', () => {
-    const bookList = shallowBookList();
+    const bookList = shallowBookList({ books: [] });
     expect(bookList.exists()).toBeTruthy();
   });
 
