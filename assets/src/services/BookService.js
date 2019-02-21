@@ -55,3 +55,11 @@ export const returnBook = (book) => {
     updateBookCopyUser(book, copyID, null);
   });
 };
+
+export const joinWaitlist = async (library, book) => {
+  return fetchFromAPI(`/libraries/${library}/books/${book.id}/waitlist/`, 'POST').then((data) => {
+    if ('waitlist_item' in data) return Promise.resolve(data.waitlist_item);
+
+    return Promise.reject({ message: 'Request was successful, but no data was returned' });
+  }).catch((error) => Promise.reject(error));
+}

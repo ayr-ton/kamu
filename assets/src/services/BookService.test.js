@@ -1,6 +1,6 @@
-import { getLibraries, getBooksByPage, getMyBooks, borrowCopy, returnBook } from "./BookService";
+import { getLibraries, getBooksByPage, getMyBooks, borrowCopy, returnBook, joinWaitlist } from "./BookService";
 import { fetchFromAPI } from "./helpers";
-import { someBookWithAvailableCopies, someBookWithACopyFromMe, someBookWithNoAvailableCopies } from "../../test/booksHelper";
+import { someBookWithAvailableCopies, someBookWithACopyFromMe, someBookWithNoAvailableCopies, someBook } from "../../test/booksHelper";
 import { currentUser, someUser } from '../../test/userHelper';
 
 const mockLibraries = {
@@ -145,4 +145,45 @@ describe('Book Service', () => {
         })
     });
 
+    describe('Join the Waitlist', () => {
+      it('should call the add to waitlist endpoint for the book and library informed', async () => {
+          const book = someBook();
+
+          fetchFromAPI.mockResolvedValue({ waitlist_item: { book } });
+
+          await joinWaitlist('bh', book);
+          expect(fetchFromAPI).toHaveBeenCalledWith(`/libraries/bh/books/${book.id}/waitlist/`, 'POST');
+      });
+
+      it('should return the waitlisted item if the request was successful and contains that info', async () => {
+        const book = someBook();
+
+        fetchFromAPI.mockResolvedValue({ waitlist_item: 'mocked_waitlisted_item' });
+
+        const result = await joinWaitlist('bh', book);
+        expect(result).toEqual('mocked_waitlisted_item');
+      });
+
+      it('should reject the promise if the request was successful but didnt contain waitlist item data', async () => {
+        const book = someBook();
+        fetchFromAPI.mockResolvedValue({});
+
+        try {
+          await joinWaitlist('bh', book);
+        } catch (error) {
+          expect(error).toEqual({ message: 'Request was successful, but no data was returned' });
+        }
+      });
+
+      it('should reject the promise if the request was unsuccessful ', async () => {
+        const book = someBook();
+        fetchFromAPI.mockRejectedValue({ status: 404 });
+
+        try {
+          await joinWaitlist('bh', book);
+        } catch (error) {
+          expect(error).toEqual({ status: 404 });
+        }
+      });
+  });
 });

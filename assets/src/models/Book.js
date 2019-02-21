@@ -26,4 +26,12 @@ export default class Book {
 
 		return null;
 	}
+
+	isUserInWaitlist() {
+		return this.waitlist_users.filter(user => user.username === currentUser.username).length > 0;
+	}
+
+	canBeAddedToWaitlist() {
+		return !this.isAvailable() && !this.isUserInWaitlist();
+	}
 }

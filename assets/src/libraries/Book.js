@@ -2,7 +2,14 @@ import React, { Component } from 'react';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import BookDetail from './BookDetail';
-import { borrowCopy, returnBook } from '../services/BookService';
+import { borrowCopy, returnBook, joinWaitlist } from '../services/BookService';
+
+import parse from 'url-parse';
+
+const isWaitlistFeatureActive = () => {
+	const { query } = parse(window.location.href, true);
+	return 'waitlist' in query && query.waitlist === 'active';
+}
 
 export default class Book extends Component {
 	constructor(props) {
@@ -11,6 +18,7 @@ export default class Book extends Component {
 			zDepth: 1,
 			available: props.book.isAvailable(),
 			borrowedByMe: props.book.belongsToUser(),
+			canBeAddedToWaitlist: isWaitlistFeatureActive() && props.book.canBeAddedToWaitlist(),
 			open: false
 		};
 
@@ -19,6 +27,7 @@ export default class Book extends Component {
 		this._actionButtons = this._actionButtons.bind(this);
 		this._borrow = this._borrow.bind(this);
 		this._return = this._return.bind(this);
+		this._waitlist = this._waitlist.bind(this);
 		this.changeOpenStatus = this.changeOpenStatus.bind(this);
 	}
 
@@ -39,11 +48,20 @@ export default class Book extends Component {
 		});
 	}
 
+	_waitlist() {
+		joinWaitlist(this.props.library, this.props.book).then(() => {
+			this.setState({ canBeAddedToWaitlist: false });
+			window.ga('send', 'event', 'JoinWaitlist', this.props.book.title, this.props.library);
+		});
+  }
+
 	_actionButtons() {
 		if (this.state.borrowedByMe) {
 			return <Button className="btn-return" onClick={this._return}>Return</Button>;
 		} else if (this.state.available) {
 			return <Button className="btn-borrow" onClick={this._borrow}>Borrow</Button>;
+		} else if (this.state.canBeAddedToWaitlist) {
+			return <Button className="btn-waitlist" onClick={this._waitlist}>Join the waitlist</Button>;
 		}
 		return null;
 	}

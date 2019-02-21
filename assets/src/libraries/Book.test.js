@@ -3,8 +3,12 @@ import Book from './Book';
 import { shallow } from 'enzyme';
 import Button from '@material-ui/core/Button';
 import { currentUser } from '../../test/userHelper';
-import { someBook, someBookWithAvailableCopies, someBookWithNoAvailableCopies, someBookWithACopyFromMe } from '../../test/booksHelper';
-import { borrowCopy, returnBook } from '../services/BookService';
+import { someBook,
+  someBookWithAvailableCopies,
+  someBookWithNoAvailableCopies,
+  someBookWithACopyFromMe,
+  someBookThatCanBeAddedToWaitlist } from '../../test/booksHelper';
+import { borrowCopy, returnBook, joinWaitlist } from '../services/BookService';
 
 jest.mock('../services/BookService');
 
@@ -21,7 +25,15 @@ expect.extend({
             && !received.find(Button).hasClass('btn-borrow')
             && received.find(Button).hasClass('btn-return');
         return { pass, message: () => `expected component to have a return button` }
-    }
+    },
+
+    toHaveJoinWaitlistButton(received) {
+      const button = received.find(Button);
+      const pass = button.exists()
+          && button.hasClass('btn-waitlist')
+          && button.length === 1;
+      return { pass, message: () => `expected component to have a waitlist button` }
+  }
 });
 
 const createComponent = (book) => shallow(<Book book={book} library="bh" />);
@@ -30,6 +42,7 @@ describe('Book', () => {
     beforeEach(() => {
         borrowCopy.mockResolvedValue();
         returnBook.mockResolvedValue();
+        joinWaitlist.mockResolvedValue();
 
         global.currentUser = currentUser;
 
@@ -104,7 +117,44 @@ describe('Book', () => {
         expect(returnBook).toHaveBeenCalledWith(book);
     });
 
-    it('does not show the buttons when the book does not have available copies', () => {
+    describe('if waitlist feature is enabled', () => {
+      beforeAll(() => {
+        window.history.pushState({}, 'Testing with Waitlist Enabled', '/?waitlist=active');
+      });
+
+      it('shows the join waitlist button when book can be added to waitlist', async () => {
+        const book = someBookThatCanBeAddedToWaitlist();
+        const bookComponent = createComponent(book);
+
+        expect(bookComponent.state('canBeAddedToWaitlist')).toBeTruthy();
+        expect(bookComponent).toHaveJoinWaitlistButton();
+      });
+
+      it('calls the joinWaitlist method when clicking on the join the waitlist button', async () => {
+        const book = someBookThatCanBeAddedToWaitlist();
+        const bookComponent = createComponent(book);
+
+        await bookComponent.find(Button).simulate('click');
+
+        expect(joinWaitlist).toHaveBeenCalledWith('bh', book);
+        expect(bookComponent.state('canBeAddedToWaitlist')).toBeFalsy();
+      });
+    });
+
+    describe('if waitlist feature is disabled', () => {
+      beforeAll(() => {
+        window.history.pushState({}, 'Testing with Waitlist Disabled', '/');
+      });
+
+      it('does not show the join waitlist button when book can be added to waitlist', async () => {
+        const book = someBookThatCanBeAddedToWaitlist();
+        const bookComponent = createComponent(book);
+
+        expect(bookComponent).not.toHaveJoinWaitlistButton();
+      });
+    });
+
+    it('does not show the buttons when the book does not have available copies, ', () => {
         const book = someBookWithNoAvailableCopies();
         const bookComponent = createComponent(book);
 

@@ -39,6 +39,7 @@ class BookCopySerializer(serializers.ModelSerializer):
 class BookSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
     copies = serializers.SerializerMethodField()
+    waitlist_users = serializers.SerializerMethodField()
 
     class Meta:
         model = Book
@@ -50,6 +51,14 @@ class BookSerializer(serializers.ModelSerializer):
         else:
             copies = obj.bookcopy_set.all()
         serializer = BookCopySerializer(copies, many=True, context=self.context)
+        return serializer.data
+
+    def get_waitlist_users(self, obj):
+        if 'library' in self.context:
+            waitlist_items = obj.waitlistitem_set.filter(library=self.context['library'])
+        else:
+            waitlist_items = obj.waitlistitem_set.all()
+        serializer = UserSerializer(list(map(lambda item: item.user, waitlist_items)), many=True)
         return serializer.data
 
 
