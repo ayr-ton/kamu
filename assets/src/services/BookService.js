@@ -22,7 +22,7 @@ const formatBooksRequest = (data) => {
   };
 };
 
-export const getLibraries = () => fetchFromAPI('/libraries').then(data => data);
+export const getLibraries = () => fetchFromAPI('/libraries/').then(data => data);
 
 export const getBooksByPage = (librarySlug, page, filter = '') => 
   fetchFromAPI(`/libraries/${librarySlug}/books/?page=${page}&book_title=${filter}&book_author=${filter}`).then(data => {

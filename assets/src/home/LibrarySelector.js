@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+import { withRouter } from 'react-router';
 import { getLibraries } from '../services/BookService';
-import { setRegion } from '../services/ProfileService';
 
-const selectLibrary = (library) => {
-	setRegion(library.slug);
-	window.location.assign(`/libraries/${library.slug}`);
-};
-
-export default class LibrarySelector extends Component {
+class LibrarySelector extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -35,7 +31,7 @@ export default class LibrarySelector extends Component {
 						<ListItem
 							className='library'
 							key={library.id}
-							onClick={() => selectLibrary(library)}
+							onClick={() => this.props.history.push(`/libraries/${library.slug}`)}
 							button
 						>
 							{library.name}
@@ -46,3 +42,10 @@ export default class LibrarySelector extends Component {
 		);
 	}
 }
+
+LibrarySelector.propTypes = {
+	history: PropTypes.shape({}).isRequired,
+};
+
+export { LibrarySelector };
+export default withRouter(LibrarySelector);
