@@ -25,11 +25,12 @@ class App extends Component {
   }
 
   render() {
+    const { user } = this.state;
     return (
       <BrowserRouter>
         <React.Fragment>
-          <Header borrowedBooksCount={this.state.user ? this.state.user.borrowed_books_count : 0} />
-          {this.state.user && (
+          <Header borrowedBooksCount={user ? user.borrowed_books_count : 0} />
+          {user && (
             <div id="content">
               <Route
                 exact
