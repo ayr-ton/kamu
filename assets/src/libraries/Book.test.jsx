@@ -48,7 +48,7 @@ describe('Book', () => {
 
     global.currentUser = currentUser;
 
-    global.window.ga = function () { };
+    global.window.ga = () => { };
   });
 
   it('should contain the book cover as background image', () => {
