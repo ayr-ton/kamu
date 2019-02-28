@@ -44,6 +44,10 @@ class Library extends Component {
       hasNextPage: !!booksResponse.next,
       isLoading: false,
     });
+
+    this.props.history.push({
+      search: searchTerm ? new URLSearchParams({ q: searchTerm }).toString() : null
+    });
   }
 
   searchTermChanged(searchTerm) {
@@ -80,6 +84,10 @@ class Library extends Component {
 
 Library.propTypes = {
   slug: PropTypes.string.isRequired,
+<<<<<<< HEAD:assets/src/libraries/Library.jsx
+=======
+  history: PropTypes.shape({}).isRequired,
+>>>>>>> Track the search term on the URL:assets/src/libraries/Library.js
 };
 
 export default Library;
