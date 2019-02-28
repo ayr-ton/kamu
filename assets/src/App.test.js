@@ -3,11 +3,11 @@ import { shallow } from 'enzyme';
 import Header from './Header';
 import App from './App';
 import { getLoggedUser } from './services/ProfileService';
-import { currentUser } from "../test/userHelper";
+import { currentUser } from '../test/userHelper';
 
 jest.mock('./services/ProfileService');
 
-const createComponent = (props) => shallow(<App {...props} />);
+const createComponent = props => shallow(<App {...props} />);
 
 describe('App', () => {
   let component;

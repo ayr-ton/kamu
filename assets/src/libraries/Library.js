@@ -33,7 +33,7 @@ class Library extends Component {
 
     const booksResponse = await getBooksByPage(this.props.slug, this.state.page, this.state.searchTerm) || {};
     if (booksResponse && booksResponse.results) {
-      this.setState((state) => ({
+      this.setState(state => ({
         books: state.books.concat(booksResponse.results),
         page: state.page + 1,
       }));
@@ -65,12 +65,12 @@ class Library extends Component {
           hasMore={this.state.hasNextPage}
           threshold={950}
           loader={(
-            <div style={{padding: 10, textAlign: "center"}} key='booklist-loader'>
+            <div style={{ padding: 10, textAlign: 'center' }} key="booklist-loader">
               <CircularProgress />
             </div>
           )}
         >
-          <BookList books={this.state.books} library={this.props.slug}/>
+          <BookList books={this.state.books} library={this.props.slug} />
         </InfiniteScroll>
       </React.Fragment>
     );
@@ -78,7 +78,7 @@ class Library extends Component {
 }
 
 Library.propTypes = {
-  slug: PropTypes.string.isRequired
+  slug: PropTypes.string.isRequired,
 };
 
 export default Library;

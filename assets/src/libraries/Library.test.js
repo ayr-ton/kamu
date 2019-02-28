@@ -11,7 +11,7 @@ import SearchBar from '../utils/filters/SearchBar';
 jest.mock('../services/BookService');
 jest.mock('../services/ProfileService');
 
-const createComponent = (props) => shallow(<Library slug='bh' {...props} />);
+const createComponent = props => shallow(<Library slug="bh" {...props} />);
 
 describe('Library', () => {
   let library;
@@ -81,7 +81,7 @@ describe('Library', () => {
   it('tells the infinite scroller when there arent more pages available', async () => {
     getBooksByPage.mockResolvedValue({
       ...mockGetBooksByPageResponse,
-      next: null
+      next: null,
     });
 
     const infiniteScroll = library.find(InfiniteScroll);
