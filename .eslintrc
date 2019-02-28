@@ -1,6 +1,8 @@
 {
-  "extends": "eslint:recommended",
-  "parser": "babel-eslint",
+  "extends": [
+    "airbnb",
+    "plugin:jest/recommended"
+  ],
   "env": {
     "es6": true,
     "browser": true,
@@ -13,9 +15,5 @@
   },
   "plugins": [
     "react"
-  ],
-  "rules": {
-    "react/jsx-uses-react": "error",
-    "react/jsx-uses-vars": "error"
-  }
+  ]
 }
