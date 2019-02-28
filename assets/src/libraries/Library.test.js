@@ -11,7 +11,7 @@ import SearchBar from '../utils/filters/SearchBar';
 jest.mock('../services/BookService');
 jest.mock('../services/ProfileService');
 
-const history = { push: jest.fn(), location: { search: null } };
+const history = { replace: jest.fn(), location: { search: null } };
 const createComponent = (props) => shallow(<Library slug='bh' history={history} {...props} />);
 
 describe('Library', () => {
@@ -128,7 +128,7 @@ describe('Library', () => {
     searchBar.props().onChange('test search');
     await infiniteScroll.props().loadMore();
 
-    expect(history.push).toHaveBeenCalledWith({ search: 'q=test+search' });
+    expect(history.replace).toHaveBeenCalledWith({ search: 'q=test+search' });
   });
 
   it('removes the search query from the url when search field is empty', async () => {
@@ -139,7 +139,7 @@ describe('Library', () => {
     searchBar.props().onChange('');
     await infiniteScroll.props().loadMore();
 
-    expect(history.push).toHaveBeenCalledWith({ search: null });
+    expect(history.replace).toHaveBeenCalledWith({ search: null });
   });
 
   it('clears the previous books when searching', () => {

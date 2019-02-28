@@ -48,7 +48,7 @@ class Library extends Component {
       isLoading: false,
     });
 
-    this.props.history.push({
+    this.props.history.replace({
       search: searchTerm ? new URLSearchParams({ q: searchTerm }).toString() : null
     });
   }
