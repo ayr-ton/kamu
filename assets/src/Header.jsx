@@ -19,7 +19,7 @@ function Header({ borrowedBooksCount, history }) {
   return (
     <AppBar className="header">
       <Toolbar>
-        <a href="#" className="header-content" onClick={(e) => { e.preventDefault(); redirect(getHomeEndpoint()); }}>
+        <a href={getHomeEndpoint()} className="header-content">
           <img src="/static/images/logo.svg" alt="Kamu logo" />
         </a>
 
