@@ -175,7 +175,7 @@ describe('Book Service', () => {
       try {
         await joinWaitlist('bh', book);
       } catch (error) {
-        expect(error).toEqual({ message: 'Request was successful, but no data was returned' });
+        expect(error).toEqual(new Error({ message: 'Request was successful, but no data was returned' }));
       }
     });
 
