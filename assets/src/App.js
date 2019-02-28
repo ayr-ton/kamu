@@ -37,8 +37,8 @@ class App extends Component {
                 </LibraryRedirector>
               )} />
               <Route exact path="/my-books" component={MyBooks} />
-              <Route path="/libraries/:slug" render={({ match }) => (
-                <Library slug={match.params.slug} />
+              <Route path="/libraries/:slug" render={({ match, history }) => (
+                <Library slug={match.params.slug} history={history} />
               )} />
             </div>
           )}

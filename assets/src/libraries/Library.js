@@ -31,7 +31,8 @@ class Library extends Component {
 
     this.setState({ isLoading: true, hasNextPage: false });
 
-    const booksResponse = await getBooksByPage(this.props.slug, this.state.page, this.state.searchTerm) || {};
+    const { searchTerm } = this.state;
+    const booksResponse = await getBooksByPage(this.props.slug, this.state.page, searchTerm) || {};
     if (booksResponse && booksResponse.results) {
       this.setState((state) => ({
         books: state.books.concat(booksResponse.results),
@@ -42,6 +43,10 @@ class Library extends Component {
     this.setState({
       hasNextPage: !!booksResponse.next,
       isLoading: false,
+    });
+
+    this.props.history.push({
+      search: searchTerm ? new URLSearchParams({ q: searchTerm }).toString() : null
     });
   }
 
@@ -78,7 +83,8 @@ class Library extends Component {
 }
 
 Library.propTypes = {
-  slug: PropTypes.string.isRequired
+  slug: PropTypes.string.isRequired,
+  history: PropTypes.shape({}).isRequired,
 };
 
 export default Library;
