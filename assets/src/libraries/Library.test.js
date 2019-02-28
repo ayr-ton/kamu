@@ -11,7 +11,7 @@ import SearchBar from '../utils/filters/SearchBar';
 jest.mock('../services/BookService');
 jest.mock('../services/ProfileService');
 
-const history = { push: jest.fn() };
+const history = { push: jest.fn(), location: { search: null } };
 const createComponent = (props) => shallow(<Library slug='bh' history={history} {...props} />);
 
 describe('Library', () => {
@@ -102,6 +102,22 @@ describe('Library', () => {
     searchBar.props().onChange('test search');
 
     expect(getBooksByPage).toHaveBeenCalledWith('bh', 1, 'test search');
+  });
+
+  it('fetches the books with the search term when location has a query parameter', () => {
+    history.location.search = '?q=test+search'
+    library = createComponent();
+    const infiniteScroll = library.find(InfiniteScroll);
+    infiniteScroll.props().loadMore();
+
+    expect(getBooksByPage).toHaveBeenCalledWith('bh', 1, 'test search');
+  });
+
+  it('passes the search term to search bar when location has a query parameter', () => {
+    history.location.search = '?q=test+search'
+    library = createComponent();
+
+    expect(library.find(SearchBar).props().query).toEqual('test search');
   });
 
   it('sets the search query on the url when searching', async () => {

@@ -6,11 +6,10 @@ import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 
 export default class SearchBar extends Component {
-
     constructor(props) {
         super(props);
         this.state = {
-            searchTerm: ''
+            searchTerm: this.props.query || '',
         };
 
         this._onChange = this._onChange.bind(this);
@@ -19,8 +18,12 @@ export default class SearchBar extends Component {
 
     _onChange(event) {
         const newSearchTerm = event.target.value;
+        const previousSearchTerm = this.state.searchTerm;
         this.setState({ searchTerm: newSearchTerm });
-        this.props.onChange(newSearchTerm);
+
+        if (newSearchTerm.trim() != previousSearchTerm.trim()) {
+          this.props.onChange(newSearchTerm.trim());
+        }
     }
 
     _onClear() {
@@ -53,4 +56,5 @@ export default class SearchBar extends Component {
 
 SearchBar.propTypes = {
     onChange: PropTypes.func.isRequired,
+    query: PropTypes.string,
 };
