@@ -12,17 +12,17 @@ export default class SearchBar extends Component {
       searchTerm: '',
     };
 
-    this._onChange = this._onChange.bind(this);
-    this._onClear = this._onClear.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.onClear = this.onClear.bind(this);
   }
 
-  _onChange(event) {
+  onChange(event) {
     const newSearchTerm = event.target.value;
     this.setState({ searchTerm: newSearchTerm });
     this.props.onChange(newSearchTerm);
   }
 
-  _onClear() {
+  onClear() {
     this.setState({ searchTerm: '' });
     this.props.onChange('');
   }
@@ -35,7 +35,7 @@ export default class SearchBar extends Component {
             <Search className="search-bar-icon" />
           </div>
           <TextField
-            onChange={this._onChange}
+            onChange={this.onChange}
             value={this.state.searchTerm}
             className="search-bar-input"
             placeholder="Search by book title or author"
@@ -43,7 +43,7 @@ export default class SearchBar extends Component {
           {this.state.searchTerm !== ''
                     && (
                     <div className="search-bar-close-icon-container">
-                      <Close className="search-bar-close-icon" onClick={this._onClear} />
+                      <Close className="search-bar-close-icon" onClick={this.onClear} />
                     </div>
                     )}
         </div>

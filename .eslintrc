@@ -16,5 +16,8 @@
     "currentUser": true,
     "global": true,
     "module": true
+  },
+  "rules": {
+    "react/destructuring-assignment": 0
   }
 }
