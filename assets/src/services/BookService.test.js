@@ -1,7 +1,7 @@
 import {
   getLibraries, getBooksByPage, getMyBooks, borrowCopy, returnBook, joinWaitlist,
 } from './BookService';
-import { fetchFromAPI } from './helpers';
+import fetchFromAPI from './helpers';
 import {
   someBookWithAvailableCopies, someBookWithACopyFromMe, someBookWithNoAvailableCopies, someBook,
 } from '../../test/booksHelper';

@@ -1,5 +1,5 @@
 import Book from '../models/Book';
-import { fetchFromAPI } from './helpers';
+import fetchFromAPI from './helpers';
 
 const updateBookCopyUser = (book, copyID, user) => {
   const copy = book.copies.find(({ id }) => id === copyID);
@@ -9,10 +9,10 @@ const updateBookCopyUser = (book, copyID, user) => {
 const formatBooksRequest = (data) => {
   const books = [];
 
-  for (const bookJson of data.results) {
+  data.results.forEach((bookJson) => {
     const book = Object.assign(new Book(), bookJson);
     books.push(book);
-  }
+  });
 
   return {
     count: data.count,
@@ -55,5 +55,5 @@ export const returnBook = (book) => {
 export const joinWaitlist = async (library, book) => fetchFromAPI(`/libraries/${library}/books/${book.id}/waitlist/`, 'POST').then((data) => {
   if ('waitlist_item' in data) return Promise.resolve(data.waitlist_item);
 
-  return Promise.reject({ message: 'Request was successful, but no data was returned' });
+  return Promise.reject(new Error({ message: 'Request was successful, but no data was returned' }));
 }).catch(error => Promise.reject(error));

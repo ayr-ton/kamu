@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import ReactRouterPropTypes from 'react-router-prop-types';
+
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import { withRouter } from 'react-router';
@@ -14,10 +15,10 @@ class LibrarySelector extends Component {
   }
 
   componentWillMount() {
-    this._loadLibraries();
+    this.loadLibraries();
   }
 
-  _loadLibraries() {
+  loadLibraries() {
     return getLibraries().then((response) => {
       this.setState({ libraries: response.results });
     });
@@ -44,7 +45,7 @@ class LibrarySelector extends Component {
 }
 
 LibrarySelector.propTypes = {
-  history: PropTypes.shape({}).isRequired,
+  history: ReactRouterPropTypes.history.isRequired,
 };
 
 export { LibrarySelector };

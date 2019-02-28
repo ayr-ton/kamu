@@ -30,6 +30,8 @@ describe('App', () => {
   });
 
   it('passes the users borrowed books count to the header', () => {
-    expect(component.find(Header).props().borrowedBooksCount).toEqual(currentUser.borrowed_books_count);
+    expect(component.find(Header).props().borrowedBooksCount).toEqual(
+      currentUser.borrowed_books_count,
+    );
   });
 });

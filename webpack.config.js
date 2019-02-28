@@ -9,7 +9,7 @@ function isDevelopmentEnvironment(){
 
 function buildEntry(){
   entry = {
-    app: [ './src/index.js' ],
+    app: [ './src/index.jsx' ],
   }
 
   if (isDevelopmentEnvironment()) {
@@ -52,7 +52,7 @@ module.exports = {
     module: {
       rules: [
         {
-          test: /\.js$/,
+          test: /\.js(x)?$/,
           exclude: /node_modules/,
           loader: 'babel-loader',
           query: {
@@ -71,7 +71,7 @@ module.exports = {
 
     resolve: {
       modules: ['node_modules'],
-      extensions: ['.js']
+      extensions: ['.js', '.jsx']
     },
 
     mode: process.env.NODE_ENV || 'development'

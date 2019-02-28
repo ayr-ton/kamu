@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import IconButton from '@material-ui/core/IconButton';
 import Dialog from '@material-ui/core/Dialog';
 import Avatar from '@material-ui/core/Avatar';
@@ -7,6 +8,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import '../../css/ModalBook.css';
 import moment from 'moment';
 import Clear from '@material-ui/icons/Clear';
+import Book from '../models/Book';
 
 export default class BookDetail extends Component {
   constructor(props) {
@@ -30,7 +32,7 @@ export default class BookDetail extends Component {
     };
 
     const actions = [
-      <IconButton iconStyle={styles.largeIcon} style={styles.large} onClick={this.changeOpenStatus}>
+      <IconButton iconStyle={styles.largeIcon} style={styles.large} onClick={this.changeOpenStatus} key="clear">
         <Clear />
       </IconButton>,
     ];
@@ -55,16 +57,18 @@ export default class BookDetail extends Component {
           borrowers.push(<div key="borrowed-title" className="modal-book__borrowed-with-label">Borrowed with:</div>);
         }
 
-        borrowers.push(<div key={copy.user.username} className="modal-book__borrowed-with">
-          <div className="modal-book__borrowed-with-wrapper">
-            <div className="modal-book__borrowed-person">
-              <Avatar src={copy.user.image_url} />
-              <span>{copy.user.name}</span>
-            </div>
+        borrowers.push(
+          <div key={copy.user.username} className="modal-book__borrowed-with">
+            <div className="modal-book__borrowed-with-wrapper">
+              <div className="modal-book__borrowed-person">
+                <Avatar src={copy.user.image_url} />
+                <span>{copy.user.name}</span>
+              </div>
 
-            {borrowedTimeAgo}
-          </div>
-        </div>);
+              {borrowedTimeAgo}
+            </div>
+          </div>,
+        );
       }
     }
 
@@ -76,7 +80,7 @@ export default class BookDetail extends Component {
     let bookDescription;
     let goodReadsLink;
 
-    if (book.image_url) imageUrl = <img src={book.image_url} className="modal-book__image" />;
+    if (book.image_url) imageUrl = <img src={book.image_url} alt="Book cover" className="modal-book__image" />;
 
     if (book.description) bookDescription = <div className="modal-book__description">{book.description}</div>;
 
@@ -108,7 +112,7 @@ export default class BookDetail extends Component {
     }
 
     if (publisherName || publicationDate || numberOfPages) {
-      publisherWrapper =				(
+      publisherWrapper = (
         <div className="modal-book__publisher-wrapper">
           {publisherName}
           {publicationDate}
@@ -119,7 +123,7 @@ export default class BookDetail extends Component {
 
     if (book.isbn) {
       const goodReadsIsbnUrl = `https://www.goodreads.com/search?q=${book.isbn}`;
-      goodReadsLink = <a href={goodReadsIsbnUrl} target="_blank">View on GoodReads</a>;
+      goodReadsLink = <a href={goodReadsIsbnUrl} target="_blank" rel="noopener noreferrer">View on GoodReads</a>;
     }
 
     return (
@@ -183,3 +187,10 @@ of
     );
   }
 }
+
+BookDetail.propTypes = {
+  changeOpenStatus: PropTypes.func.isRequired,
+  actionButtons: PropTypes.func.isRequired,
+  book: PropTypes.instanceOf(Book).isRequired,
+  open: PropTypes.bool.isRequired,
+};

@@ -30,7 +30,7 @@ describe('LibrarySelector', () => {
   });
 
   it('redirects to the library page when clicking', async () => {
-    await librarySelector.instance()._loadLibraries();
+    await librarySelector.instance().loadLibraries();
 
     librarySelector.find(ListItem).simulate('click');
 
