@@ -100,8 +100,15 @@ export default class Book extends Component {
     };
 
     return (
-      <Paper className="book" elevation={this.state.zDepth} onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut}>
-        <div className="book-info" onClick={this.changeOpenStatus}>
+      <Paper
+        className="book"
+        elevation={this.state.zDepth}
+        onMouseOver={this.onMouseOver}
+        onFocus={this.onMouseOver}
+        onMouseOut={this.onMouseOut}
+        onBlur={this.onMouseOut}
+      >
+        <div role="button" className="book-info" onClick={this.changeOpenStatus} onKeyPress={this.changeOpenStatus} tabIndex={0}>
 
           <div className="book-cover" style={bookCover}>
             <div className="book-cover-overlay" />
