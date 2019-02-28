@@ -10,11 +10,14 @@ import { setRegion } from '../services/ProfileService';
 class Library extends Component {
   constructor(props) {
     super(props);
+
+    const searchTerm = new URLSearchParams(props.history.location.search).get('q') || '';
+
     this.state = {
       books: [],
       hasNextPage: true,
       page: 1,
-      searchTerm: '',
+      searchTerm,
       isLoading: false,
     };
 
@@ -64,7 +67,7 @@ class Library extends Component {
   render() {
     return (
       <React.Fragment>
-        <SearchBar onChange={this.searchTermChanged} />
+        <SearchBar onChange={this.searchTermChanged} query={this.state.searchTerm} />
         <InfiniteScroll
           loadMore={this.loadBooks}
           hasMore={this.state.hasNextPage}
