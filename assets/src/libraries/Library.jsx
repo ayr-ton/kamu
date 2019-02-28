@@ -31,7 +31,8 @@ class Library extends Component {
 
     this.setState({ isLoading: true, hasNextPage: false });
 
-    const booksResponse = await getBooksByPage(this.props.slug, this.state.page, this.state.searchTerm) || {};
+    const { page, searchTerm } = this.state;
+    const booksResponse = await getBooksByPage(this.props.slug, page, searchTerm) || {};
     if (booksResponse && booksResponse.results) {
       this.setState(state => ({
         books: state.books.concat(booksResponse.results),

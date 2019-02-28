@@ -6,7 +6,11 @@ import { getRegion } from '../services/ProfileService';
 jest.mock('../services/ProfileService');
 
 const history = { push: jest.fn() };
-const createComponent = () => shallow(<LibraryRedirector history={history}><div>some element</div></LibraryRedirector>);
+const createComponent = () => shallow(
+  <LibraryRedirector history={history}>
+    <div>some element</div>
+  </LibraryRedirector>,
+);
 
 describe('Library Redirector', () => {
   beforeEach(() => {
@@ -32,7 +36,7 @@ describe('Library Redirector', () => {
   it('should not render any children when a region is set', () => {
     getRegion.mockReturnValueOnce('bh');
 
-    const	libraryRedirector = createComponent();
+    const libraryRedirector = createComponent();
 
     expect(libraryRedirector.children()).toHaveLength(0);
   });
@@ -40,7 +44,7 @@ describe('Library Redirector', () => {
   it('should render its children when a region is not set', () => {
     getRegion.mockReturnValueOnce(null);
 
-    const	libraryRedirector = createComponent();
+    const libraryRedirector = createComponent();
 
     expect(libraryRedirector.children()).toHaveLength(1);
   });

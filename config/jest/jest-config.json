@@ -3,7 +3,7 @@
     "assets/src/**/*.{js,jsx,mjs}"
   ],
   "coveragePathIgnorePatterns": [
-    "<rootDir>/assets/src/.*index.js"
+    "<rootDir>/assets/src/.*index.jsx"
   ],
   "setupFiles": [
     "<rootDir>/config/polyfills.js"
