@@ -1,5 +1,5 @@
-import React from "react";
-import { shallow } from "enzyme";
+import React from 'react';
+import { shallow } from 'enzyme';
 import Badge from '@material-ui/core/Badge';
 import { Header } from './Header';
 import { getRegion, clearRegion } from './services/ProfileService';
@@ -7,7 +7,7 @@ import { getRegion, clearRegion } from './services/ProfileService';
 jest.mock('./services/ProfileService');
 
 const history = { push: jest.fn() };
-const createComponent = (props) => shallow(<Header history={history} {...props} />);
+const createComponent = props => shallow(<Header history={history} {...props} />);
 
 describe('Header', () => {
   beforeEach(() => {
@@ -22,12 +22,12 @@ describe('Header', () => {
 
     expect(clearRegion).toHaveBeenCalled();
     expect(history.push).toHaveBeenCalledWith('/');
-	});
+  });
 
-	it('displays the menu', () => {
+  it('displays the menu', () => {
     const header = createComponent();
     expect(header.find('.header-menu').exists()).toBeTruthy();
-	});
+  });
 
   it('redirects to my books page when clicking on my books', () => {
     const header = createComponent();

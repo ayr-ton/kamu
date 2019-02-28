@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { getMyBooks } from '../services/BookService';
-import BookList from '../libraries/BookList';
 import Paper from '@material-ui/core/Paper';
 import Icon from '@material-ui/core/Icon';
+import { getMyBooks } from '../services/BookService';
+import BookList from '../libraries/BookList';
 
 export default class MyBooks extends Component {
   constructor(props) {
@@ -16,7 +16,7 @@ export default class MyBooks extends Component {
     const response = await getMyBooks();
     this.setState({ books: response.results });
   }
-  
+
   render() {
     return (
       <React.Fragment>
@@ -29,4 +29,3 @@ export default class MyBooks extends Component {
     );
   }
 }
-  

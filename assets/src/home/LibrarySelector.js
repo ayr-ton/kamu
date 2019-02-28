@@ -6,45 +6,45 @@ import { withRouter } from 'react-router';
 import { getLibraries } from '../services/BookService';
 
 class LibrarySelector extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			libraries: []
-		};
-	}
+  constructor(props) {
+    super(props);
+    this.state = {
+      libraries: [],
+    };
+  }
 
-	componentWillMount() {
-		this._loadLibraries();
-	}
+  componentWillMount() {
+    this._loadLibraries();
+  }
 
-	_loadLibraries() {
-		return getLibraries().then(response => {
-			this.setState({ libraries: response.results });
-		});
-	}
+  _loadLibraries() {
+    return getLibraries().then((response) => {
+      this.setState({ libraries: response.results });
+    });
+  }
 
-	render() {
-		return (
-			<div className="library-list">
-				<List>
-					{this.state.libraries.map(library =>
-						<ListItem
-							className='library'
-							key={library.id}
-							onClick={() => this.props.history.push(`/libraries/${library.slug}`)}
-							button
-						>
-							{library.name}
-						</ListItem>
-					)}
-				</List>
-			</div>
-		);
-	}
+  render() {
+    return (
+      <div className="library-list">
+        <List>
+          {this.state.libraries.map(library => (
+            <ListItem
+              className="library"
+              key={library.id}
+              onClick={() => this.props.history.push(`/libraries/${library.slug}`)}
+              button
+            >
+              {library.name}
+            </ListItem>
+          ))}
+        </List>
+      </div>
+    );
+  }
 }
 
 LibrarySelector.propTypes = {
-	history: PropTypes.shape({}).isRequired,
+  history: PropTypes.shape({}).isRequired,
 };
 
 export { LibrarySelector };

@@ -9,31 +9,31 @@ jest.mock('../services/BookService');
 const history = { push: jest.fn() };
 
 describe('LibrarySelector', () => {
-    let librarySelector;
-    const libraries = {
-        count: 1,
-        next: null,
-        previous: null,
-        results: [
-            {
-                id: 1,
-                url: "http://localhost:8000/api/libraries/bh/",
-                name: "Belo Horizonte",
-                slug: "bh",
-            }
-        ]
-    };
+  let librarySelector;
+  const libraries = {
+    count: 1,
+    next: null,
+    previous: null,
+    results: [
+      {
+        id: 1,
+        url: 'http://localhost:8000/api/libraries/bh/',
+        name: 'Belo Horizonte',
+        slug: 'bh',
+      },
+    ],
+  };
 
-    beforeEach(() => {
-        getLibraries.mockResolvedValue(libraries);
-        librarySelector = shallow(<LibrarySelector history={history} />);
-    });
+  beforeEach(() => {
+    getLibraries.mockResolvedValue(libraries);
+    librarySelector = shallow(<LibrarySelector history={history} />);
+  });
 
-    it('redirects to the library page when clicking', async () => {
-        await librarySelector.instance()._loadLibraries();
+  it('redirects to the library page when clicking', async () => {
+    await librarySelector.instance()._loadLibraries();
 
-        librarySelector.find(ListItem).simulate('click');
+    librarySelector.find(ListItem).simulate('click');
 
-        expect(history.push).toHaveBeenCalledWith('/libraries/bh');
-    });
+    expect(history.push).toHaveBeenCalledWith('/libraries/bh');
+  });
 });
