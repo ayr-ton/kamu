@@ -1,7 +1,11 @@
 {
   "extends": [
     "airbnb",
-    "plugin:jest/recommended"
+    "plugin:jest/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:jsx-a11y/recommended",
+    "plugin:react/recommended"
   ],
   "env": {
     "es6": true,
@@ -12,8 +16,5 @@
     "currentUser": true,
     "global": true,
     "module": true
-  },
-  "plugins": [
-    "react"
-  ]
+  }
 }
