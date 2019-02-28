@@ -11,7 +11,7 @@
     "start": "NODE_ENV=development concurrently --raw --kill-others \"node dev-server.js\" \"python manage.py runserver 0.0.0.0:8000\"",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
-    "lint": "eslint --ext .jsx --ext .js ./assets/src",
+    "lint": "eslint --ext .jsx --ext .js ./assets",
     "heroku-prebuild": "npm install --dev",
     "heroku-postbuild": "npm run-script build"
   },
