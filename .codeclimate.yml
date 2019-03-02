@@ -11,9 +11,6 @@ plugins:
       python_version: 3
   pep8:
     enabled: true
-  eslint:
-    enabled: true
 exclude_patterns:
 - "**/*.test.js"
-- "**/*.test.jsx"
 - "**/test/"
