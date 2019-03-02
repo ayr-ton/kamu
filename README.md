@@ -117,7 +117,7 @@ docker-compose build
 docker-compose up
 ```
 
-## Deployment 
+## Deployment
 
 We have out of the box support for [Heroku :dragon:](https://www.heroku.com/) and [Dokku :whale:](http://dokku.viewdocs.io/dokku/)
 
@@ -132,7 +132,8 @@ DEBUG="true" # Or false, depending if is a testing or production app
 DJANGO_SETTINGS_MODULE="kamu.prod_settings" # If you plan to run a testing version with sqlite, this is not necessary
 DATABASE_URL="" # This variable should be automatically configured by the postgres extension. See prod_settings.py for reference.
 ALLOWED_HOSTS="kamu.example.com" # At this moment, only one domain is supported
-OKTA_METADATA_URL="SECRET-OKTA-STUFF" # On the case of Okta Authentication support 
+OKTA_METADATA_URL="SECRET-OKTA-STUFF" # On the case of Okta Authentication support
+ANALYTICS_ACCOUNT_ID="UA-101849453-1" # Only if you want to enable Google Analytics, otherwise don't set it
 ```
 See [Dokku environment variables](http://dokku.viewdocs.io/dokku/configuration/environment-variables/) or [Heroku Config Vars](https://devcenter.heroku.com/articles/config-vars) for more details.
 
@@ -140,6 +141,6 @@ On non Okta based deployments, you should run either `dokku run kamu /bin/bash` 
 ```shell
 python manage.py createsuperuser
 ```
-See [#74](https://github.com/ayr-ton/kamu/issues/74) 
+See [#74](https://github.com/ayr-ton/kamu/issues/74)
 
 ![Thanks!](http://gifgifmagazine.com/wp-content/uploads/2018/11/macka-daj-pet-jea.gif)

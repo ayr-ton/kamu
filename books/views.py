@@ -1,3 +1,4 @@
+import os
 from django.contrib import messages, admin
 from django.db.models import Count
 from django.db.models import Q
@@ -5,7 +6,7 @@ from django.http import Http404
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.utils.http import urlencode
-from django.views.generic.base import View
+from django.views.generic.base import View, TemplateView
 from filters.mixins import (
     FiltersMixin,
 )
@@ -19,6 +20,14 @@ from books.serializers import *
 from .forms import IsbnForm
 from .models import Book as BookModel
 
+
+class FrontendView(TemplateView):
+    template_name = 'index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['analyticsAccountId'] = os.environ.get('ANALYTICS_ACCOUNT_ID')
+        return context
 
 class IsbnFormView(View):
     def get(self, request):
