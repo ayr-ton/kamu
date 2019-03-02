@@ -11,7 +11,7 @@ import SearchBar from '../utils/filters/SearchBar';
 jest.mock('../services/BookService');
 jest.mock('../services/ProfileService');
 
-const createComponent = props => shallow(<Library slug="bh" {...props} />);
+const createComponent = (props) => shallow(<Library slug="bh" {...props} />);
 
 describe('Library', () => {
   let library;

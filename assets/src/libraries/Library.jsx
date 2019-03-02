@@ -34,7 +34,7 @@ class Library extends Component {
     const { page, searchTerm } = this.state;
     const booksResponse = await getBooksByPage(this.props.slug, page, searchTerm) || {};
     if (booksResponse && booksResponse.results) {
-      this.setState(state => ({
+      this.setState((state) => ({
         books: state.books.concat(booksResponse.results),
         page: state.page + 1,
       }));

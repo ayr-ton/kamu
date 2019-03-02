@@ -25,5 +25,5 @@ export default function fetchFromAPI(endpoint, method = 'GET') {
     }),
   };
 
-  return fetch(`/api${endpoint}`, options).then(response => response.json());
+  return fetch(`/api${endpoint}`, options).then((response) => response.json());
 }

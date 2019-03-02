@@ -28,7 +28,7 @@ class LibrarySelector extends Component {
     return (
       <div className="library-list">
         <List>
-          {this.state.libraries.map(library => (
+          {this.state.libraries.map((library) => (
             <ListItem
               className="library"
               key={library.id}
