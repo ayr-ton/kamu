@@ -22,7 +22,7 @@ const formatBooksRequest = (data) => {
   };
 };
 
-export const getLibraries = () => fetchFromAPI('/libraries/').then(data => data);
+export const getLibraries = () => fetchFromAPI('/libraries/').then((data) => data);
 
 export const getBooksByPage = (librarySlug, page, filter = '') => fetchFromAPI(`/libraries/${librarySlug}/books/?page=${page}&book_title=${filter}&book_author=${filter}`).then((data) => {
   if (!data.results) {
@@ -32,7 +32,7 @@ export const getBooksByPage = (librarySlug, page, filter = '') => fetchFromAPI(`
   return formatBooksRequest(data);
 });
 
-export const getMyBooks = () => fetchFromAPI('/profile/books').then(data => formatBooksRequest(data));
+export const getMyBooks = () => fetchFromAPI('/profile/books').then((data) => formatBooksRequest(data));
 
 export const borrowCopy = (book) => {
   const copyID = book.getAvailableCopyID();
@@ -56,4 +56,4 @@ export const joinWaitlist = async (library, book) => fetchFromAPI(`/libraries/${
   if ('waitlist_item' in data) return Promise.resolve(data.waitlist_item);
 
   return Promise.reject(new Error({ message: 'Request was successful, but no data was returned' }));
-}).catch(error => Promise.reject(error));
+}).catch((error) => Promise.reject(error));

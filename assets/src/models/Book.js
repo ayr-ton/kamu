@@ -12,7 +12,7 @@ export default class Book {
   }
 
   getCountBookCopiesAvailable() {
-    return this.copies.filter(copy => copy.user === null).length;
+    return this.copies.filter((copy) => copy.user === null).length;
   }
 
   belongsToUser() {
@@ -28,7 +28,7 @@ export default class Book {
   }
 
   isUserInWaitlist() {
-    return this.waitlist_users.filter(user => user.username === currentUser.username).length > 0;
+    return this.waitlist_users.filter((user) => user.username === currentUser.username).length > 0;
   }
 
   canBeAddedToWaitlist() {

@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import BookList from './BookList';
 
-const shallowBookList = props => shallow(<BookList {...props} />);
+const shallowBookList = (props) => shallow(<BookList {...props} />);
 const books = [
   {
     id: 1,

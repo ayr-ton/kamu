@@ -38,7 +38,7 @@ expect.extend({
   },
 });
 
-const createComponent = book => shallow(<Book book={book} library="bh" />);
+const createComponent = (book) => shallow(<Book book={book} library="bh" />);
 
 describe('Book', () => {
   beforeEach(() => {

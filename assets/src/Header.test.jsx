@@ -7,7 +7,7 @@ import { getRegion, clearRegion } from './services/ProfileService';
 jest.mock('./services/ProfileService');
 
 const history = { push: jest.fn() };
-const createComponent = props => shallow(<Header history={history} {...props} />);
+const createComponent = (props) => shallow(<Header history={history} {...props} />);
 
 describe('Header', () => {
   beforeEach(() => {
