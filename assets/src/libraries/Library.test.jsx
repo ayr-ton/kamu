@@ -105,7 +105,7 @@ describe('Library', () => {
   });
 
   it('fetches the books with the search term when location has a query parameter', () => {
-    history.location.search = '?q=test+search'
+    history.location.search = '?q=test+search';
     library = createComponent();
     const infiniteScroll = library.find(InfiniteScroll);
     infiniteScroll.props().loadMore();
@@ -114,7 +114,7 @@ describe('Library', () => {
   });
 
   it('passes the search term to search bar when location has a query parameter', () => {
-    history.location.search = '?q=test+search'
+    history.location.search = '?q=test+search';
     library = createComponent();
 
     expect(library.find(SearchBar).props().query).toEqual('test search');

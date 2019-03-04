@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import InfiniteScroll from 'react-infinite-scroller';
 import PropTypes from 'prop-types';
+import ReactRouterPropTypes from 'react-router-prop-types';
 import { getBooksByPage } from '../services/BookService';
 import BookList from './BookList';
 import SearchBar from '../utils/filters/SearchBar';
@@ -49,7 +50,7 @@ class Library extends Component {
     });
 
     this.props.history.replace({
-      search: searchTerm ? new URLSearchParams({ q: searchTerm }).toString() : null
+      search: searchTerm ? new URLSearchParams({ q: searchTerm }).toString() : null,
     });
   }
 
@@ -87,10 +88,7 @@ class Library extends Component {
 
 Library.propTypes = {
   slug: PropTypes.string.isRequired,
-<<<<<<< HEAD:assets/src/libraries/Library.jsx
-=======
-  history: PropTypes.shape({}).isRequired,
->>>>>>> Track the search term on the URL:assets/src/libraries/Library.js
+  history: ReactRouterPropTypes.history.isRequired,
 };
 
 export default Library;
