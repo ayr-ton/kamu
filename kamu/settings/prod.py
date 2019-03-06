@@ -1,4 +1,4 @@
-from .common_settings import *
+from .common import *
 import os
 import dj_database_url
 

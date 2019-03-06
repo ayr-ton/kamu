@@ -125,8 +125,8 @@ Now, we need the following environment variables before running Kamu for the fir
 ```shell
 SECRET_KEY="django-secret-key" # https://duckduckgo.com/?q=django+secret+key+generator
 DEBUG="true" # Or false, depending if is a testing or production app
-DJANGO_SETTINGS_MODULE="kamu.prod_settings" # If you plan to run a testing version with sqlite, this is not necessary
-DATABASE_URL="" # This variable should be automatically configured by the postgres extension. See prod_settings.py for reference.
+DJANGO_SETTINGS_MODULE="kamu.settings.prod" # If you plan to run a testing version with sqlite, this is not necessary
+DATABASE_URL="" # This variable should be automatically configured by the postgres extension. See settings/prod.py for reference.
 ALLOWED_HOSTS="kamu.example.com" # At this moment, only one domain is supported
 OKTA_METADATA_URL="SECRET-OKTA-STUFF" # On the case of Okta Authentication support
 ANALYTICS_ACCOUNT_ID="UA-123456789-1" # Only if you want to enable Google Analytics, otherwise don't set it

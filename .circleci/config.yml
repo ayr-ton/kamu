@@ -50,12 +50,12 @@ jobs:
       - run:
           command: |
               . venv/bin/activate
-              coverage run manage.py test
+              DJANGO_SETTINGS_MODULE=kamu.settings.test coverage run manage.py test
               coverage xml
               ./tmp/cc-test-reporter format-coverage -t coverage.py -o tmp/codeclimate.backend.json coverage.xml
       - persist_to_workspace:
           root: tmp
-          paths: 
+          paths:
             - codeclimate.backend.json
   frontend-tests:
     <<: *defaults
