@@ -10,6 +10,16 @@ import moment from 'moment';
 import Clear from '@material-ui/icons/Clear';
 import Book from '../models/Book';
 
+const styles = {
+  largeIcon: {
+    width: 40,
+    height: 40,
+  },
+  large: {
+    padding: 0,
+  },
+};
+
 export default class BookDetail extends Component {
   constructor(props) {
     super(props);
@@ -20,16 +30,6 @@ export default class BookDetail extends Component {
   render() {
     const { book } = this.props;
     const copiesAvailable = book.getCountBookCopiesAvailable();
-
-    const styles = {
-      largeIcon: {
-        width: 40,
-        height: 40,
-      },
-      large: {
-        padding: 0,
-      },
-    };
 
     const actions = [
       <IconButton iconStyle={styles.largeIcon} style={styles.large} onClick={this.changeOpenStatus} key="clear">
