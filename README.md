@@ -69,7 +69,7 @@ Create a super user:
 python manage.py createsuperuser
 ```
 
-You will use this super user to login as administrator in your local kamu application.
+You will use this super user to login as administrator in your local Kamu application.
 
 
 Seed the database with initial dump data:
@@ -86,11 +86,10 @@ npm start
 
 Now just go to [http://localhost:8000](http://localhost:8000) in your browser :)
 
-**For setup local with authenticate with Okta Preview:**
-Use the "OKTA_METADATA_URL='url-of-okta-saml'" concatenating with the python's commands:
+**For local setup with Okta authentication:**
+Use the `OKTA_METADATA_URL` environment variable, concatenating it with the usual commands. Examples:
 
 ```shell
-  Examples:
   OKTA_METADATA_URL='url-of-okta-saml' npm start
   OKTA_METADATA_URL='url-of-okta-saml' python manage.py migrate
 ```
@@ -102,13 +101,14 @@ Another way is to export the var and then execute the commands:
   npm start
   python manage.py migrate
 ```
-In case of need authenticate without Okta preview again, execute:
+
+If you wish to disable Okta authentication again, execute:
 
 ```shell
   unset OKTA_METADATA_URL
 ```
 
-## Executing using docker for local development
+## Executing using Docker for local development
 
 We support Docker =), just go to your favorite console and type:
 ```
