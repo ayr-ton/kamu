@@ -66,26 +66,12 @@ export default class BookDetail extends Component {
     return borrowers;
   }
 
-  render() {
+  renderPublisherInformation() {
     const { book } = this.props;
-
-    const actions = [
-      <IconButton iconStyle={styles.largeIcon} style={styles.large} onClick={this.changeOpenStatus} key="clear">
-        <Clear />
-      </IconButton>,
-    ];
-
-    let imageUrl;
     let publisherWrapper;
     let publisherName;
     let publicationDate;
     let numberOfPages;
-    let bookDescription;
-    let goodReadsLink;
-
-    if (book.image_url) imageUrl = <img src={book.image_url} alt="Book cover" className="modal-book__image" />;
-
-    if (book.description) bookDescription = <div className="modal-book__description">{book.description}</div>;
 
     if (book.publisher) {
       publisherName = (
@@ -123,6 +109,26 @@ export default class BookDetail extends Component {
         </div>
       );
     }
+
+    return publisherWrapper;
+  }
+
+  render() {
+    const { book } = this.props;
+
+    const actions = [
+      <IconButton iconStyle={styles.largeIcon} style={styles.large} onClick={this.changeOpenStatus} key="clear">
+        <Clear />
+      </IconButton>,
+    ];
+
+    let imageUrl;
+    let bookDescription;
+    let goodReadsLink;
+
+    if (book.image_url) imageUrl = <img src={book.image_url} alt="Book cover" className="modal-book__image" />;
+
+    if (book.description) bookDescription = <div className="modal-book__description">{book.description}</div>;
 
     if (book.isbn) {
       const goodReadsIsbnUrl = `https://www.goodreads.com/search?q=${book.isbn}`;
@@ -166,7 +172,7 @@ of
                   </div>
                 </div>
 
-                {publisherWrapper}
+                {this.renderPublisherInformation()}
 
               </div>
 
