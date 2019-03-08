@@ -113,6 +113,15 @@ export default class BookDetail extends Component {
     return publisherWrapper;
   }
 
+  renderGoodReadsLink() {
+    let goodReadsLink;
+    if (this.props.book.isbn) {
+      const href = `https://www.goodreads.com/search?q=${this.props.book.isbn}`;
+      goodReadsLink = <a href={href} target="_blank" rel="noopener noreferrer">View on GoodReads</a>;
+    }
+    return goodReadsLink;
+  }
+
   render() {
     const { book } = this.props;
 
@@ -121,13 +130,6 @@ export default class BookDetail extends Component {
         <Clear />
       </IconButton>,
     ];
-
-    let goodReadsLink;
-
-    if (book.isbn) {
-      const goodReadsIsbnUrl = `https://www.goodreads.com/search?q=${book.isbn}`;
-      goodReadsLink = <a href={goodReadsIsbnUrl} target="_blank" rel="noopener noreferrer">View on GoodReads</a>;
-    }
 
     return (
       <Dialog
@@ -174,7 +176,7 @@ of
                 {book.description ? <div className="modal-book__description">{book.description}</div> : null}
 
                 <div className="modal-book__goodreads">
-                  {goodReadsLink}
+                  {this.renderGoodReadsLink()}
                 </div>
               </div>
 
