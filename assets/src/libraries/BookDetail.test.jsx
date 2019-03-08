@@ -5,6 +5,7 @@ import Dialog from '@material-ui/core/Dialog';
 import BookDetail from './BookDetail';
 import { someBook, someBookWithAvailableCopies, someBookWithNoAvailableCopies } from '../../test/booksHelper';
 import BookBorrowers from './BookBorrowers';
+import BookPublicationInfo from './BookPublicationInfo';
 
 const shallowBookDetail = (props) => shallow(<BookDetail {...props} />);
 const book = someBook();
@@ -77,29 +78,15 @@ describe('Book Detail', () => {
     ).toEqual('0 of 1');
   });
 
-  it('renders information about publication if this information is present', () => {
+  it('renders BookPublicationInfo component', () => {
     const bookDetail = shallowBookDetail({ ...testDefaultProps });
 
     expect(
-      bookDetail.find('.modal-book__publisher-name div.modal-book__detail-value').text(),
-    ).toEqual('Addison-Wesley Professional');
+      bookDetail.find('.modal-book__details-container').find(BookPublicationInfo),
+    ).toHaveLength(1);
     expect(
-      bookDetail.find('.modal-book__publication-date div.modal-book__detail-value').text(),
-    ).toEqual('2003-05-17');
-    expect(
-      bookDetail.find('.modal-book__number-of-pages div.modal-book__detail-value').text(),
-    ).toEqual('220');
-  });
-
-  it('does not render information about publication if this info is missing', () => {
-    testDefaultProps.book.number_of_pages = null;
-    testDefaultProps.book.publication_date = null;
-    testDefaultProps.book.publisher = null;
-    const bookDetail = shallowBookDetail({ ...testDefaultProps });
-
-    expect(
-      bookDetail.find('.modal-book__publisher-wrapper'),
-    ).toHaveLength(0);
+      bookDetail.find('.modal-book__details-container').find(BookPublicationInfo).props().book,
+    ).toEqual(testDefaultProps.book);
   });
 
   it('renders description and goodreads link', () => {
