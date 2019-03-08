@@ -5,7 +5,7 @@ import Avatar from '@material-ui/core/Avatar';
 import BookBorrowers from './BookBorrowers';
 import { someBookWithNoAvailableCopies, someBookWithAvailableCopies } from '../../test/booksHelper';
 
-const shallowBookDetail = (props) => shallow(<BookBorrowers {...props} />);
+const shallowBookBorrowers = (props) => shallow(<BookBorrowers {...props} />);
 
 describe('BookBorrowers', () => {
   let testDefaultProps;
@@ -18,7 +18,7 @@ describe('BookBorrowers', () => {
 
   it('does not render anything if copies is empty', () => {
     testDefaultProps.copies = [];
-    const bookDetail = shallowBookDetail({ ...testDefaultProps });
+    const bookDetail = shallowBookBorrowers({ ...testDefaultProps });
 
     expect(
       bookDetail.find('.modal-book__borrowed-informations'),
@@ -27,7 +27,7 @@ describe('BookBorrowers', () => {
 
   it('does not render anything if there are only available copies', () => {
     testDefaultProps.copies = someBookWithAvailableCopies().copies;
-    const bookDetail = shallowBookDetail({ ...testDefaultProps });
+    const bookDetail = shallowBookBorrowers({ ...testDefaultProps });
 
     expect(
       bookDetail.find('.modal-book__borrowed-informations'),
@@ -35,7 +35,7 @@ describe('BookBorrowers', () => {
   });
 
   it('renders information about who are the people who have a borrowed copy', () => {
-    const bookDetail = shallowBookDetail({ ...testDefaultProps });
+    const bookDetail = shallowBookBorrowers({ ...testDefaultProps });
 
     expect(
       bookDetail.find('.modal-book__borrowed-informations').find(Avatar),
@@ -43,7 +43,7 @@ describe('BookBorrowers', () => {
   });
 
   it('renders information about how long a person is with a book if borrow_date is in the copy data', () => {
-    const bookDetail = shallowBookDetail({ ...testDefaultProps });
+    const bookDetail = shallowBookBorrowers({ ...testDefaultProps });
 
     expect(
       bookDetail.find('.modal-book__borrowed-elapsed-time'),
@@ -56,7 +56,7 @@ describe('BookBorrowers', () => {
       borrow_date: null,
     }));
 
-    const bookDetail = shallowBookDetail({ copies: copiesWithNoBorrowDate });
+    const bookDetail = shallowBookBorrowers({ copies: copiesWithNoBorrowDate });
 
     expect(
       bookDetail.find('.modal-book__borrowed-elapsed-time'),
