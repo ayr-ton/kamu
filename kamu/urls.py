@@ -33,7 +33,7 @@ urlpatterns = [
     url(r'^api/copies/(?P<id>.+)/borrow', views.BookCopyBorrowView.as_view()),
     url(r'^api/copies/(?P<id>.+)/return', views.BookCopyReturnView.as_view()),
     url(r'^favicon\.ico$', RedirectView.as_view(url=settings.STATIC_URL + 'images/favicon.ico')),
-    url(r'^', login_required(TemplateView.as_view(template_name='index.html'))),
+    url(r'^$', login_required(TemplateView.as_view(template_name='index.html'))),
 ]
 
 if os.environ.get("OKTA_METADATA_URL") is None:
