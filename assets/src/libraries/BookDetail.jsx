@@ -8,6 +8,7 @@ import '../../css/ModalBook.css';
 import Clear from '@material-ui/icons/Clear';
 import Book from '../models/Book';
 import BookBorrowers from './BookBorrowers';
+import BookPublicationInfo from './BookPublicationInfo';
 
 const styles = {
   largeIcon: {
@@ -24,53 +25,6 @@ export default class BookDetail extends Component {
     super(props);
     this.changeOpenStatus = this.props.changeOpenStatus.bind(this);
     this.actionButtons = this.props.actionButtons.bind(this);
-  }
-
-  renderPublisherInformation() {
-    const { book } = this.props;
-    let publisherWrapper;
-    let publisherName;
-    let publicationDate;
-    let numberOfPages;
-
-    if (book.publisher) {
-      publisherName = (
-        <div className="modal-book__publisher-name">
-          <div className="modal-book__detail-label">Publisher</div>
-          <div className="modal-book__detail-value">{book.publisher}</div>
-        </div>
-      );
-    }
-
-    if (book.publication_date) {
-      publicationDate = (
-        <div className="modal-book__publication-date">
-          <div className="modal-book__detail-label">Publication date</div>
-          <div className="modal-book__detail-value">{book.publication_date}</div>
-        </div>
-      );
-    }
-
-    if (book.number_of_pages) {
-      numberOfPages = (
-        <div className="modal-book__number-of-pages">
-          <div className="modal-book__detail-label">Pages</div>
-          <div className="modal-book__detail-value">{book.number_of_pages}</div>
-        </div>
-      );
-    }
-
-    if (publisherName || publicationDate || numberOfPages) {
-      publisherWrapper = (
-        <div className="modal-book__publisher-wrapper">
-          {publisherName}
-          {publicationDate}
-          {numberOfPages}
-        </div>
-      );
-    }
-
-    return publisherWrapper;
   }
 
   renderGoodReadsLink() {
@@ -128,8 +82,7 @@ of
                   </div>
                 </div>
 
-                {this.renderPublisherInformation()}
-
+                <BookPublicationInfo book={book} />
               </div>
 
               <div className="modal-book__description-wrapper">
