@@ -2,13 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import IconButton from '@material-ui/core/IconButton';
 import Dialog from '@material-ui/core/Dialog';
-import Avatar from '@material-ui/core/Avatar';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import '../../css/ModalBook.css';
-import moment from 'moment';
 import Clear from '@material-ui/icons/Clear';
 import Book from '../models/Book';
+import BookBorrowers from './BookBorrowers';
 
 const styles = {
   largeIcon: {
@@ -25,45 +24,6 @@ export default class BookDetail extends Component {
     super(props);
     this.changeOpenStatus = this.props.changeOpenStatus.bind(this);
     this.actionButtons = this.props.actionButtons.bind(this);
-  }
-
-  getBorrowers() {
-    const borrowers = [];
-    let headerDisplayed = false;
-    let borrowedTimeAgo;
-
-    for (const copy of this.props.book.copies) {
-      if (copy.user) {
-        if (copy.borrow_date) {
-          borrowedTimeAgo = (
-            <div className="modal-book__borrowed-elapsed-time">
-              <span className="borrowed-elapsed-time__label">Borrowed</span>
-              <span className="borrowed-elapsed-time__value">{moment(copy.borrow_date).fromNow()}</span>
-            </div>
-          );
-        }
-
-        if (!headerDisplayed) {
-          headerDisplayed = true;
-          borrowers.push(<div key="borrowed-title" className="modal-book__borrowed-with-label">Borrowed with:</div>);
-        }
-
-        borrowers.push(
-          <div key={copy.user.username} className="modal-book__borrowed-with">
-            <div className="modal-book__borrowed-with-wrapper">
-              <div className="modal-book__borrowed-person">
-                <Avatar src={copy.user.image_url} />
-                <span>{copy.user.name}</span>
-              </div>
-
-              {borrowedTimeAgo}
-            </div>
-          </div>,
-        );
-      }
-    }
-
-    return borrowers;
   }
 
   renderPublisherInformation() {
@@ -181,9 +141,7 @@ of
               </div>
 
               <div className="modal-book__status">
-                <div className="modal-book__borrowed-informations">
-                  {this.getBorrowers()}
-                </div>
+                <BookBorrowers copies={this.props.book.copies} />
               </div>
             </div>
           </div>
