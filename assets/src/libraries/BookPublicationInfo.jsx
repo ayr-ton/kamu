@@ -1,4 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
+import Book from '../models/Book';
 
 const renderProperty = (property, label, styleClass) => {
   if (property) {
@@ -13,13 +16,12 @@ const renderProperty = (property, label, styleClass) => {
 };
 
 const BookPublicationInfo = ({ book }) => {
-  let publisherWrapper;
   const publisherName = renderProperty(book.publisher, 'Publisher', 'modal-book__publisher-name');
   const publicationDate = renderProperty(book.publication_date, 'Publication date', 'modal-book__publication-date');
   const numberOfPages = renderProperty(book.number_of_pages, 'Pages', 'modal-book__number-of-pages');
 
   if (publisherName || publicationDate || numberOfPages) {
-    publisherWrapper = (
+    return (
       <div className="modal-book__publisher-wrapper">
         {publisherName}
         {publicationDate}
@@ -28,7 +30,11 @@ const BookPublicationInfo = ({ book }) => {
     );
   }
 
-  return publisherWrapper;
+  return null;
+};
+
+BookPublicationInfo.propTypes = {
+  book: PropTypes.instanceOf(Book).isRequired,
 };
 
 export default BookPublicationInfo;
