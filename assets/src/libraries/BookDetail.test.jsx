@@ -68,7 +68,7 @@ describe('Book Detail', () => {
     ).toEqual('1 of 1');
   });
 
-  it('renders \'0 of 1\' when no copies out of 1 are available', () => {
+  it('renders info showing that there are 0 available copies', () => {
     testDefaultProps.book = someBookWithNoAvailableCopies();
 
     const bookDetail = shallowBookDetail({ ...testDefaultProps });
