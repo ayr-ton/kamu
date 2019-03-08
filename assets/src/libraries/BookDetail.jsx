@@ -29,7 +29,6 @@ export default class BookDetail extends Component {
 
   render() {
     const { book } = this.props;
-    const copiesAvailable = book.getCountBookCopiesAvailable();
 
     const actions = [
       <IconButton iconStyle={styles.largeIcon} style={styles.large} onClick={this.changeOpenStatus} key="clear">
@@ -155,7 +154,7 @@ export default class BookDetail extends Component {
                 <div className="modal-book__available-wrapper">
                   <div className="modal-book__detail-label">Availability</div>
                   <div className="modal-book__detail-value">
-                    {copiesAvailable}
+                    {book.getCountBookCopiesAvailable()}
                     {' '}
 of
                     {' '}
