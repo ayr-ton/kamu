@@ -27,6 +27,17 @@ export default class BookDetail extends Component {
     this.actionButtons = this.props.actionButtons.bind(this);
   }
 
+  renderAvailability() {
+    return (
+      <div className="modal-book__available-wrapper">
+        <div className="modal-book__detail-label">Availability</div>
+        <div className="modal-book__detail-value">
+          {`${this.props.book.getCountBookCopiesAvailable()} of ${this.props.book.copies.length}`}
+        </div>
+      </div>
+    );
+  }
+
   renderGoodReadsLink() {
     let goodReadsLink;
     if (this.props.book.isbn) {
@@ -34,6 +45,18 @@ export default class BookDetail extends Component {
       goodReadsLink = <a href={href} target="_blank" rel="noopener noreferrer">View on GoodReads</a>;
     }
     return goodReadsLink;
+  }
+
+  renderDescription() {
+    return (
+      <div className="modal-book__description-wrapper">
+        {this.props.book.description ? <div className="modal-book__description">{this.props.book.description}</div> : null}
+
+        <div className="modal-book__goodreads">
+          {this.renderGoodReadsLink()}
+        </div>
+      </div>
+    );
   }
 
   render() {
@@ -71,27 +94,11 @@ export default class BookDetail extends Component {
               <div className="modal-book__author">{book.author}</div>
 
               <div className="modal-book__details-container">
-                <div className="modal-book__available-wrapper">
-                  <div className="modal-book__detail-label">Availability</div>
-                  <div className="modal-book__detail-value">
-                    {book.getCountBookCopiesAvailable()}
-                    {' '}
-of
-                    {' '}
-                    {book.copies.length}
-                  </div>
-                </div>
-
+                {this.renderAvailability()}
                 <BookPublicationInfo book={book} />
               </div>
 
-              <div className="modal-book__description-wrapper">
-                {book.description ? <div className="modal-book__description">{book.description}</div> : null}
-
-                <div className="modal-book__goodreads">
-                  {this.renderGoodReadsLink()}
-                </div>
-              </div>
+              {this.renderDescription()}
 
               <div className="modal-book__status">
                 <BookBorrowers copies={this.props.book.copies} />
