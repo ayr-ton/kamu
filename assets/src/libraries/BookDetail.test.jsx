@@ -1,10 +1,10 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import Dialog from '@material-ui/core/Dialog';
-import Avatar from '@material-ui/core/Avatar';
 
 import BookDetail from './BookDetail';
 import { someBook, someBookWithAvailableCopies, someBookWithNoAvailableCopies } from '../../test/booksHelper';
+import BookBorrowers from './BookBorrowers';
 
 const shallowBookDetail = (props) => shallow(<BookDetail {...props} />);
 const book = someBook();
@@ -113,12 +113,15 @@ describe('Book Detail', () => {
     ).toEqual('https://www.goodreads.com/search?q=9780321146533');
   });
 
-  it('renders information about who are the people who have a borrowed copy', () => {
+  it('renders BookBorrowers component', () => {
     testDefaultProps.book = someBookWithNoAvailableCopies();
     const bookDetail = shallowBookDetail({ ...testDefaultProps });
 
     expect(
-      bookDetail.find('.modal-book__borrowed-informations').find(Avatar),
+      bookDetail.find('.modal-book__status').find(BookBorrowers),
     ).toHaveLength(1);
+    expect(
+      bookDetail.find('.modal-book__status').find(BookBorrowers).props().copies,
+    ).toEqual(testDefaultProps.book.copies);
   });
 });
