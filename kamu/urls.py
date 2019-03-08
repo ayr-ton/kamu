@@ -22,7 +22,16 @@ library_routers.register(r'books', views.BookViewSet, base_name='books')
 book_routers = routers.NestedSimpleRouter(library_routers, r'books', lookup='book')
 book_routers.register(r'waitlist', WaitlistViewSet, base_name='waitlist')
 
-urlpatterns = [
+if os.environ.get("OKTA_METADATA_URL") is None:
+    login_routes = [ url(r'^accounts/login', admin.site.login) ]
+else:
+    login_routes = [
+        url(r'^accounts/login', django_saml2_auth.views.signin),
+        url(r'^admin/login/$', django_saml2_auth.views.signin),
+        url(r'^okta-login/', include('django_saml2_auth.urls')),
+    ]
+
+urlpatterns = login_routes + [
     url(r'^admin$', RedirectView.as_view(url = '/admin/')),
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include(router.urls)),
@@ -33,12 +42,5 @@ urlpatterns = [
     url(r'^api/copies/(?P<id>.+)/borrow', views.BookCopyBorrowView.as_view()),
     url(r'^api/copies/(?P<id>.+)/return', views.BookCopyReturnView.as_view()),
     url(r'^favicon\.ico$', RedirectView.as_view(url=settings.STATIC_URL + 'images/favicon.ico')),
-    url(r'^$', login_required(TemplateView.as_view(template_name='index.html'))),
+    url(r'', login_required(TemplateView.as_view(template_name='index.html'))),
 ]
-
-if os.environ.get("OKTA_METADATA_URL") is None:
-    urlpatterns.append(url(r'^accounts/login', admin.site.login))
-else:
-    urlpatterns.append(url(r'^accounts/login', django_saml2_auth.views.signin))
-    urlpatterns.append(url(r'^admin/login/$', django_saml2_auth.views.signin))
-    urlpatterns.append(url(r'^okta-login/', include('django_saml2_auth.urls')))
