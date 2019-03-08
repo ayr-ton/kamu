@@ -1,37 +1,22 @@
 import React from 'react';
 
+const renderProperty = (property, label, styleClass) => {
+  if (property) {
+    return (
+      <div className={styleClass}>
+        <div className="modal-book__detail-label">{label}</div>
+        <div className="modal-book__detail-value">{property}</div>
+      </div>
+    );
+  }
+  return null;
+};
+
 const BookPublicationInfo = ({ book }) => {
   let publisherWrapper;
-  let publisherName;
-  let publicationDate;
-  let numberOfPages;
-
-  if (book.publisher) {
-    publisherName = (
-      <div className="modal-book__publisher-name">
-        <div className="modal-book__detail-label">Publisher</div>
-        <div className="modal-book__detail-value">{book.publisher}</div>
-      </div>
-    );
-  }
-
-  if (book.publication_date) {
-    publicationDate = (
-      <div className="modal-book__publication-date">
-        <div className="modal-book__detail-label">Publication date</div>
-        <div className="modal-book__detail-value">{book.publication_date}</div>
-      </div>
-    );
-  }
-
-  if (book.number_of_pages) {
-    numberOfPages = (
-      <div className="modal-book__number-of-pages">
-        <div className="modal-book__detail-label">Pages</div>
-        <div className="modal-book__detail-value">{book.number_of_pages}</div>
-      </div>
-    );
-  }
+  const publisherName = renderProperty(book.publisher, 'Publisher', 'modal-book__publisher-name');
+  const publicationDate = renderProperty(book.publication_date, 'Publication date', 'modal-book__publication-date');
+  const numberOfPages = renderProperty(book.number_of_pages, 'Pages', 'modal-book__number-of-pages');
 
   if (publisherName || publicationDate || numberOfPages) {
     publisherWrapper = (
