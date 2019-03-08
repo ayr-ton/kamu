@@ -27,20 +27,12 @@ export default class BookDetail extends Component {
     this.actionButtons = this.props.actionButtons.bind(this);
   }
 
-  render() {
-    const { book } = this.props;
-
-    const actions = [
-      <IconButton iconStyle={styles.largeIcon} style={styles.large} onClick={this.changeOpenStatus} key="clear">
-        <Clear />
-      </IconButton>,
-    ];
-
+  getBorrowers() {
     const borrowers = [];
     let headerDisplayed = false;
     let borrowedTimeAgo;
 
-    for (const copy of book.copies) {
+    for (const copy of this.props.book.copies) {
       if (copy.user) {
         if (copy.borrow_date) {
           borrowedTimeAgo = (
@@ -70,6 +62,18 @@ export default class BookDetail extends Component {
         );
       }
     }
+
+    return borrowers;
+  }
+
+  render() {
+    const { book } = this.props;
+
+    const actions = [
+      <IconButton iconStyle={styles.largeIcon} style={styles.large} onClick={this.changeOpenStatus} key="clear">
+        <Clear />
+      </IconButton>,
+    ];
 
     let imageUrl;
     let publisherWrapper;
@@ -176,7 +180,7 @@ of
 
               <div className="modal-book__status">
                 <div className="modal-book__borrowed-informations">
-                  {borrowers}
+                  {this.getBorrowers()}
                 </div>
               </div>
             </div>
