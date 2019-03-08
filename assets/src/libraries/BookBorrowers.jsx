@@ -3,14 +3,12 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import Avatar from '@material-ui/core/Avatar';
 
-const getBorrowers = (copies) => {
-  const borrowers = [];
-  let headerDisplayed = false;
-  let borrowedTimeAgo;
 
+const BookBorrowers = ({ copies }) => {
   const borrowedCopies = copies.filter((copy) => copy.user);
 
-  for (const copy of borrowedCopies) {
+  const borrowers = borrowedCopies.map((copy) => {
+    let borrowedTimeAgo;
     if (copy.borrow_date) {
       borrowedTimeAgo = (
         <div className="modal-book__borrowed-elapsed-time">
@@ -20,12 +18,7 @@ const getBorrowers = (copies) => {
       );
     }
 
-    if (!headerDisplayed) {
-      headerDisplayed = true;
-      borrowers.push(<div key="borrowed-title" className="modal-book__borrowed-with-label">Borrowed with:</div>);
-    }
-
-    borrowers.push(
+    return (
       <div key={copy.user.username} className="modal-book__borrowed-with">
         <div className="modal-book__borrowed-with-wrapper">
           <div className="modal-book__borrowed-person">
@@ -35,18 +28,21 @@ const getBorrowers = (copies) => {
 
           {borrowedTimeAgo}
         </div>
-      </div>,
+      </div>
+    );
+  });
+
+  if (borrowers.length > 0) {
+    return (
+      <div className="modal-book__borrowed-informations">
+        <div key="borrowed-title" className="modal-book__borrowed-with-label">Borrowed with:</div>
+        {borrowers}
+      </div>
     );
   }
 
-  return borrowers;
+  return null;
 };
-
-const BookBorrowers = ({ copies }) => (
-  <div className="modal-book__borrowed-informations">
-    {getBorrowers(copies)}
-  </div>
-);
 
 BookBorrowers.propTypes = {
   copies: PropTypes.arrayOf(PropTypes.shape({
