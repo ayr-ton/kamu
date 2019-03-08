@@ -8,7 +8,7 @@ export const someBook = (copies = [], waitlistUsers = []) => {
   book.author = 'Kent Beck';
   book.title = 'Test Driven Development';
   book.subtitle = 'By Example';
-  book.desciption = 'Lorem ipsum...';
+  book.description = 'Lorem ipsum...';
   book.image_url = 'http://books.google.com.br/books/content?id=gFgnde_vwMAC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api';
   book.isbn = '9780321146533';
   book.number_of_pages = 220;
@@ -25,6 +25,7 @@ export const someBookWithNoAvailableCopies = () => someBook([
   {
     id: 1,
     user: someUser,
+    borrow_date: '2019-03-07',
   },
 ]);
 
