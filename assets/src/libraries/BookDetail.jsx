@@ -122,13 +122,7 @@ export default class BookDetail extends Component {
       </IconButton>,
     ];
 
-    let imageUrl;
-    let bookDescription;
     let goodReadsLink;
-
-    if (book.image_url) imageUrl = <img src={book.image_url} alt="Book cover" className="modal-book__image" />;
-
-    if (book.description) bookDescription = <div className="modal-book__description">{book.description}</div>;
 
     if (book.isbn) {
       const goodReadsIsbnUrl = `https://www.goodreads.com/search?q=${book.isbn}`;
@@ -149,7 +143,7 @@ export default class BookDetail extends Component {
         <DialogContent className="modal-container">
           <div className="modal-book">
             <div className="modal-book__image-box">
-              {imageUrl}
+              {book.image_url ? <img src={book.image_url} alt="Book cover" className="modal-book__image" /> : null}
 
               <div className="modal-book__actions-buttons">
                 {this.actionButtons()}
@@ -177,7 +171,7 @@ of
               </div>
 
               <div className="modal-book__description-wrapper">
-                {bookDescription}
+                {book.description ? <div className="modal-book__description">{book.description}</div> : null}
 
                 <div className="modal-book__goodreads">
                   {goodReadsLink}
