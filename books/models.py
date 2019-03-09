@@ -22,6 +22,18 @@ class Book(models.Model):
     def is_borrowed_by_user(self, library, user):
         return self.bookcopy_set.filter(library=library, user=user).exists()
 
+    def is_on_users_waitlist(self, library, user):
+        return self.waitlistitem_set.filter(library=library, user=user).exists()
+
+    def available_action(self, library, user):
+        if self.is_borrowed_by_user(library, user):
+            return 'Return'
+        if self.is_available(library):
+            return 'Borrow'
+        if not self.is_on_users_waitlist(library, user):
+            return 'Join the Waitlist'
+        return None
+
 
 class Library(models.Model):
     name = models.CharField(max_length=255)

@@ -13,6 +13,7 @@ class BookTestCase(TestCase):
         self.library = Library.objects.create(name="Santiago", slug="slug")
         self.library2 = Library.objects.create(name="Santiago", slug="slug")
         self.user = User.objects.create(username="claudia", email="claudia@gmail.com")
+        self.user2 = User.objects.create(username="Marielle Franco", email="marielle@gmail.com")
 
     def test_can_create_book(self):
         self.assertEqual(self.book.author, "Author")
@@ -48,6 +49,23 @@ class BookTestCase(TestCase):
     def test_is_not_borrowed_if_user_has_a_copy_on_other_library(self):
         self.book.bookcopy_set.create(library=self.library2, user=self.user)
         self.assertFalse(self.book.is_borrowed_by_user(self.library, self.user))
+
+    def test_has_borrow_action_when_user_has_not_borrowed_and_there_is_a_copy_available(self):
+        self.book.bookcopy_set.create(library=self.library, user=None)
+        self.assertEqual('Borrow', self.book.available_action(self.library, self.user))
+
+    def test_has_return_action_when_user_has_borrowed_a_copy(self):
+        self.book.bookcopy_set.create(library=self.library, user=self.user)
+        self.assertEqual('Return', self.book.available_action(self.library, self.user))
+
+    def test_has_join_waitlist_action_when_user_has_not_borrowed_and_no_copies_are_available(self):
+        self.book.bookcopy_set.create(library=self.library, user=self.user2)
+        self.assertEqual('Join the Waitlist', self.book.available_action(self.library, self.user))
+
+    def test_does_not_have_action_when_user_is_already_on_waitlist(self):
+        self.book.bookcopy_set.create(library=self.library, user=self.user2)
+        self.book.waitlistitem_set.create(library=self.library, user=self.user, added_date=timezone.now())
+        self.assertIsNone(self.book.available_action(self.library, self.user))
 
 
 class LibraryTestCase(TestCase):
