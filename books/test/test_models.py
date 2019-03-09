@@ -37,6 +37,18 @@ class BookTestCase(TestCase):
         self.book.bookcopy_set.create(library=self.library, user=self.user)
         self.assertFalse(self.book.is_available(self.library))
 
+    def test_is_borrowed_if_user_has_a_copy_on_library(self):
+        self.book.bookcopy_set.create(library=self.library, user=self.user)
+        self.assertTrue(self.book.is_borrowed_by_user(self.library, self.user))
+
+    def test_is_not_borrowed_if_user_does_not_have_a_copy_on_library(self):
+        self.book.bookcopy_set.create(library=self.library, user=None)
+        self.assertFalse(self.book.is_borrowed_by_user(self.library, self.user))
+
+    def test_is_not_borrowed_if_user_has_a_copy_on_other_library(self):
+        self.book.bookcopy_set.create(library=self.library2, user=self.user)
+        self.assertFalse(self.book.is_borrowed_by_user(self.library, self.user))
+
 
 class LibraryTestCase(TestCase):
     def test_can_create_library(self):
