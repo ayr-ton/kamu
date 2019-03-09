@@ -45,7 +45,7 @@ class IsbnFormView(View):
             isbn = form.cleaned_data["isbn"]
             book_from_db = BookModel.objects.filter(isbn=isbn).distinct()
             book = BookFinder.fetch(isbn)
-            
+
             if book_from_db:
                  messages.warning(request, 'The requested book is on the table.')
                  return self.get(request)
@@ -117,7 +117,11 @@ class BookViewSet(FiltersMixin, viewsets.ModelViewSet):
 
         page = self.paginate_queryset(books)
 
-        serializer = BookSerializer(page, many=True, context={'request': request, 'library': library})
+        serializer = BookSerializer(page, many=True, context={
+            'request': request,
+            'library': library,
+            'user': request.user,
+        })
 
         return self.get_paginated_response(serializer.data)
 
@@ -161,5 +165,5 @@ class UserBooksView(APIView):
     def get(self, request, format=None):
         books = Book.objects.filter(bookcopy__user=request.user)
         return Response({
-            'results': BookSerializer(books, many=True).data
+            'results': BookSerializer(books, many=True, context={'user': request.user}).data
         })

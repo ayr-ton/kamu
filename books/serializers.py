@@ -40,6 +40,7 @@ class BookSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
     copies = serializers.SerializerMethodField()
     waitlist_users = serializers.SerializerMethodField()
+    action = serializers.SerializerMethodField()
 
     class Meta:
         model = Book
@@ -60,6 +61,12 @@ class BookSerializer(serializers.ModelSerializer):
             waitlist_items = obj.waitlistitem_set.all()
         serializer = UserSerializer(list(map(lambda item: item.user, waitlist_items)), many=True)
         return serializer.data
+
+    def get_action(self, obj):
+        return obj.available_action(
+            library=self.context.get('library'),
+            user=self.context.get('user'),
+        )
 
 
 class BookCompactSerializer(serializers.ModelSerializer):

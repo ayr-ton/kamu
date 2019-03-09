@@ -19,18 +19,21 @@ class Book(models.Model):
     def is_available(self, library):
         return self.bookcopy_set.filter(library=library, user=None).exists()
 
-    def is_borrowed_by_user(self, library, user):
-        return self.bookcopy_set.filter(library=library, user=user).exists()
+    def is_borrowed_by_user(self, user, library=None):
+        user_copies = self.bookcopy_set.filter(user=user)
+        if library is not None:
+            user_copies = user_copies.filter(library=library)
+        return user_copies.exists()
 
-    def is_on_users_waitlist(self, library, user):
-        return self.waitlistitem_set.filter(library=library, user=user).exists()
+    def is_on_users_waitlist(self, user, library):
+        return self.waitlistitem_set.filter(user=user, library=library).exists()
 
-    def available_action(self, library, user):
-        if self.is_borrowed_by_user(library, user):
+    def available_action(self, user, library=None):
+        if self.is_borrowed_by_user(user, library):
             return 'Return'
         if self.is_available(library):
             return 'Borrow'
-        if not self.is_on_users_waitlist(library, user):
+        if not self.is_on_users_waitlist(user, library):
             return 'Join the Waitlist'
         return None
 
