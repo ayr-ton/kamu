@@ -16,6 +16,9 @@ class Book(models.Model):
     def __str__(self):
         return "%s (%s)" % (self.title, self.author)
 
+    def is_available(self, library):
+        return self.bookcopy_set.filter(library=library, user=None).exists()
+
 
 class Library(models.Model):
     name = models.CharField(max_length=255)
