@@ -5,8 +5,8 @@ import LibrarySelector from './home/LibrarySelector';
 import LibraryRedirector from './home/LibraryRedirector';
 import Library from './libraries/Library';
 import MyBooks from './mybooks/MyBooks';
-import { getLoggedUser } from './services/ProfileService';
-import trackAnalyticsPageView from './utils/analytics';
+import { getLoggedUser } from '../services/ProfileService';
+import trackAnalyticsPageView from '../utils/analytics';
 
 class App extends Component {
   constructor(props) {

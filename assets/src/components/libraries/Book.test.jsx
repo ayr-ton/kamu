@@ -2,17 +2,17 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import Button from '@material-ui/core/Button';
 import Book from './Book';
-import { currentUser } from '../../test/userHelper';
+import { currentUser } from '../../../test/userHelper';
 import {
   someBook,
   someBookWithAvailableCopies,
   someBookWithNoAvailableCopies,
   someBookWithACopyFromMe,
   someBookThatCanBeAddedToWaitlist,
-} from '../../test/booksHelper';
-import { borrowCopy, returnBook, joinWaitlist } from '../services/BookService';
+} from '../../../test/booksHelper';
+import { borrowCopy, returnBook, joinWaitlist } from '../../services/BookService';
 
-jest.mock('../services/BookService');
+jest.mock('../../services/BookService');
 
 expect.extend({
   toHaveBorrowButton(received) {

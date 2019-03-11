@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Paper from '@material-ui/core/Paper';
 import Icon from '@material-ui/core/Icon';
-import { getMyBooks } from '../services/BookService';
+import { getMyBooks } from '../../services/BookService';
 import BookList from '../libraries/BookList';
 
 export default class MyBooks extends Component {

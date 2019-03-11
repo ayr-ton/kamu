@@ -4,7 +4,7 @@ import ReactRouterPropTypes from 'react-router-prop-types';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import { withRouter } from 'react-router';
-import { getLibraries } from '../services/BookService';
+import { getLibraries } from '../../services/BookService';
 
 class LibrarySelector extends Component {
   constructor(props) {

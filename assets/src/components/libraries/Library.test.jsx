@@ -2,14 +2,14 @@ import React from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 import { shallow } from 'enzyme';
 import Library from './Library';
-import { getBooksByPage } from '../services/BookService';
-import { setRegion } from '../services/ProfileService';
-import { mockGetBooksByPageResponse, mockGetBooksByPageEmptyResponse } from '../../test/mockBookService';
+import { getBooksByPage } from '../../services/BookService';
+import { setRegion } from '../../services/ProfileService';
+import { mockGetBooksByPageResponse, mockGetBooksByPageEmptyResponse } from '../../../test/mockBookService';
 import BookList from './BookList';
-import SearchBar from '../utils/filters/SearchBar';
+import SearchBar from '../../utils/filters/SearchBar';
 
-jest.mock('../services/BookService');
-jest.mock('../services/ProfileService');
+jest.mock('../../services/BookService');
+jest.mock('../../services/ProfileService');
 
 const history = { replace: jest.fn(), location: { search: null } };
 const createComponent = (props) => shallow(<Library slug="bh" history={history} {...props} />);

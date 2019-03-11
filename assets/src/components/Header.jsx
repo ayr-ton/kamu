@@ -6,10 +6,10 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Icon from '@material-ui/core/Icon';
 import Badge from '@material-ui/core/Badge';
 import { withRouter } from 'react-router';
-import { clearRegion, getRegion } from './services/ProfileService';
+import { clearRegion, getRegion } from '../services/ProfileService';
 import {
   HOME_URL, ADMIN_URL, MY_BOOKS_URL, ADD_BOOK_URL, LIBRARY_URL_PREFIX,
-} from './utils/constants';
+} from '../utils/constants';
 
 const redirectExternal = (url) => window.location.assign(url);
 const getHomeEndpoint = () => (getRegion() ? `${LIBRARY_URL_PREFIX}/${getRegion()}` : HOME_URL);

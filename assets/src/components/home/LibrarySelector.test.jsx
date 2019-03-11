@@ -2,9 +2,9 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import ListItem from '@material-ui/core/ListItem';
 import { LibrarySelector } from './LibrarySelector';
-import { getLibraries } from '../services/BookService';
+import { getLibraries } from '../../services/BookService';
 
-jest.mock('../services/BookService');
+jest.mock('../../services/BookService');
 
 const history = { push: jest.fn() };
 

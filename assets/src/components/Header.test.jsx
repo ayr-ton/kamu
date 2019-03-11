@@ -2,9 +2,9 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import Badge from '@material-ui/core/Badge';
 import { Header } from './Header';
-import { getRegion, clearRegion } from './services/ProfileService';
+import { getRegion, clearRegion } from '../services/ProfileService';
 
-jest.mock('./services/ProfileService');
+jest.mock('../services/ProfileService');
 
 const history = { push: jest.fn() };
 const createComponent = (props) => shallow(<Header history={history} {...props} />);
