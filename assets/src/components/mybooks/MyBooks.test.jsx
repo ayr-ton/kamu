@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import MyBooks from './MyBooks';
 import { getMyBooks } from '../../services/BookService';
 
-import BookList from '../libraries/BookList';
+import BookList from '../books/BookList';
 
 jest.mock('../../services/BookService');
 
