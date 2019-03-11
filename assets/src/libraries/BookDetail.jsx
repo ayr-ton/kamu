@@ -50,7 +50,7 @@ export default class BookDetail extends Component {
   renderDescription() {
     return (
       <div className="modal-book__description-wrapper">
-        {this.props.book.description ? <div className="modal-book__description">{this.props.book.description}</div> : null}
+        {this.props.book.description && <div className="modal-book__description">{this.props.book.description}</div>}
 
         <div className="modal-book__goodreads">
           {this.renderGoodReadsLink()}
@@ -82,7 +82,7 @@ export default class BookDetail extends Component {
         <DialogContent className="modal-container">
           <div className="modal-book">
             <div className="modal-book__image-box">
-              {book.image_url ? <img src={book.image_url} alt="Book cover" className="modal-book__image" /> : null}
+              {book.image_url && <img src={book.image_url} alt="Book cover" className="modal-book__image" />}
 
               <div className="modal-book__actions-buttons">
                 {this.actionButtons()}
