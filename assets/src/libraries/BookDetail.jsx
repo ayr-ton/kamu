@@ -39,12 +39,15 @@ export default class BookDetail extends Component {
   }
 
   renderGoodReadsLink() {
-    let goodReadsLink;
-    if (this.props.book.isbn) {
-      const href = `https://www.goodreads.com/search?q=${this.props.book.isbn}`;
-      goodReadsLink = <a href={href} target="_blank" rel="noopener noreferrer">View on GoodReads</a>;
-    }
-    return goodReadsLink;
+    return this.props.book.isbn && (
+      <a
+        href={`https://www.goodreads.com/search?q=${this.props.book.isbn}`}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        View on GoodReads
+      </a>
+    );
   }
 
   renderDescription() {

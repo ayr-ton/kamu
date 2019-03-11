@@ -3,17 +3,12 @@ import PropTypes from 'prop-types';
 
 import Book from '../models/Book';
 
-const renderProperty = (property, label, styleClass) => {
-  if (property) {
-    return (
-      <div className={styleClass}>
-        <div className="modal-book__detail-label">{label}</div>
-        <div className="modal-book__detail-value">{property}</div>
-      </div>
-    );
-  }
-  return null;
-};
+const renderProperty = (property, label, styleClass) => property && (
+  <div className={styleClass}>
+    <div className="modal-book__detail-label">{label}</div>
+    <div className="modal-book__detail-value">{property}</div>
+  </div>
+);
 
 const BookPublicationInfo = ({ book }) => {
   const publisherName = renderProperty(book.publisher, 'Publisher', 'modal-book__publisher-name');
