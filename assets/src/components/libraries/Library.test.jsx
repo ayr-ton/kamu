@@ -5,7 +5,7 @@ import Library from './Library';
 import { getBooksByPage } from '../../services/BookService';
 import { setRegion } from '../../services/ProfileService';
 import { mockGetBooksByPageResponse, mockGetBooksByPageEmptyResponse } from '../../../test/mockBookService';
-import BookList from './BookList';
+import BookList from '../books/BookList';
 import SearchBar from '../../utils/filters/SearchBar';
 
 jest.mock('../../services/BookService');

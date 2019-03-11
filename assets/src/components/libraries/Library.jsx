@@ -4,7 +4,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { getBooksByPage } from '../../services/BookService';
-import BookList from './BookList';
+import BookList from '../books/BookList';
 import SearchBar from '../../utils/filters/SearchBar';
 import { setRegion } from '../../services/ProfileService';
 
