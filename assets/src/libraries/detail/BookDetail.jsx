@@ -4,9 +4,9 @@ import IconButton from '@material-ui/core/IconButton';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
-import '../../css/ModalBook.css';
+import '../../../css/ModalBook.css';
 import Clear from '@material-ui/icons/Clear';
-import Book from '../models/Book';
+import Book from '../../models/Book';
 import BookBorrowers from './BookBorrowers';
 import BookPublicationInfo from './BookPublicationInfo';
 
