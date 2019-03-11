@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import Dialog from '@material-ui/core/Dialog';
 
 import BookDetail from './BookDetail';
-import { someBook, someBookWithAvailableCopies, someBookWithNoAvailableCopies } from '../../test/booksHelper';
+import { someBook, someBookWithAvailableCopies, someBookWithNoAvailableCopies } from '../../../test/booksHelper';
 import BookBorrowers from './BookBorrowers';
 import BookPublicationInfo from './BookPublicationInfo';
 

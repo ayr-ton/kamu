@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Book from '../models/Book';
+import Book from '../../models/Book';
 
 const renderProperty = (property, label, styleClass) => property && (
   <div className={styleClass}>

@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import BookPublicationInfo from './BookPublicationInfo';
-import { someBook } from '../../test/booksHelper';
+import { someBook } from '../../../test/booksHelper';
 
 const shallowBookPublicationInfo = (props) => shallow(<BookPublicationInfo {...props} />);
 
