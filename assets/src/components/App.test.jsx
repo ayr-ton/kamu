@@ -2,10 +2,10 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import Header from './Header';
 import App from './App';
-import { getLoggedUser } from './services/ProfileService';
-import { currentUser } from '../test/userHelper';
+import { getLoggedUser } from '../services/ProfileService';
+import { currentUser } from '../../test/userHelper';
 
-jest.mock('./services/ProfileService');
+jest.mock('../services/ProfileService');
 
 const createComponent = (props) => shallow(<App {...props} />);
 

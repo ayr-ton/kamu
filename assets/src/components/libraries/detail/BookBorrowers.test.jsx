@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import Avatar from '@material-ui/core/Avatar';
 
 import BookBorrowers from './BookBorrowers';
-import { someBookWithNoAvailableCopies, someBookWithAvailableCopies } from '../../../test/booksHelper';
+import { someBookWithNoAvailableCopies, someBookWithAvailableCopies } from '../../../../test/booksHelper';
 
 const shallowBookBorrowers = (props) => shallow(<BookBorrowers {...props} />);
 

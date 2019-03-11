@@ -3,10 +3,10 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import InfiniteScroll from 'react-infinite-scroller';
 import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
-import { getBooksByPage } from '../services/BookService';
+import { getBooksByPage } from '../../services/BookService';
 import BookList from './BookList';
-import SearchBar from '../utils/filters/SearchBar';
-import { setRegion } from '../services/ProfileService';
+import SearchBar from '../../utils/filters/SearchBar';
+import { setRegion } from '../../services/ProfileService';
 
 class Library extends Component {
   constructor(props) {

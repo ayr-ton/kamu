@@ -1,11 +1,11 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import MyBooks from './MyBooks';
-import { getMyBooks } from '../services/BookService';
+import { getMyBooks } from '../../services/BookService';
 
 import BookList from '../libraries/BookList';
 
-jest.mock('../services/BookService');
+jest.mock('../../services/BookService');
 
 describe('My books', () => {
   const createComponent = (props = {}) => shallow(<MyBooks {...props} />);
