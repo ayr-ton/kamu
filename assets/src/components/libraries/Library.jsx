@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { getBooksByPage } from '../../services/BookService';
 import BookList from '../books/BookList';
-import SearchBar from '../../utils/filters/SearchBar';
+import SearchBar from './SearchBar';
 import { setRegion } from '../../services/ProfileService';
 
 class Library extends Component {
