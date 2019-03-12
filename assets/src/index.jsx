@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import * as Sentry from '@sentry/browser';
-import ErrorBoundary from './utils/ErrorBoundary';
+import ErrorBoundary from './components/ErrorBoundary';
 import App from './components/App';
 
 import '../css/index.css';
