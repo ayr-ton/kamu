@@ -10,16 +10,6 @@ import Book from '../../models/Book';
 import BookBorrowers from './BookBorrowers';
 import BookPublicationInfo from './BookPublicationInfo';
 
-const styles = {
-  largeIcon: {
-    width: 40,
-    height: 40,
-  },
-  large: {
-    padding: 0,
-  },
-};
-
 export default class BookDetail extends Component {
   constructor(props) {
     super(props);
@@ -66,14 +56,13 @@ export default class BookDetail extends Component {
     const { book } = this.props;
 
     const actions = [
-      <IconButton iconStyle={styles.largeIcon} style={styles.large} onClick={this.changeOpenStatus} key="clear">
+      <IconButton onClick={this.changeOpenStatus} key="clear" className="modal-book__close">
         <Clear />
       </IconButton>,
     ];
 
     return (
       <Dialog
-        modal={false}
         open={this.props.open}
         onClose={this.changeOpenStatus}
         maxWidth="md"

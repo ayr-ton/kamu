@@ -9,7 +9,7 @@ export default class SearchBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchTerm: '',
+      searchTerm: this.props.query || '',
     };
 
     this.onChange = this.onChange.bind(this);
@@ -18,8 +18,12 @@ export default class SearchBar extends Component {
 
   onChange(event) {
     const newSearchTerm = event.target.value;
+    const previousSearchTerm = this.state.searchTerm;
     this.setState({ searchTerm: newSearchTerm });
-    this.props.onChange(newSearchTerm);
+
+    if (newSearchTerm.trim() !== previousSearchTerm.trim()) {
+      this.props.onChange(newSearchTerm.trim());
+    }
   }
 
   onClear() {
@@ -54,4 +58,5 @@ export default class SearchBar extends Component {
 
 SearchBar.propTypes = {
   onChange: PropTypes.func.isRequired,
+  query: PropTypes.string.isRequired,
 };

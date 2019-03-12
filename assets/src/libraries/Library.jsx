@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import InfiniteScroll from 'react-infinite-scroller';
 import PropTypes from 'prop-types';
+import ReactRouterPropTypes from 'react-router-prop-types';
 import { getBooksByPage } from '../services/BookService';
 import BookList from './BookList';
 import SearchBar from '../utils/filters/SearchBar';
@@ -10,11 +11,14 @@ import { setRegion } from '../services/ProfileService';
 class Library extends Component {
   constructor(props) {
     super(props);
+
+    const searchTerm = new URLSearchParams(props.history.location.search).get('q') || '';
+
     this.state = {
       books: [],
       hasNextPage: true,
       page: 1,
-      searchTerm: '',
+      searchTerm,
       isLoading: false,
     };
 
@@ -44,6 +48,10 @@ class Library extends Component {
       hasNextPage: !!booksResponse.next,
       isLoading: false,
     });
+
+    this.props.history.replace({
+      search: searchTerm ? new URLSearchParams({ q: searchTerm }).toString() : null,
+    });
   }
 
   searchTermChanged(searchTerm) {
@@ -60,7 +68,7 @@ class Library extends Component {
   render() {
     return (
       <React.Fragment>
-        <SearchBar onChange={this.searchTermChanged} />
+        <SearchBar onChange={this.searchTermChanged} query={this.state.searchTerm} />
         <InfiniteScroll
           loadMore={this.loadBooks}
           hasMore={this.state.hasNextPage}
@@ -80,6 +88,7 @@ class Library extends Component {
 
 Library.propTypes = {
   slug: PropTypes.string.isRequired,
+  history: ReactRouterPropTypes.history.isRequired,
 };
 
 export default Library;

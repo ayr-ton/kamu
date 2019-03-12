@@ -9,6 +9,10 @@
   color: #333333;
 }
 
+.modal-book__close {
+  padding: 0 !important;
+}
+
 .modal-book__image-box {
   width: 20%;
   display: flex;

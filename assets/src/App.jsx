@@ -44,8 +44,8 @@ class App extends Component {
               <Route exact path="/my-books" component={MyBooks} />
               <Route
                 path="/libraries/:slug"
-                render={({ match }) => (
-                  <Library slug={match.params.slug} />
+                render={({ match, history }) => (
+                  <Library slug={match.params.slug} history={history} />
                 )}
               />
             </div>

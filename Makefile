@@ -6,6 +6,7 @@ dev:
 	npm start
 
 test-backend:
+	DJANGO_SETTINGS_MODULE=kamu.settings.test \
 	coverage run manage.py test
 
 test-frontend:

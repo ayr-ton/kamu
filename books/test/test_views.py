@@ -1,4 +1,5 @@
 import json
+import os
 
 import httpretty
 from django.contrib.auth.models import User
@@ -339,3 +340,31 @@ class IsbnViewTest(TestCase):
                              status_code=302, target_status_code=200)
         self.assertContains(response, 'Found! Go ahead, modify book template and save.')
         self.assertTemplateUsed(response, 'admin/change_form.html')
+
+class FrontendViewTest(TestCase):
+    def setUp(self):
+        user = User.objects.create_user(username="claudia", is_staff=True, is_superuser=True)
+        user.set_password("pwd12345")
+        user.save()
+        self.client.force_login(user=user)
+
+    def test_should_render_frontend_template(self):
+        response = self.client.get('/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'index.html')
+
+    def test_should_render_with_analytics_disabled_when_var_is_not_present(self):
+        if 'ANALYTICS_ACCOUNT_ID' in os.environ:
+            del os.environ['ANALYTICS_ACCOUNT_ID']
+        response = self.client.get('/')
+
+        self.assertNotContains(response, 'analytics.js')
+
+    def test_should_render_with_analytics_enabled_when_var_is_present(self):
+        analyticsAccountId = 'UA-12345678-1'
+        os.environ['ANALYTICS_ACCOUNT_ID'] = analyticsAccountId
+        response = self.client.get('/')
+
+        self.assertContains(response, 'analytics.js')
+        self.assertContains(response, analyticsAccountId)
