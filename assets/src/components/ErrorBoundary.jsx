@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import * as Sentry from '@sentry/browser';
 
-import './ErrorBoundary.css';
+import '../../css/ErrorBoundary.css';
 
 class ErrorBoundary extends Component {
   constructor(props) {
