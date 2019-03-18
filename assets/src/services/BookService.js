@@ -52,7 +52,7 @@ export const returnBook = async (book) => {
   return response;
 };
 
-export const joinWaitlist = async (library, book) => fetchFromAPI(`/libraries/${library}/books/${book.id}/waitlist/`, 'POST').then((data) => {
+export const joinWaitlist = async (book, library) => fetchFromAPI(`/libraries/${library}/books/${book.id}/waitlist/`, 'POST').then((data) => {
   if ('waitlist_item' in data) return Promise.resolve(data.waitlist_item);
 
   return Promise.reject(new Error({ message: 'Request was successful, but no data was returned' }));

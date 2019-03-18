@@ -159,7 +159,7 @@ describe('Book Service', () => {
 
       fetchFromAPI.mockResolvedValue({ waitlist_item: { book } });
 
-      await joinWaitlist('bh', book);
+      await joinWaitlist(book, 'bh');
       expect(fetchFromAPI).toHaveBeenCalledWith(`/libraries/bh/books/${book.id}/waitlist/`, 'POST');
     });
 
@@ -168,7 +168,7 @@ describe('Book Service', () => {
 
       fetchFromAPI.mockResolvedValue({ waitlist_item: 'mocked_waitlisted_item' });
 
-      const result = await joinWaitlist('bh', book);
+      const result = await joinWaitlist(book, 'bh');
       expect(result).toEqual('mocked_waitlisted_item');
     });
 
@@ -177,7 +177,7 @@ describe('Book Service', () => {
       fetchFromAPI.mockResolvedValue({});
 
       try {
-        await joinWaitlist('bh', book);
+        await joinWaitlist(book, 'bh');
       } catch (error) {
         expect(error).toEqual(new Error({ message: 'Request was successful, but no data was returned' }));
       }
@@ -188,7 +188,7 @@ describe('Book Service', () => {
       fetchFromAPI.mockRejectedValue({ status: 404 });
 
       try {
-        await joinWaitlist('bh', book);
+        await joinWaitlist(book, 'bh');
       } catch (error) {
         expect(error).toEqual({ status: 404 });
       }

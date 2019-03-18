@@ -18,23 +18,25 @@ jest.mock('../../services/BookService');
 
 expect.extend({
   toHaveBorrowButton(received) {
-    const pass = received.find(Button).exists()
-            && received.find(Button).hasClass('btn-borrow')
-            && !received.find(Button).hasClass('btn-return');
+    const button = received.find(Button);
+    const pass = button.exists()
+          && button.children().text() === 'Borrow'
+          && button.length === 1;
     return { pass, message: () => 'expected component to have a borrow button' };
   },
 
   toHaveReturnButton(received) {
-    const pass = received.find(Button).exists()
-            && !received.find(Button).hasClass('btn-borrow')
-            && received.find(Button).hasClass('btn-return');
+    const button = received.find(Button);
+    const pass = button.exists()
+          && button.children().text() === 'Return'
+          && button.length === 1;
     return { pass, message: () => 'expected component to have a return button' };
   },
 
   toHaveJoinWaitlistButton(received) {
     const button = received.find(Button);
     const pass = button.exists()
-          && button.hasClass('btn-waitlist')
+          && button.children().text() === 'Join the waitlist'
           && button.length === 1;
     return { pass, message: () => 'expected component to have a waitlist button' };
   },
@@ -79,7 +81,7 @@ describe('Book', () => {
 
     await bookComponent.find(Button).simulate('click');
 
-    expect(borrowCopy).toHaveBeenCalledWith(book);
+    expect(borrowCopy).toHaveBeenCalledWith(book, 'bh');
   });
 
   it('shows the return button when the book has a return action', () => {
@@ -105,7 +107,7 @@ describe('Book', () => {
 
     await bookComponent.find(Button).simulate('click');
 
-    expect(returnBook).toHaveBeenCalledWith(book);
+    expect(returnBook).toHaveBeenCalledWith(book, 'bh');
   });
 
   it('has no action button when the book has no action', () => {
@@ -134,7 +136,7 @@ describe('Book', () => {
 
       await bookComponent.find(Button).simulate('click');
 
-      expect(joinWaitlist).toHaveBeenCalledWith('bh', book);
+      expect(joinWaitlist).toHaveBeenCalledWith(book, 'bh');
       expect(bookComponent).not.toHaveJoinWaitlistButton();
     });
   });

@@ -25,9 +25,7 @@ export default class Book extends Component {
     this.onMouseOver = this.onMouseOver.bind(this);
     this.onMouseOut = this.onMouseOut.bind(this);
     this.actionButtons = this.actionButtons.bind(this);
-    this.borrow = this.borrow.bind(this);
-    this.return = this.return.bind(this);
-    this.waitlist = this.waitlist.bind(this);
+    this.performAction = this.performAction.bind(this);
     this.changeOpenStatus = this.changeOpenStatus.bind(this);
   }
 
@@ -35,24 +33,11 @@ export default class Book extends Component {
 
   onMouseOut() { this.setState({ zDepth: 1 }); }
 
-  borrow() {
-    borrowCopy(this.props.book).then((response) => {
+  performAction(action, eventCategory) {
+    const { book, library } = this.props;
+    return action(book, library).then((response) => {
       this.setState({ action: response.action });
-      window.ga('send', 'event', 'Borrow', this.props.book.title, this.props.library);
-    });
-  }
-
-  return() {
-    returnBook(this.props.book).then((response) => {
-      this.setState({ action: response.action });
-      window.ga('send', 'event', 'Return', this.props.book.title, this.props.library);
-    });
-  }
-
-  waitlist() {
-    joinWaitlist(this.props.library, this.props.book).then((response) => {
-      this.setState({ action: response.action });
-      window.ga('send', 'event', 'JoinWaitlist', this.props.book.title, this.props.library);
+      window.ga('send', 'event', eventCategory, this.props.book.title, this.props.library);
     });
   }
 
@@ -60,12 +45,12 @@ export default class Book extends Component {
     if (!this.state.action) return null;
     switch (this.state.action.type) {
       case BORROW_BOOK_ACTION:
-        return <Button className="btn-borrow" onClick={this.borrow}>Borrow</Button>;
+        return <Button onClick={() => this.performAction(borrowCopy, 'Borrow')}>Borrow</Button>;
       case RETURN_BOOK_ACTION:
-        return <Button className="btn-return" onClick={this.return}>Return</Button>;
+        return <Button onClick={() => this.performAction(returnBook, 'Return')}>Return</Button>;
       case JOIN_WAITLIST_BOOK_ACTION:
         return isWaitlistFeatureActive()
-          ? <Button className="btn-waitlist" onClick={this.waitlist}>Join the waitlist</Button>
+          ? <Button onClick={() => this.performAction(joinWaitlist, 'JoinWaitlist')}>Join the waitlist</Button>
           : null;
       default:
         return null;
