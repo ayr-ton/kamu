@@ -10,7 +10,7 @@ import {
   someBookWithACopyFromMe,
   someBookThatCanBeAddedToWaitlist,
   borrowAction,
-  returnAction
+  returnAction,
 } from '../../../test/booksHelper';
 import { borrowCopy, returnBook, joinWaitlist } from '../../services/BookService';
 
