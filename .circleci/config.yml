@@ -91,6 +91,8 @@ jobs:
       - run:
           name: Upload coverage results to Code Climate
           command: |
+            cat tmp/codeclimate.frontend.json | jq '.covered_percent'
+            cat tmp/codeclimate.backend.json | jq '.covered_percent'
             ./tmp/cc-test-reporter sum-coverage tmp/codeclimate.*.json -p 2 -o tmp/codeclimate.total.json
             ./tmp/cc-test-reporter upload-coverage -i tmp/codeclimate.total.json
             cat tmp/codeclimate.total.json | jq '.covered_percent'
