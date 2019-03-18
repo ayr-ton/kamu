@@ -19,25 +19,28 @@ class BookCopyBorrowViewCase(TestCase):
         self.user.set_password("123")
         self.user.save()
         self.client.force_login(user=self.user)
-
-    def test_user_can_borrow_book_copy(self):
+        self.library = Library.objects.create(name="Santiago", slug="slug")
         self.book = Book.objects.create(author="Author", title="the title", subtitle="The subtitle",
                                         publication_date=timezone.now())
-        self.library = Library.objects.create(name="Santiago", slug="slug")
         self.bookCopy = BookCopy.objects.create(book=self.book, library=self.library)
 
-        self.request = self.client.post('/api/copies/' + str(self.bookCopy.id) + "/borrow")
+    def test_user_can_borrow_book_copy(self):
+        response = self.client.post('/api/copies/' + str(self.bookCopy.id) + "/borrow")
 
-        self.assertEqual(200, self.request.status_code)
-        self.assertTrue(str(self.request.data).__contains__("Book borrowed"))
+        self.assertEqual(200, response.status_code)
+        self.assertTrue(response.data['status'], 'Book borrowed')
 
         book_copy = BookCopy.objects.get(pk=self.bookCopy.id)
         self.assertEqual(self.user, book_copy.user)
         self.assertIsNotNone(book_copy.borrow_date)
 
     def test_shouldnt_borrow_book_copy_when_invalid_id(self):
-        self.request = self.client.post('/api/copies/' + str(99) + "/borrow")
-        self.assertEqual(404, self.request.status_code)
+        response = self.client.post('/api/copies/' + str(99) + "/borrow")
+        self.assertEqual(404, response.status_code)
+
+    def test_has_return_action_after_borrowing(self):
+        response = self.client.post('/api/copies/' + str(self.bookCopy.id) + "/borrow")
+        self.assertEqual(response.data['action']['type'], 'RETURN')
 
 
 class BookCopyReturnView(TestCase):
@@ -46,18 +49,17 @@ class BookCopyReturnView(TestCase):
         self.user.set_password("123")
         self.user.save()
         self.client.force_login(user=self.user)
-
-    def test_user_can_return_book_copy(self):
         self.book = Book.objects.create(author="Author", title="the title", subtitle="The subtitle",
                                         publication_date=timezone.now())
         self.library = Library.objects.create(name="Santiago", slug="slug")
         self.bookCopy = BookCopy.objects.create(book=self.book, library=self.library, user=self.user,
                                                 borrow_date=timezone.now())
 
-        self.request = self.client.post('/api/copies/' + str(self.bookCopy.id) + '/return')
+    def test_user_can_return_book_copy(self):
+        response = self.client.post('/api/copies/' + str(self.bookCopy.id) + '/return')
 
-        self.assertEqual(self.request.status_code, 200)
-        self.assertTrue(str(self.request.data).__contains__("Book returned"))
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.data['status'], 'Book returned')
 
         book_copy = BookCopy.objects.get(pk=self.bookCopy.id)
 
@@ -65,8 +67,12 @@ class BookCopyReturnView(TestCase):
         self.assertIsNone(book_copy.borrow_date)
 
     def test_shouldnt_return_book_copy_when_invalid_id(self):
-        self.request = self.client.post('/api/copies/' + str(99) + "/return")
-        self.assertEqual(404, self.request.status_code)
+        response = self.client.post('/api/copies/' + str(99) + "/return")
+        self.assertEqual(404, response.status_code)
+
+    def test_has_borrow_action_after_borrowing(self):
+        response = self.client.post('/api/copies/' + str(self.bookCopy.id) + "/return")
+        self.assertEqual(response.data['action']['type'], 'BORROW')
 
 
 class LibraryViewSet(TestCase):

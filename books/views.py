@@ -140,7 +140,13 @@ class BookCopyBorrowView(APIView):
             book_copy.save()
         except BookCopy.DoesNotExist:
             raise Http404("Book Copy not found")
-        return Response({'status': 'Book borrowed'})
+        return Response({
+            'status': 'Book borrowed',
+            'action': book_copy.book.available_action(
+                library=book_copy.library,
+                user=request.user,
+            )
+        })
 
 
 class BookCopyReturnView(APIView):
@@ -152,7 +158,13 @@ class BookCopyReturnView(APIView):
             book_copy.save()
         except:
             raise Http404("Book Copy not found")
-        return Response({'status': 'Book returned'})
+        return Response({
+            'status': 'Book returned',
+            'action': book_copy.book.available_action(
+                library=book_copy.library,
+                user=request.user,
+            )
+        })
 
 
 class UserView(APIView):
