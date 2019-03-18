@@ -6,7 +6,7 @@ import parse from 'url-parse';
 import BookDetail from './detail/BookDetail';
 import { borrowCopy, returnBook, joinWaitlist } from '../../services/BookService';
 import BookModel from '../../models/Book';
-
+import { BORROW_BOOK_ACTION, RETURN_BOOK_ACTION, JOIN_WAITLIST_BOOK_ACTION } from '../../utils/constants';
 
 const isWaitlistFeatureActive = () => {
   const { query } = parse(window.location.href, true);
@@ -18,9 +18,7 @@ export default class Book extends Component {
     super(props);
     this.state = {
       zDepth: 1,
-      available: props.book.isAvailable(),
-      borrowedByMe: props.book.belongsToUser(),
-      canBeAddedToWaitlist: isWaitlistFeatureActive() && props.book.canBeAddedToWaitlist(),
+      action: props.book.action,
       open: false,
     };
 
@@ -38,35 +36,40 @@ export default class Book extends Component {
   onMouseOut() { this.setState({ zDepth: 1 }); }
 
   borrow() {
-    borrowCopy(this.props.book).then(() => {
-      this.setState({ available: false, borrowedByMe: true });
+    borrowCopy(this.props.book).then((response) => {
+      this.setState({ action: response.action });
       window.ga('send', 'event', 'Borrow', this.props.book.title, this.props.library);
     });
   }
 
   return() {
-    returnBook(this.props.book).then(() => {
-      this.setState({ available: true, borrowedByMe: false });
+    returnBook(this.props.book).then((response) => {
+      this.setState({ action: response.action });
       window.ga('send', 'event', 'Return', this.props.book.title, this.props.library);
     });
   }
 
   waitlist() {
-    joinWaitlist(this.props.library, this.props.book).then(() => {
-      this.setState({ canBeAddedToWaitlist: false });
+    joinWaitlist(this.props.library, this.props.book).then((response) => {
+      this.setState({ action: response.action });
       window.ga('send', 'event', 'JoinWaitlist', this.props.book.title, this.props.library);
     });
   }
 
   actionButtons() {
-    if (this.state.borrowedByMe) {
-      return <Button className="btn-return" onClick={this.return}>Return</Button>;
-    } if (this.state.available) {
-      return <Button className="btn-borrow" onClick={this.borrow}>Borrow</Button>;
-    } if (this.state.canBeAddedToWaitlist) {
-      return <Button className="btn-waitlist" onClick={this.waitlist}>Join the waitlist</Button>;
+    if (!this.state.action) return null;
+    switch (this.state.action.type) {
+      case BORROW_BOOK_ACTION:
+        return <Button className="btn-borrow" onClick={this.borrow}>Borrow</Button>;
+      case RETURN_BOOK_ACTION:
+        return <Button className="btn-return" onClick={this.return}>Return</Button>;
+      case JOIN_WAITLIST_BOOK_ACTION:
+        return isWaitlistFeatureActive()
+          ? <Button className="btn-waitlist" onClick={this.waitlist}>Join the waitlist</Button>
+          : null;
+      default:
+        return null;
     }
-    return null;
   }
 
   changeOpenStatus() {
