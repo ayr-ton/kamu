@@ -123,8 +123,8 @@ class LibraryViewSet(TestCase):
         response = json.loads(json.dumps(response.data))
         books = response['results']
 
-        self.assertEqual(books[0]['action'], 'Borrow')
-        self.assertEqual(books[1]['action'], 'Return')
+        self.assertEqual(books[0]['action']['type'], 'BORROW')
+        self.assertEqual(books[1]['action']['type'], 'RETURN')
 
 
 class LibraryViewSetQueryParameters(TestCase):
@@ -266,7 +266,7 @@ class UserBooksViewTest(TestCase):
     def test_has_return_action_for_each_book(self):
         response = self.client.get("/api/profile/books")
 
-        self.assertEqual(response.data['results'][0]['action'], 'Return')
+        self.assertEqual(response.data['results'][0]['action']['type'], 'RETURN')
 
 
 class IsbnViewTest(TestCase):

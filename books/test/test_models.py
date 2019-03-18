@@ -56,24 +56,32 @@ class BookTestCase(TestCase):
 
     def test_has_borrow_action_when_user_has_not_borrowed_and_there_is_a_copy_available(self):
         self.book.bookcopy_set.create(library=self.library, user=None)
-        self.assertEqual('Borrow', self.book.available_action(library=self.library, user=self.user))
+        action = self.book.available_action(library=self.library, user=self.user)
+        self.assertBookAction('BORROW', action)
 
     def test_has_return_action_when_user_has_borrowed_a_copy(self):
         self.book.bookcopy_set.create(library=self.library, user=self.user)
-        self.assertEqual('Return', self.book.available_action(library=self.library, user=self.user))
+        action = self.book.available_action(library=self.library, user=self.user)
+        self.assertBookAction('RETURN', action)
 
     def test_has_return_action_when_library_unspecified_and_user_has_borrowed_a_copy(self):
         self.book.bookcopy_set.create(library=self.library2, user=self.user)
-        self.assertEqual('Return', self.book.available_action(user=self.user))
+        action = self.book.available_action(user=self.user)
+        self.assertBookAction('RETURN', action)
 
     def test_has_join_waitlist_action_when_user_has_not_borrowed_and_no_copies_are_available(self):
         self.book.bookcopy_set.create(library=self.library, user=self.user2)
-        self.assertEqual('Join the Waitlist', self.book.available_action(library=self.library, user=self.user))
+        action = self.book.available_action(library=self.library, user=self.user)
+        self.assertBookAction('JOIN_WAITLIST', action)
 
     def test_does_not_have_action_when_user_is_already_on_waitlist(self):
         self.book.bookcopy_set.create(library=self.library, user=self.user2)
         self.book.waitlistitem_set.create(library=self.library, user=self.user, added_date=timezone.now())
-        self.assertIsNone(self.book.available_action(library=self.library, user=self.user))
+        action = self.book.available_action(library=self.library, user=self.user)
+        self.assertIsNone(action)
+
+    def assertBookAction(self, type, actual):
+        self.assertEqual(type, actual['type'])
 
 
 class LibraryTestCase(TestCase):

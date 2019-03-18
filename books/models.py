@@ -1,6 +1,12 @@
 from django.conf import settings
 from django.db import models
 
+BOOK_RETURN_ACTION = 'RETURN'
+BOOK_BORROW_ACTION = 'BORROW'
+BOOK_JOIN_WAITLIST_ACTION = 'JOIN_WAITLIST'
+
+def create_book_action(type):
+    return { 'type': type }
 
 class Book(models.Model):
     author = models.CharField(max_length=255)
@@ -30,11 +36,11 @@ class Book(models.Model):
 
     def available_action(self, user, library=None):
         if self.is_borrowed_by_user(user, library):
-            return 'Return'
+            return create_book_action(BOOK_RETURN_ACTION)
         if self.is_available(library):
-            return 'Borrow'
+            return create_book_action(BOOK_BORROW_ACTION)
         if not self.is_on_users_waitlist(user, library):
-            return 'Join the Waitlist'
+            return create_book_action(BOOK_JOIN_WAITLIST_ACTION)
         return None
 
 
