@@ -5,8 +5,9 @@ BOOK_RETURN_ACTION = 'RETURN'
 BOOK_BORROW_ACTION = 'BORROW'
 BOOK_JOIN_WAITLIST_ACTION = 'JOIN_WAITLIST'
 
+
 def create_book_action(type):
-    return { 'type': type }
+    return {'type': type}
 
 class Book(models.Model):
     author = models.CharField(max_length=255)
