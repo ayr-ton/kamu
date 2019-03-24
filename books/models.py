@@ -28,10 +28,7 @@ class Book(models.Model):
         return self.__get_available_copy(library=library) is not None
 
     def is_borrowed_by_user(self, user, library=None):
-        user_copies = self.bookcopy_set.filter(user=user)
-        if library is not None:
-            user_copies = user_copies.filter(library=library)
-        return user_copies.exists()
+        return self.__get_borrowed_copy(user=user, library=library) is not None
 
     def is_on_users_waitlist(self, user, library):
         return self.waitlistitem_set.filter(user=user, library=library).exists()
@@ -54,8 +51,23 @@ class Book(models.Model):
         available_copy.borrow_date = timezone.now()
         available_copy.save()
 
+    def returnToLibrary(self, user, library):
+        borrowed_copy = self.__get_borrowed_copy(user=user, library=library)
+        if borrowed_copy is None:
+            raise ValueError('Book cannot be returned because it was not borrowed by the user.')
+
+        borrowed_copy.user = None
+        borrowed_copy.borrow_date = None
+        borrowed_copy.save()
+
     def __get_available_copy(self, library):
         return self.bookcopy_set.filter(library=library, user=None).first()
+
+    def __get_borrowed_copy(self, user, library):
+        user_copies = self.bookcopy_set.filter(user=user)
+        if library is not None:
+            user_copies = user_copies.filter(library=library)
+        return user_copies.first()
 
 class Library(models.Model):
     name = models.CharField(max_length=255)
