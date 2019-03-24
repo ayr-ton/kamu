@@ -3,7 +3,8 @@ from django.contrib import messages, admin
 from django.db.models import Count
 from django.db.models import Q
 from django.http import Http404
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+
 from django.utils import timezone
 from django.utils.http import urlencode
 from django.views.generic.base import View, TemplateView
@@ -11,7 +12,7 @@ from filters.mixins import (
     FiltersMixin,
 )
 from rest_framework import viewsets, filters
-from rest_framework.decorators import detail_route
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -124,6 +125,21 @@ class BookViewSet(FiltersMixin, viewsets.ModelViewSet):
         })
 
         return self.get_paginated_response(serializer.data)
+
+    @action(detail=True, methods=['post'])
+    def borrow(self, request, library_slug=None, pk=None):
+        book = get_object_or_404(self.queryset, pk=pk)
+        library = Library.objects.get(slug=library_slug)
+        try:
+            book.borrow(user=request.user, library=library)
+            return Response({
+                'action': book.available_action(
+                    library=library,
+                    user=request.user,
+                )
+            })
+        except ValueError as error:
+            return Response({'message': str(error)}, status=400)
 
 
 class BookCopyViewSet(viewsets.ModelViewSet):
