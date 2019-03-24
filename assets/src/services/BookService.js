@@ -1,11 +1,6 @@
 import Book from '../models/Book';
 import fetchFromAPI from './helpers';
 
-const updateBookCopyUser = (book, copyID, user) => {
-  const copy = book.copies.find(({ id }) => id === copyID);
-  copy.user = user;
-};
-
 const formatBooksRequest = (data) => {
   const books = [];
 
@@ -34,23 +29,9 @@ export const getBooksByPage = (librarySlug, page, filter = '') => fetchFromAPI(`
 
 export const getMyBooks = () => fetchFromAPI('/profile/books').then((data) => formatBooksRequest(data));
 
-export const borrowCopy = async (book) => {
-  const copyID = book.getAvailableCopyID();
-  if (!copyID) return Promise.resolve(null);
+export const borrowBook = (book, library) => fetchFromAPI(`/libraries/${library}/books/${book.id}/borrow/`, 'POST');
 
-  const response = await fetchFromAPI(`/copies/${copyID}/borrow`, 'POST');
-  updateBookCopyUser(book, copyID, currentUser);
-  return response;
-};
-
-export const returnBook = async (book) => {
-  const copyID = book.getBorrowedCopyID();
-  if (!copyID) return Promise.resolve(null);
-
-  const response = await fetchFromAPI(`/copies/${copyID}/return`, 'POST');
-  updateBookCopyUser(book, copyID, null);
-  return response;
-};
+export const returnBook = (book, library) => fetchFromAPI(`/libraries/${library}/books/${book.id}/return/`, 'POST');
 
 export const joinWaitlist = async (book, library) => fetchFromAPI(`/libraries/${library}/books/${book.id}/waitlist/`, 'POST').then((data) => {
   if ('waitlist_item' in data) return Promise.resolve(data.waitlist_item);

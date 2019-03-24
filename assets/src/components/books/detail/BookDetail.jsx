@@ -18,11 +18,14 @@ export default class BookDetail extends Component {
   }
 
   renderAvailability() {
+    const { copies } = this.props.book;
+    const availableCopies = copies.filter((book) => !book.user).length;
+    const totalCopies = copies.length;
     return (
       <div className="modal-book__available-wrapper">
         <div className="modal-book__detail-label">Availability</div>
         <div className="modal-book__detail-value">
-          {`${this.props.book.getCountBookCopiesAvailable()} of ${this.props.book.copies.length}`}
+          {`${availableCopies} of ${totalCopies}`}
         </div>
       </div>
     );

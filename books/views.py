@@ -166,45 +166,10 @@ class BookViewSet(FiltersMixin, viewsets.ModelViewSet):
             })
         return Response(serializer.data)
 
+
 class BookCopyViewSet(viewsets.ModelViewSet):
     queryset = BookCopy.objects.all()
     serializer_class = BookCopySerializer
-
-
-class BookCopyBorrowView(APIView):
-    def post(self, request, id=None):
-        try:
-            book_copy = BookCopy.objects.get(pk=id)
-            book_copy.user = request.user
-            book_copy.borrow_date = timezone.now()
-            book_copy.save()
-        except BookCopy.DoesNotExist:
-            raise Http404("Book Copy not found")
-        return Response({
-            'status': 'Book borrowed',
-            'action': book_copy.book.available_action(
-                library=book_copy.library,
-                user=request.user,
-            )
-        })
-
-
-class BookCopyReturnView(APIView):
-    def post(self, request, id=None):
-        try:
-            book_copy = BookCopy.objects.get(pk=id)
-            book_copy.user = None
-            book_copy.borrow_date = None
-            book_copy.save()
-        except:
-            raise Http404("Book Copy not found")
-        return Response({
-            'status': 'Book returned',
-            'action': book_copy.book.available_action(
-                library=book_copy.library,
-                user=request.user,
-            )
-        })
 
 
 class UserView(APIView):
@@ -212,6 +177,7 @@ class UserView(APIView):
         return Response({
             'user': UserSerializer(request.user).data,
         })
+
 
 class UserBooksView(APIView):
     def get(self, request, format=None):

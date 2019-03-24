@@ -9,10 +9,8 @@ import {
   someBookWithNoAvailableCopies,
   someBookWithACopyFromMe,
   someBookThatCanBeAddedToWaitlist,
-  borrowAction,
-  returnAction,
 } from '../../../test/booksHelper';
-import { borrowCopy, returnBook, joinWaitlist } from '../../services/BookService';
+import { borrowBook, returnBook, joinWaitlist } from '../../services/BookService';
 
 jest.mock('../../services/BookService');
 
@@ -66,7 +64,7 @@ describe('Book', () => {
   });
 
   it('shows the return button when clicking borrow and API sends return action', async () => {
-    borrowCopy.mockResolvedValue({ action: returnAction });
+    borrowBook.mockResolvedValue(someBookWithACopyFromMe());
     const book = someBookWithAvailableCopies();
     const bookComponent = createComponent(book);
 
@@ -76,12 +74,13 @@ describe('Book', () => {
   });
 
   it('calls the borrow function when clicking on the borrow button', async () => {
+    borrowBook.mockResolvedValue(someBookWithACopyFromMe());
     const book = someBookWithAvailableCopies();
     const bookComponent = createComponent(book);
 
     await bookComponent.find(Button).simulate('click');
 
-    expect(borrowCopy).toHaveBeenCalledWith(book, 'bh');
+    expect(borrowBook).toHaveBeenCalledWith(book, 'bh');
   });
 
   it('shows the return button when the book has a return action', () => {
@@ -92,7 +91,7 @@ describe('Book', () => {
   });
 
   it('shows the borrow button when clicking return and API sends borrow action', async () => {
-    returnBook.mockResolvedValue({ action: borrowAction });
+    returnBook.mockResolvedValue(someBookWithAvailableCopies());
     const book = someBookWithACopyFromMe();
     const bookComponent = createComponent(book);
 
@@ -102,6 +101,7 @@ describe('Book', () => {
   });
 
   it('calls the return function when clicking on the return button', async () => {
+    returnBook.mockResolvedValue(someBookWithAvailableCopies());
     const book = someBookWithACopyFromMe();
     const bookComponent = createComponent(book);
 
