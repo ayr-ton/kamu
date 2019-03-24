@@ -126,6 +126,11 @@ class BookViewSet(FiltersMixin, viewsets.ModelViewSet):
 
         return self.get_paginated_response(serializer.data)
 
+    def retrieve(self, request, pk, library_slug=None):
+        book = get_object_or_404(self.queryset, pk=pk)
+        library = Library.objects.get(slug=library_slug)
+        return self.__serialize_book(book, library, request)
+
     @action(detail=True, methods=['post'])
     def borrow(self, request, library_slug=None, pk=None):
         book = get_object_or_404(self.queryset, pk=pk)
@@ -133,7 +138,7 @@ class BookViewSet(FiltersMixin, viewsets.ModelViewSet):
             book=book,
             action=book.borrow,
             library=Library.objects.get(slug=library_slug),
-            user=request.user,
+            request=request,
         )
 
     @action(detail=True, methods=['post'], url_path='return', name='Return')
@@ -143,21 +148,23 @@ class BookViewSet(FiltersMixin, viewsets.ModelViewSet):
             book=book,
             action=book.returnToLibrary,
             library=Library.objects.get(slug=library_slug),
-            user=request.user,
+            request=request,
         )
 
-    def __handle_book_action(self, book, action, library, user):
+    def __handle_book_action(self, book, action, library, request):
         try:
-            action(library=library, user=user)
-            return Response({
-                'action': book.available_action(
-                    library=library,
-                    user=user,
-                )
-            })
+            action(library=library, user=request.user)
+            return self.__serialize_book(book, library, request)
         except ValueError as error:
             return Response({'message': str(error)}, status=400)
 
+    def __serialize_book(self, book, library, request):
+        serializer = BookSerializer(book, context={
+                'request': request,
+                'library': library,
+                'user': request.user,
+            })
+        return Response(serializer.data)
 
 class BookCopyViewSet(viewsets.ModelViewSet):
     queryset = BookCopy.objects.all()
