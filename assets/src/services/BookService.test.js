@@ -87,65 +87,69 @@ describe('Book Service', () => {
   });
 
   describe('Borrow book', () => {
-    it('should borrow a book that has an available copy and update the book copies with the user', () => {
+    it('should borrow a book that has an available copy and update the book copies with the user', async () => {
       const book = someBookWithAvailableCopies();
+      const expectedResponse = 'bla';
 
-      fetchFromAPI.mockResolvedValue({});
+      fetchFromAPI.mockResolvedValue(expectedResponse);
 
-      return borrowCopy(book).then(() => {
-        expect(book.copies[0].user).toEqual(currentUser);
-        expect(fetchFromAPI).toHaveBeenCalledWith(`/copies/${book.copies[0].id}/borrow`, 'POST');
-      });
+      const response = await borrowCopy(book);
+      expect(book.copies[0].user).toEqual(currentUser);
+      expect(fetchFromAPI).toHaveBeenCalledWith(`/copies/${book.copies[0].id}/borrow`, 'POST');
+      expect(response).toEqual(expectedResponse);
     });
 
-    it('shouldnt borrow a book when all copies are borrowed', () => {
+    it('shouldnt borrow a book when all copies are borrowed', async () => {
       const book = someBookWithNoAvailableCopies();
 
-      return borrowCopy(book).then(() => {
-        expect(book.copies[0].user).toEqual(someUser);
-        expect(fetchFromAPI).not.toHaveBeenCalled();
-      });
+      await borrowCopy(book);
+      expect(book.copies[0].user).toEqual(someUser);
+      expect(fetchFromAPI).not.toHaveBeenCalled();
     });
 
-    it('shouldnt mark the book as borrowed when the request fails', () => {
+    it('shouldnt mark the book as borrowed when the request fails', async () => {
       const book = someBookWithAvailableCopies();
 
       fetchFromAPI.mockRejectedValue(new Error('some error'));
 
-      return borrowCopy(book).catch(() => {
+      try {
+        await borrowCopy(book);
+      } catch (_) {
         expect(book.copies[0].user).toBeNull();
-      });
+      }
     });
   });
 
   describe('Return book', () => {
-    it('should return the book copy and remove the user from the copies', () => {
+    it('should return the book copy and remove the user from the copies', async () => {
       const book = someBookWithACopyFromMe();
+      const expectedResponse = 'bla';
 
-      fetchFromAPI.mockResolvedValue({});
+      fetchFromAPI.mockResolvedValue(expectedResponse);
 
-      return returnBook(book).then(() => {
-        expect(book.copies[0].user).toBeNull();
-        expect(fetchFromAPI).toHaveBeenCalledWith(`/copies/${book.copies[0].id}/return`, 'POST');
-      });
+      const response = await returnBook(book);
+      expect(book.copies[0].user).toBeNull();
+      expect(fetchFromAPI).toHaveBeenCalledWith(`/copies/${book.copies[0].id}/return`, 'POST');
+      expect(response).toEqual(expectedResponse);
     });
 
-    it('shouldnt return a book when doesnt belong to user', () => {
+    it('shouldnt return a book when doesnt belong to user', async () => {
       const book = someBookWithNoAvailableCopies();
 
-      return returnBook(book).then(() => {
-        expect(book.copies[0].user).toEqual(someUser);
-        expect(fetchFromAPI).not.toHaveBeenCalled();
-      });
+      await returnBook(book);
+      expect(book.copies[0].user).toEqual(someUser);
+      expect(fetchFromAPI).not.toHaveBeenCalled();
     });
 
-    it('shouldnt mark the book as returned when the request fails', () => {
+    it('shouldnt mark the book as returned when the request fails', async () => {
       const book = someBookWithACopyFromMe();
       fetchFromAPI.mockRejectedValue(new Error('some error'));
 
-      return returnBook(book).catch(() => {
+      try {
+        await returnBook(book);
+      } catch (_) {
         expect(book.copies[0].user).toEqual(currentUser);
-      });
+      }
     });
   });
 
@@ -155,7 +159,7 @@ describe('Book Service', () => {
 
       fetchFromAPI.mockResolvedValue({ waitlist_item: { book } });
 
-      await joinWaitlist('bh', book);
+      await joinWaitlist(book, 'bh');
       expect(fetchFromAPI).toHaveBeenCalledWith(`/libraries/bh/books/${book.id}/waitlist/`, 'POST');
     });
 
@@ -164,7 +168,7 @@ describe('Book Service', () => {
 
       fetchFromAPI.mockResolvedValue({ waitlist_item: 'mocked_waitlisted_item' });
 
-      const result = await joinWaitlist('bh', book);
+      const result = await joinWaitlist(book, 'bh');
       expect(result).toEqual('mocked_waitlisted_item');
     });
 
@@ -173,7 +177,7 @@ describe('Book Service', () => {
       fetchFromAPI.mockResolvedValue({});
 
       try {
-        await joinWaitlist('bh', book);
+        await joinWaitlist(book, 'bh');
       } catch (error) {
         expect(error).toEqual(new Error({ message: 'Request was successful, but no data was returned' }));
       }
@@ -184,7 +188,7 @@ describe('Book Service', () => {
       fetchFromAPI.mockRejectedValue({ status: 404 });
 
       try {
-        await joinWaitlist('bh', book);
+        await joinWaitlist(book, 'bh');
       } catch (error) {
         expect(error).toEqual({ status: 404 });
       }
