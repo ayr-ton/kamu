@@ -129,28 +129,30 @@ class BookViewSet(FiltersMixin, viewsets.ModelViewSet):
     @action(detail=True, methods=['post'])
     def borrow(self, request, library_slug=None, pk=None):
         book = get_object_or_404(self.queryset, pk=pk)
-        library = Library.objects.get(slug=library_slug)
-        try:
-            book.borrow(user=request.user, library=library)
-            return Response({
-                'action': book.available_action(
-                    library=library,
-                    user=request.user,
-                )
-            })
-        except ValueError as error:
-            return Response({'message': str(error)}, status=400)
+        return self.__handle_book_action(
+            book=book,
+            action=book.borrow,
+            library=Library.objects.get(slug=library_slug),
+            user=request.user,
+        )
 
-    @action(detail=True, methods=['post'], url_path='return')
+    @action(detail=True, methods=['post'], url_path='return', name='Return')
     def returnToLibrary(self, request, library_slug=None, pk=None):
         book = get_object_or_404(self.queryset, pk=pk)
-        library = Library.objects.get(slug=library_slug)
+        return self.__handle_book_action(
+            book=book,
+            action=book.returnToLibrary,
+            library=Library.objects.get(slug=library_slug),
+            user=request.user,
+        )
+
+    def __handle_book_action(self, book, action, library, user):
         try:
-            book.returnToLibrary(user=request.user, library=library)
+            action(library=library, user=user)
             return Response({
                 'action': book.available_action(
                     library=library,
-                    user=request.user,
+                    user=user,
                 )
             })
         except ValueError as error:
