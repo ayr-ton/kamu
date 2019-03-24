@@ -256,6 +256,22 @@ class BookViewSetTest(TestCase):
             self.assertEqual(400, response.status_code)
             self.assertEqual('some error', response.data['message'])
 
+    def test_return_calls_return_on_book_and_returns_200(self):
+        with patch.object(Book, 'returnToLibrary') as mock_return:
+            response = self.client.post(self.base_url + '/return/')
+            self.assertEqual(200, response.status_code)
+            mock_return.assert_called_once_with(user=self.user, library=self.library)
+
+    def test_return_returns_404_when_called_with_invalid_book(self):
+        response = self.client.post('/api/libraries/' + self.library.slug + '/books/123/return/')
+        self.assertEqual(404, response.status_code)
+
+    def test_return_returns_400_when_throws_error(self):
+        with patch.object(Book, 'returnToLibrary', side_effect=ValueError('some error')):
+            response = self.client.post(self.base_url + '/return/')
+            self.assertEqual(400, response.status_code)
+            self.assertEqual('some error', response.data['message'])
+
 
 class UserViewTest(TestCase):
     def setUp(self):

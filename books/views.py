@@ -141,6 +141,21 @@ class BookViewSet(FiltersMixin, viewsets.ModelViewSet):
         except ValueError as error:
             return Response({'message': str(error)}, status=400)
 
+    @action(detail=True, methods=['post'], url_path='return')
+    def returnToLibrary(self, request, library_slug=None, pk=None):
+        book = get_object_or_404(self.queryset, pk=pk)
+        library = Library.objects.get(slug=library_slug)
+        try:
+            book.returnToLibrary(user=request.user, library=library)
+            return Response({
+                'action': book.available_action(
+                    library=library,
+                    user=request.user,
+                )
+            })
+        except ValueError as error:
+            return Response({'message': str(error)}, status=400)
+
 
 class BookCopyViewSet(viewsets.ModelViewSet):
     queryset = BookCopy.objects.all()
