@@ -50,8 +50,7 @@ export default class Book extends Component {
         return <Button onClick={() => this.performAction(returnBook, 'Return')}>Return</Button>;
       case JOIN_WAITLIST_BOOK_ACTION:
         return isWaitlistFeatureActive()
-          ? <Button onClick={() => this.performAction(joinWaitlist, 'JoinWaitlist')}>Join the waitlist</Button>
-          : null;
+          && <Button onClick={() => this.performAction(joinWaitlist, 'JoinWaitlist')}>Join the waitlist</Button>;
       default:
         return null;
     }
