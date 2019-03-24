@@ -2,7 +2,6 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import Button from '@material-ui/core/Button';
 import Book from './Book';
-import { currentUser } from '../../../test/userHelper';
 import {
   someBook,
   someBookWithAvailableCopies,
@@ -44,7 +43,6 @@ const createComponent = (book) => shallow(<Book book={book} library="bh" />);
 
 describe('Book', () => {
   beforeEach(() => {
-    global.currentUser = currentUser;
     global.window.ga = () => { };
   });
 

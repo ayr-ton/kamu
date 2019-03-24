@@ -18,8 +18,6 @@ class App extends Component {
 
   componentDidMount() {
     getLoggedUser().then((user) => {
-      // TODO: get rid of the need for a global user variable
-      window.currentUser = user;
       this.setState({ user });
     });
   }

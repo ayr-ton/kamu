@@ -5,7 +5,6 @@ import fetchFromAPI from './helpers';
 import {
   someBookWithAvailableCopies, someBookWithACopyFromMe, someBook,
 } from '../../test/booksHelper';
-import { currentUser } from '../../test/userHelper';
 
 const mockLibraries = {
   count: 2,
@@ -32,8 +31,6 @@ jest.mock('./helpers');
 describe('Book Service', () => {
   beforeEach(() => {
     jest.resetAllMocks();
-
-    global.currentUser = currentUser;
   });
 
   it('should return libraries', () => {
