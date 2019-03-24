@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.utils import timezone
 
 BOOK_RETURN_ACTION = 'RETURN'
 BOOK_BORROW_ACTION = 'BORROW'
@@ -24,7 +25,7 @@ class Book(models.Model):
         return "%s (%s)" % (self.title, self.author)
 
     def is_available(self, library):
-        return self.bookcopy_set.filter(library=library, user=None).exists()
+        return self.__get_available_copy(library=library) is not None
 
     def is_borrowed_by_user(self, user, library=None):
         user_copies = self.bookcopy_set.filter(user=user)
@@ -44,6 +45,17 @@ class Book(models.Model):
             return create_book_action(BOOK_JOIN_WAITLIST_ACTION)
         return None
 
+    def borrow(self, user, library):
+        available_copy = self.__get_available_copy(library=library)
+        if available_copy is None:
+            raise ValueError('Book is not available for borrowing.')
+
+        available_copy.user = user
+        available_copy.borrow_date = timezone.now()
+        available_copy.save()
+
+    def __get_available_copy(self, library):
+        return self.bookcopy_set.filter(library=library, user=None).first()
 
 class Library(models.Model):
     name = models.CharField(max_length=255)

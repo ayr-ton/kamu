@@ -80,6 +80,29 @@ class BookTestCase(TestCase):
         action = self.book.available_action(library=self.library, user=self.user)
         self.assertIsNone(action)
 
+    def test_borrow_set_user_on_one_available_copy(self):
+        self.book.bookcopy_set.create(library=self.library, user=None)
+        self.book.bookcopy_set.create(library=self.library, user=None)
+
+        self.book.borrow(library=self.library, user=self.user)
+
+        copies = self.book.bookcopy_set.all()
+        self.assertEqual(copies[0].user, self.user)
+        self.assertEqual(copies[1].user, None)
+
+    def test_borrow_throws_error_and_does_not_borrow_when_all_copies_are_borrowed(self):
+        self.book.bookcopy_set.create(library=self.library, user=self.user2)
+
+        with self.assertRaises(ValueError):
+            self.book.borrow(library=self.library, user=self.user)
+
+        copies = self.book.bookcopy_set.all()
+        self.assertEqual(copies[0].user, self.user2)
+
+    def test_borrow_throws_error_and_does_not_borrow_when_not_book_has_no_copies(self):
+        with self.assertRaises(ValueError):
+            self.book.borrow(library=self.library, user=self.user)
+
     def assertBookAction(self, type, actual):
         self.assertEqual(type, actual['type'])
 
