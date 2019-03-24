@@ -1,15 +1,9 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import BookList from './BookList';
+import { someBookWithAvailableCopies } from '../../../test/booksHelper';
 
 const shallowBookList = (props) => shallow(<BookList {...props} />);
-const books = [
-  {
-    id: 1,
-    title: 'book 1',
-    author: 'author 1',
-  },
-];
 
 describe('Book list', () => {
   it('renders without crashing', () => {
@@ -18,6 +12,9 @@ describe('Book list', () => {
   });
 
   it('should render the list of books', () => {
+    const books = [
+      someBookWithAvailableCopies(),
+    ];
     const bookList = shallowBookList({ books, library: 'poa' });
 
     const bookComponents = bookList.find('Book');

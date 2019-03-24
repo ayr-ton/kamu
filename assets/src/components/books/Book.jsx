@@ -5,8 +5,8 @@ import Button from '@material-ui/core/Button';
 import parse from 'url-parse';
 import BookDetail from './detail/BookDetail';
 import { joinWaitlist, borrowBook, returnBook } from '../../services/BookService';
-import BookModel from '../../models/Book';
 import { BORROW_BOOK_ACTION, RETURN_BOOK_ACTION, JOIN_WAITLIST_BOOK_ACTION } from '../../utils/constants';
+import { BookPropType } from '../../utils/propTypes';
 
 const isWaitlistFeatureActive = () => {
   const { query } = parse(window.location.href, true);
@@ -118,7 +118,7 @@ export default class Book extends Component {
 }
 
 Book.propTypes = {
-  book: PropTypes.instanceOf(BookModel).isRequired,
+  book: BookPropType.isRequired,
   library: PropTypes.string,
 };
 

@@ -1,7 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-
-import Book from '../../../models/Book';
+import { BookPropType } from '../../../utils/propTypes';
 
 const renderProperty = (property, label, styleClass) => property && (
   <div className={styleClass}>
@@ -29,7 +27,7 @@ const BookPublicationInfo = ({ book }) => {
 };
 
 BookPublicationInfo.propTypes = {
-  book: PropTypes.instanceOf(Book).isRequired,
+  book: BookPropType.isRequired,
 };
 
 export default BookPublicationInfo;

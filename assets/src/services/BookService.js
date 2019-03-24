@@ -1,21 +1,4 @@
-import Book from '../models/Book';
 import fetchFromAPI from './helpers';
-
-const formatBooksRequest = (data) => {
-  const books = [];
-
-  data.results.forEach((bookJson) => {
-    const book = Object.assign(new Book(), bookJson);
-    books.push(book);
-  });
-
-  return {
-    count: data.count,
-    next: data.next,
-    previous: data.previous,
-    results: books,
-  };
-};
 
 export const getLibraries = () => fetchFromAPI('/libraries/').then((data) => data);
 
@@ -24,10 +7,10 @@ export const getBooksByPage = (librarySlug, page, filter = '') => fetchFromAPI(`
     return null;
   }
 
-  return formatBooksRequest(data);
+  return data;
 });
 
-export const getMyBooks = () => fetchFromAPI('/profile/books').then((data) => formatBooksRequest(data));
+export const getMyBooks = () => fetchFromAPI('/profile/books');
 
 export const borrowBook = (book, library) => fetchFromAPI(`/libraries/${library}/books/${book.id}/borrow/`, 'POST');
 

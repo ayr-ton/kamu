@@ -2,8 +2,8 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import MyBooks from './MyBooks';
 import { getMyBooks } from '../../services/BookService';
-
 import BookList from '../books/BookList';
+import { someBookWithACopyFromMe } from '../../../test/booksHelper';
 
 jest.mock('../../services/BookService');
 
@@ -27,7 +27,7 @@ describe('My books', () => {
   });
 
   it('passes the fetched books to the BookList', async () => {
-    const books = ['book1'];
+    const books = [someBookWithACopyFromMe()];
     getMyBooks.mockReturnValue({ results: books });
 
     const component = await createComponent();

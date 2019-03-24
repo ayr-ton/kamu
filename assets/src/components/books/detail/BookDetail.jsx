@@ -6,9 +6,9 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import '../../../../css/ModalBook.css';
 import Clear from '@material-ui/icons/Clear';
-import Book from '../../../models/Book';
 import BookBorrowers from './BookBorrowers';
 import BookPublicationInfo from './BookPublicationInfo';
+import { BookPropType } from '../../../utils/propTypes';
 
 export default class BookDetail extends Component {
   constructor(props) {
@@ -109,6 +109,6 @@ export default class BookDetail extends Component {
 BookDetail.propTypes = {
   changeOpenStatus: PropTypes.func.isRequired,
   actionButtons: PropTypes.func.isRequired,
-  book: PropTypes.instanceOf(Book).isRequired,
+  book: BookPropType.isRequired,
   open: PropTypes.bool.isRequired,
 };
