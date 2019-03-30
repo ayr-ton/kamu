@@ -41,6 +41,7 @@ class BookSerializer(serializers.ModelSerializer):
     copies = serializers.SerializerMethodField()
     waitlist_users = serializers.SerializerMethodField()
     action = serializers.SerializerMethodField()
+    url = serializers.SerializerMethodField()
 
     class Meta:
         model = Book
@@ -67,6 +68,13 @@ class BookSerializer(serializers.ModelSerializer):
             library=self.context.get('library'),
             user=self.context.get('user'),
         )
+
+    def get_url(self, obj):
+        url_kwargs = {
+            'library_slug': self.context.get('library').slug,
+            'pk': obj.pk,
+        }
+        return reverse('books-detail', kwargs=url_kwargs, request=self.context['request'])
 
 
 class BookCompactSerializer(serializers.ModelSerializer):

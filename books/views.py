@@ -181,7 +181,11 @@ class UserView(APIView):
 
 class UserBooksView(APIView):
     def get(self, request, format=None):
-        books = Book.objects.filter(bookcopy__user=request.user)
+        user_copies = BookCopy.objects.filter(user=request.user)
         return Response({
-            'results': BookSerializer(books, many=True, context={'user': request.user}).data
+            'results': list(map(lambda book_copy: BookSerializer(book_copy.book, context={
+                'user': request.user,
+                'request': request,
+                'library': book_copy.library
+            }).data, user_copies))
         })

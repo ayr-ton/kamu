@@ -69,6 +69,13 @@ class LibraryViewSet(TestCase):
         self.assertEqual(books[0]['action']['type'], 'BORROW')
         self.assertEqual(books[1]['action']['type'], 'RETURN')
 
+    def test_has_url_for_each_book(self):
+        response = self.client.get("/api/libraries/" + self.library.slug + "/books/")
+        books = response.data['results']
+
+        expected_url = 'http://testserver/api/libraries/' + self.library.slug + '/books/' + str(self.book.id) + '/'
+        self.assertEqual(books[0]['url'], expected_url)
+
 
 class LibraryViewSetQueryParameters(TestCase):
     def setUp(self):
@@ -265,6 +272,12 @@ class UserBooksViewTest(TestCase):
         response = self.client.get("/api/profile/books")
 
         self.assertEqual(response.data['results'][0]['action']['type'], 'RETURN')
+
+    def test_has_url_for_each_book(self):
+        response = self.client.get("/api/profile/books")
+
+        expected_url = 'http://testserver/api/libraries/' + self.library.slug + '/books/' + str(self.book.id) + '/'
+        self.assertEqual(response.data['results'][0]['url'], expected_url)
 
 
 class IsbnViewTest(TestCase):
