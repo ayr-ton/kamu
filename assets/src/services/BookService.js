@@ -12,11 +12,11 @@ export const getBooksByPage = (librarySlug, page, filter = '') => fetchFromAPI(`
 
 export const getMyBooks = () => fetchFromAPI('/profile/books');
 
-export const borrowBook = (book, library) => fetchFromAPI(`/libraries/${library}/books/${book.id}/borrow/`, 'POST');
+export const borrowBook = (book) => fetchFromAPI(`${book.url}borrow/`, 'POST');
 
-export const returnBook = (book, library) => fetchFromAPI(`/libraries/${library}/books/${book.id}/return/`, 'POST');
+export const returnBook = (book) => fetchFromAPI(`${book.url}return/`, 'POST');
 
-export const joinWaitlist = async (book, library) => fetchFromAPI(`/libraries/${library}/books/${book.id}/waitlist/`, 'POST').then((data) => {
+export const joinWaitlist = async (book) => fetchFromAPI(`${book.url}waitlist/`, 'POST').then((data) => {
   if ('waitlist_item' in data) return Promise.resolve(data.waitlist_item);
 
   return Promise.reject(new Error({ message: 'Request was successful, but no data was returned' }));

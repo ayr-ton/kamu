@@ -16,6 +16,7 @@ export const someBook = (copies = [], waitlistUsers = [], action = borrowAction)
   number_of_pages: 220,
   publication_date: '2003-05-17',
   publisher: 'Addison-Wesley Professional',
+  url: 'http://testserver/api/library/kamu/books/1/',
   waitlist_users: waitlistUsers,
   copies,
   action,

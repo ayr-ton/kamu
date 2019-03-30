@@ -78,7 +78,7 @@ describe('Book', () => {
 
     await bookComponent.find(Button).simulate('click');
 
-    expect(borrowBook).toHaveBeenCalledWith(book, 'bh');
+    expect(borrowBook).toHaveBeenCalledWith(book);
   });
 
   it('shows the return button when the book has a return action', () => {
@@ -105,7 +105,7 @@ describe('Book', () => {
 
     await bookComponent.find(Button).simulate('click');
 
-    expect(returnBook).toHaveBeenCalledWith(book, 'bh');
+    expect(returnBook).toHaveBeenCalledWith(book);
   });
 
   it('has no action button when the book has no action', () => {
@@ -134,7 +134,7 @@ describe('Book', () => {
 
       await bookComponent.find(Button).simulate('click');
 
-      expect(joinWaitlist).toHaveBeenCalledWith(book, 'bh');
+      expect(joinWaitlist).toHaveBeenCalledWith(book);
       expect(bookComponent).not.toHaveJoinWaitlistButton();
     });
   });

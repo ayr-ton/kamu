@@ -35,9 +35,9 @@ export default class Book extends Component {
 
   performAction(action, eventCategory) {
     const { book, library } = this.props;
-    return action(book, library).then((response) => {
+    return action(book).then((response) => {
       this.setState({ book: response });
-      window.ga('send', 'event', eventCategory, this.props.book.title, this.props.library);
+      window.ga('send', 'event', eventCategory, book.title, library);
     });
   }
 
