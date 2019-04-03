@@ -4,9 +4,9 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import parse from 'url-parse';
 import BookDetail from './detail/BookDetail';
-import { borrowCopy, returnBook, joinWaitlist } from '../../services/BookService';
-import BookModel from '../../models/Book';
+import { joinWaitlist, borrowBook, returnBook } from '../../services/BookService';
 import { BORROW_BOOK_ACTION, RETURN_BOOK_ACTION, JOIN_WAITLIST_BOOK_ACTION } from '../../utils/constants';
+import { BookPropType } from '../../utils/propTypes';
 
 const isWaitlistFeatureActive = () => {
   const { query } = parse(window.location.href, true);
@@ -18,7 +18,7 @@ export default class Book extends Component {
     super(props);
     this.state = {
       zDepth: 1,
-      action: props.book.action,
+      book: props.book,
       open: false,
     };
 
@@ -35,17 +35,18 @@ export default class Book extends Component {
 
   performAction(action, eventCategory) {
     const { book, library } = this.props;
-    return action(book, library).then((response) => {
-      this.setState({ action: response.action });
-      window.ga('send', 'event', eventCategory, this.props.book.title, this.props.library);
+    return action(book).then((response) => {
+      this.setState({ book: response });
+      window.ga('send', 'event', eventCategory, book.title, library);
     });
   }
 
   actionButtons() {
-    if (!this.state.action) return null;
-    switch (this.state.action.type) {
+    const { action } = this.state.book;
+    if (!action) return null;
+    switch (action.type) {
       case BORROW_BOOK_ACTION:
-        return <Button onClick={() => this.performAction(borrowCopy, 'Borrow')}>Borrow</Button>;
+        return <Button onClick={() => this.performAction(borrowBook, 'Borrow')}>Borrow</Button>;
       case RETURN_BOOK_ACTION:
         return <Button onClick={() => this.performAction(returnBook, 'Return')}>Return</Button>;
       case JOIN_WAITLIST_BOOK_ACTION:
@@ -68,7 +69,7 @@ export default class Book extends Component {
   }
 
   render() {
-    const { book } = this.props;
+    const { book } = this.state;
     let contentDetail;
 
     if (this.state.open) {
@@ -117,7 +118,7 @@ export default class Book extends Component {
 }
 
 Book.propTypes = {
-  book: PropTypes.instanceOf(BookModel).isRequired,
+  book: BookPropType.isRequired,
   library: PropTypes.string,
 };
 

@@ -25,5 +25,6 @@ export default function fetchFromAPI(endpoint, method = 'GET') {
     }),
   };
 
-  return fetch(`/api${endpoint}`, options).then((response) => response.json());
+  const url = endpoint.substring(0, 1) === '/' ? `/api${endpoint}` : endpoint;
+  return fetch(url, options).then((response) => response.json());
 }

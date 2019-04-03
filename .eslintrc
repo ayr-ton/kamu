@@ -13,13 +13,12 @@
     "jest": true
   },
   "globals": {
-    "currentUser": true,
     "global": true,
     "module": true
   },
   "rules": {
     "react/destructuring-assignment": 0,
-    "no-restricted-syntax": ["error", "ForInStatement", "LabeledStatement", "WithStatement"],
-    "arrow-parens": ["error", "always"]
+    "arrow-parens": ["error", "always"],
+    "import/no-named-as-default": 0
   }
 }

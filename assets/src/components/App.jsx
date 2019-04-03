@@ -18,8 +18,6 @@ class App extends Component {
 
   componentDidMount() {
     getLoggedUser().then((user) => {
-      // TODO: get rid of the need for a global user variable
-      window.currentUser = user;
       this.setState({ user });
     });
   }
@@ -30,26 +28,24 @@ class App extends Component {
       <BrowserRouter>
         <React.Fragment>
           <Header borrowedBooksCount={user ? user.borrowed_books_count : 0} />
-          {user && (
-            <div id="content">
-              <Route
-                exact
-                path="/"
-                render={({ history }) => (
-                  <LibraryRedirector history={history}>
-                    <LibrarySelector />
-                  </LibraryRedirector>
-                )}
-              />
-              <Route exact path="/my-books" component={MyBooks} />
-              <Route
-                path="/libraries/:slug"
-                render={({ match, history }) => (
-                  <Library slug={match.params.slug} history={history} />
-                )}
-              />
-            </div>
-          )}
+          <div id="content">
+            <Route
+              exact
+              path="/"
+              render={({ history }) => (
+                <LibraryRedirector history={history}>
+                  <LibrarySelector />
+                </LibraryRedirector>
+              )}
+            />
+            <Route exact path="/my-books" component={MyBooks} />
+            <Route
+              path="/libraries/:slug"
+              render={({ match, history }) => (
+                <Library slug={match.params.slug} history={history} />
+              )}
+            />
+          </div>
           <Route path="/" render={trackAnalyticsPageView} />
         </React.Fragment>
       </BrowserRouter>

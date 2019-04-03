@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Book from './Book';
-import BookModel from '../../models/Book';
+import { BookPropType } from '../../utils/propTypes';
 
 function BookList(props) {
   return (
@@ -12,7 +12,7 @@ function BookList(props) {
 }
 
 BookList.propTypes = {
-  books: PropTypes.arrayOf(PropTypes.instanceOf(BookModel)).isRequired,
+  books: PropTypes.arrayOf(BookPropType).isRequired,
   library: PropTypes.string,
 };
 

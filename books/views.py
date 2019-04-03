@@ -3,7 +3,8 @@ from django.contrib import messages, admin
 from django.db.models import Count
 from django.db.models import Q
 from django.http import Http404
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+
 from django.utils import timezone
 from django.utils.http import urlencode
 from django.views.generic.base import View, TemplateView
@@ -11,7 +12,7 @@ from filters.mixins import (
     FiltersMixin,
 )
 from rest_framework import viewsets, filters
-from rest_framework.decorators import detail_route
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -125,46 +126,50 @@ class BookViewSet(FiltersMixin, viewsets.ModelViewSet):
 
         return self.get_paginated_response(serializer.data)
 
+    def retrieve(self, request, pk, library_slug=None):
+        book = get_object_or_404(self.queryset, pk=pk)
+        library = Library.objects.get(slug=library_slug)
+        return self.__serialize_book(book, library, request)
+
+    @action(detail=True, methods=['post'])
+    def borrow(self, request, library_slug=None, pk=None):
+        book = get_object_or_404(self.queryset, pk=pk)
+        return self.__handle_book_action(
+            book=book,
+            action=book.borrow,
+            library=Library.objects.get(slug=library_slug),
+            request=request,
+        )
+
+    @action(detail=True, methods=['post'], url_path='return', name='Return')
+    def returnToLibrary(self, request, library_slug=None, pk=None):
+        book = get_object_or_404(self.queryset, pk=pk)
+        return self.__handle_book_action(
+            book=book,
+            action=book.returnToLibrary,
+            library=Library.objects.get(slug=library_slug),
+            request=request,
+        )
+
+    def __handle_book_action(self, book, action, library, request):
+        try:
+            action(library=library, user=request.user)
+            return self.__serialize_book(book, library, request)
+        except ValueError as error:
+            return Response({'message': str(error)}, status=400)
+
+    def __serialize_book(self, book, library, request):
+        serializer = BookSerializer(book, context={
+                'request': request,
+                'library': library,
+                'user': request.user,
+            })
+        return Response(serializer.data)
+
 
 class BookCopyViewSet(viewsets.ModelViewSet):
     queryset = BookCopy.objects.all()
     serializer_class = BookCopySerializer
-
-
-class BookCopyBorrowView(APIView):
-    def post(self, request, id=None):
-        try:
-            book_copy = BookCopy.objects.get(pk=id)
-            book_copy.user = request.user
-            book_copy.borrow_date = timezone.now()
-            book_copy.save()
-        except BookCopy.DoesNotExist:
-            raise Http404("Book Copy not found")
-        return Response({
-            'status': 'Book borrowed',
-            'action': book_copy.book.available_action(
-                library=book_copy.library,
-                user=request.user,
-            )
-        })
-
-
-class BookCopyReturnView(APIView):
-    def post(self, request, id=None):
-        try:
-            book_copy = BookCopy.objects.get(pk=id)
-            book_copy.user = None
-            book_copy.borrow_date = None
-            book_copy.save()
-        except:
-            raise Http404("Book Copy not found")
-        return Response({
-            'status': 'Book returned',
-            'action': book_copy.book.available_action(
-                library=book_copy.library,
-                user=request.user,
-            )
-        })
 
 
 class UserView(APIView):
@@ -173,9 +178,14 @@ class UserView(APIView):
             'user': UserSerializer(request.user).data,
         })
 
+
 class UserBooksView(APIView):
     def get(self, request, format=None):
-        books = Book.objects.filter(bookcopy__user=request.user)
+        user_copies = BookCopy.objects.filter(user=request.user)
         return Response({
-            'results': BookSerializer(books, many=True, context={'user': request.user}).data
+            'results': list(map(lambda book_copy: BookSerializer(book_copy.book, context={
+                'user': request.user,
+                'request': request,
+                'library': book_copy.library
+            }).data, user_copies))
         })

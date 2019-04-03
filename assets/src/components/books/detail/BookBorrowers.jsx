@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import Avatar from '@material-ui/core/Avatar';
+import { BookCopyPropType } from '../../../utils/propTypes';
 
 
 const BookBorrowers = ({ copies }) => {
@@ -45,13 +46,7 @@ const BookBorrowers = ({ copies }) => {
 };
 
 BookBorrowers.propTypes = {
-  copies: PropTypes.arrayOf(PropTypes.shape({
-    borrow_date: PropTypes.string,
-    user: PropTypes.shape({
-      name: PropTypes.string,
-      image_url: PropTypes.string,
-    }),
-  })).isRequired,
+  copies: PropTypes.arrayOf(BookCopyPropType).isRequired,
 };
 
 export default BookBorrowers;
