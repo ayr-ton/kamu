@@ -7,8 +7,10 @@ import { someBookWithACopyFromMe } from '../../../test/booksHelper';
 
 jest.mock('../../services/BookService');
 
+
 describe('My books', () => {
   const createComponent = (props = {}) => shallow(<MyBooks {...props} />);
+  getMyBooks.mockReturnValue({ results: [] });
 
   it('renders without crashing', () => {
     const myBooks = createComponent();
