@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ReactRouterPropTypes from 'react-router-prop-types';
+import PropTypes from 'prop-types';
 
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -45,7 +45,9 @@ class LibrarySelector extends Component {
 }
 
 LibrarySelector.propTypes = {
-  history: ReactRouterPropTypes.history.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export { LibrarySelector };
