@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import InfiniteScroll from 'react-infinite-scroller';
 import PropTypes from 'prop-types';
-import ReactRouterPropTypes from 'react-router-prop-types';
 import { getBooksByPage } from '../../services/BookService';
 import BookList from '../books/BookList';
 import SearchBar from './SearchBar';
@@ -88,7 +87,12 @@ class Library extends Component {
 
 Library.propTypes = {
   slug: PropTypes.string.isRequired,
-  history: ReactRouterPropTypes.history.isRequired,
+  history: PropTypes.shape({
+    replace: PropTypes.func.isRequired,
+    location: PropTypes.shape({
+      search: PropTypes.string,
+    }).isRequired,
+  }).isRequired,
 };
 
 export default Library;
