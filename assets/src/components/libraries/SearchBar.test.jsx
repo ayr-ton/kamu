@@ -10,7 +10,7 @@ describe('SearchBar', () => {
   const onChange = jest.fn();
 
   it('should render with empty search term', () => {
-    searchBarComponent = shallow(<SearchBar onChange={onChange} />);
+    searchBarComponent = shallow(<SearchBar onChange={onChange} query="" />);
     expect(searchBarComponent.state().searchTerm).toEqual('');
   });
 
@@ -20,7 +20,7 @@ describe('SearchBar', () => {
   });
 
   it('should clear search term when click in close icon', () => {
-    searchBarComponent = shallow(<SearchBar onChange={onChange} />);
+    searchBarComponent = shallow(<SearchBar onChange={onChange} query="" />);
     searchBarComponent.setState({ searchTerm });
 
     searchBarComponent.find(Close).simulate('click');
@@ -35,7 +35,7 @@ describe('SearchBar', () => {
       },
     };
 
-    searchBarComponent = shallow(<SearchBar onChange={onChange} />);
+    searchBarComponent = shallow(<SearchBar onChange={onChange} query="" />);
     const textField = searchBarComponent.find(TextField);
 
     textField.props().onChange(textfieldChangeEvent);
