@@ -34,26 +34,26 @@ export default class Book extends Component {
 
   onMouseOut() { this.setState({ zDepth: 1 }); }
 
-  performAction(action, eventCategory, updateUser) {
+  performAction(action, eventCategory) {
     const { book, library } = this.props;
     return action(book).then((response) => {
       this.setState({ book: response });
-      updateUser();
+      this.context.updateUser();
       window.ga('send', 'event', eventCategory, book.title, library);
     });
   }
 
-  actionButtons(updateUser) {
+  actionButtons() {
     const { action } = this.state.book;
     if (!action) return null;
     switch (action.type) {
       case BORROW_BOOK_ACTION:
-        return <Button onClick={() => this.performAction(borrowBook, 'Borrow', updateUser)}>Borrow</Button>;
+        return <Button onClick={() => this.performAction(borrowBook, 'Borrow')}>Borrow</Button>;
       case RETURN_BOOK_ACTION:
-        return <Button onClick={() => this.performAction(returnBook, 'Return', updateUser)}>Return</Button>;
+        return <Button onClick={() => this.performAction(returnBook, 'Return')}>Return</Button>;
       case JOIN_WAITLIST_BOOK_ACTION:
         return isWaitlistFeatureActive()
-          && <Button onClick={() => this.performAction(joinWaitlist, 'JoinWaitlist', updateUser)}>Join the waitlist</Button>;
+          && <Button onClick={() => this.performAction(joinWaitlist, 'JoinWaitlist')}>Join the waitlist</Button>;
       default:
         return null;
     }
@@ -72,7 +72,6 @@ export default class Book extends Component {
 
   render() {
     const { book } = this.state;
-    const { updateUser } = this.context;
 
     let contentDetail;
 
@@ -113,7 +112,7 @@ export default class Book extends Component {
         </div>
 
         <div className="book-actions">
-          {this.actionButtons(updateUser)}
+          {this.actionButtons()}
         </div>
         {contentDetail}
       </Paper>
