@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { shallow } from 'enzyme';
 import Button from '@material-ui/core/Button';
 import Book from './Book';
@@ -39,11 +40,17 @@ expect.extend({
   },
 });
 
-const createComponent = (book) => shallow(<Book book={book} library="bh" />);
+Book.contextTypes = {
+  updateUser: PropTypes.func,
+};
+
+const defaultContext = { updateUser: jest.fn() };
+const createComponent = (book) => shallow(<Book book={book} library="bh" />, { context: defaultContext });
 
 describe('Book', () => {
   beforeEach(() => {
     global.window.ga = () => { };
+    jest.resetAllMocks();
   });
 
   it('should contain the book cover as background image', () => {
@@ -79,6 +86,7 @@ describe('Book', () => {
     await bookComponent.find(Button).simulate('click');
 
     expect(borrowBook).toHaveBeenCalledWith(book);
+    expect(defaultContext.updateUser).toHaveBeenCalledTimes(1);
   });
 
   it('shows the return button when the book has a return action', () => {
@@ -106,6 +114,7 @@ describe('Book', () => {
     await bookComponent.find(Button).simulate('click');
 
     expect(returnBook).toHaveBeenCalledWith(book);
+    expect(defaultContext.updateUser).toHaveBeenCalledTimes(1);
   });
 
   it('has no action button when the book has no action', () => {
