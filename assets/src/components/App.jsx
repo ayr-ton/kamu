@@ -12,21 +12,27 @@ import trackAnalyticsPageView from '../utils/analytics';
 class App extends Component {
   constructor(props) {
     super(props);
+
+    this.updateUser = () => {
+      getLoggedUser().then((user) => {
+        this.setState({ user });
+      });
+    };
+
     this.state = {
       user: null,
+      updateUser: this.updateUser,
     };
   }
 
   componentDidMount() {
-    getLoggedUser().then((user) => {
-      this.setState({ user });
-    });
+    this.updateUser();
   }
 
   render() {
-    const { user } = this.state;
+    const { user, updateUser } = this.state;
     return (
-      <UserContext.Provider value={{ user }}>
+      <UserContext.Provider value={{ user, updateUser }}>
         <BrowserRouter>
           <React.Fragment>
             <Header />
