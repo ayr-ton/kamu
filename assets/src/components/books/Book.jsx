@@ -7,6 +7,7 @@ import BookDetail from './detail/BookDetail';
 import { joinWaitlist, borrowBook, returnBook } from '../../services/BookService';
 import { BORROW_BOOK_ACTION, RETURN_BOOK_ACTION, JOIN_WAITLIST_BOOK_ACTION } from '../../utils/constants';
 import { BookPropType } from '../../utils/propTypes';
+import UserContext from '../UserContext';
 
 const isWaitlistFeatureActive = () => {
   const { query } = parse(window.location.href, true);
@@ -33,25 +34,26 @@ export default class Book extends Component {
 
   onMouseOut() { this.setState({ zDepth: 1 }); }
 
-  performAction(action, eventCategory) {
+  performAction(action, eventCategory, updateUser) {
     const { book, library } = this.props;
     return action(book).then((response) => {
       this.setState({ book: response });
+      updateUser();
       window.ga('send', 'event', eventCategory, book.title, library);
     });
   }
 
-  actionButtons() {
+  actionButtons(updateUser) {
     const { action } = this.state.book;
     if (!action) return null;
     switch (action.type) {
       case BORROW_BOOK_ACTION:
-        return <Button onClick={() => this.performAction(borrowBook, 'Borrow')}>Borrow</Button>;
+        return <Button onClick={() => this.performAction(borrowBook, 'Borrow', updateUser)}>Borrow</Button>;
       case RETURN_BOOK_ACTION:
-        return <Button onClick={() => this.performAction(returnBook, 'Return')}>Return</Button>;
+        return <Button onClick={() => this.performAction(returnBook, 'Return', updateUser)}>Return</Button>;
       case JOIN_WAITLIST_BOOK_ACTION:
         return isWaitlistFeatureActive()
-          && <Button onClick={() => this.performAction(joinWaitlist, 'JoinWaitlist')}>Join the waitlist</Button>;
+          && <Button onClick={() => this.performAction(joinWaitlist, 'JoinWaitlist', updateUser)}>Join the waitlist</Button>;
       default:
         return null;
     }
@@ -70,6 +72,8 @@ export default class Book extends Component {
 
   render() {
     const { book } = this.state;
+    const { updateUser } = this.context;
+
     let contentDetail;
 
     if (this.state.open) {
@@ -109,13 +113,15 @@ export default class Book extends Component {
         </div>
 
         <div className="book-actions">
-          {this.actionButtons()}
+          {this.actionButtons(updateUser)}
         </div>
         {contentDetail}
       </Paper>
     );
   }
 }
+
+Book.contextType = UserContext;
 
 Book.propTypes = {
   book: BookPropType.isRequired,
