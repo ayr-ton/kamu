@@ -33,6 +33,6 @@ describe('App', () => {
   it('renders a UserContext with value equal to currentUser', () => {
     const provider = component.find(UserContext.Provider);
     expect(provider.exists()).toBeTruthy();
-    expect(provider.props().value).toEqual(currentUser);
+    expect(provider.props().value.user).toEqual(currentUser);
   });
 });

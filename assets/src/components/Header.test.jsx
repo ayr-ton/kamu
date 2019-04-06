@@ -77,7 +77,7 @@ describe('Header', () => {
   });
 
   it('has a badge with the borrowed book count in my books button', async () => {
-    mockContext.mockReturnValue({ borrowed_books_count: 5 });
+    mockContext.mockReturnValue({ user: { borrowed_books_count: 5 } });
 
     const header = await mountComponent();
 
