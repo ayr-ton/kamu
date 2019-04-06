@@ -33,7 +33,7 @@ function Header({ history }) {
 
           <IconButton title="My books" id="my-books-button" onClick={() => redirect(MY_BOOKS_URL)}>
             <UserContext.Consumer>
-              {(user) => (
+              {({ user }) => (
                 <Badge badgeContent={user ? user.borrowed_books_count : 0} color="secondary">
                   <Icon className="fa fa-book-reader" />
                 </Badge>

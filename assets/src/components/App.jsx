@@ -26,7 +26,7 @@ class App extends Component {
   render() {
     const { user } = this.state;
     return (
-      <UserContext.Provider value={user}>
+      <UserContext.Provider value={{ user }}>
         <BrowserRouter>
           <React.Fragment>
             <Header />
