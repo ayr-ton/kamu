@@ -21,7 +21,6 @@ class App extends Component {
 
     this.state = {
       user: null,
-      updateUser: this.updateUser,
     };
   }
 
@@ -30,9 +29,9 @@ class App extends Component {
   }
 
   render() {
-    const { user, updateUser } = this.state;
+    const { user } = this.state;
     return (
-      <UserContext.Provider value={{ user, updateUser }}>
+      <UserContext.Provider value={{ user, updateUser: this.updateUser }}>
         <BrowserRouter>
           <React.Fragment>
             <Header />
