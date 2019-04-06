@@ -1,13 +1,18 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import Badge from '@material-ui/core/Badge';
 import { Header } from './Header';
 import { getRegion, clearRegion } from '../services/ProfileService';
 
+const mockContext = jest.fn();
 jest.mock('../services/ProfileService');
+jest.mock('./UserContext', () => ({
+  Consumer: ({ children }) => children(mockContext()),
+}));
 
 const history = { push: jest.fn() };
 const createComponent = (props) => shallow(<Header history={history} {...props} />);
+const mountComponent = (props) => mount(<Header history={history} {...props} />);
 
 describe('Header', () => {
   beforeEach(() => {
@@ -72,12 +77,13 @@ describe('Header', () => {
   });
 
   it('has a badge with the borrowed book count in my books button', async () => {
-    const borrowedBooksCount = 5;
-    const header = await createComponent({ borrowedBooksCount });
+    mockContext.mockReturnValue({ borrowed_books_count: 5 });
+
+    const header = await mountComponent();
 
     const badge = header.find('#my-books-button').find(Badge);
 
     expect(badge.exists()).toBeTruthy();
-    expect(badge.props().badgeContent).toEqual(borrowedBooksCount);
+    expect(badge.props().badgeContent).toEqual(5);
   });
 });

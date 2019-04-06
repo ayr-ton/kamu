@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
+import UserContext from './UserContext';
 import Header from './Header';
 import LibrarySelector from './home/LibrarySelector';
 import LibraryRedirector from './home/LibraryRedirector';
@@ -25,30 +26,32 @@ class App extends Component {
   render() {
     const { user } = this.state;
     return (
-      <BrowserRouter>
-        <React.Fragment>
-          <Header borrowedBooksCount={user ? user.borrowed_books_count : 0} />
-          <div id="content">
-            <Route
-              exact
-              path="/"
-              render={({ history }) => (
-                <LibraryRedirector history={history}>
-                  <LibrarySelector />
-                </LibraryRedirector>
-              )}
-            />
-            <Route exact path="/my-books" component={MyBooks} />
-            <Route
-              path="/libraries/:slug"
-              render={({ match, history }) => (
-                <Library slug={match.params.slug} history={history} />
-              )}
-            />
-          </div>
-          <Route path="/" render={trackAnalyticsPageView} />
-        </React.Fragment>
-      </BrowserRouter>
+      <UserContext.Provider value={user}>
+        <BrowserRouter>
+          <React.Fragment>
+            <Header />
+            <div id="content">
+              <Route
+                exact
+                path="/"
+                render={({ history }) => (
+                  <LibraryRedirector history={history}>
+                    <LibrarySelector />
+                  </LibraryRedirector>
+                )}
+              />
+              <Route exact path="/my-books" component={MyBooks} />
+              <Route
+                path="/libraries/:slug"
+                render={({ match, history }) => (
+                  <Library slug={match.params.slug} history={history} />
+                )}
+              />
+            </div>
+            <Route path="/" render={trackAnalyticsPageView} />
+          </React.Fragment>
+        </BrowserRouter>
+      </UserContext.Provider>
     );
   }
 }

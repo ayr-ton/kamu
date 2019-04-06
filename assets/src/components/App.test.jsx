@@ -4,6 +4,7 @@ import Header from './Header';
 import App from './App';
 import { getLoggedUser } from '../services/ProfileService';
 import { currentUser } from '../../test/userHelper';
+import UserContext from './UserContext';
 
 jest.mock('../services/ProfileService');
 
@@ -29,9 +30,9 @@ describe('App', () => {
     expect(getLoggedUser).toHaveBeenCalled();
   });
 
-  it('passes the users borrowed books count to the header', () => {
-    expect(component.find(Header).props().borrowedBooksCount).toEqual(
-      currentUser.borrowed_books_count,
-    );
+  it('renders a UserContext with value equal to currentUser', () => {
+    const provider = component.find(UserContext.Provider);
+    expect(provider.exists()).toBeTruthy();
+    expect(provider.props().value).toEqual(currentUser);
   });
 });

@@ -6,6 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Icon from '@material-ui/core/Icon';
 import Badge from '@material-ui/core/Badge';
 import { withRouter } from 'react-router';
+import UserContext from './UserContext';
 import { clearRegion, getRegion } from '../services/ProfileService';
 import {
   HOME_URL, ADMIN_URL, MY_BOOKS_URL, ADD_BOOK_URL, LIBRARY_URL_PREFIX,
@@ -14,7 +15,7 @@ import {
 const redirectExternal = (url) => window.location.assign(url);
 const getHomeEndpoint = () => (getRegion() ? `${LIBRARY_URL_PREFIX}/${getRegion()}` : HOME_URL);
 
-function Header({ borrowedBooksCount, history }) {
+function Header({ history }) {
   const redirect = (url) => history.push(url);
   return (
     <AppBar className="header">
@@ -31,9 +32,13 @@ function Header({ borrowedBooksCount, history }) {
           </IconButton>
 
           <IconButton title="My books" id="my-books-button" onClick={() => redirect(MY_BOOKS_URL)}>
-            <Badge badgeContent={borrowedBooksCount} color="secondary">
-              <Icon className="fa fa-book-reader" />
-            </Badge>
+            <UserContext.Consumer>
+              {(user) => (
+                <Badge badgeContent={user ? user.borrowed_books_count : 0} color="secondary">
+                  <Icon className="fa fa-book-reader" />
+                </Badge>
+              )}
+            </UserContext.Consumer>
           </IconButton>
 
           <IconButton title="Add a book" id="add-book-button" onClick={() => redirectExternal(ADD_BOOK_URL)}>
@@ -54,12 +59,7 @@ function Header({ borrowedBooksCount, history }) {
 }
 
 Header.propTypes = {
-  borrowedBooksCount: PropTypes.number,
   history: PropTypes.shape({}).isRequired,
-};
-
-Header.defaultProps = {
-  borrowedBooksCount: 0,
 };
 
 export { Header };
