@@ -88,13 +88,13 @@ class LibraryViewSetQueryParameters(TestCase):
 
         self.base_url = "/api/libraries/" + self.library.slug + "/books/?"
 
-        books_info = [("author a", "book a"), ("author b", "book b"),
-                      ("author not", "book not"), ("author amazing", "book amazing")]
+        books_info = [("author a", "book a", "1001"), ("author b", "book b", "1002"),
+                      ("author not", "book not", "2003"), ("author amazing", "book amazing", "2004")]
 
         books_dict = []
 
         for book_info in books_info:
-            books_dict.append({"author": book_info[0], "title": book_info[1]})
+            books_dict.append({"author": book_info[0], "title": book_info[1], "isbn": book_info[2]})
 
         for book_dict in books_dict:
             book = Book.objects.create(**book_dict)
@@ -166,6 +166,11 @@ class LibraryViewSetQueryParameters(TestCase):
 
         books = self.get_request_result_as_json(self.base_url + "book_author=author amazing&book_title=book amazing")
         self.assertEqual(len(books), 1)
+
+    def test_search_for_books_isbn_returns_exact_match(self):
+        books = self.get_request_result_as_json(self.base_url + "book_isbn=1001")
+        self.assertEqual(len(books), 1)
+        self.assertEqual(books[0]['title'], 'book a')
 
 
 class BookViewSetTest(TestCase):
