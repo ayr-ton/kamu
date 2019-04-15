@@ -88,7 +88,7 @@ class LibraryViewSet(FiltersMixin, viewsets.ModelViewSet):
     lookup_field = 'slug'
     filter_backends = (filters.OrderingFilter,)
     ordering_fields = ('id', 'name')
-    ordering = ('id',)  # default ordering
+    ordering = ('name')
 
     # add a mapping of query_params to db_columns(queries)
     filter_mappings = {

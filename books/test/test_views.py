@@ -19,14 +19,25 @@ class LibraryViewSet(TestCase):
         self.user.save()
         self.client.force_login(user=self.user)
 
-        self.library = Library.objects.create(name="Santiago", slug="slug")
+        self.library = Library.objects.create(name="Santiago", slug="scl")
+        self.library2 = Library.objects.create(name="Belo Horizonte", slug="bh")
         self.book = Book.objects.create(author="Author", title="Book A", subtitle="The subtitle",
                                         publication_date=timezone.now())
         self.book.bookcopy_set.create(library=self.library)
 
-    def test_can_retrieve_library_information_with_existing_slug(self):
-        """tests the following url: /api/libraries/(?P<library_slug>)/books/"""
+    def test_returns_the_list_of_libraries_ordered_alphabetically(self):
+        response = self.client.get("/api/libraries/")
 
+        self.assertEqual(response.status_code, 200)
+
+        libraries = response.data['results']
+        self.assertEqual(2, response.data['count'])
+        self.assertEqual(self.library2.name, libraries[0]['name'])
+        self.assertEqual(self.library2.slug, libraries[0]['slug'])
+        self.assertEqual(self.library.name, libraries[1]['name'])
+        self.assertEqual(self.library.slug, libraries[1]['slug'])
+
+    def test_can_retrieve_library_information_with_existing_slug(self):
         response = self.client.get("/api/libraries/" + self.library.slug + "/")
 
         self.assertEqual(response.status_code, 200)
