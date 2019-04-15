@@ -88,13 +88,12 @@ class LibraryViewSetQueryParameters(TestCase):
 
         self.base_url = "/api/libraries/" + self.library.slug + "/books/?"
 
-        books_info = [("author a", "book a", "1001"), ("author b", "book b", "1002"),
-                      ("author not", "book not", "2003"), ("author amazing", "book amazing", "2004")]
-
-        books_dict = []
-
-        for book_info in books_info:
-            books_dict.append({"author": book_info[0], "title": book_info[1], "isbn": book_info[2]})
+        books_dict = [
+            {'author': 'author a', 'title': 'book a', 'isbn': '1001'},
+            {'author': 'author b', 'title': 'book b', 'isbn': '1002'},
+            {'author': 'author not', 'title': 'book not', 'isbn': '2003'},
+            {'author': 'author amazing', 'title': 'book amazing', 'isbn': '2004'},
+        ]
 
         for book_dict in books_dict:
             book = Book.objects.create(**book_dict)
