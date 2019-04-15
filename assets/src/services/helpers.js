@@ -1,4 +1,4 @@
-function getCookie(name) {
+const getCookie = (name) => {
   let cookieValue = null;
   if (document.cookie && document.cookie !== '') {
     const cookies = document.cookie.split(';');
@@ -13,9 +13,9 @@ function getCookie(name) {
     }
   }
   return cookieValue;
-}
+};
 
-export default function fetchFromAPI(endpoint, method = 'GET') {
+const fetchFromAPI = async (endpoint, method = 'GET') => {
   const csrftoken = getCookie('csrftoken');
   const options = {
     method,
@@ -26,5 +26,17 @@ export default function fetchFromAPI(endpoint, method = 'GET') {
   };
 
   const url = endpoint.substring(0, 1) === '/' ? `/api${endpoint}` : endpoint;
-  return fetch(url, options).then((response) => response.json());
-}
+
+  try {
+    const response = await fetch(url, options);
+    if (response.type === 'error' || !response.ok) {
+      throw new Error(response.statusText);
+    }
+
+    return response.json();
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export default fetchFromAPI;
