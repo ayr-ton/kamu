@@ -30,6 +30,7 @@ class FrontendView(TemplateView):
         context['analyticsAccountId'] = os.environ.get('ANALYTICS_ACCOUNT_ID')
         return context
 
+
 class IsbnFormView(View):
     def get(self, request):
         form = IsbnForm()
@@ -108,7 +109,7 @@ class BookViewSet(FiltersMixin, viewsets.ModelViewSet):
         self.ordering_fields = ()
         self.ordering = ()
 
-        library = Library.objects.get(slug=library_slug)
+        library = get_object_or_404(Library, slug=library_slug)
 
         book_filters = get_book_filters_from_request(request, ('book_title', 'book_author', 'book_isbn'))
         book_filters.add(Q(bookcopy__library__slug__exact=library_slug), Q.AND)
@@ -128,26 +129,28 @@ class BookViewSet(FiltersMixin, viewsets.ModelViewSet):
 
     def retrieve(self, request, pk, library_slug=None):
         book = get_object_or_404(self.queryset, pk=pk)
-        library = Library.objects.get(slug=library_slug)
+        library = get_object_or_404(Library, slug=library_slug)
         return self.__serialize_book(book, library, request)
 
     @action(detail=True, methods=['post'])
     def borrow(self, request, library_slug=None, pk=None):
         book = get_object_or_404(self.queryset, pk=pk)
+        library = get_object_or_404(Library, slug=library_slug)
         return self.__handle_book_action(
             book=book,
             action=book.borrow,
-            library=Library.objects.get(slug=library_slug),
+            library=library,
             request=request,
         )
 
     @action(detail=True, methods=['post'], url_path='return', name='Return')
     def returnToLibrary(self, request, library_slug=None, pk=None):
         book = get_object_or_404(self.queryset, pk=pk)
+        library = get_object_or_404(Library, slug=library_slug)
         return self.__handle_book_action(
             book=book,
             action=book.returnToLibrary,
-            library=Library.objects.get(slug=library_slug),
+            library=library,
             request=request,
         )
 
