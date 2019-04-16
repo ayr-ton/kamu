@@ -6,6 +6,7 @@ import { getBooksByPage } from '../../services/BookService';
 import BookList from '../books/BookList';
 import SearchBar from './SearchBar';
 import { setRegion } from '../../services/ProfileService';
+import ErrorMessage from '../error/ErrorMessage';
 
 class Library extends Component {
   constructor(props) {
@@ -19,14 +20,11 @@ class Library extends Component {
       page: 1,
       searchTerm,
       isLoading: false,
+      hasError: false,
     };
 
     this.loadBooks = this.loadBooks.bind(this);
     this.searchTermChanged = this.searchTermChanged.bind(this);
-  }
-
-  componentDidMount() {
-    setRegion(this.props.slug);
   }
 
   async loadBooks() {
@@ -35,22 +33,23 @@ class Library extends Component {
     this.setState({ isLoading: true, hasNextPage: false });
 
     const { page, searchTerm } = this.state;
-    const booksResponse = await getBooksByPage(this.props.slug, page, searchTerm) || {};
-    if (booksResponse && booksResponse.results) {
+
+    try {
+      const booksResponse = await getBooksByPage(this.props.slug, page, searchTerm);
+      setRegion(this.props.slug);
       this.setState((state) => ({
         books: state.books.concat(booksResponse.results),
         page: state.page + 1,
+        hasNextPage: !!booksResponse.next,
+        isLoading: false,
       }));
+
+      this.props.history.replace({
+        search: searchTerm ? new URLSearchParams({ q: searchTerm }).toString() : null,
+      });
+    } catch (e) {
+      this.setState({ hasError: true });
     }
-
-    this.setState({
-      hasNextPage: !!booksResponse.next,
-      isLoading: false,
-    });
-
-    this.props.history.replace({
-      search: searchTerm ? new URLSearchParams({ q: searchTerm }).toString() : null,
-    });
   }
 
   searchTermChanged(searchTerm) {
@@ -65,7 +64,7 @@ class Library extends Component {
   }
 
   render() {
-    return (
+    return this.state.hasError ? <ErrorMessage /> : (
       <React.Fragment>
         <SearchBar onChange={this.searchTermChanged} query={this.state.searchTerm} />
         <InfiniteScroll

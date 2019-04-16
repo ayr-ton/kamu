@@ -7,6 +7,7 @@ import { setRegion } from '../../services/ProfileService';
 import { mockGetBooksByPageResponse, mockGetBooksByPageEmptyResponse } from '../../../test/mockBookService';
 import BookList from '../books/BookList';
 import SearchBar from './SearchBar';
+import ErrorMessage from '../error/ErrorMessage';
 
 jest.mock('../../services/BookService');
 jest.mock('../../services/ProfileService');
@@ -167,7 +168,7 @@ describe('Library', () => {
 
   it('does not update book list when get books fails', async () => {
     library.setState({ books: mockGetBooksByPageResponse.results });
-    getBooksByPage.mockResolvedValue(null);
+    getBooksByPage.mockRejectedValue(new Error());
 
     const infiniteScroll = library.find(InfiniteScroll);
     await infiniteScroll.props().loadMore();
@@ -175,7 +176,27 @@ describe('Library', () => {
     expect(library.state().books).toEqual(mockGetBooksByPageResponse.results);
   });
 
-  it('sets the library in the users preferences', () => {
+  it('sets the library in the users preferences when books are loaded', async () => {
+    const infiniteScroll = library.find(InfiniteScroll);
+    await infiniteScroll.props().loadMore();
+
     expect(setRegion).toHaveBeenCalledWith('bh');
+  });
+
+  it('does not set the library in the users preferences when books fail to load', async () => {
+    getBooksByPage.mockRejectedValue(new Error());
+    const infiniteScroll = library.find(InfiniteScroll);
+    await infiniteScroll.props().loadMore();
+
+    expect(setRegion).not.toHaveBeenCalled();
+  });
+
+  it('shows an error message when loading books fails', async () => {
+    getBooksByPage.mockRejectedValue(new Error());
+    const infiniteScroll = library.find(InfiniteScroll);
+    await infiniteScroll.props().loadMore();
+
+    expect(library.find(InfiniteScroll).find(BookList).exists()).toBeFalsy();
+    expect(library.find(ErrorMessage).exists()).toBeTruthy();
   });
 });

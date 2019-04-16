@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import * as Sentry from '@sentry/browser';
+import ErrorMessage from './error/ErrorMessage';
 
 import '../../css/ErrorBoundary.css';
 
@@ -23,17 +24,7 @@ class ErrorBoundary extends Component {
   }
 
   render() {
-    return (this.state.hasError) ? (
-      <div className="error-boundary">
-        <img src="/static/images/logo.svg" alt="Kamu logo" className="error-boundary__logo" />
-        <h1 className="error-boundary__title">
-          Something went wrong.
-        </h1>
-        <p className="error-boundary__description">
-          An error happened while loading this page. Please try again.
-        </p>
-      </div>
-    ) : this.props.children;
+    return this.state.hasError ? <ErrorMessage /> : this.props.children;
   }
 }
 
