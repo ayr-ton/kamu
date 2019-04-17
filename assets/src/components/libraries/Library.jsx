@@ -8,23 +8,34 @@ import SearchBar from './SearchBar';
 import { setRegion } from '../../services/ProfileService';
 import ErrorMessage from '../error/ErrorMessage';
 
+const initialState = {
+  books: [],
+  hasNextPage: true,
+  page: 1,
+  searchTerm: '',
+  isLoading: false,
+  hasError: false,
+};
+
 class Library extends Component {
   constructor(props) {
     super(props);
 
     const searchTerm = new URLSearchParams(props.history.location.search).get('q') || '';
-
     this.state = {
-      books: [],
-      hasNextPage: true,
-      page: 1,
+      ...initialState,
       searchTerm,
-      isLoading: false,
-      hasError: false,
     };
 
     this.loadBooks = this.loadBooks.bind(this);
     this.searchTermChanged = this.searchTermChanged.bind(this);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.slug !== prevProps.slug) {
+      this.setState(initialState);
+      this.loadBooks();
+    }
   }
 
   async loadBooks() {
@@ -48,7 +59,10 @@ class Library extends Component {
         search: searchTerm ? new URLSearchParams({ q: searchTerm }).toString() : null,
       });
     } catch (e) {
-      this.setState({ hasError: true });
+      this.setState({
+        hasError: true,
+        isLoading: false,
+      });
     }
   }
 

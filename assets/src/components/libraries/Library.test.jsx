@@ -199,4 +199,14 @@ describe('Library', () => {
     expect(library.find(InfiniteScroll).find(BookList).exists()).toBeFalsy();
     expect(library.find(ErrorMessage).exists()).toBeTruthy();
   });
+
+  it('fetches the books again when the library slug passed via props changes', () => {
+    library.setProps({ slug: 'quito' });
+    expect(getBooksByPage).toHaveBeenCalledWith('quito', 1, '');
+  });
+
+  it('does not fetch the books again when the library slug passed via props does not change', () => {
+    library.setProps({ slug: 'bh' });
+    expect(getBooksByPage).not.toHaveBeenCalledWith('bh', 1, '');
+  });
 });

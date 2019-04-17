@@ -48,6 +48,7 @@
   "devDependencies": {
     "babel": "^6.3.26",
     "babel-jest": "^23.6.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-airbnb": "2.4.0",
     "babel-register": "^6.4.3",
