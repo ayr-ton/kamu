@@ -12,7 +12,7 @@ import ErrorMessage from '../error/ErrorMessage';
 jest.mock('../../services/BookService');
 jest.mock('../../services/ProfileService');
 
-const history = { replace: jest.fn(), location: { search: null } };
+const history = { replace: jest.fn(), location: { search: '' } };
 const createComponent = (props) => shallow(<Library slug="bh" history={history} {...props} />);
 
 describe('Library', () => {
@@ -132,6 +132,19 @@ describe('Library', () => {
     expect(history.replace).toHaveBeenCalledWith({ search: 'q=test+search' });
   });
 
+  it('keeps the previous query params in the url even when search is updated', async () => {
+    history.location.search = '?toggle=active';
+    getBooksByPage.mockReturnValue(mockGetBooksByPageEmptyResponse);
+    const searchBar = library.find(SearchBar);
+    const infiniteScroll = library.find(InfiniteScroll);
+
+    searchBar.props().onChange('test search');
+    await infiniteScroll.props().loadMore();
+
+    expect(history.replace).toHaveBeenCalledWith({ search: 'toggle=active&q=test+search' });
+    history.location.search = '';
+  });
+
   it('removes the search query from the url when search field is empty', async () => {
     getBooksByPage.mockReturnValue(mockGetBooksByPageEmptyResponse);
     const searchBar = library.find(SearchBar);
@@ -140,7 +153,7 @@ describe('Library', () => {
     searchBar.props().onChange('');
     await infiniteScroll.props().loadMore();
 
-    expect(history.replace).toHaveBeenCalledWith({ search: null });
+    expect(history.replace).toHaveBeenCalledWith({ search: '' });
   });
 
   it('clears the previous books when searching', () => {

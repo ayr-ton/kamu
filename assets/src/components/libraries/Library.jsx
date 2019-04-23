@@ -54,16 +54,26 @@ class Library extends Component {
         hasNextPage: !!booksResponse.next,
         isLoading: false,
       }));
-
-      this.props.history.replace({
-        search: searchTerm ? new URLSearchParams({ q: searchTerm }).toString() : null,
-      });
     } catch (e) {
       this.setState({
         hasError: true,
         isLoading: false,
       });
     }
+  }
+
+  updateQueryString() {
+    const { searchTerm } = this.state;
+    const queryString = new URLSearchParams(this.props.history.location.search);
+    if (searchTerm) {
+      queryString.set('q', searchTerm);
+    } else {
+      queryString.delete('q');
+    }
+
+    this.props.history.replace({
+      search: queryString.toString(),
+    });
   }
 
   searchTermChanged(searchTerm) {
@@ -74,6 +84,7 @@ class Library extends Component {
       hasNextPage: false,
     }, () => {
       this.loadBooks();
+      this.updateQueryString();
     });
   }
 
