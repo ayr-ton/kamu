@@ -62,14 +62,12 @@ describe('Book Service', () => {
     });
   });
 
-  it('returns null when response to get books does not have results', () => {
+  it('fails when response to get books does not have results', () => {
     fetchFromAPI.mockResolvedValue({
       error: 'some error',
     });
 
-    return getBooksByPage('bh', 1).then((data) => {
-      expect(data).toBeNull();
-    });
+    return expect(getBooksByPage('bh', 1)).rejects.toBeInstanceOf(Error);
   });
 
   it('returns the list of books I borrowed', () => {

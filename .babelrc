@@ -5,6 +5,7 @@
   ],
   "plugins": [
     "transform-async-to-generator",
-    "babel-plugin-transform-runtime"
+    "babel-plugin-transform-runtime",
+    "babel-plugin-transform-object-rest-spread"
   ]
 }

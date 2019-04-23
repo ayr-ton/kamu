@@ -4,7 +4,7 @@ export const getLibraries = () => fetchFromAPI('/libraries/').then((data) => dat
 
 export const getBooksByPage = (librarySlug, page, filter = '') => fetchFromAPI(`/libraries/${librarySlug}/books/?page=${page}&book_title=${filter}&book_author=${filter}`).then((data) => {
   if (!data.results) {
-    return null;
+    throw new Error('Request to load books did not have results');
   }
 
   return data;
