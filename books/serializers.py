@@ -77,12 +77,6 @@ class BookSerializer(serializers.ModelSerializer):
         return reverse('books-detail', kwargs=url_kwargs, request=self.context['request'])
 
 
-class BookCompactSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Book
-        fields = ('id', 'author', 'title')
-
-
 class LibraryCompactSerializer(serializers.HyperlinkedModelSerializer):
     books = serializers.SerializerMethodField()
 
