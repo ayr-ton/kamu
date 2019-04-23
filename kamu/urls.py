@@ -4,6 +4,8 @@ import django_saml2_auth.views
 from django.conf import settings
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView, RedirectView
 from rest_framework_nested import routers
@@ -30,6 +32,10 @@ else:
         url(r'^admin/login/$', django_saml2_auth.views.signin),
         url(r'^okta-login/', include('django_saml2_auth.urls')),
     ]
+
+if settings.GOOGLE_SIGNIN_SUPPORT:
+    admin.site.login_template = 'registration/login_google.html'
+    login_routes += [ url(r'^google/', include('social_django.urls', namespace='social')) ]
 
 urlpatterns = login_routes + [
     url(r'^admin$', RedirectView.as_view(url = '/admin/')),

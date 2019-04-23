@@ -104,6 +104,46 @@ If you wish to disable Okta authentication again, execute:
   unset OKTA_METADATA_URL
 ```
 
+**For local setup with Google authentication:**
+Use the `GOOGLE_OAUTH2_KEY` and `GOOGLE_OAUTH2_SECRET` environment variable, concatenating it with the usual commands. Examples:
+
+```shell
+  GOOGLE_OAUTH2_KEY='google-oauth2-key' GOOGLE_OAUTH2_SECRET='google-oauth2-secret' npm start
+  GOOGLE_OAUTH2_KEY='google-oauth2-key' GOOGLE_OAUTH2_SECRET='google-oauth2-secret' python manage.py migrate
+```
+
+Another way is to export the var and then execute the commands:
+
+```shell
+  export GOOGLE_OAUTH2_KEY='google-oauth2-key'
+  export GOOGLE_OAUTH2_SECRET='google-oauth2-secret'
+  npm start
+  python manage.py migrate
+```
+
+If you wish to disable Google authentication again, execute:
+
+```shell
+  unset GOOGLE_OAUTH2_KEY
+  unset GOOGLE_OAUTH2_SECRET
+```
+
+To get the Google OAuth2 Key and Secret, follow the steps below:
+
+Go to the Google [https://console.developers.google.com/projectcreate](Google Developers Console) and then create a new project.
+
+Enter project name e.g 'Kamu App'. Wait for a few seconds your project should be created
+
+On the left side menu there is credentials tab, select it.
+
+Click on Create Credentials then OAuth Client ID. Select the application type Web app, Give any name of your choice and Enter any name in 'Product name shown to users' under OAuth Consent Screen tab.
+
+Enter the following URI's in Authorized redirect URIs
+
+http://localhost:8000/google/complete/google-oauth2/
+
+Remember 'localhost:8000' is just for testing purpose only, change 'localhost:8000' with your DOMAIN name in production.
+
 ## Executing using Docker for local development
 
 We support Docker =), just go to your favorite console and type:

@@ -108,3 +108,26 @@ if os.environ.get("OKTA_METADATA_URL") != None:
         }
     }
     SAML2_AUTH['METADATA_AUTO_CONF_URL'] = os.environ['OKTA_METADATA_URL']
+
+GOOGLE_SIGNIN_SUPPORT = os.environ.get("GOOGLE_OAUTH2_KEY") != None
+
+if GOOGLE_SIGNIN_SUPPORT:
+    INSTALLED_APPS += ('social_django',)
+
+    TEMPLATES[0]['OPTIONS']['context_processors'] += (
+        'social_django.context_processors.backends',
+        'social_django.context_processors.login_redirect'
+    )
+
+    AUTHENTICATION_BACKENDS = (
+        'social_core.backends.open_id.OpenIdAuth',
+        'social_core.backends.google.GoogleOpenId',
+        'social_core.backends.google.GoogleOAuth2',
+        'django.contrib.auth.backends.ModelBackend'
+    )
+
+    LOGIN_URL = 'accounts/login'
+    LOGIN_REDIRECT_URL = '/'
+
+    SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ['GOOGLE_OAUTH2_KEY']
+    SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ['GOOGLE_OAUTH2_SECRET']
