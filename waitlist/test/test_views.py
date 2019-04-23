@@ -15,8 +15,7 @@ class WaitlistViewSetTest(TestCase):
         self.client.force_login(user=self.user)
 
         self.library = Library.objects.create(name="My library", slug="myslug")
-        self.book = Book.objects.create(author="Author", title="the title", subtitle="The subtitle",
-                                        publication_date=timezone.now())
+        self.book = Book.objects.create(author="Author", title="the title", subtitle="The subtitle")
         self.base_url = "/api/libraries/" + self.library.slug + \
             "/books/" + str(self.book.id) + \
             "/waitlist/"
