@@ -113,13 +113,13 @@ describe('Book Service', () => {
       expect(fetchFromAPI).toHaveBeenCalledWith(`${book.url}waitlist/`, 'POST');
     });
 
-    it('should return the waitlisted item if the request was successful and contains that info', async () => {
+    it('should return the waitlisted item\'s book  if the request was successful and contains that info', async () => {
       const book = someBook();
 
-      fetchFromAPI.mockResolvedValue({ waitlist_item: 'mocked_waitlisted_item' });
+      fetchFromAPI.mockResolvedValue({ waitlist_item: { book: 'updated_book' } });
 
       const result = await joinWaitlist(book);
-      expect(result).toEqual('mocked_waitlisted_item');
+      expect(result).toEqual('updated_book');
     });
 
     it('should reject the promise if the request was successful but didnt contain waitlist item data', async () => {

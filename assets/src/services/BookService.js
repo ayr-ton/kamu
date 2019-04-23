@@ -17,7 +17,7 @@ export const borrowBook = (book) => fetchFromAPI(`${book.url}borrow/`, 'POST');
 export const returnBook = (book) => fetchFromAPI(`${book.url}return/`, 'POST');
 
 export const joinWaitlist = async (book) => fetchFromAPI(`${book.url}waitlist/`, 'POST').then((data) => {
-  if ('waitlist_item' in data) return Promise.resolve(data.waitlist_item);
+  if ('waitlist_item' in data) return Promise.resolve(data.waitlist_item.book);
 
   return Promise.reject(new Error({ message: 'Request was successful, but no data was returned' }));
 }).catch((error) => Promise.reject(error));
