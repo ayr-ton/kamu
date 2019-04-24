@@ -35,7 +35,9 @@ else:
 
 if settings.GOOGLE_SIGNIN_SUPPORT:
     admin.site.login_template = 'registration/login_google.html'
-    login_routes += [ url(r'^google/', include('social_django.urls', namespace='social')) ]
+    login_routes += [
+        url(r'^google/', include('social_django.urls', namespace='social'))
+    ]
 
 urlpatterns = login_routes + [
     url(r'^admin$', RedirectView.as_view(url = '/admin/')),
