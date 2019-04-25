@@ -16,7 +16,7 @@ class WaitlistItem(models.Model):
             book=book, library=library,
         )
         if copies.count():
-            available_copies = copies.filter(borrow_date=None)
+            available_copies = copies.filter(user=None)
             if available_copies.count() is 0:
                 return WaitlistItem.objects.create(
                     book=book,
