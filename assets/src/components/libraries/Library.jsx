@@ -6,27 +6,36 @@ import { getBooksByPage } from '../../services/BookService';
 import BookList from '../books/BookList';
 import SearchBar from './SearchBar';
 import { setRegion } from '../../services/ProfileService';
+import ErrorMessage from '../error/ErrorMessage';
+
+const initialState = {
+  books: [],
+  hasNextPage: true,
+  page: 1,
+  searchTerm: '',
+  isLoading: false,
+  hasError: false,
+};
 
 class Library extends Component {
   constructor(props) {
     super(props);
 
     const searchTerm = new URLSearchParams(props.history.location.search).get('q') || '';
-
     this.state = {
-      books: [],
-      hasNextPage: true,
-      page: 1,
+      ...initialState,
       searchTerm,
-      isLoading: false,
     };
 
     this.loadBooks = this.loadBooks.bind(this);
     this.searchTermChanged = this.searchTermChanged.bind(this);
   }
 
-  componentDidMount() {
-    setRegion(this.props.slug);
+  componentDidUpdate(prevProps) {
+    if (this.props.slug !== prevProps.slug) {
+      this.setState(initialState);
+      this.loadBooks();
+    }
   }
 
   async loadBooks() {
@@ -35,21 +44,35 @@ class Library extends Component {
     this.setState({ isLoading: true, hasNextPage: false });
 
     const { page, searchTerm } = this.state;
-    const booksResponse = await getBooksByPage(this.props.slug, page, searchTerm) || {};
-    if (booksResponse && booksResponse.results) {
+
+    try {
+      const booksResponse = await getBooksByPage(this.props.slug, page, searchTerm);
+      setRegion(this.props.slug);
       this.setState((state) => ({
         books: state.books.concat(booksResponse.results),
         page: state.page + 1,
+        hasNextPage: !!booksResponse.next,
+        isLoading: false,
       }));
+    } catch (e) {
+      this.setState({
+        hasError: true,
+        isLoading: false,
+      });
+    }
+  }
+
+  updateQueryString() {
+    const { searchTerm } = this.state;
+    const queryString = new URLSearchParams(this.props.history.location.search);
+    if (searchTerm) {
+      queryString.set('q', searchTerm);
+    } else {
+      queryString.delete('q');
     }
 
-    this.setState({
-      hasNextPage: !!booksResponse.next,
-      isLoading: false,
-    });
-
     this.props.history.replace({
-      search: searchTerm ? new URLSearchParams({ q: searchTerm }).toString() : null,
+      search: queryString.toString(),
     });
   }
 
@@ -61,11 +84,12 @@ class Library extends Component {
       hasNextPage: false,
     }, () => {
       this.loadBooks();
+      this.updateQueryString();
     });
   }
 
   render() {
-    return (
+    return this.state.hasError ? <ErrorMessage /> : (
       <React.Fragment>
         <SearchBar onChange={this.searchTermChanged} query={this.state.searchTerm} />
         <InfiniteScroll
