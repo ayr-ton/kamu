@@ -79,7 +79,7 @@ class CreateItemTest(TestCase):
                                         publication_date=timezone.now())
         self.library = Library.objects.create(name="Santiago", slug="slug")
         self.user = User.objects.create(username="claudia", email="claudia@gmail.com")
-        self.copy = BookCopy.objects.create(book=self.book, library=self.library, borrow_date=timezone.now())
+        self.copy = BookCopy.objects.create(book=self.book, library=self.library, user=self.user)
 
     def test_should_create_waitlist_item_and_return_its_value(self):
         initialCount = WaitlistItem.objects.all().count()
@@ -103,7 +103,7 @@ class CreateItemTest(TestCase):
         self.assertIsInstance(item, WaitlistItem)
 
     def test_should_not_create_waitlist_item_and_raise_exception_if_there_are_available_copies(self):
-        self.copy.borrow_date = None
+        self.copy.user = None
         self.copy.save()
 
         with self.assertRaises(ValueError):

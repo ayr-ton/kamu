@@ -68,6 +68,10 @@ class LibraryViewSet(TestCase):
         self.assertEqual(book['author'], self.book.author)
         self.assertEqual(book['subtitle'], self.book.subtitle)
 
+    def test_returns_404_when_fetching_books_from_an_invalid_library(self):
+        response = self.client.get("/api/libraries/blablabla/books/")
+        self.assertEqual(response.status_code, 404)
+
     def test_has_action_for_each_book(self):
         book2 = Book.objects.create(author="Author", title="Book B")
         book2.bookcopy_set.create(library=self.library, user=self.user)

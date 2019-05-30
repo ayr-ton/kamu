@@ -6,7 +6,9 @@
 
 {% block content %}
 <div id="content-main">
-  <h1>Find book by ISBN</h1>
+  <h1>
+    Find book by ISBN-13
+  </h1>
 
   <form action="{{ books_isbn_url }}" method="post">
       {% csrf_token %}

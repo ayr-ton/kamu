@@ -7,11 +7,12 @@ import { setRegion } from '../../services/ProfileService';
 import { mockGetBooksByPageResponse, mockGetBooksByPageEmptyResponse } from '../../../test/mockBookService';
 import BookList from '../books/BookList';
 import SearchBar from './SearchBar';
+import ErrorMessage from '../error/ErrorMessage';
 
 jest.mock('../../services/BookService');
 jest.mock('../../services/ProfileService');
 
-const history = { replace: jest.fn(), location: { search: null } };
+const history = { replace: jest.fn(), location: { search: '' } };
 const createComponent = (props) => shallow(<Library slug="bh" history={history} {...props} />);
 
 describe('Library', () => {
@@ -131,6 +132,19 @@ describe('Library', () => {
     expect(history.replace).toHaveBeenCalledWith({ search: 'q=test+search' });
   });
 
+  it('keeps the previous query params in the url even when search is updated', async () => {
+    history.location.search = '?toggle=active';
+    getBooksByPage.mockReturnValue(mockGetBooksByPageEmptyResponse);
+    const searchBar = library.find(SearchBar);
+    const infiniteScroll = library.find(InfiniteScroll);
+
+    searchBar.props().onChange('test search');
+    await infiniteScroll.props().loadMore();
+
+    expect(history.replace).toHaveBeenCalledWith({ search: 'toggle=active&q=test+search' });
+    history.location.search = '';
+  });
+
   it('removes the search query from the url when search field is empty', async () => {
     getBooksByPage.mockReturnValue(mockGetBooksByPageEmptyResponse);
     const searchBar = library.find(SearchBar);
@@ -139,7 +153,7 @@ describe('Library', () => {
     searchBar.props().onChange('');
     await infiniteScroll.props().loadMore();
 
-    expect(history.replace).toHaveBeenCalledWith({ search: null });
+    expect(history.replace).toHaveBeenCalledWith({ search: '' });
   });
 
   it('clears the previous books when searching', () => {
@@ -167,7 +181,7 @@ describe('Library', () => {
 
   it('does not update book list when get books fails', async () => {
     library.setState({ books: mockGetBooksByPageResponse.results });
-    getBooksByPage.mockResolvedValue(null);
+    getBooksByPage.mockRejectedValue(new Error());
 
     const infiniteScroll = library.find(InfiniteScroll);
     await infiniteScroll.props().loadMore();
@@ -175,7 +189,37 @@ describe('Library', () => {
     expect(library.state().books).toEqual(mockGetBooksByPageResponse.results);
   });
 
-  it('sets the library in the users preferences', () => {
+  it('sets the library in the users preferences when books are loaded', async () => {
+    const infiniteScroll = library.find(InfiniteScroll);
+    await infiniteScroll.props().loadMore();
+
     expect(setRegion).toHaveBeenCalledWith('bh');
+  });
+
+  it('does not set the library in the users preferences when books fail to load', async () => {
+    getBooksByPage.mockRejectedValue(new Error());
+    const infiniteScroll = library.find(InfiniteScroll);
+    await infiniteScroll.props().loadMore();
+
+    expect(setRegion).not.toHaveBeenCalled();
+  });
+
+  it('shows an error message when loading books fails', async () => {
+    getBooksByPage.mockRejectedValue(new Error());
+    const infiniteScroll = library.find(InfiniteScroll);
+    await infiniteScroll.props().loadMore();
+
+    expect(library.find(InfiniteScroll).find(BookList).exists()).toBeFalsy();
+    expect(library.find(ErrorMessage).exists()).toBeTruthy();
+  });
+
+  it('fetches the books again when the library slug passed via props changes', () => {
+    library.setProps({ slug: 'quito' });
+    expect(getBooksByPage).toHaveBeenCalledWith('quito', 1, '');
+  });
+
+  it('does not fetch the books again when the library slug passed via props does not change', () => {
+    library.setProps({ slug: 'bh' });
+    expect(getBooksByPage).not.toHaveBeenCalledWith('bh', 1, '');
   });
 });
