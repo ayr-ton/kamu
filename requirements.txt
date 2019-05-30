@@ -39,7 +39,7 @@ pytz==2018.3
 repoze.who==2.3
 requests==2.21.0
 six==1.11.0
-urllib3==1.24.1
+urllib3==1.24.2
 voluptuous==0.10.5
 waitress==1.1.0
 WebOb==1.7.4
