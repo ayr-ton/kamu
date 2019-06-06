@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import MyBooks from './MyBooks';
 import { getMyBooks } from '../../services/BookService';
 import BookList from '../books/BookList';
@@ -7,10 +7,16 @@ import { someBookWithACopyFromMe } from '../../../test/booksHelper';
 
 jest.mock('../../services/BookService');
 
+const createComponent = (props = {}) => mount(<MyBooks {...props} />);
 
 describe('My books', () => {
-  const createComponent = (props = {}) => shallow(<MyBooks {...props} />);
-  getMyBooks.mockReturnValue({ results: [] });
+  beforeEach(() => {
+    getMyBooks.mockReturnValue({ results: [] });
+  });
+
+  afterEach(() => {
+    getMyBooks.mockClear();
+  });
 
   it('renders without crashing', () => {
     const myBooks = createComponent();
@@ -33,6 +39,7 @@ describe('My books', () => {
     getMyBooks.mockReturnValue({ results: books });
 
     const component = await createComponent();
+    await component.update();
 
     expect(component.find(BookList).props().books).toEqual(books);
   });
