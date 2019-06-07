@@ -95,6 +95,7 @@ export default class Book extends Component {
     return (
       <Paper
         className="book"
+        data-testid="book-container"
         elevation={this.state.zDepth}
         onMouseOver={this.onMouseOver}
         onFocus={this.onMouseOver}

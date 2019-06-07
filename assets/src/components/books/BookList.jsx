@@ -7,7 +7,7 @@ import './BookList.css';
 
 function BookList(props) {
   return (
-    <div className="book-list">
+    <div className="book-list" data-testid="book-list-container">
       {props.books.map((book) => (<Book key={book.id} book={book} library={props.library} />))}
     </div>
   );
