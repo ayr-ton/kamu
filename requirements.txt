@@ -7,7 +7,7 @@ coverage==4.5.1
 cryptography==2.5
 decorator==4.1.2
 defusedxml==0.5.0
-Django==2.1.7
+Django==2.1.9
 django-saml2-auth==2.2.1
 django-webpack-loader==0.5.0
 djangorestframework==3.9.2
