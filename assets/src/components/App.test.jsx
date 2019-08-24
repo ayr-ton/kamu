@@ -35,6 +35,11 @@ describe('App', () => {
     expect(component.find({ 'data-testid': 'header' }).exists()).toBeTruthy();
   });
 
+  it('shows fetched user\'s related information', () => {
+    const usersBooksCountBadge = component.find({ 'data-testid': 'my-books-button' }).first();
+    expect(usersBooksCountBadge.text()).toEqual(currentUser.borrowed_books_count.toString());
+  });
+
   describe('routing', () => {
     it('routes to library selector when path is root', () => {
       expect(component.find({ 'data-testid': 'library-selector' }).exists()).toBeTruthy();
