@@ -86,4 +86,13 @@ describe('Header', () => {
     expect(badge.exists()).toBeTruthy();
     expect(badge.props().badgeContent).toEqual(5);
   });
+
+  it('calls toggleTheme prop when change theme button is clicked', () => {
+    const toggleTheme = jest.fn();
+    const header = createComponent({ toggleTheme });
+
+    findByTestID(header, 'change-theme-button').simulate('click');
+
+    expect(toggleTheme).toHaveBeenCalled();
+  });
 });
