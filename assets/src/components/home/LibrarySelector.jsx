@@ -26,7 +26,7 @@ class LibrarySelector extends Component {
 
   render() {
     return (
-      <div className="library-list">
+      <div className="library-list" data-test-id="library-selector">
         <List>
           {this.state.libraries.map((library) => (
             <ListItem

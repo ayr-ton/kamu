@@ -1,21 +1,28 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import Header from './Header';
+import { mount } from 'enzyme';
+import { MemoryRouter } from 'react-router';
 import App from './App';
 import { getLoggedUser } from '../services/ProfileService';
+import { getBooksByPage, getLibraries } from '../services/BookService';
 import { currentUser } from '../../test/userHelper';
-import UserContext from './UserContext';
 
 jest.mock('../services/ProfileService');
+jest.mock('../services/BookService');
 
-const createComponent = (props) => shallow(<App {...props} />);
+const createComponent = (route) => mount(
+  <MemoryRouter initialEntries={[route]}>
+    <App />
+  </MemoryRouter>,
+);
 
 describe('App', () => {
   let component;
 
   beforeEach(() => {
     getLoggedUser.mockResolvedValue(currentUser);
-    component = createComponent();
+    getBooksByPage.mockResolvedValue({ results: [] });
+    getLibraries.mockResolvedValue({ results: [{ slug: 'bh', id: 1 }] });
+    component = createComponent('/');
   });
 
   it('renders without crashing', () => {
@@ -23,33 +30,22 @@ describe('App', () => {
   });
 
   it('has a header', () => {
-    expect(component.find(Header).exists()).toBeTruthy();
+    expect(component.find({ 'data-test-id': 'header' }).exists()).toBeTruthy();
   });
 
-  it('loads the user profile', () => {
-    expect(getLoggedUser).toHaveBeenCalled();
-  });
+  describe('routing', () => {
+    it('routes to library selector when path is root', () => {
+      expect(component.find({ 'data-test-id': 'library-selector' }).exists()).toBeTruthy();
+    });
 
-  it('renders a UserContext with user equal to currentUser', () => {
-    const provider = component.find(UserContext.Provider);
-    expect(provider.exists()).toBeTruthy();
-    expect(provider.props().value.user).toEqual(currentUser);
-  });
+    it('routes to my books component when path is /my-books', () => {
+      component = createComponent('/my-books');
+      expect(component.find({ 'data-test-id': 'my-books-wrapper' }).exists()).toBeTruthy();
+    });
 
-  it('renders a UserContext with updateUser function', () => {
-    const provider = component.find(UserContext.Provider);
-    expect(provider.exists()).toBeTruthy();
-    expect(provider.props().value.updateUser).toEqual(component.instance().updateUser);
-  });
-
-  describe('updateUser()', () => {
-    it('calls getLoggedUser and updates states user', async () => {
-      getLoggedUser.mockResolvedValue({ ...currentUser, borrowed_books_count: 5 });
-
-      await component.instance().updateUser();
-
-      expect(getLoggedUser).toHaveBeenCalled();
-      expect(component.state('user').borrowed_books_count).toEqual(5);
+    it('routes to my books component when path is /library/:slug', () => {
+      component = createComponent('/libraries/bh');
+      expect(component.find({ 'data-test-id': 'library-wrapper' }).exists()).toBeTruthy();
     });
   });
 });
