@@ -15,7 +15,7 @@ import {
 const redirectExternal = (url) => window.location.assign(url);
 const getHomeEndpoint = () => (getRegion() ? `${LIBRARY_URL_PREFIX}/${getRegion()}` : HOME_URL);
 
-function Header({ history }) {
+function Header({ history, toggleTheme }) {
   const redirect = (url) => history.push(url);
   return (
     <AppBar className="header">
@@ -49,6 +49,10 @@ function Header({ history }) {
             <Icon className="fa fa-map-marker-alt" />
           </IconButton>
 
+          <IconButton title="Change theme" id="change-theme-button" onClick={() => toggleTheme()}>
+            <Icon className="fa fa-adjust" />
+          </IconButton>
+
           <IconButton title="Administration" id="admin-button" onClick={() => redirectExternal(ADMIN_URL)}>
             <Icon className="fa fa-cog" />
           </IconButton>
@@ -60,6 +64,7 @@ function Header({ history }) {
 
 Header.propTypes = {
   history: PropTypes.shape({}).isRequired,
+  toggleTheme: PropTypes.func.isRequired,
 };
 
 export { Header };
