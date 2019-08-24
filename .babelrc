@@ -6,6 +6,12 @@
   "plugins": [
     "transform-async-to-generator",
     "babel-plugin-transform-runtime",
-    "babel-plugin-transform-object-rest-spread"
+    "babel-plugin-transform-object-rest-spread",
+    [
+      "babel-plugin-remove-attribute",
+      {
+        "attribute": "data-testid"
+      }
+    ]
   ]
 }
