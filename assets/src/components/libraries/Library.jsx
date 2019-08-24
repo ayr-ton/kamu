@@ -90,7 +90,7 @@ class Library extends Component {
 
   render() {
     return this.state.hasError ? <ErrorMessage /> : (
-      <section data-test-id="library-wrapper">
+      <div data-testid="library-wrapper">
         <SearchBar onChange={this.searchTermChanged} query={this.state.searchTerm} />
         <InfiniteScroll
           loadMore={this.loadBooks}
@@ -104,7 +104,7 @@ class Library extends Component {
         >
           <BookList books={this.state.books} library={this.props.slug} />
         </InfiniteScroll>
-      </section>
+      </div>
     );
   }
 }

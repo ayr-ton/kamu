@@ -19,7 +19,7 @@ export default class MyBooks extends Component {
 
   render() {
     return (
-      <div data-test-id="my-books-wrapper">
+      <div data-testid="my-books-wrapper">
         <Paper elevation={10} className="page-title">
           <Icon className="fa fa-book-reader" />
           My books

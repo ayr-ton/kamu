@@ -18,7 +18,7 @@ const getHomeEndpoint = () => (getRegion() ? `${LIBRARY_URL_PREFIX}/${getRegion(
 function Header({ history, toggleTheme }) {
   const redirect = (url) => history.push(url);
   return (
-    <AppBar className="header" data-test-id="header">
+    <AppBar className="header" data-testid="header">
       <Toolbar>
         <a href={getHomeEndpoint()} className="header-content" onClick={(e) => { e.preventDefault(); redirect(getHomeEndpoint()); }}>
           <img src="/static/images/logo.svg" alt="Kamu logo" />
@@ -49,7 +49,7 @@ function Header({ history, toggleTheme }) {
             <Icon className="fa fa-map-marker-alt" />
           </IconButton>
 
-          <IconButton title="Change theme" id="change-theme-button" onClick={() => toggleTheme()}>
+          <IconButton title="Change theme" data-testid="change-theme-button" onClick={() => toggleTheme()}>
             <Icon className="fa fa-adjust" />
           </IconButton>
 
