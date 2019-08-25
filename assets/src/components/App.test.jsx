@@ -32,27 +32,27 @@ describe('App', () => {
   });
 
   it('has a header', () => {
-    expect(component.find({ 'data-testid': 'header' }).exists()).toBeTruthy();
+    expect(findByTestID(component, 'header').exists()).toBeTruthy();
   });
 
   it('shows fetched user\'s related information', () => {
-    const usersBooksCountBadge = component.find({ 'data-testid': 'my-books-button' }).first();
+    const usersBooksCountBadge = findByTestID(component, 'my-books-button');
     expect(usersBooksCountBadge.text()).toEqual(currentUser.borrowed_books_count.toString());
   });
 
   describe('routing', () => {
     it('routes to library selector when path is root', () => {
-      expect(component.find({ 'data-testid': 'library-selector' }).exists()).toBeTruthy();
+      expect(findByTestID(component, 'library-selector').exists()).toBeTruthy();
     });
 
     it('routes to my books component when path is /my-books', () => {
       component = createComponent('/my-books');
-      expect(component.find({ 'data-testid': 'my-books-wrapper' }).exists()).toBeTruthy();
+      expect(findByTestID(component, 'my-books-wrapper').exists()).toBeTruthy();
     });
 
     it('routes to my books component when path is /library/:slug', () => {
       component = createComponent('/libraries/bh');
-      expect(component.find({ 'data-testid': 'library-wrapper' }).exists()).toBeTruthy();
+      expect(findByTestID(component, 'library-wrapper').exists()).toBeTruthy();
     });
   });
 
@@ -62,7 +62,7 @@ describe('App', () => {
     });
 
     it('changes to dark theme when change theme button is clicked', () => {
-      component.find({ 'data-testid': 'change-theme-button' }).first().simulate('click');
+      findByTestID(component, 'change-theme-button').simulate('click');
       expect(component.find(MuiThemeProvider).props().theme).toEqual(darkTheme);
     });
   });
