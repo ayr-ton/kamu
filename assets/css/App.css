@@ -42,10 +42,29 @@
     color: #cccccc;
 }
 
+.section-title {
+    text-transform: uppercase;
+    font-size: 1.5em;
+    margin: 1.5em 1em 0.5em;
+}
+
 .book-list {
     display: flex;
     justify-content: space-evenly;
     flex-wrap: wrap;
+}
+
+.my-books .book-list {
+    flex-wrap: nowrap;
+    overflow-x: scroll;
+    justify-content: flex-start;
+    scrollbar-width: none;
+    padding: 10px;
+}
+
+.my-books .book-list .book {
+    flex-shrink: 0;
+    margin: 0 10px;
 }
 
 .book {

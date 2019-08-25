@@ -12,6 +12,8 @@ export const getBooksByPage = (librarySlug, page, filter = '') => fetchFromAPI(`
 
 export const getMyBooks = () => fetchFromAPI('/profile/books');
 
+export const getWaitlistBooks = () => fetchFromAPI('/profile/waitlist');
+
 export const borrowBook = (book) => fetchFromAPI(`${book.url}borrow/`, 'POST');
 
 export const returnBook = (book) => fetchFromAPI(`${book.url}return/`, 'POST');
