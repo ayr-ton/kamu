@@ -39,6 +39,7 @@ urlpatterns = login_routes + [
     url(r'^api/', include(book_routers.urls)),
     url(r'^api/profile/?$', views.UserView.as_view()),
     url(r'^api/profile/books', views.UserBooksView.as_view()),
+    url(r'^api/profile/waitlist', views.UserWaitlistView.as_view()),
     url(r'^favicon\.ico$', RedirectView.as_view(url=settings.STATIC_URL + 'images/favicon.ico')),
     url(r'', login_required(views.FrontendView.as_view())),
 ]
