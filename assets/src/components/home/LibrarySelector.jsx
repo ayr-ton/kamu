@@ -16,7 +16,7 @@ class LibrarySelector extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.loadLibraries();
   }
 
