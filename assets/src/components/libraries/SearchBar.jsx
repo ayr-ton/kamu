@@ -5,6 +5,8 @@ import Close from '@material-ui/icons/Close';
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 
+import './SearchBar.css';
+
 export default class SearchBar extends Component {
   constructor(props) {
     super(props);
@@ -45,11 +47,11 @@ export default class SearchBar extends Component {
             placeholder="Search by book title or author"
           />
           {this.state.searchTerm !== ''
-                    && (
-                    <div className="search-bar-close-icon-container">
-                      <Close className="search-bar-close-icon" onClick={this.onClear} />
-                    </div>
-                    )}
+            && (
+              <div className="search-bar-close-icon-container">
+                <Close className="search-bar-close-icon" onClick={this.onClear} />
+              </div>
+            )}
         </div>
       </Paper>
     );

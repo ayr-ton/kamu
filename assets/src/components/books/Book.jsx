@@ -9,6 +9,8 @@ import { BORROW_BOOK_ACTION, RETURN_BOOK_ACTION, JOIN_WAITLIST_BOOK_ACTION } fro
 import { BookPropType } from '../../utils/propTypes';
 import UserContext from '../UserContext';
 
+import './Book.css';
+
 const isWaitlistFeatureActive = () => {
   const { query } = parse(window.location.href, true);
   return 'waitlist' in query && query.waitlist === 'active';

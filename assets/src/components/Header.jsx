@@ -12,6 +12,8 @@ import {
   HOME_URL, ADMIN_URL, MY_BOOKS_URL, ADD_BOOK_URL, LIBRARY_URL_PREFIX,
 } from '../utils/constants';
 
+import './Header.css';
+
 const redirectExternal = (url) => window.location.assign(url);
 const getHomeEndpoint = () => (getRegion() ? `${LIBRARY_URL_PREFIX}/${getRegion()}` : HOME_URL);
 

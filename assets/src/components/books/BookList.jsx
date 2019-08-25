@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import Book from './Book';
 import { BookPropType } from '../../utils/propTypes';
 
+import './BookList.css';
+
 function BookList(props) {
   return (
     <div className="book-list">
