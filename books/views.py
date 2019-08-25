@@ -20,6 +20,7 @@ from books.google import BookFinder
 from books.serializers import *
 from .forms import IsbnForm
 from .models import Book as BookModel
+from waitlist.models import WaitlistItem
 
 
 class FrontendView(TemplateView):
@@ -185,6 +186,18 @@ class UserView(APIView):
 class UserBooksView(APIView):
     def get(self, request, format=None):
         user_copies = BookCopy.objects.filter(user=request.user)
+        return Response({
+            'results': list(map(lambda book_copy: BookSerializer(book_copy.book, context={
+                'user': request.user,
+                'request': request,
+                'library': book_copy.library
+            }).data, user_copies))
+        })
+
+
+class UserWaitlistView(APIView):
+    def get(self, request, format=None):
+        user_copies = WaitlistItem.objects.filter(user=request.user)
         return Response({
             'results': list(map(lambda book_copy: BookSerializer(book_copy.book, context={
                 'user': request.user,
