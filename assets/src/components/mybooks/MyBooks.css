@@ -1,0 +1,12 @@
+.my-books .book-list {
+  flex-wrap: nowrap;
+  overflow-x: scroll;
+  justify-content: flex-start;
+  scrollbar-width: none;
+  padding: 10px;
+}
+
+.my-books .book-list .book {
+  flex-shrink: 0;
+  margin: 0 10px;
+}

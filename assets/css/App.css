@@ -21,3 +21,9 @@ div.page-title {
     font-size: 1.2em;
     margin-right: 10px;
 }
+
+.section-title {
+    text-transform: uppercase;
+    font-size: 1.5em;
+    margin: 1.5em 1em 0.5em;
+}

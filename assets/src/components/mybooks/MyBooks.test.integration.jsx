@@ -16,15 +16,16 @@ describe('MyBooks', () => {
     const books = [someBookWithACopyFromMe()];
     fetchFromAPI.mockReturnValue({ results: books });
 
-    const { getAllByTestId, getByTestId, getByText } = render(<MyBooks />);
+    const { getAllByTestId, getByText } = render(<MyBooks />);
 
     expect(getByText('My books')).toBeDefined();
 
-    await waitForElement(() => getByTestId('book-list-container'));
+    await waitForElement(() => getAllByTestId('book-list-container'));
 
-    expect(fetchFromAPI).toHaveBeenCalledTimes(1);
+    expect(fetchFromAPI).toHaveBeenCalledTimes(2);
     expect(fetchFromAPI).toHaveBeenCalledWith('/profile/books');
+    expect(fetchFromAPI).toHaveBeenCalledWith('/profile/waitlist');
 
-    expect(getAllByTestId('book-container')).toHaveLength(1);
+    expect(getAllByTestId('book-container')).toHaveLength(2);
   });
 });
