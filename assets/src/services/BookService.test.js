@@ -1,5 +1,5 @@
 import {
-  getLibraries, getBooksByPage, getMyBooks, borrowBook, returnBook, joinWaitlist,
+  getLibraries, getBooksByPage, getMyBooks, borrowBook, returnBook, joinWaitlist, getWaitlistBooks,
 } from './BookService';
 import fetchFromAPI from './helpers';
 import {
@@ -77,6 +77,17 @@ describe('Book Service', () => {
     fetchFromAPI.mockResolvedValue(response);
 
     return getMyBooks().then((data) => {
+      expect(data).toEqual(response);
+    });
+  });
+
+  it('returns the list of books I have waitlisted', () => {
+    const response = {
+      results: [someBook()],
+    };
+    fetchFromAPI.mockResolvedValue(response);
+
+    return getWaitlistBooks().then((data) => {
       expect(data).toEqual(response);
     });
   });
