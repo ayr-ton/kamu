@@ -299,6 +299,33 @@ class UserBooksViewTest(TestCase):
         self.assertEqual(response.data['results'][0]['url'], expected_url)
 
 
+class UserWaitlistViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="claudia")
+        self.user.set_password("123")
+        self.user.save()
+        self.client.force_login(user=self.user)
+
+        self.library = Library.objects.create(name="Santiago", slug="slug")
+        self.book = Book.objects.create(author="Author", title="The title")
+        self.book.waitlistitem_set.create(library=self.library, user=self.user, added_date=timezone.now())
+
+    def test_user_should_get_their_waitlisted_books(self):
+        availableBook = Book.objects.create(author="Author", title="Another title")
+        availableBook.bookcopy_set.create(library=self.library)
+
+        response = self.client.get("/api/profile/waitlist")
+
+        self.assertEqual(200, response.status_code)
+        self.assertEqual(len(response.data['results']), 1)
+        self.assertEqual(response.data['results'][0]['title'], self.book.title)
+
+    def test_has_url_for_each_book(self):
+        response = self.client.get("/api/profile/waitlist")
+
+        expected_url = 'http://testserver/api/libraries/' + self.library.slug + '/books/' + str(self.book.id) + '/'
+        self.assertEqual(response.data['results'][0]['url'], expected_url)
+
 class IsbnViewTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username="claudia", is_staff=True, is_superuser=True)
