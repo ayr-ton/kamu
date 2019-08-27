@@ -4,6 +4,7 @@ import Icon from '@material-ui/core/Icon';
 import { getMyBooks, getWaitlistBooks } from '../../services/BookService';
 import BookList from '../books/BookList';
 import LoadingIndicator from '../LoadingIndicator';
+import { isWaitlistFeatureActive } from '../../utils/toggles';
 
 const MyBooks = () => {
   const [borrowedBooks, setBorrowedBooks] = useState(null);
@@ -36,15 +37,17 @@ const MyBooks = () => {
         )}
       </section>
 
-      <section>
-        <h1 className="section-title">On my wait list</h1>
+      {isWaitlistFeatureActive() && (
+        <section>
+          <h1 className="section-title">On my wait list</h1>
 
-        {waitlistBooks == null ? (
-          <LoadingIndicator data-testid="loading-indicator-wait-list" />
-        ) : (
-          <BookList books={waitlistBooks} />
-        )}
-      </section>
+          {waitlistBooks == null ? (
+            <LoadingIndicator data-testid="loading-indicator-wait-list" />
+          ) : (
+            <BookList books={waitlistBooks} />
+          )}
+        </section>
+      )}
     </div>
   );
 };

@@ -2,17 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-import parse from 'url-parse';
 import BookDetail from './detail/BookDetail';
 import { joinWaitlist, borrowBook, returnBook } from '../../services/BookService';
 import { BORROW_BOOK_ACTION, RETURN_BOOK_ACTION, JOIN_WAITLIST_BOOK_ACTION } from '../../utils/constants';
 import { BookPropType } from '../../utils/propTypes';
 import UserContext from '../UserContext';
-
-const isWaitlistFeatureActive = () => {
-  const { query } = parse(window.location.href, true);
-  return 'waitlist' in query && query.waitlist === 'active';
-};
+import { isWaitlistFeatureActive } from '../../utils/toggles';
 
 export default class Book extends Component {
   constructor(props) {

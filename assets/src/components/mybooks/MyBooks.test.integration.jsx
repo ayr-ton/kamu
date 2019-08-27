@@ -11,6 +11,9 @@ import { getMyBooks, getWaitlistBooks } from '../../services/BookService';
 import { someBookWithACopyFromMe } from '../../../test/booksHelper';
 
 jest.mock('../../services/BookService');
+jest.mock('../../utils/toggles', () => ({
+  isWaitlistFeatureActive: () => true,
+}));
 
 describe('MyBooks', () => {
   const books = [someBookWithACopyFromMe()];
