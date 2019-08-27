@@ -4,7 +4,7 @@ import { mount } from 'enzyme';
 import { MemoryRouter } from 'react-router';
 import App from './App';
 import { getLoggedUser } from '../services/ProfileService';
-import { getBooksByPage, getLibraries } from '../services/BookService';
+import { getBooksByPage, getLibraries, getMyBooks, getWaitlistBooks } from '../services/BookService';
 import { currentUser } from '../../test/userHelper';
 import { lightTheme, darkTheme } from '../styling/themes';
 
@@ -23,6 +23,8 @@ describe('App', () => {
   beforeEach(() => {
     getLoggedUser.mockResolvedValue(currentUser);
     getBooksByPage.mockResolvedValue({ results: [] });
+    getMyBooks.mockResolvedValue({ results: [] });
+    getWaitlistBooks.mockResolvedValue({ results: [] });
     getLibraries.mockResolvedValue({ results: [{ slug: 'bh', id: 1 }] });
     component = createComponent('/');
   });

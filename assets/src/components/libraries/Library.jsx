@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import InfiniteScroll from 'react-infinite-scroller';
 import PropTypes from 'prop-types';
 import { getBooksByPage } from '../../services/BookService';
 import BookList from '../books/BookList';
 import SearchBar from './SearchBar';
 import { setRegion } from '../../services/UserPreferences';
+import LoadingIndicator from '../LoadingIndicator';
 import ErrorMessage from '../error/ErrorMessage';
 
 const initialState = {
@@ -96,11 +96,7 @@ class Library extends Component {
           loadMore={this.loadBooks}
           hasMore={this.state.hasNextPage}
           threshold={950}
-          loader={(
-            <div style={{ padding: 10, textAlign: 'center' }} key="booklist-loader">
-              <CircularProgress />
-            </div>
-          )}
+          loader={<LoadingIndicator />}
         >
           <BookList books={this.state.books} library={this.props.slug} />
         </InfiniteScroll>

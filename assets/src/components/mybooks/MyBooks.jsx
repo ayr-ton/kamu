@@ -3,18 +3,20 @@ import Paper from '@material-ui/core/Paper';
 import Icon from '@material-ui/core/Icon';
 import { getMyBooks, getWaitlistBooks } from '../../services/BookService';
 import BookList from '../books/BookList';
+import LoadingIndicator from '../LoadingIndicator';
 
 const MyBooks = () => {
-  const [borrowedBooks, setBorrowedBooks] = useState([]);
-  const [waitlistBooks, setWaitlistBooks] = useState([]);
+  const [borrowedBooks, setBorrowedBooks] = useState(null);
+  const [waitlistBooks, setWaitlistBooks] = useState(null);
 
   useEffect(() => {
-    async function fetchBooks() {
-      setBorrowedBooks((await getMyBooks()).results);
-      setWaitlistBooks((await getWaitlistBooks()).results);
-    }
+    getMyBooks().then((data) => {
+      setBorrowedBooks(data.results);
+    });
 
-    fetchBooks();
+    getWaitlistBooks().then((data) => {
+      setWaitlistBooks(data.results);
+    });
   }, []);
 
   return (
@@ -26,12 +28,22 @@ const MyBooks = () => {
 
       <section>
         <h1 className="section-title">Borrowed with me</h1>
-        <BookList books={borrowedBooks} />
+
+        {borrowedBooks == null ? (
+          <LoadingIndicator data-testid="loading-indicator-borrowed" />
+        ) : (
+          <BookList books={borrowedBooks} />
+        )}
       </section>
 
       <section>
-        <h1 className="section-title">On my wishlist</h1>
-        <BookList books={waitlistBooks} />
+        <h1 className="section-title">On my wait list</h1>
+
+        {waitlistBooks == null ? (
+          <LoadingIndicator data-testid="loading-indicator-wait-list" />
+        ) : (
+          <BookList books={waitlistBooks} />
+        )}
       </section>
     </div>
   );
