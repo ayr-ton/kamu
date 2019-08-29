@@ -5,13 +5,19 @@ export const darkTheme = createMuiTheme({
     useNextVariants: true,
   },
   palette: {
-    primary: { main: '#f50057' },
-    secondary: { main: '#f50057' },
+    primary: { main: '#fe3e4d' },
+    secondary: { main: '#bdbdbd' },
     type: 'dark',
   },
   props: {
     MuiButton: {
       variant: 'contained',
+      color: 'secondary',
+    },
+    MuiIconButton: {
+      color: 'secondary',
+    },
+    MuiBadge: {
       color: 'primary',
     },
   },
@@ -22,13 +28,19 @@ export const lightTheme = createMuiTheme({
     useNextVariants: true,
   },
   palette: {
-    primary: { main: '#37474f' },
-    secondary: { main: '#f50057' },
+    primary: { main: '#FE3E4D' },
+    secondary: { main: '#424242' },
     type: 'light',
   },
   props: {
     MuiButton: {
       variant: 'contained',
+      color: 'secondary',
+    },
+    MuiIconButton: {
+      color: 'secondary',
+    },
+    MuiBadge: {
       color: 'primary',
     },
   },

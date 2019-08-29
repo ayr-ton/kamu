@@ -12,13 +12,20 @@ import { getLoggedUser } from '../services/ProfileService';
 import trackAnalyticsPageView from '../utils/analytics';
 import themes from '../styling/themes';
 
+const setCorrespondingThemeClassToBody = (theme) => {
+  document.getElementsByTagName('body')[0].classList = [theme.palette.type];
+};
+
+const defaultTheme = themes.light;
+
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       user: undefined,
-      theme: themes.light,
+      theme: defaultTheme,
     };
+    setCorrespondingThemeClassToBody(defaultTheme);
 
     this.updateUser = () => {
       getLoggedUser().then((user) => {
@@ -29,7 +36,7 @@ class App extends Component {
     this.toggleTheme = () => {
       const currentTheme = this.state.theme;
       const newTheme = currentTheme === themes.light ? themes.dark : themes.light;
-      document.getElementsByTagName('body')[0].classList = [newTheme.palette.type];
+      setCorrespondingThemeClassToBody(newTheme);
       this.setState({ theme: newTheme });
     };
   }

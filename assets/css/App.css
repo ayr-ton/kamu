@@ -16,6 +16,14 @@ body.dark {
     background-color: #212121;
 }
 
+body.dark > * {
+    color: #fafafa;
+}
+
+body.dark > * {
+    color: #fafafa;
+}
+
 .page-title {
     display: flex;
     padding: 15px 30px;

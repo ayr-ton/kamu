@@ -6,7 +6,6 @@
 .modal-book {
   display: flex;
   flex-flow: row;
-  color: #333333;
 }
 
 .modal-book__close {

@@ -36,7 +36,7 @@ function Header({ history, toggleTheme }) {
           <IconButton title="My books" id="my-books-button" data-testid="my-books-button" onClick={() => redirect(MY_BOOKS_URL)}>
             <UserContext.Consumer>
               {({ user }) => (
-                <Badge badgeContent={user ? user.borrowed_books_count : 0} color="secondary">
+                <Badge badgeContent={user ? user.borrowed_books_count : 0}>
                   <Icon className="fa fa-book-reader" />
                 </Badge>
               )}
