@@ -80,7 +80,7 @@ export default class BookDetail extends Component {
               {book.image_url && <img src={book.image_url} alt="Book cover" className="modal-book__image" />}
 
               <div className="modal-book__actions-buttons">
-                {this.actionButtons()}
+                {this.actionButtons('primary')}
               </div>
             </div>
 
