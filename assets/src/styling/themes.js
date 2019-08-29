@@ -5,10 +5,15 @@ export const darkTheme = createMuiTheme({
     useNextVariants: true,
   },
   palette: {
-    primary: {
-      main: '#212121',
-    },
+    primary: { main: '#f50057' },
+    secondary: { main: '#f50057' },
     type: 'dark',
+  },
+  props: {
+    MuiButton: {
+      variant: 'contained',
+      color: 'primary',
+    },
   },
 });
 
@@ -17,9 +22,21 @@ export const lightTheme = createMuiTheme({
     useNextVariants: true,
   },
   palette: {
-    primary: {
-      main: '#ffffff',
-    },
+    primary: { main: '#37474f' },
+    secondary: { main: '#f50057' },
     type: 'light',
   },
+  props: {
+    MuiButton: {
+      variant: 'contained',
+      color: 'primary',
+    },
+  },
 });
+
+const themes = {
+  light: lightTheme,
+  dark: darkTheme,
+};
+
+export default themes;

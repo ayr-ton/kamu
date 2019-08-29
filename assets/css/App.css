@@ -8,6 +8,14 @@
     margin-top: 65px;
 }
 
+body.light {
+    background-color: #fafafa;
+}
+
+body.dark {
+    background-color: #212121;
+}
+
 .page-title {
     display: flex;
     padding: 15px 30px;

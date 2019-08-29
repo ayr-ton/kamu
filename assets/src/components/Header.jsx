@@ -20,7 +20,7 @@ const getHomeEndpoint = () => (getRegion() ? `${LIBRARY_URL_PREFIX}/${getRegion(
 function Header({ history, toggleTheme }) {
   const redirect = (url) => history.push(url);
   return (
-    <AppBar className="header" data-testid="header">
+    <AppBar className="header" data-testid="header" color="default">
       <Toolbar>
         <a href={getHomeEndpoint()} className="header-content" onClick={(e) => { e.preventDefault(); redirect(getHomeEndpoint()); }}>
           <img src="/static/images/logo.svg" alt="Kamu logo" />

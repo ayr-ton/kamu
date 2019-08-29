@@ -10,14 +10,14 @@ import Library from './libraries/Library';
 import MyBooks from './mybooks/MyBooks';
 import { getLoggedUser } from '../services/ProfileService';
 import trackAnalyticsPageView from '../utils/analytics';
-import { lightTheme, darkTheme } from '../styling/themes';
+import themes from '../styling/themes';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       user: undefined,
-      theme: lightTheme,
+      theme: themes.light,
     };
 
     this.updateUser = () => {
@@ -28,7 +28,9 @@ class App extends Component {
 
     this.toggleTheme = () => {
       const currentTheme = this.state.theme;
-      this.setState({ theme: currentTheme === lightTheme ? darkTheme : lightTheme });
+      const newTheme = currentTheme === themes.light ? themes.dark : themes.light;
+      document.getElementsByTagName('body')[0].classList = [newTheme.palette.type];
+      this.setState({ theme: newTheme });
     };
   }
 
