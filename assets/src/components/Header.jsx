@@ -5,6 +5,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
 import Icon from '@material-ui/core/Icon';
 import Badge from '@material-ui/core/Badge';
+import { withTheme } from '@material-ui/core/styles';
+
 import { withRouter } from 'react-router';
 import UserContext from './UserContext';
 import { clearRegion, getRegion } from '../services/ProfileService';
@@ -16,14 +18,15 @@ import './Header.css';
 
 const redirectExternal = (url) => window.location.assign(url);
 const getHomeEndpoint = () => (getRegion() ? `${LIBRARY_URL_PREFIX}/${getRegion()}` : HOME_URL);
+const logo = (theme) => `/static/images/logo${theme.palette.type === 'dark' ? '-dark' : ''}.svg`;
 
-function Header({ history, toggleTheme }) {
+function Header({ history, toggleTheme, theme }) {
   const redirect = (url) => history.push(url);
   return (
     <AppBar className="header" data-testid="header" color="default">
       <Toolbar style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <a href={getHomeEndpoint()} className="header-content" onClick={(e) => { e.preventDefault(); redirect(getHomeEndpoint()); }}>
-          <img src="/static/images/logo.svg" alt="Kamu logo" />
+        <a data-testid="header-logo-link" href={getHomeEndpoint()} className="header-content" onClick={(e) => { e.preventDefault(); redirect(getHomeEndpoint()); }}>
+          <img src={logo(theme)} alt="Kamu logo" />
         </a>
 
         <div className="header-menu">
@@ -65,7 +68,16 @@ function Header({ history, toggleTheme }) {
 Header.propTypes = {
   history: PropTypes.shape({}).isRequired,
   toggleTheme: PropTypes.func.isRequired,
+  theme: PropTypes.shape({
+    palette: PropTypes.shape({
+      type: PropTypes.string,
+    }),
+  }),
+};
+
+Header.defaultProps = {
+  theme: { palette: { type: 'light' } },
 };
 
 export { Header };
-export default withRouter(Header);
+export default withRouter(withTheme()(Header));
