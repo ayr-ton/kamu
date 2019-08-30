@@ -45,7 +45,7 @@
 .section-title {
     text-transform: uppercase;
     font-size: 1.5em;
-    margin: 1.5em 1em 0.5em;
+    margin: 1.5em 0 0.5em;
 }
 
 .book-list {
@@ -54,17 +54,20 @@
     flex-wrap: wrap;
 }
 
+.my-books section {
+    margin: 0 1em;
+}
+
 .my-books .book-list {
     flex-wrap: nowrap;
     overflow-x: scroll;
     justify-content: flex-start;
     scrollbar-width: none;
-    padding: 10px;
+    padding: 10px 0;
 }
 
 .my-books .book-list .book {
     flex-shrink: 0;
-    margin: 0 10px;
 }
 
 .book {
@@ -72,7 +75,7 @@
     flex-direction: column;
     justify-content: space-between;
     width: 190px;
-    margin: 30px 10px 0;
+    margin: 15px 10px;
     cursor: pointer;
     overflow: hidden;
 }
@@ -168,6 +171,7 @@
     width: 100%;
     height: 50px;
     top: 64px;
+    margin-bottom: 15px;
 }
 
 .search-bar-container {
