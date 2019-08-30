@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  render,
-  waitForElement,
-  waitForElementToBeRemoved,
-} from '@testing-library/react';
+import { render, waitForElement } from '@testing-library/react';
 
 import MyBooks from './MyBooks';
 import { getMyBooks, getWaitlistBooks } from '../../services/BookService';
@@ -32,30 +28,6 @@ describe('MyBooks', () => {
     expect(getWaitlistBooks).toHaveBeenCalledTimes(1);
 
     expect(getAllByTestId('book-container')).toHaveLength(2);
-    unmount();
-  });
-
-  test('shows a loading indicator while loading borrowed books', async () => {
-    getMyBooks.mockResolvedValueOnce({ results: books });
-    getWaitlistBooks.mockResolvedValueOnce({ results: books });
-
-    const { getByTestId, unmount } = render(<MyBooks />);
-
-    expect(getByTestId('loading-indicator-borrowed')).toBeDefined();
-
-    await waitForElementToBeRemoved(() => getByTestId('loading-indicator-borrowed'));
-    unmount();
-  });
-
-  test('shows a loading indicator while loading wait list books', async () => {
-    getMyBooks.mockResolvedValueOnce({ results: books });
-    getWaitlistBooks.mockResolvedValueOnce({ results: books });
-
-    const { getByTestId, unmount } = render(<MyBooks />);
-
-    expect(getByTestId('loading-indicator-wait-list')).toBeDefined();
-
-    await waitForElementToBeRemoved(() => getByTestId('loading-indicator-wait-list'));
     unmount();
   });
 });
