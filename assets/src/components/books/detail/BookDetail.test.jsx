@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import Dialog from '@material-ui/core/Dialog';
+import { Link, Dialog } from '@material-ui/core';
 
 import BookDetail from './BookDetail';
 import { someBook, someBookWithAvailableCopies, someBookWithNoAvailableCopies } from '../../../../test/booksHelper';
@@ -96,7 +96,7 @@ describe('Book Detail', () => {
       bookDetail.find('.modal-book__description').text(),
     ).toEqual('Lorem ipsum...');
     expect(
-      bookDetail.find('.modal-book__goodreads a').props().href,
+      bookDetail.find('.modal-book__goodreads').find(Link).props().href,
     ).toEqual('https://www.goodreads.com/search?q=9780321146533');
   });
 
