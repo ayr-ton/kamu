@@ -8,23 +8,13 @@
     margin-top: 65px;
 }
 
-body.light {
-    background-color: var(--light-mode-background-color);
-}
-
-body.dark {
-    background-color: var(--dark-mode-background-color);
-}
-
-body.dark > * {
-    color: #fafafa;
-}
-
-.page-title {
+div.page-title {
     display: flex;
     padding: 15px 30px;
     font-size: 1.2em;
     text-transform: lowercase;
+    color: var(--page-title-color);
+    background-color: var(--background-color);
 }
 
 .page-title .material-icons {

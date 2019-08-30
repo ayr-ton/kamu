@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import IconButton from '@material-ui/core/IconButton';
 import Dialog from '@material-ui/core/Dialog';
+import Link from '@material-ui/core/Link';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import '../../../../css/ModalBook.css';
@@ -33,13 +34,13 @@ export default class BookDetail extends Component {
 
   renderGoodReadsLink() {
     return this.props.book.isbn && (
-      <a
+      <Link
         href={`https://www.goodreads.com/search?q=${this.props.book.isbn}`}
         target="_blank"
         rel="noopener noreferrer"
       >
         View on GoodReads
-      </a>
+      </Link>
     );
   }
 

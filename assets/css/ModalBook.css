@@ -46,7 +46,7 @@
 }
 
 .modal-book__available-wrapper {
-  background-color: #e4e4e4;
+  background-color: var(--availability-container-background);
   margin-right: 1em;
   border-radius: 0.8em;
   padding: 0.5em 1.3em;
@@ -60,7 +60,6 @@
 .modal-book__detail-value {
   font-size: 0.9em;
   font-weight: bold;
-  color: #000;
 }
 
 .modal-book__publisher-name{
@@ -108,7 +107,7 @@
 }
 
 .modal-book__publisher-wrapper {
-  background-color: #f2f2f2;
+  background-color: var(--publisher-container-background);
   display: flex;
   flex-flow: row;
   margin-right: 1em;

@@ -21,12 +21,10 @@ function Header({ history, toggleTheme }) {
   const redirect = (url) => history.push(url);
   return (
     <AppBar className="header" data-testid="header" color="default">
-      <Toolbar>
+      <Toolbar style={{ display: 'flex', justifyContent: 'space-between' }}>
         <a href={getHomeEndpoint()} className="header-content" onClick={(e) => { e.preventDefault(); redirect(getHomeEndpoint()); }}>
           <img src="/static/images/logo.svg" alt="Kamu logo" />
         </a>
-
-        <div style={{ flexGrow: 1 }} />
 
         <div className="header-menu">
           <IconButton title="Library home" id="home-button" onClick={() => redirect(getHomeEndpoint())}>
