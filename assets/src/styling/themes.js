@@ -1,5 +1,9 @@
 import { createMuiTheme } from '@material-ui/core';
 
+const typography = {
+  useNextVariants: true,
+};
+
 const defaultProps = {
   MuiButton: {
     variant: 'contained',
@@ -14,9 +18,7 @@ const defaultProps = {
 };
 
 export const darkTheme = createMuiTheme({
-  typography: {
-    useNextVariants: true,
-  },
+  typography,
   palette: {
     primary: { main: '#fe3e4d' },
     secondary: { main: '#bdbdbd' },
@@ -26,9 +28,7 @@ export const darkTheme = createMuiTheme({
 });
 
 export const lightTheme = createMuiTheme({
-  typography: {
-    useNextVariants: true,
-  },
+  typography,
   palette: {
     primary: { main: '#fe3e4d' },
     secondary: { main: '#424242' },
