@@ -1,55 +1,37 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Icon from '@material-ui/core/Icon';
 import { getMyBooks, getWaitlistBooks } from '../../services/BookService';
-import BookList from '../books/BookList';
-import LoadingIndicator from '../LoadingIndicator';
+import BookListLoader from '../books/BookListLoader';
 import { isWaitlistFeatureActive } from '../../utils/toggles';
 
-const MyBooks = () => {
-  const [borrowedBooks, setBorrowedBooks] = useState(null);
-  const [waitlistBooks, setWaitlistBooks] = useState(null);
+const MyBooks = () => (
+  <div className="my-books" data-testid="my-books-wrapper">
+    <Paper elevation={10} className="page-title">
+      <Icon className="fa fa-book-reader" />
+      My books
+    </Paper>
 
-  useEffect(() => {
-    getMyBooks().then((data) => {
-      setBorrowedBooks(data.results);
-    });
+    <section>
+      <h1 className="section-title">Borrowed with me</h1>
 
-    getWaitlistBooks().then((data) => {
-      setWaitlistBooks(data.results);
-    });
-  }, []);
+      <BookListLoader
+        source={getMyBooks}
+        noBooksMessage="You don't have any borrowed books yet."
+      />
+    </section>
 
-  return (
-    <div className="my-books" data-testid="my-books-wrapper">
-      <Paper elevation={10} className="page-title">
-        <Icon className="fa fa-book-reader" />
-        My books
-      </Paper>
-
+    {isWaitlistFeatureActive() && (
       <section>
-        <h1 className="section-title">Borrowed with me</h1>
+        <h1 className="section-title">On my wait list</h1>
 
-        {borrowedBooks == null ? (
-          <LoadingIndicator data-testid="loading-indicator-borrowed" />
-        ) : (
-          <BookList books={borrowedBooks} />
-        )}
+        <BookListLoader
+          source={getWaitlistBooks}
+          noBooksMessage="You don't have any books on your wait list yet."
+        />
       </section>
-
-      {isWaitlistFeatureActive() && (
-        <section>
-          <h1 className="section-title">On my wait list</h1>
-
-          {waitlistBooks == null ? (
-            <LoadingIndicator data-testid="loading-indicator-wait-list" />
-          ) : (
-            <BookList books={waitlistBooks} />
-          )}
-        </section>
-      )}
-    </div>
-  );
-};
+    )}
+  </div>
+);
 
 export default MyBooks;
