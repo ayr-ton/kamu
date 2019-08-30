@@ -30,7 +30,7 @@ export const lightTheme = createMuiTheme({
     useNextVariants: true,
   },
   palette: {
-    primary: { main: '#FE3E4D' },
+    primary: { main: '#fe3e4d' },
     secondary: { main: '#424242' },
     type: 'light',
   },

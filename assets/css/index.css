@@ -1,17 +1,18 @@
 :root {
   --whitish: #fafafa;
-  --blackish: #212121;
-
-  --light-grey: #e4e4e4;
   --lightest-grey: #f2f2f2;
-  --darkest-grey: #616161;
+  --light-grey: #e4e4e4;
   --dark-grey: #757575;
+  --darkest-grey: #666666;
+  --blackish: #212121;
+  --redish: #fe3e4d;
 }
 
 body.light {
     --background-color: var(--whitish);
     --color: var(--blackish);
     --page-title-color: var(--blackish);
+    --error-boundary-color: var(--darkest-grey);
 
     --availability-container-background: var(--light-grey);
     --publisher-container-background: var(--lightest-grey);
@@ -21,6 +22,7 @@ body.dark {
     --background-color: var(--blackish);
     --color: var(--whitish);
     --page-title-color: var(--dark-grey);
+    --error-boundary-color: var(--light-grey);
 
     --availability-container-background: var(--dark-grey);
     --publisher-container-background: var(--darkest-grey);

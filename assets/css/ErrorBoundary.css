@@ -6,7 +6,7 @@
   box-sizing: border-box;
   height: 100vh;
   padding: 2em;
-  color: #666666;
+  color: var(--error-boundary-color);
   text-align: center;
 }
 
