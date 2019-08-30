@@ -4,7 +4,7 @@
     flex-direction: column;
     justify-content: space-between;
     width: 190px;
-    margin: 30px 10px 0;
+    margin: 15px 10px;
     cursor: pointer;
     overflow: hidden;
 }
