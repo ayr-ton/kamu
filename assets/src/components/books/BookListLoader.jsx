@@ -13,7 +13,13 @@ const BookListLoader = (props) => {
   }, []);
 
   if (books == null) return <LoadingIndicator data-testid="loading-indicator" />;
-  if (books.length === 0) return <p data-testid="no-books-message">{props.noBooksMessage}</p>;
+  if (books.length === 0) {
+    return (
+      <p data-testid="no-books-message" className="no-books-message">
+        {props.noBooksMessage}
+      </p>
+    );
+  }
   return <BookList books={books} />;
 };
 
