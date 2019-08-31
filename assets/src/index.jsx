@@ -4,8 +4,7 @@ import * as Sentry from '@sentry/browser';
 import ErrorBoundary from './components/ErrorBoundary';
 import App from './components/App';
 
-import '../css/index.css';
-import '../css/App.css';
+import './index.css';
 
 Sentry.init({
   dsn: 'https://9c31d56d5fab41ce9a199af00c3e1eb2@sentry.io/1406532',
