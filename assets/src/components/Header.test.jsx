@@ -2,10 +2,10 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Badge from '@material-ui/core/Badge';
 import { Header } from './Header';
-import { getRegion, clearRegion } from '../services/ProfileService';
+import { getRegion, clearRegion } from '../services/UserPreferences';
 
 const mockContext = jest.fn();
-jest.mock('../services/ProfileService');
+jest.mock('../services/UserPreferences');
 jest.mock('./UserContext', () => ({
   Consumer: ({ children }) => children(mockContext()),
 }));
@@ -13,7 +13,7 @@ jest.mock('./UserContext', () => ({
 const history = { push: jest.fn() };
 const defaultProps = {
   history,
-  toggleTheme: () => {},
+  toggleTheme: () => { },
 };
 
 const createComponent = (props) => shallow(<Header {...defaultProps} {...props} />);

@@ -1,9 +1,9 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import LibraryRedirector from './LibraryRedirector';
-import { getRegion } from '../../services/ProfileService';
+import { getRegion } from '../../services/UserPreferences';
 
-jest.mock('../../services/ProfileService');
+jest.mock('../../services/UserPreferences');
 
 const history = { push: jest.fn() };
 const createComponent = () => shallow(

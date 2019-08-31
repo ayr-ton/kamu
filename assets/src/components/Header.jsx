@@ -9,7 +9,7 @@ import { withTheme } from '@material-ui/core/styles';
 
 import { withRouter } from 'react-router';
 import UserContext from './UserContext';
-import { clearRegion, getRegion } from '../services/ProfileService';
+import { clearRegion, getRegion } from '../services/UserPreferences';
 import {
   HOME_URL, ADMIN_URL, MY_BOOKS_URL, ADD_BOOK_URL, LIBRARY_URL_PREFIX,
 } from '../utils/constants';

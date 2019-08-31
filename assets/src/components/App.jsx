@@ -8,9 +8,10 @@ import LibrarySelector from './home/LibrarySelector';
 import LibraryRedirector from './home/LibraryRedirector';
 import Library from './libraries/Library';
 import MyBooks from './mybooks/MyBooks';
-import { getLoggedUser, getDefaultTheme, setDefaultTheme } from '../services/ProfileService';
+import { getLoggedUser } from '../services/ProfileService';
 import trackAnalyticsPageView from '../utils/analytics';
 import themes from '../styling/themes';
+import { getDefaultTheme, setDefaultTheme } from '../services/UserPreferences';
 
 const setCorrespondingThemeClassToBody = (theme) => {
   document.getElementsByTagName('body')[0].classList = [theme.palette.type];

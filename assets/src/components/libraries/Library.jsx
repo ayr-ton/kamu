@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { getBooksByPage } from '../../services/BookService';
 import BookList from '../books/BookList';
 import SearchBar from './SearchBar';
-import { setRegion } from '../../services/ProfileService';
+import { setRegion } from '../../services/UserPreferences';
 import ErrorMessage from '../error/ErrorMessage';
 
 const initialState = {

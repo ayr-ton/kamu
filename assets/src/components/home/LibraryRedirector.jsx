@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { getRegion } from '../../services/ProfileService';
+import { getRegion } from '../../services/UserPreferences';
 
 function LibraryRedirector({ history, children }) {
   const region = getRegion();
