@@ -8,7 +8,7 @@ import LibrarySelector from './home/LibrarySelector';
 import LibraryRedirector from './home/LibraryRedirector';
 import Library from './libraries/Library';
 import MyBooks from './mybooks/MyBooks';
-import { getLoggedUser } from '../services/ProfileService';
+import { getLoggedUser, getDefaultTheme, setDefaultTheme } from '../services/ProfileService';
 import trackAnalyticsPageView from '../utils/analytics';
 import themes from '../styling/themes';
 
@@ -16,11 +16,10 @@ const setCorrespondingThemeClassToBody = (theme) => {
   document.getElementsByTagName('body')[0].classList = [theme.palette.type];
 };
 
-const defaultTheme = themes.light;
-
 class App extends Component {
   constructor(props) {
     super(props);
+    const defaultTheme = getDefaultTheme() === 'dark' ? themes.dark : themes.light;
     this.state = {
       user: undefined,
       theme: defaultTheme,
@@ -33,11 +32,15 @@ class App extends Component {
       });
     };
 
+    this.setTheme = (theme) => {
+      setDefaultTheme(theme.palette.type);
+      this.setState({ theme });
+      setCorrespondingThemeClassToBody(theme);
+    };
+
     this.toggleTheme = () => {
       const currentTheme = this.state.theme;
-      const newTheme = currentTheme === themes.light ? themes.dark : themes.light;
-      setCorrespondingThemeClassToBody(newTheme);
-      this.setState({ theme: newTheme });
+      this.setTheme(currentTheme === themes.light ? themes.dark : themes.light);
     };
   }
 
