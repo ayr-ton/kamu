@@ -6,7 +6,6 @@
 .modal-book {
   display: flex;
   flex-flow: row;
-  color: #333333;
 }
 
 .modal-book__close {
@@ -47,7 +46,7 @@
 }
 
 .modal-book__available-wrapper {
-  background-color: #e4e4e4;
+  background-color: var(--availability-container-background);
   margin-right: 1em;
   border-radius: 0.8em;
   padding: 0.5em 1.3em;
@@ -61,7 +60,6 @@
 .modal-book__detail-value {
   font-size: 0.9em;
   font-weight: bold;
-  color: #000;
 }
 
 .modal-book__publisher-name{
@@ -109,7 +107,7 @@
 }
 
 .modal-book__publisher-wrapper {
-  background-color: #f2f2f2;
+  background-color: var(--publisher-container-background);
   display: flex;
   flex-flow: row;
   margin-right: 1em;
@@ -128,7 +126,6 @@
 
 .modal-book__goodreads {
   margin-top: 10px;
-
 }
 
 .modal-book__borrowed-with-wrapper {
@@ -160,10 +157,5 @@
 }
 
 .modal-book__actions-buttons button {
-  background-color: rgba(0, 0, 0, 0.8) !important;
   width: 100%;
-}
-
-.modal-book__actions-buttons button span {
-  color: #fff !important;
 }

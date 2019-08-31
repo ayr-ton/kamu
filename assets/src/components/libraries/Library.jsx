@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { getBooksByPage } from '../../services/BookService';
 import BookList from '../books/BookList';
 import SearchBar from './SearchBar';
-import { setRegion } from '../../services/ProfileService';
+import { setRegion } from '../../services/UserPreferences';
 import ErrorMessage from '../error/ErrorMessage';
 
 const initialState = {
@@ -90,7 +90,7 @@ class Library extends Component {
 
   render() {
     return this.state.hasError ? <ErrorMessage /> : (
-      <React.Fragment>
+      <div data-testid="library-wrapper">
         <SearchBar onChange={this.searchTermChanged} query={this.state.searchTerm} />
         <InfiniteScroll
           loadMore={this.loadBooks}
@@ -104,7 +104,7 @@ class Library extends Component {
         >
           <BookList books={this.state.books} library={this.props.slug} />
         </InfiniteScroll>
-      </React.Fragment>
+      </div>
     );
   }
 }

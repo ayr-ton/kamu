@@ -6,6 +6,8 @@ import ListItem from '@material-ui/core/ListItem';
 import { withRouter } from 'react-router';
 import { getLibraries } from '../../services/BookService';
 
+import './LibrarySelector.css';
+
 class LibrarySelector extends Component {
   constructor(props) {
     super(props);
@@ -26,7 +28,7 @@ class LibrarySelector extends Component {
 
   render() {
     return (
-      <div className="library-list">
+      <div className="library-list" data-testid="library-selector">
         <List>
           {this.state.libraries.map((library) => (
             <ListItem

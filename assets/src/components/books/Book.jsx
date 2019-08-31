@@ -9,6 +9,8 @@ import { BORROW_BOOK_ACTION, RETURN_BOOK_ACTION, JOIN_WAITLIST_BOOK_ACTION } fro
 import { BookPropType } from '../../utils/propTypes';
 import UserContext from '../UserContext';
 
+import './Book.css';
+
 const isWaitlistFeatureActive = () => {
   const { query } = parse(window.location.href, true);
   return 'waitlist' in query && query.waitlist === 'active';
@@ -43,17 +45,17 @@ export default class Book extends Component {
     });
   }
 
-  actionButtons() {
+  actionButtons(color = 'secondary') {
     const { action } = this.state.book;
     if (!action) return null;
     switch (action.type) {
       case BORROW_BOOK_ACTION:
-        return <Button onClick={() => this.performAction(borrowBook, 'Borrow')}>Borrow</Button>;
+        return <Button color={color} onClick={() => this.performAction(borrowBook, 'Borrow')}>Borrow</Button>;
       case RETURN_BOOK_ACTION:
-        return <Button onClick={() => this.performAction(returnBook, 'Return')}>Return</Button>;
+        return <Button color={color} onClick={() => this.performAction(returnBook, 'Return')}>Return</Button>;
       case JOIN_WAITLIST_BOOK_ACTION:
         return isWaitlistFeatureActive()
-          && <Button onClick={() => this.performAction(joinWaitlist, 'JoinWaitlist')}>Join the waitlist</Button>;
+          && <Button color={color} onClick={() => this.performAction(joinWaitlist, 'JoinWaitlist')}>Join the waitlist</Button>;
       default:
         return null;
     }

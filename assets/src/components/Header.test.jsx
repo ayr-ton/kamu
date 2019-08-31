@@ -2,17 +2,22 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Badge from '@material-ui/core/Badge';
 import { Header } from './Header';
-import { getRegion, clearRegion } from '../services/ProfileService';
+import { getRegion, clearRegion } from '../services/UserPreferences';
 
 const mockContext = jest.fn();
-jest.mock('../services/ProfileService');
+jest.mock('../services/UserPreferences');
 jest.mock('./UserContext', () => ({
   Consumer: ({ children }) => children(mockContext()),
 }));
 
 const history = { push: jest.fn() };
-const createComponent = (props) => shallow(<Header history={history} {...props} />);
-const mountComponent = (props) => mount(<Header history={history} {...props} />);
+const defaultProps = {
+  history,
+  toggleTheme: () => { },
+};
+
+const createComponent = (props) => shallow(<Header {...defaultProps} {...props} />);
+const mountComponent = (props) => mount(<Header {...defaultProps} {...props} />);
 
 describe('Header', () => {
   beforeEach(() => {
@@ -27,6 +32,22 @@ describe('Header', () => {
 
     expect(clearRegion).toHaveBeenCalled();
     expect(history.push).toHaveBeenCalledWith('/');
+  });
+
+  it('displays the default logo', () => {
+    const header = createComponent();
+
+    const logo = findByTestID(header, 'header-logo-link').find('img');
+
+    expect(logo.props().src).toEqual('/static/images/logo.svg');
+  });
+
+  it('displays the alternative logo if dark mode is active', () => {
+    const header = createComponent({ theme: { palette: { type: 'dark' } } });
+
+    const logo = findByTestID(header, 'header-logo-link').find('img');
+
+    expect(logo.props().src).toEqual('/static/images/logo-dark.svg');
   });
 
   it('displays the menu', () => {
@@ -85,5 +106,14 @@ describe('Header', () => {
 
     expect(badge.exists()).toBeTruthy();
     expect(badge.props().badgeContent).toEqual(5);
+  });
+
+  it('calls toggleTheme prop when change theme button is clicked', () => {
+    const toggleTheme = jest.fn();
+    const header = createComponent({ toggleTheme });
+
+    findByTestID(header, 'change-theme-button').simulate('click');
+
+    expect(toggleTheme).toHaveBeenCalled();
   });
 });

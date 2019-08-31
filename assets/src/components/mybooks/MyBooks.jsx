@@ -19,13 +19,13 @@ export default class MyBooks extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <div data-testid="my-books-wrapper">
         <Paper elevation={10} className="page-title">
           <Icon className="fa fa-book-reader" />
           My books
         </Paper>
         <BookList books={this.state.books} />
-      </React.Fragment>
+      </div>
     );
   }
 }

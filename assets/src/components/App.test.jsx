@@ -1,21 +1,30 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import Header from './Header';
+import { MuiThemeProvider } from '@material-ui/core';
+import { mount } from 'enzyme';
+import { MemoryRouter } from 'react-router';
 import App from './App';
 import { getLoggedUser } from '../services/ProfileService';
+import { getBooksByPage, getLibraries } from '../services/BookService';
 import { currentUser } from '../../test/userHelper';
-import UserContext from './UserContext';
+import { lightTheme, darkTheme } from '../styling/themes';
 
 jest.mock('../services/ProfileService');
+jest.mock('../services/BookService');
 
-const createComponent = (props) => shallow(<App {...props} />);
+const createComponent = (route) => mount(
+  <MemoryRouter initialEntries={[route]}>
+    <App />
+  </MemoryRouter>,
+);
 
 describe('App', () => {
   let component;
 
   beforeEach(() => {
     getLoggedUser.mockResolvedValue(currentUser);
-    component = createComponent();
+    getBooksByPage.mockResolvedValue({ results: [] });
+    getLibraries.mockResolvedValue({ results: [{ slug: 'bh', id: 1 }] });
+    component = createComponent('/');
   });
 
   it('renders without crashing', () => {
@@ -23,33 +32,55 @@ describe('App', () => {
   });
 
   it('has a header', () => {
-    expect(component.find(Header).exists()).toBeTruthy();
+    expect(findByTestID(component, 'header').exists()).toBeTruthy();
   });
 
-  it('loads the user profile', () => {
-    expect(getLoggedUser).toHaveBeenCalled();
+  it('shows fetched user\'s related information', () => {
+    const usersBooksCountBadge = findByTestID(component, 'my-books-button');
+    expect(usersBooksCountBadge.text()).toEqual(currentUser.borrowed_books_count.toString());
   });
 
-  it('renders a UserContext with user equal to currentUser', () => {
-    const provider = component.find(UserContext.Provider);
-    expect(provider.exists()).toBeTruthy();
-    expect(provider.props().value.user).toEqual(currentUser);
+  describe('routing', () => {
+    it('routes to library selector when path is root', () => {
+      expect(findByTestID(component, 'library-selector').exists()).toBeTruthy();
+    });
+
+    it('routes to my books component when path is /my-books', () => {
+      component = createComponent('/my-books');
+      expect(findByTestID(component, 'my-books-wrapper').exists()).toBeTruthy();
+    });
+
+    it('routes to my books component when path is /library/:slug', () => {
+      component = createComponent('/libraries/bh');
+      expect(findByTestID(component, 'library-wrapper').exists()).toBeTruthy();
+    });
   });
 
-  it('renders a UserContext with updateUser function', () => {
-    const provider = component.find(UserContext.Provider);
-    expect(provider.exists()).toBeTruthy();
-    expect(provider.props().value.updateUser).toEqual(component.instance().updateUser);
-  });
+  describe('theming', () => {
+    afterEach(() => {
+      localStorage.clear();
+    });
 
-  describe('updateUser()', () => {
-    it('calls getLoggedUser and updates states user', async () => {
-      getLoggedUser.mockResolvedValue({ ...currentUser, borrowed_books_count: 5 });
+    it('renders with theme stored in localStorage', () => {
+      localStorage.setItem('theme', 'dark');
+      component = createComponent('/');
+      expect(component.find(MuiThemeProvider).props().theme).toEqual(darkTheme);
+    });
 
-      await component.instance().updateUser();
+    it('renders with light theme if no default theme is stored in localStorage', () => {
+      expect(component.find(MuiThemeProvider).props().theme).toEqual(lightTheme);
+      expect(document.getElementsByTagName('body')[0].className).toEqual('light');
+    });
 
-      expect(getLoggedUser).toHaveBeenCalled();
-      expect(component.state('user').borrowed_books_count).toEqual(5);
+    it('changes to dark theme when change theme button is clicked', () => {
+      findByTestID(component, 'change-theme-button').simulate('click');
+      expect(component.find(MuiThemeProvider).props().theme).toEqual(darkTheme);
+      expect(document.getElementsByTagName('body')[0].className).toEqual('dark');
+    });
+
+    it('stores chosen theme as default in local storage', () => {
+      findByTestID(component, 'change-theme-button').simulate('click');
+      localStorage.getItem('theme', 'dark');
     });
   });
 });
