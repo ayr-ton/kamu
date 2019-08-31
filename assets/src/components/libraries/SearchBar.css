@@ -5,6 +5,7 @@ div.search-bar-paper {
     height: 50px;
     top: 64px;
     background-color: var(--background-color);
+    margin-bottom: 15px;
 }
 
 .search-bar-container {

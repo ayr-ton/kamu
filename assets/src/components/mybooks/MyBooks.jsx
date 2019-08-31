@@ -4,6 +4,8 @@ import { getMyBooks, getWaitlistBooks } from '../../services/BookService';
 import BookListLoader from '../books/BookListLoader';
 import { isWaitlistFeatureActive } from '../../utils/toggles';
 
+import './MyBooks.css';
+
 const MyBooks = () => (
   <div className="my-books" data-testid="my-books-wrapper">
     <PageSection title="Borrowed with me">

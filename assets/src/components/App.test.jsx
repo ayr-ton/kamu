@@ -4,7 +4,9 @@ import { mount } from 'enzyme';
 import { MemoryRouter } from 'react-router';
 import App from './App';
 import { getLoggedUser } from '../services/ProfileService';
-import { getBooksByPage, getLibraries, getMyBooks, getWaitlistBooks } from '../services/BookService';
+import {
+  getBooksByPage, getLibraries, getMyBooks, getWaitlistBooks,
+} from '../services/BookService';
 import { currentUser } from '../../test/userHelper';
 import { lightTheme, darkTheme } from '../styling/themes';
 

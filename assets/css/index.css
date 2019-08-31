@@ -13,6 +13,7 @@ body.light {
     --color: var(--blackish);
     --page-title-color: var(--blackish);
     --error-boundary-color: var(--darkest-grey);
+    --secondary-text-color: var(--dark-grey);
 
     --availability-container-background: var(--light-grey);
     --publisher-container-background: var(--lightest-grey);
@@ -23,6 +24,7 @@ body.dark {
     --color: var(--whitish);
     --page-title-color: var(--dark-grey);
     --error-boundary-color: var(--light-grey);
+    --secondary-text-color: var(--dark-grey);
 
     --availability-container-background: var(--dark-grey);
     --publisher-container-background: var(--darkest-grey);
