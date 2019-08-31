@@ -57,13 +57,30 @@ describe('App', () => {
   });
 
   describe('theming', () => {
-    it('renders with light theme as default', () => {
+    afterEach(() => {
+      localStorage.clear();
+    });
+
+    it('renders with theme stored in localStorage', () => {
+      localStorage.setItem('theme', 'dark');
+      component = createComponent('/');
+      expect(component.find(MuiThemeProvider).props().theme).toEqual(darkTheme);
+    });
+
+    it('renders with light theme if no default theme is stored in localStorage', () => {
       expect(component.find(MuiThemeProvider).props().theme).toEqual(lightTheme);
+      expect(document.getElementsByTagName('body')[0].className).toEqual('light');
     });
 
     it('changes to dark theme when change theme button is clicked', () => {
       findByTestID(component, 'change-theme-button').simulate('click');
       expect(component.find(MuiThemeProvider).props().theme).toEqual(darkTheme);
+      expect(document.getElementsByTagName('body')[0].className).toEqual('dark');
+    });
+
+    it('stores chosen theme as default in local storage', () => {
+      findByTestID(component, 'change-theme-button').simulate('click');
+      localStorage.getItem('theme', 'dark');
     });
   });
 });
