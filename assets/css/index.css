@@ -11,7 +11,6 @@
 body.light {
     --background-color: var(--whitish);
     --color: var(--blackish);
-    --page-title-color: var(--blackish);
     --error-boundary-color: var(--darkest-grey);
     --secondary-text-color: var(--dark-grey);
 
@@ -22,7 +21,6 @@ body.light {
 body.dark {
     --background-color: var(--blackish);
     --color: var(--whitish);
-    --page-title-color: var(--dark-grey);
     --error-boundary-color: var(--light-grey);
     --secondary-text-color: var(--dark-grey);
 
