@@ -1,5 +1,15 @@
+.my-books {
+  margin-top: 100px;
+}
+
 .my-books section {
-  margin: 0 1em;
+  margin: 1em;
+}
+
+.no-books-message {
+  margin: 20px 10px 50px;
+  font-size: 1.5em;
+  color: #AAA;
 }
 
 .my-books .book-list {
@@ -7,7 +17,6 @@
   overflow-x: scroll;
   justify-content: flex-start;
   scrollbar-width: none;
-  padding: 10px 0;
 }
 
 .my-books .book-list .book {

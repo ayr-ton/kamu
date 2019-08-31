@@ -18,9 +18,7 @@ describe('MyBooks', () => {
     getMyBooks.mockResolvedValueOnce({ results: books });
     getWaitlistBooks.mockResolvedValueOnce({ results: books });
 
-    const { getAllByTestId, getByText, unmount } = render(<MyBooks />);
-
-    expect(getByText('My books')).toBeDefined();
+    const { getAllByTestId, unmount } = render(<MyBooks />);
 
     await waitForElement(() => getAllByTestId('book-list-container'));
 
