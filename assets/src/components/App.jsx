@@ -13,6 +13,8 @@ import trackAnalyticsPageView from '../utils/analytics';
 import themes from '../styling/themes';
 import { getDefaultTheme, setDefaultTheme } from '../services/UserPreferences';
 
+import './App.css';
+
 const setCorrespondingThemeClassToBody = (theme) => {
   document.getElementsByTagName('body')[0].classList = [theme.palette.type];
 };

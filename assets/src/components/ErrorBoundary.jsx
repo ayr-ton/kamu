@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import * as Sentry from '@sentry/browser';
 import ErrorMessage from './error/ErrorMessage';
 
-import '../../css/ErrorBoundary.css';
+import './ErrorBoundary.css';
 
 class ErrorBoundary extends Component {
   constructor(props) {
