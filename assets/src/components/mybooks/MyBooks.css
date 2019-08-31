@@ -9,7 +9,7 @@
 .no-books-message {
   margin: 20px 10px 50px;
   font-size: 1.5em;
-  color: #AAA;
+  color: var(--secondary-text-color);
 }
 
 .my-books .book-list {
