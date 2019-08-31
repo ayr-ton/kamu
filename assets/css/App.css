@@ -8,20 +8,6 @@
     margin-top: 65px;
 }
 
-div.page-title {
-    display: flex;
-    padding: 15px 30px;
-    font-size: 1.2em;
-    text-transform: lowercase;
-    color: var(--page-title-color);
-    background-color: var(--background-color);
-}
-
-.page-title .material-icons {
-    font-size: 1.2em;
-    margin-right: 10px;
-}
-
 .section-title {
     font-size: 2em;
     margin: 15px 10px;
