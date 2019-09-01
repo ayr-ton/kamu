@@ -96,7 +96,7 @@ class Library extends Component {
           loadMore={this.loadBooks}
           hasMore={this.state.hasNextPage}
           threshold={950}
-          loader={<LoadingIndicator />}
+          loader={<LoadingIndicator key="loading-indicator" />}
         >
           <BookList books={this.state.books} library={this.props.slug} />
         </InfiniteScroll>
