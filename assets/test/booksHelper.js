@@ -1,9 +1,12 @@
 import { currentUser, someUser } from './userHelper';
-import { BORROW_BOOK_ACTION, RETURN_BOOK_ACTION, JOIN_WAITLIST_BOOK_ACTION } from '../src/utils/constants';
+import {
+  BORROW_BOOK_ACTION, RETURN_BOOK_ACTION, JOIN_WAITLIST_BOOK_ACTION, LEAVE_WAITLIST_BOOK_ACTION,
+} from '../src/utils/constants';
 
 export const borrowAction = { type: BORROW_BOOK_ACTION };
 export const returnAction = { type: RETURN_BOOK_ACTION };
 export const joinWaitlistAction = { type: JOIN_WAITLIST_BOOK_ACTION };
+export const leaveWaitlistAction = { type: LEAVE_WAITLIST_BOOK_ACTION };
 
 export const someBook = (copies = [], waitlistUsers = [], action = borrowAction) => ({
   id: 1,
@@ -56,4 +59,16 @@ export const someBookThatCanBeAddedToWaitlist = () => someBook(
   }],
   [],
   joinWaitlistAction,
+);
+
+export const someBookThatIsInMyWaitlist = () => someBook(
+  [{
+    id: 1,
+    user: someUser,
+    borrow_date: '2019-03-07',
+  }],
+  [
+    currentUser,
+  ],
+  leaveWaitlistAction,
 );
