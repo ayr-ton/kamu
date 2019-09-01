@@ -11,7 +11,12 @@ import {
   someBookThatCanBeAddedToWaitlist,
   someBookThatIsInMyWaitlist,
 } from '../../../test/booksHelper';
-import { borrowBook, returnBook, joinWaitlist } from '../../services/BookService';
+import {
+  borrowBook,
+  returnBook,
+  joinWaitlist,
+  leaveWaitlist,
+} from '../../services/BookService';
 
 jest.mock('../../services/BookService');
 
@@ -146,14 +151,14 @@ describe('Book', () => {
     });
 
     it('calls the joinWaitlist method when clicking on the join the waitlist button', async () => {
-      joinWaitlist.mockResolvedValue({ action: null });
+      joinWaitlist.mockResolvedValue(someBookThatIsInMyWaitlist());
       const book = someBookThatCanBeAddedToWaitlist();
       const bookComponent = createComponent(book);
 
       await bookComponent.find(Button).simulate('click');
 
       expect(joinWaitlist).toHaveBeenCalledWith(book);
-      expect(bookComponent).not.toHaveJoinWaitlistButton();
+      expect(bookComponent).toHaveLeaveWaitlistButton();
     });
 
     it('shows the leave waitlist button when book is on waitlist', async () => {
@@ -161,6 +166,17 @@ describe('Book', () => {
       const bookComponent = createComponent(book);
 
       expect(bookComponent).toHaveLeaveWaitlistButton();
+    });
+
+    it('calls the leaveWaitlist method when clicking on the leave waitlist button', async () => {
+      leaveWaitlist.mockResolvedValue(someBookThatCanBeAddedToWaitlist());
+      const book = someBookThatIsInMyWaitlist();
+      const bookComponent = createComponent(book);
+
+      await bookComponent.find(Button).simulate('click');
+
+      expect(leaveWaitlist).toHaveBeenCalledWith(book);
+      expect(bookComponent).toHaveJoinWaitlistButton();
     });
   });
 
