@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import BookDetail from './detail/BookDetail';
-import { joinWaitlist, borrowBook, returnBook } from '../../services/BookService';
+import {
+  joinWaitlist, borrowBook, returnBook, leaveWaitlist,
+} from '../../services/BookService';
 import {
   BORROW_BOOK_ACTION, RETURN_BOOK_ACTION, JOIN_WAITLIST_BOOK_ACTION, LEAVE_WAITLIST_BOOK_ACTION,
 } from '../../utils/constants';
@@ -55,7 +57,7 @@ export default class Book extends Component {
           && <Button color={color} onClick={() => this.performAction(joinWaitlist, 'JoinWaitlist')}>Join the waitlist</Button>;
       case LEAVE_WAITLIST_BOOK_ACTION:
         return isWaitlistFeatureActive()
-          && <Button color={color} onClick={() => this.performAction(joinWaitlist, 'LeaveWaitlist')}>Leave the waitlist</Button>;
+          && <Button color={color} onClick={() => this.performAction(leaveWaitlist, 'LeaveWaitlist')}>Leave the waitlist</Button>;
       default:
         return null;
     }
