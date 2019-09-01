@@ -39,8 +39,11 @@ body {
 }
 
 body > * {
-  font-family: 'Open Sans', sans-serif;
   color: var(--color);
+}
+
+* {
+  font-family: 'Open Sans', sans-serif;
 }
 
 a {
