@@ -9,7 +9,6 @@ from unittest.mock import patch
 
 from books.models import Book, Library, BookCopy
 from books.serializers import BookSerializer
-from waitlist.models import WaitlistItem
 
 
 class LibraryViewSet(TestCase):

@@ -21,7 +21,6 @@ class WaitlistViewSetTest(TestCase):
             "/waitlist/"
 
     def test_should_return_201_response_when_create_item_is_successful(self):
-
         with patch.object(WaitlistItem, 'create_item', return_value=None) as create_mock:
             response = self.client.post(self.base_url)
 
@@ -49,3 +48,10 @@ class WaitlistViewSetTest(TestCase):
             response = self.client.post(self.base_url)
 
         self.assertEqual(response.status_code, 404)
+
+
+    def test_should_return_200_response_when_delete_item_is_successful(self):
+        with patch.object(WaitlistItem, 'delete', return_value=None) as create_mock:
+            response = self.client.delete(self.base_url)
+
+        self.assertEqual(response.status_code, 200)

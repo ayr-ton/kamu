@@ -74,11 +74,11 @@ class BookTestCase(TestCase):
         action = self.book.available_action(library=self.library, user=self.user)
         self.assertBookAction('JOIN_WAITLIST', action)
 
-    def test_does_not_have_action_when_user_is_already_on_waitlist(self):
+    def test_has_leave_waitlist_action_when_user_is_on_waitlist(self):
         self.book.bookcopy_set.create(library=self.library, user=self.user2)
         self.book.waitlistitem_set.create(library=self.library, user=self.user, added_date=timezone.now())
         action = self.book.available_action(library=self.library, user=self.user)
-        self.assertIsNone(action)
+        self.assertBookAction('LEAVE_WAITLIST', action)
 
     def test_borrow_set_user_on_one_available_copy(self):
         self.book.bookcopy_set.create(library=self.library, user=None)
