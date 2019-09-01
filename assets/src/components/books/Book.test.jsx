@@ -11,8 +11,10 @@ import {
   someBookThatCanBeAddedToWaitlist,
 } from '../../../test/booksHelper';
 import { borrowBook, returnBook, joinWaitlist } from '../../services/BookService';
+import { isWaitlistFeatureActive } from '../../utils/toggles';
 
 jest.mock('../../services/BookService');
+jest.mock('../../utils/toggles');
 
 expect.extend({
   toHaveBorrowButton(received) {
@@ -125,8 +127,8 @@ describe('Book', () => {
   });
 
   describe('if waitlist feature is enabled', () => {
-    beforeAll(() => {
-      window.history.pushState({}, 'Testing with Waitlist Enabled', '/?waitlist=active');
+    beforeEach(() => {
+      isWaitlistFeatureActive.mockReturnValue(true);
     });
 
     it('shows the join waitlist button when book can be added to waitlist', async () => {
@@ -149,8 +151,8 @@ describe('Book', () => {
   });
 
   describe('if waitlist feature is disabled', () => {
-    beforeAll(() => {
-      window.history.pushState({}, 'Testing with Waitlist Disabled', '/');
+    beforeEach(() => {
+      isWaitlistFeatureActive.mockReturnValue(false);
     });
 
     it('does not show the join waitlist button when book can be added to waitlist', async () => {

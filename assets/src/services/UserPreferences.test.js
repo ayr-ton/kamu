@@ -2,8 +2,6 @@ import {
   getRegion, setRegion, clearRegion, getDefaultTheme, setDefaultTheme,
 } from './UserPreferences';
 
-jest.mock('./helpers');
-
 const region = 'quito';
 
 describe('UserPreferences', () => {
