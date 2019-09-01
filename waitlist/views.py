@@ -33,3 +33,13 @@ class WaitlistViewSet(FiltersMixin, viewsets.ModelViewSet):
             return Response({
                 'message': str(error),
             }, status=404)
+
+
+    def delete(self, request, library_slug=None, book_pk=None):
+        library = Library.objects.get(slug=library_slug)
+        WaitlistItem.objects.filter(
+            library=library,
+            user=request.user,
+            book=book_pk
+        ).delete()
+        return Response(status=200)

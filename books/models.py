@@ -5,6 +5,7 @@ from django.utils import timezone
 BOOK_RETURN_ACTION = 'RETURN'
 BOOK_BORROW_ACTION = 'BORROW'
 BOOK_JOIN_WAITLIST_ACTION = 'JOIN_WAITLIST'
+BOOK_LEAVE_WAITLIST_ACTION = 'LEAVE_WAITLIST'
 
 
 def create_book_action(type):
@@ -38,7 +39,9 @@ class Book(models.Model):
             return create_book_action(BOOK_RETURN_ACTION)
         if self.is_available(library):
             return create_book_action(BOOK_BORROW_ACTION)
-        if not self.is_on_users_waitlist(user, library):
+        if self.is_on_users_waitlist(user, library):
+            return create_book_action(BOOK_LEAVE_WAITLIST_ACTION)
+        else:
             return create_book_action(BOOK_JOIN_WAITLIST_ACTION)
         return None
 
