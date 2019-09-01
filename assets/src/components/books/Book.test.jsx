@@ -9,6 +9,7 @@ import {
   someBookWithNoAvailableCopies,
   someBookWithACopyFromMe,
   someBookThatCanBeAddedToWaitlist,
+  someBookThatIsInMyWaitlist,
 } from '../../../test/booksHelper';
 import { borrowBook, returnBook, joinWaitlist } from '../../services/BookService';
 import { isWaitlistFeatureActive } from '../../utils/toggles';
@@ -38,7 +39,15 @@ expect.extend({
     const pass = button.exists()
           && button.children().text() === 'Join the waitlist'
           && button.length === 1;
-    return { pass, message: () => 'expected component to have a waitlist button' };
+    return { pass, message: () => 'expected component to have a join waitlist button' };
+  },
+
+  toHaveLeaveWaitlistButton(received) {
+    const button = received.find(Button);
+    const pass = button.exists()
+          && button.children().text() === 'Leave the waitlist'
+          && button.length === 1;
+    return { pass, message: () => 'expected component to have a leave waitlist button' };
   },
 });
 
@@ -147,6 +156,13 @@ describe('Book', () => {
 
       expect(joinWaitlist).toHaveBeenCalledWith(book);
       expect(bookComponent).not.toHaveJoinWaitlistButton();
+    });
+
+    it('shows the leave waitlist button when book is on waitlist', async () => {
+      const book = someBookThatIsInMyWaitlist();
+      const bookComponent = createComponent(book);
+
+      expect(bookComponent).toHaveLeaveWaitlistButton();
     });
   });
 
