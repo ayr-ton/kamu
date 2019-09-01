@@ -1,5 +1,12 @@
 import {
-  getLibraries, getBooksByPage, getMyBooks, borrowBook, returnBook, joinWaitlist, getWaitlistBooks,
+  getLibraries,
+  getBooksByPage,
+  getMyBooks,
+  borrowBook,
+  returnBook,
+  joinWaitlist,
+  leaveWaitlist,
+  getWaitlistBooks,
 } from './BookService';
 import fetchFromAPI from './helpers';
 import {
@@ -114,45 +121,27 @@ describe('Book Service', () => {
     expect(response).toEqual(updatedBook);
   });
 
-  describe('Join the Waitlist', () => {
-    it('should call the add to waitlist endpoint for the book and library informed', async () => {
+  describe('Waitlist', () => {
+    it('should call the add to waitlist endpoint for the book and library informed and return the updated book', async () => {
       const book = someBook();
-
-      fetchFromAPI.mockResolvedValue({ waitlist_item: { book } });
-
-      await joinWaitlist(book);
-      expect(fetchFromAPI).toHaveBeenCalledWith(`${book.url}waitlist/`, 'POST');
-    });
-
-    it('should return the waitlisted item\'s book  if the request was successful and contains that info', async () => {
-      const book = someBook();
-
-      fetchFromAPI.mockResolvedValue({ waitlist_item: { book: 'updated_book' } });
+      const updatedBook = 'updated_book';
+      fetchFromAPI.mockResolvedValue(updatedBook);
 
       const result = await joinWaitlist(book);
-      expect(result).toEqual('updated_book');
+
+      expect(fetchFromAPI).toHaveBeenCalledWith(`${book.url}waitlist/`, 'POST');
+      expect(result).toEqual(updatedBook);
     });
 
-    it('should reject the promise if the request was successful but didnt contain waitlist item data', async () => {
+    it('should call the leave waitlist endpoint for the book and library informed and return the updated book', async () => {
       const book = someBook();
-      fetchFromAPI.mockResolvedValue({});
+      const updatedBook = 'updated_book';
+      fetchFromAPI.mockResolvedValue(updatedBook);
 
-      try {
-        await joinWaitlist(book);
-      } catch (error) {
-        expect(error).toEqual(new Error({ message: 'Request was successful, but no data was returned' }));
-      }
-    });
+      const result = await leaveWaitlist(book);
 
-    it('should reject the promise if the request was unsuccessful ', async () => {
-      const book = someBook();
-      fetchFromAPI.mockRejectedValue({ status: 404 });
-
-      try {
-        await joinWaitlist(book);
-      } catch (error) {
-        expect(error).toEqual({ status: 404 });
-      }
+      expect(fetchFromAPI).toHaveBeenCalledWith(`${book.url}waitlist/`, 'DELETE');
+      expect(result).toEqual(updatedBook);
     });
   });
 });
