@@ -34,7 +34,6 @@ class WaitlistViewSet(FiltersMixin, viewsets.ModelViewSet):
                 'message': str(error),
             }, status=409)
 
-
     def delete(self, request, library_slug=None, book_pk=None):
         library = Library.objects.get(slug=library_slug)
         WaitlistItem.objects.filter(
