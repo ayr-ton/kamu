@@ -1,3 +1,4 @@
+from django.db import IntegrityError
 from django.shortcuts import render
 from filters.mixins import FiltersMixin
 from rest_framework import viewsets
@@ -33,6 +34,10 @@ class WaitlistViewSet(FiltersMixin, viewsets.ModelViewSet):
             return Response({
                 'message': str(error),
             }, status=404)
+        except IntegrityError as error:
+            return Response({
+                'message': str(error),
+            }, status=409)
 
 
     def delete(self, request, library_slug=None, book_pk=None):

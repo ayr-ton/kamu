@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.db import IntegrityError
 from django.test import TestCase
 from django.utils import timezone
 from unittest.mock import patch
@@ -42,13 +43,17 @@ class WaitlistViewSetTest(TestCase):
         self.assertEqual(waitlist_item['library']['slug'], self.library.slug)
         self.assertEqual(waitlist_item['book']['id'], self.book.id)
 
-
     def test_should_return_404_response_when_create_item_raises_value_error(self):
         with patch.object(WaitlistItem, 'create_item', side_effect=ValueError):
             response = self.client.post(self.base_url)
 
         self.assertEqual(response.status_code, 404)
 
+    def test_should_return_409_response_when_creating_item_already_on_waitlist(self):
+        with patch.object(WaitlistItem, 'create_item', side_effect=IntegrityError):
+            response = self.client.post(self.base_url)
+
+        self.assertEqual(response.status_code, 409)
 
     def test_should_return_200_response_when_delete_item_is_successful(self):
         with patch.object(WaitlistItem, 'delete', return_value=None) as create_mock:

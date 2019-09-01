@@ -10,6 +10,9 @@ class WaitlistItem(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="waitlist_items", on_delete=models.CASCADE)
     added_date = models.DateTimeField()
 
+    class Meta:
+        unique_together = [['book', 'library', 'user']]
+
     @classmethod
     def create_item(cls, library, book, user):
         copies = BookCopy.objects.filter(
