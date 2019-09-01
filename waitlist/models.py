@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import models, IntegrityError
 from books.models import Library, Book, BookCopy
 from django.conf import settings
 from django.utils import timezone
@@ -21,12 +21,15 @@ class WaitlistItem(models.Model):
         if copies.count():
             available_copies = copies.filter(user=None)
             if available_copies.count() is 0:
-                return WaitlistItem.objects.create(
-                    book=book,
-                    user=user,
-                    library=library,
-                    added_date=timezone.now(),
-                )
+                try:
+                    return WaitlistItem.objects.create(
+                        book=book,
+                        user=user,
+                        library=library,
+                        added_date=timezone.now(),
+                    )
+                except IntegrityError as error:
+                    raise IntegrityError('You are already on the waitlist for this book.')
             else:
                 raise ValueError('There are available copies of this book.')
         else:

@@ -52,6 +52,14 @@ class WaitlistItemTest(TestCase):
             book=self.book, library=self.library, user=self.user,
         )
 
+    def test_cannot_instantiate_duplicated_item(self):
+        self.book.waitlistitem_set.create(library=self.library, user=self.user, added_date=timezone.now())
+        self.assertRaises(
+            IntegrityError,
+            WaitlistItem.objects.create,
+            book=self.book, library=self.library, user=self.user,
+        )
+
     def test_that_a_creation_of_waitlist_item_reflects_in_library(self):
         self.assertEqual(self.library.waitlist_items.count(), 0)
         self.waitlist_item = WaitlistItem.objects.create(
