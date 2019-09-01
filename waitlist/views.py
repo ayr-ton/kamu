@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from django.utils import timezone
 
 from books.models import Book, Library
+from books.serializers import BookSerializer
 from .models import WaitlistItem
 from .serializers import WaitlistItemSerializer
 
@@ -22,14 +23,8 @@ class WaitlistViewSet(FiltersMixin, viewsets.ModelViewSet):
                 Book.objects.get(pk=book_pk),
                 request.user,
             )
-            data = WaitlistItemSerializer(item, context={
-                'request': request,
-                'library': library,
-                'user': request.user,
-            }).data
-            return Response({
-                'waitlist_item': data,
-            }, status=201)
+            book = Book.objects.get(pk=book_pk)
+            return self.__serialize_book(book, library, request, status=201)
         except ValueError as error:
             return Response({
                 'message': str(error),
@@ -47,4 +42,13 @@ class WaitlistViewSet(FiltersMixin, viewsets.ModelViewSet):
             user=request.user,
             book=book_pk
         ).delete()
-        return Response(status=200)
+        book = Book.objects.get(pk=book_pk)
+        return self.__serialize_book(book, library, request)
+
+    def __serialize_book(self, book, library, request, status=200):
+        serializer = BookSerializer(book, context={
+                'request': request,
+                'library': library,
+                'user': request.user,
+            })
+        return Response(serializer.data, status=status)

@@ -27,9 +27,8 @@ class WaitlistViewSetTest(TestCase):
 
         self.assertEqual(response.status_code, 201)
 
-    def test_should_return_response_with_waitlist_item_when_create_item_is_successful(self):
-        created_item = WaitlistItem(
-            book=self.book,
+    def test_join_waitlist_returns_book_with_leave_waitlist_action(self):
+        created_item = self.book.waitlistitem_set.create(
             library=self.library,
             user=self.user,
             added_date=timezone.now())
@@ -37,11 +36,7 @@ class WaitlistViewSetTest(TestCase):
         with patch.object(WaitlistItem, 'create_item', return_value=created_item):
             response = self.client.post(self.base_url)
 
-        waitlist_item = response.data['waitlist_item']
-        self.assertEqual(waitlist_item['user']['username'], 'claudia')
-        self.assertIsNotNone(waitlist_item['added_date'])
-        self.assertEqual(waitlist_item['library']['slug'], self.library.slug)
-        self.assertEqual(waitlist_item['book']['id'], self.book.id)
+        self.assertEqual(response.data['action']['type'], 'LEAVE_WAITLIST')
 
     def test_should_return_404_response_when_create_item_raises_value_error(self):
         with patch.object(WaitlistItem, 'create_item', side_effect=ValueError):
@@ -60,3 +55,9 @@ class WaitlistViewSetTest(TestCase):
             response = self.client.delete(self.base_url)
 
         self.assertEqual(response.status_code, 200)
+
+    def test_leave_waitlist_returns_book_with_join_waitlist_action(self):
+        with patch.object(WaitlistItem, 'delete', return_value=None) as create_mock:
+            response = self.client.delete(self.base_url)
+
+        self.assertEqual(response.data['action']['type'], 'JOIN_WAITLIST')
