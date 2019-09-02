@@ -19,6 +19,10 @@
   scrollbar-width: none;
 }
 
+.my-books .book-list::-webkit-scrollbar {
+  display: none;
+}
+
 .my-books .book-list .book {
   flex-shrink: 0;
 }
