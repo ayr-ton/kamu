@@ -6,9 +6,11 @@ import App from './components/App';
 
 import './index.css';
 
-Sentry.init({
-  dsn: 'https://9c31d56d5fab41ce9a199af00c3e1eb2@sentry.io/1406532',
-});
+if (process.env.SENTRY_DSN) {
+  Sentry.init({
+    dsn: process.env.SENTRY_DSN,
+  });
+}
 
 ReactDOM.render(
   <ErrorBoundary>
