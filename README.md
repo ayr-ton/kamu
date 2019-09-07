@@ -130,6 +130,7 @@ DATABASE_URL="" # This variable should be automatically configured by the postgr
 ALLOWED_HOSTS="kamu.example.com" # At this moment, only one domain is supported
 OKTA_METADATA_URL="SECRET-OKTA-STUFF" # On the case of Okta Authentication support
 ANALYTICS_ACCOUNT_ID="UA-123456789-1" # Only if you want to enable Google Analytics, otherwise don't set it
+SENTRY_DSN="SECRET-SENTRY-DSN" # Only if you want to enable Sentry, otherwise don't set it
 ```
 See [Dokku environment variables](http://dokku.viewdocs.io/dokku/configuration/environment-variables/) or [Heroku Config Vars](https://devcenter.heroku.com/articles/config-vars) for more details.
 
