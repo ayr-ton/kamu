@@ -7,11 +7,14 @@ import { getLoggedUser } from '../services/ProfileService';
 import {
   getBooksByPage, getLibraries, getMyBooks, getWaitlistBooks,
 } from '../services/BookService';
+
 import { currentUser } from '../../test/userHelper';
 import { lightTheme, darkTheme } from '../styling/themes';
+import { trackEvent } from '../utils/analytics';
 
 jest.mock('../services/ProfileService');
 jest.mock('../services/BookService');
+jest.mock('../utils/analytics');
 
 const createComponent = (route) => mount(
   <MemoryRouter initialEntries={[route]}>
@@ -80,6 +83,7 @@ describe('App', () => {
       findByTestID(component, 'change-theme-button').simulate('click');
       expect(component.find(MuiThemeProvider).props().theme).toEqual(darkTheme);
       expect(document.getElementsByTagName('body')[0].className).toEqual('dark');
+      expect(trackEvent).toHaveBeenCalledWith('Preferences', 'Toggle Theme', 'dark');
     });
 
     it('stores chosen theme as default in local storage', () => {

@@ -9,7 +9,7 @@ import LibraryRedirector from './home/LibraryRedirector';
 import Library from './libraries/Library';
 import MyBooks from './mybooks/MyBooks';
 import { getLoggedUser } from '../services/ProfileService';
-import trackAnalyticsPageView from '../utils/analytics';
+import { trackAnalyticsPageView, trackEvent } from '../utils/analytics';
 import themes from '../styling/themes';
 import { getDefaultTheme, setDefaultTheme } from '../services/UserPreferences';
 
@@ -39,6 +39,7 @@ class App extends Component {
       setDefaultTheme(theme.palette.type);
       this.setState({ theme });
       setCorrespondingThemeClassToBody(theme);
+      trackEvent('Preferences', 'Toggle Theme', theme.palette.type);
     };
 
     this.toggleTheme = () => {
