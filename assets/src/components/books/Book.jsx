@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
+import Icon from '@material-ui/core/Icon';
 import BookDetail from './detail/BookDetail';
 import {
   joinWaitlist, borrowBook, returnBook, leaveWaitlist,
@@ -94,6 +95,13 @@ export default class Book extends Component {
       backgroundImage: `url('${book.image_url}')`,
     };
 
+    const waitlistBadge = (book.action.type === LEAVE_WAITLIST_BOOK_ACTION) && (
+      <div className="waitlist-indicator">
+        <Icon className="fa fa-clock" />
+        2 months
+      </div>
+    );
+
     return (
       <Paper
         className="book"
@@ -105,7 +113,6 @@ export default class Book extends Component {
         onBlur={this.onMouseOut}
       >
         <div role="button" className="book-info" onClick={this.changeOpenStatus} onKeyPress={this.changeOpenStatus} tabIndex={0}>
-
           <div className="book-cover" style={bookCover}>
             <div className="book-cover-overlay" />
           </div>
@@ -119,6 +126,8 @@ export default class Book extends Component {
         <div className="book-actions">
           {this.actionButtons()}
         </div>
+
+        {waitlistBadge}
         {contentDetail}
       </Paper>
     );
