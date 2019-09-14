@@ -1,7 +1,9 @@
 :root {
+  --white: #ffffff;
   --whitish: #fafafa;
   --lightest-grey: #f2f2f2;
   --light-grey: #e4e4e4;
+  --darkish-grey: #424242;
   --dark-grey: #757575;
   --darkest-grey: #666666;
   --blackish: #212121;
@@ -16,6 +18,7 @@ body.light {
 
     --availability-container-background: var(--light-grey);
     --publisher-container-background: var(--lightest-grey);
+    --book-container-background: var(--white);
 }
 
 body.dark {
@@ -26,6 +29,7 @@ body.dark {
 
     --availability-container-background: var(--dark-grey);
     --publisher-container-background: var(--darkest-grey);
+    --book-container-background: var(--darkish-grey);
 }
 
 body {
