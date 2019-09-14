@@ -11,6 +11,7 @@ BOOK_LEAVE_WAITLIST_ACTION = 'LEAVE_WAITLIST'
 def create_book_action(type):
     return {'type': type}
 
+
 class Book(models.Model):
     author = models.CharField(max_length=255)
     title = models.CharField(max_length=255)
@@ -32,7 +33,7 @@ class Book(models.Model):
         return self.__get_borrowed_copy(user=user, library=library) is not None
 
     def is_on_users_waitlist(self, user, library):
-        return self.waitlistitem_set.filter(user=user, library=library).exists()
+        return self.__get_waitlist_query(user=user, library=library).exists()
 
     def available_action(self, user, library=None):
         if self.is_borrowed_by_user(user, library):
@@ -54,6 +55,8 @@ class Book(models.Model):
         available_copy.borrow_date = timezone.now()
         available_copy.save()
 
+        self.__get_waitlist_query(user=user, library=library).delete()
+
     def returnToLibrary(self, user, library):
         borrowed_copy = self.__get_borrowed_copy(user=user, library=library)
         if borrowed_copy is None:
@@ -71,6 +74,10 @@ class Book(models.Model):
         if library is not None:
             user_copies = user_copies.filter(library=library)
         return user_copies.first()
+
+    def __get_waitlist_query(self, user, library):
+        return self.waitlistitem_set.filter(user=user, library=library)
+
 
 class Library(models.Model):
     name = models.CharField(max_length=255)

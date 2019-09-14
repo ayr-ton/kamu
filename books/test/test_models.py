@@ -99,6 +99,28 @@ class BookTestCase(TestCase):
         copies = self.book.bookcopy_set.all()
         self.assertEqual(copies[0].user, self.user2)
 
+    def test_borrow_removes_user_from_waitlist_if_successful(self):
+        self.book.bookcopy_set.create(library=self.library, user=None)
+        self.book.waitlistitem_set.create(library=self.library, user=self.user2, added_date=timezone.now())
+        self.book.waitlistitem_set.create(library=self.library, user=self.user, added_date=timezone.now())
+
+        self.book.borrow(library=self.library, user=self.user)
+
+        waitlist_items = self.book.waitlistitem_set.filter(library=self.library)
+        self.assertEqual(len(waitlist_items), 1)
+        self.assertEqual(waitlist_items[0].user, self.user2)
+
+    def test_borrow_does_not_remove_user_from_waitlist_if_borrow_fails(self):
+        self.book.bookcopy_set.create(library=self.library, user=self.user2)
+        self.book.waitlistitem_set.create(library=self.library, user=self.user, added_date=timezone.now())
+
+        with self.assertRaises(ValueError):
+            self.book.borrow(library=self.library, user=self.user)
+
+        waitlist_items = self.book.waitlistitem_set.filter(library=self.library)
+        self.assertEqual(len(waitlist_items), 1)
+        self.assertEqual(waitlist_items[0].user, self.user)
+
     def test_return_removes_user_and_date_on_borrowed_copy(self):
         self.book.bookcopy_set.create(library=self.library, user=self.user)
         self.book.bookcopy_set.create(library=self.library, user=self.user2)
