@@ -8,7 +8,12 @@ export const returnAction = { type: RETURN_BOOK_ACTION };
 export const joinWaitlistAction = { type: JOIN_WAITLIST_BOOK_ACTION };
 export const leaveWaitlistAction = { type: LEAVE_WAITLIST_BOOK_ACTION };
 
-export const someBook = (copies = [], waitlistItems = [], action = borrowAction, waitlistAddedDate = null) => ({
+export const someBook = (
+  copies = [],
+  waitlistItems = [],
+  action = borrowAction,
+  waitlistAddedDate = null,
+) => ({
   id: 1,
   author: 'Kent Beck',
   title: 'Test Driven Development',
@@ -73,5 +78,5 @@ export const someBookThatIsInMyWaitlist = () => someBook(
     added_date: '2019-09-01T19:19:08.108170Z',
   }],
   leaveWaitlistAction,
-  '2019-09-01T19:19:08.108170Z'
+  '2019-09-01T19:19:08.108170Z',
 );
