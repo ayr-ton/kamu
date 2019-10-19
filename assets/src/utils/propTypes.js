@@ -16,10 +16,15 @@ export const BookCopyPropType = PropTypes.shape({
   user: UserPropType,
 });
 
+export const WaitlistItemPropType = PropTypes.shape({
+  added_date: PropTypes.string,
+  user: UserPropType,
+});
+
 export const BookPropType = PropTypes.shape({
   id: PropTypes.number.isRequired,
   copies: PropTypes.arrayOf(BookCopyPropType),
-  waitlist_users: PropTypes.arrayOf(UserPropType),
+  waitlist_items: PropTypes.arrayOf(WaitlistItemPropType),
   action: PropTypes.shape({
     type: PropTypes.string.isRequired,
   }),

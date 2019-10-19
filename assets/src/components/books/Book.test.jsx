@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { shallow } from 'enzyme';
 import Button from '@material-ui/core/Button';
 import Book from './Book';
+import WaitlistIndicator from './WaitlistIndicator';
 import {
   someBook,
   someBookWithAvailableCopies,
@@ -179,6 +180,28 @@ describe('Book', () => {
 
       expect(leaveWaitlist).toHaveBeenCalledWith(book);
       expect(bookComponent).toHaveJoinWaitlistButton();
+    });
+
+    it('has a waitlist indicator when book is on users waitlist', async () => {
+      const book = someBookThatIsInMyWaitlist();
+      const bookComponent = createComponent(book);
+
+      const indicator = bookComponent.find(WaitlistIndicator);
+      expect(indicator.exists()).toBeTruthy();
+      expect(indicator.props().addedDate).toEqual(book.waitlist_added_date);
+    });
+
+    it('doest not have a waitlist indicator when book is not on users waitlist', async () => {
+      const booksNotOnWaitlist = [
+        someBookWithACopyFromMe(),
+        someBookWithAvailableCopies(),
+        someBookThatCanBeAddedToWaitlist(),
+      ];
+
+      booksNotOnWaitlist.forEach((book) => {
+        const bookComponent = createComponent(book);
+        expect(bookComponent.find(WaitlistIndicator).exists()).toBeFalsy();
+      });
     });
   });
 
