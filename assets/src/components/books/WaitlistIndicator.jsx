@@ -4,11 +4,12 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 
 function WaitlistIndicator({ addedDate }) {
+  const formattedDate = moment(addedDate).format('ll');
   return (
-    <div className="waitlist-indicator" title="You've been waiting since 2019-10-08" data-testid="waitlist-indicator-text">
+    <div className="waitlist-indicator" title={`You've been waiting since ${formattedDate}`}>
       <Icon className="fa fa-clock" />
       Waiting since&nbsp;
-      {moment(addedDate).format('ll')}
+      {formattedDate}
     </div>
   );
 }
