@@ -171,11 +171,6 @@ class BookViewSet(FiltersMixin, viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-class BookCopyViewSet(viewsets.ModelViewSet):
-    queryset = BookCopy.objects.all()
-    serializer_class = BookCopySerializer
-
-
 class UserView(APIView):
     def get(self, request, format=None):
         return Response({
