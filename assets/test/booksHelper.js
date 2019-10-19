@@ -8,7 +8,7 @@ export const returnAction = { type: RETURN_BOOK_ACTION };
 export const joinWaitlistAction = { type: JOIN_WAITLIST_BOOK_ACTION };
 export const leaveWaitlistAction = { type: LEAVE_WAITLIST_BOOK_ACTION };
 
-export const someBook = (copies = [], waitlistUsers = [], action = borrowAction) => ({
+export const someBook = (copies = [], waitlistItems = [], action = borrowAction, waitlistAddedDate = null) => ({
   id: 1,
   author: 'Kent Beck',
   title: 'Test Driven Development',
@@ -20,7 +20,8 @@ export const someBook = (copies = [], waitlistUsers = [], action = borrowAction)
   publication_date: '2003-05-17',
   publisher: 'Addison-Wesley Professional',
   url: 'http://testserver/api/library/kamu/books/1/',
-  waitlist_users: waitlistUsers,
+  waitlist_items: waitlistItems,
+  waitlist_added_date: waitlistAddedDate,
   copies,
   action,
 });
@@ -67,8 +68,10 @@ export const someBookThatIsInMyWaitlist = () => someBook(
     user: someUser,
     borrow_date: '2019-03-07',
   }],
-  [
-    currentUser,
-  ],
+  [{
+    user: currentUser,
+    added_date: '2019-09-01T19:19:08.108170Z',
+  }],
   leaveWaitlistAction,
+  '2019-09-01T19:19:08.108170Z'
 );
