@@ -35,6 +35,10 @@ class Book(models.Model):
     def is_on_users_waitlist(self, user, library):
         return self.__get_waitlist_query(user=user, library=library).exists()
 
+    def users_waitlist_added_date(self, user, library):
+        waitlist_item = self.__get_waitlist_query(user=user, library=library).first()
+        return waitlist_item.added_date if waitlist_item is not None else None
+
     def available_action(self, user, library=None):
         if self.is_borrowed_by_user(user, library):
             return create_book_action(BOOK_RETURN_ACTION)

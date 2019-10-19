@@ -90,6 +90,19 @@ class LibraryViewSet(TestCase):
         expected_url = 'http://testserver/api/libraries/' + self.library.slug + '/books/' + str(self.book.id) + '/'
         self.assertEqual(books[0]['url'], expected_url)
 
+    def test_has_waitlist_added_date_for_each_book(self):
+        date = timezone.now()
+        user2 = User.objects.create(username="Marielle Franco", email="marielle@gmail.com")
+        book2 = Book.objects.create(author="Author", title="Book B")
+        book2.bookcopy_set.create(library=self.library, user=user2)
+        book2.waitlistitem_set.create(library=self.library, user=self.user, added_date=date)
+
+        response = self.client.get("/api/libraries/" + self.library.slug + "/books/")
+        books = response.data['results']
+
+        self.assertEqual(books[0]['waitlist_added_date'], None)
+        self.assertEqual(books[1]['waitlist_added_date'], date)
+
 
 class LibraryViewSetQueryParameters(TestCase):
     def setUp(self):
@@ -325,6 +338,7 @@ class UserWaitlistViewTest(TestCase):
         expected_url = 'http://testserver/api/libraries/' + self.library.slug + '/books/' + str(self.book.id) + '/'
         self.assertEqual(response.data['results'][0]['url'], expected_url)
 
+
 class IsbnViewTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username="claudia", is_staff=True, is_superuser=True)
@@ -405,6 +419,7 @@ class IsbnViewTest(TestCase):
                              status_code=302, target_status_code=200)
         self.assertContains(response, 'Found! Go ahead, modify book template and save.')
         self.assertTemplateUsed(response, 'admin/change_form.html')
+
 
 class FrontendViewTest(TestCase):
     def setUp(self):
