@@ -70,8 +70,12 @@ class BookSerializer(serializers.ModelSerializer):
         )
 
     def get_url(self, obj):
+        library = self.context.get('library')
+        if library is None:
+            return None
+
         url_kwargs = {
-            'library_slug': self.context.get('library').slug,
+            'library_slug': library.slug,
             'pk': obj.pk,
         }
         return reverse('books-detail', kwargs=url_kwargs, request=self.context['request'])
