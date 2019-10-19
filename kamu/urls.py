@@ -14,7 +14,6 @@ from waitlist.views import WaitlistViewSet
 router = routers.DefaultRouter()
 
 router.register(r'libraries', views.LibraryViewSet)
-router.register(r'copies', views.BookCopyViewSet)
 
 library_routers = routers.NestedSimpleRouter(router, r'libraries', lookup='library')
 library_routers.register(r'books', views.BookViewSet, base_name='books')
