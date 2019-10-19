@@ -39,7 +39,8 @@ class BookCopySerializer(serializers.ModelSerializer):
 class BookSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
     copies = serializers.SerializerMethodField()
-    waitlist_users = serializers.SerializerMethodField()
+    waitlist_items = serializers.SerializerMethodField()
+    waitlist_added_date = serializers.SerializerMethodField()
     action = serializers.SerializerMethodField()
     url = serializers.SerializerMethodField()
 
@@ -55,13 +56,19 @@ class BookSerializer(serializers.ModelSerializer):
         serializer = BookCopySerializer(copies, many=True, context=self.context)
         return serializer.data
 
-    def get_waitlist_users(self, obj):
+    def get_waitlist_items(self, obj):
         if 'library' in self.context:
             waitlist_items = obj.waitlistitem_set.filter(library=self.context['library'])
         else:
             waitlist_items = obj.waitlistitem_set.all()
-        serializer = UserSerializer(list(map(lambda item: item.user, waitlist_items)), many=True)
+        serializer = WaitlistItemSerializer(waitlist_items, many=True)
         return serializer.data
+
+    def get_waitlist_added_date(self, obj):
+        return obj.users_waitlist_added_date(
+            library=self.context.get('library'),
+            user=self.context.get('user'),
+        )
 
     def get_action(self, obj):
         return obj.available_action(
@@ -75,6 +82,14 @@ class BookSerializer(serializers.ModelSerializer):
             'pk': obj.pk,
         }
         return reverse('books-detail', kwargs=url_kwargs, request=self.context['request'])
+
+
+class WaitlistItemSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+
+    class Meta:
+        model = WaitlistItem
+        fields = ('user', 'added_date')
 
 
 class LibraryCompactSerializer(serializers.HyperlinkedModelSerializer):

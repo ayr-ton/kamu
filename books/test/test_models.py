@@ -141,6 +141,23 @@ class BookTestCase(TestCase):
         copies = self.book.bookcopy_set.all()
         self.assertEqual(copies[0].user, self.user2)
 
+    def test_returns_users_waitlist_added_date_none_if_not_exists(self):
+        date = timezone.now()
+        self.book.bookcopy_set.create(library=self.library, user=None)
+        self.book.waitlistitem_set.create(library=self.library, user=self.user2, added_date=date)
+
+        returned_date = self.book.users_waitlist_added_date(user=self.user, library=self.library)
+        self.assertEqual(returned_date, None)
+
+    def test_returns_users_waitlist_added_date_if_exists(self):
+        date = timezone.now()
+        self.book.bookcopy_set.create(library=self.library, user=None)
+        self.book.waitlistitem_set.create(library=self.library, user=self.user, added_date=date)
+        self.book.waitlistitem_set.create(library=self.library, user=self.user2, added_date=timezone.now())
+
+        returned_date = self.book.users_waitlist_added_date(user=self.user, library=self.library)
+        self.assertEqual(returned_date, date)
+
     def assertBookAction(self, type, actual):
         self.assertEqual(type, actual['type'])
 
