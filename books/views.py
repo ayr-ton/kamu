@@ -92,7 +92,6 @@ class LibraryViewSet(FiltersMixin, viewsets.ModelViewSet):
     ordering_fields = ('id', 'name')
     ordering = ('name')
 
-    # add a mapping of query_params to db_columns(queries)
     filter_mappings = {
         'id': 'id',
         'name': 'name__icontains',
@@ -164,10 +163,10 @@ class BookViewSet(FiltersMixin, viewsets.ModelViewSet):
 
     def __serialize_book(self, book, library, request):
         serializer = BookSerializer(book, context={
-                'request': request,
-                'library': library,
-                'user': request.user,
-            })
+            'request': request,
+            'library': library,
+            'user': request.user,
+        })
         return Response(serializer.data)
 
 
