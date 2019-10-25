@@ -108,10 +108,11 @@ If you wish to disable Okta authentication again, execute:
 
 We support Docker =), just go to your favorite console and type:
 ```
-cd docker
-docker-compose build
 docker-compose up
+docker-compose ps #To check which port was assigned to the local container
 ```
+
+Remember to create a `.env` file with all the environment variables you need for spining up the environment.
 
 ## Deployment
 
