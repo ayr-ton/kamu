@@ -3,6 +3,8 @@ import Icon from '@material-ui/core/Icon';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
+import './WaitlistIndicator.css';
+
 function WaitlistIndicator({ addedDate }) {
   const formattedDate = moment(addedDate).format('ll');
   return (
