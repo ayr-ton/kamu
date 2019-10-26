@@ -8,7 +8,11 @@ import './WaitlistIndicator.css';
 function WaitlistIndicator({ addedDate }) {
   const formattedDate = moment(addedDate).format('ll');
   return (
-    <div className="waitlist-indicator" title={`You've been waiting since ${formattedDate}`}>
+    <div
+      className="waitlist-indicator"
+      data-testid="waitlist-indicator"
+      title={`You've been waiting since ${formattedDate}`}
+    >
       <Icon className="fa fa-clock" />
       Waiting since&nbsp;
       {formattedDate}

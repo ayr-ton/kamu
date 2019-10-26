@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { shallow } from 'enzyme';
+import { render } from '@testing-library/react';
 import Button from '@material-ui/core/Button';
 import Book from './Book';
-import WaitlistIndicator from './WaitlistIndicator';
 import {
   someBook,
   someBookWithAvailableCopies,
@@ -63,6 +63,7 @@ Book.contextTypes = {
 
 const defaultContext = { updateUser: jest.fn() };
 const createComponent = (book) => shallow(<Book book={book} library="bh" />, { context: defaultContext });
+const renderComponent = (book) => render(<Book book={book} library="bh" />);
 
 describe('Book', () => {
   beforeEach(() => {
@@ -184,11 +185,10 @@ describe('Book', () => {
 
     it('has a waitlist indicator when book is on users waitlist', async () => {
       const book = someBookThatIsInMyWaitlist();
-      const bookComponent = createComponent(book);
+      const { getByTestId, getByText } = renderComponent(book);
 
-      const indicator = bookComponent.find(WaitlistIndicator);
-      expect(indicator.exists()).toBeTruthy();
-      expect(indicator.props().addedDate).toEqual(book.waitlist_added_date);
+      expect(getByTestId('waitlist-indicator')).toBeDefined();
+      expect(getByText(/Sep 1, 2019/)).toBeDefined();
     });
 
     it('doest not have a waitlist indicator when book is not on users waitlist', async () => {
@@ -199,8 +199,8 @@ describe('Book', () => {
       ];
 
       booksNotOnWaitlist.forEach((book) => {
-        const bookComponent = createComponent(book);
-        expect(bookComponent.find(WaitlistIndicator).exists()).toBeFalsy();
+        const { queryByTestId } = renderComponent(book);
+        expect(queryByTestId('waitlist-indicator')).toBeNull();
       });
     });
   });
