@@ -39,13 +39,6 @@ class Book(models.Model):
         waitlist_item = self.__get_waitlist_query(user=user, library=library).first()
         return waitlist_item.added_date if waitlist_item is not None else None
 
-    def is_first_on_waitlist(self, user, library):
-        waitlist = self.__ordered_waitlist(library)
-        return len(waitlist) > 0 and waitlist.first().user.id is user.id
-
-    def has_waitlist(self, library):
-        return len(self.__ordered_waitlist(library)) > 0
-
     def available_action(self, user, library=None):
         if self.is_borrowed_by_user(user, library):
             return create_book_action(BOOK_RETURN_ACTION)
@@ -88,9 +81,6 @@ class Book(models.Model):
 
     def __get_waitlist_query(self, user, library):
         return self.waitlistitem_set.filter(user=user, library=library)
-
-    def __ordered_waitlist(self, library):
-        return self.waitlistitem_set.filter(library=library).order_by('added_date')
 
 
 class Library(models.Model):

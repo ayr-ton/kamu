@@ -1,8 +1,6 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.utils import timezone
-from datetime import timedelta
-from django.db.utils import IntegrityError
 
 from books.models import Book, BookCopy, Library
 
@@ -18,7 +16,6 @@ class BookTestCase(TestCase):
         self.library2 = Library.objects.create(name="Santiago", slug="slug")
         self.user = User.objects.create(username="claudia", email="claudia@gmail.com")
         self.another_user = User.objects.create(username="Marielle Franco", email="marielle@gmail.com")
-        self.yet_another_user = User.objects.create(username="Anderson Gomes", email="anderson@gmail.com")
 
     def test_can_create_book(self):
         self.assertEqual(self.book.author, "Author")
@@ -145,24 +142,6 @@ class BookTestCase(TestCase):
 
         copies = self.book.bookcopy_set.all()
         self.assertEqual(copies[0].user, self.another_user)
-
-    def test_is_first_on_waitlist_should_return_true_if_user_is_on_waitlist_the_longest(self):
-        self.book.bookcopy_set.create(library=self.library, user=self.user)
-        add_to_waitlist(self.book, self.another_user, self.library, timezone.now())
-        add_to_waitlist(self.book, self.yet_another_user, self.library, timezone.now() - timedelta(days=7))
-
-        self.assertTrue(self.book.is_first_on_waitlist(self.yet_another_user, self.library))
-        self.assertFalse(self.book.is_first_on_waitlist(self.another_user, self.library))
-
-    def test_has_waitlist_should_return_true_book_has_waitlist_items_for_library(self):
-        self.book.bookcopy_set.create(library=self.library, user=self.user)
-        add_to_waitlist(self.book, self.another_user, self.library, timezone.now())
-        add_to_waitlist(self.book, self.yet_another_user, self.library, timezone.now() - timedelta(days=7))
-
-        self.assertTrue(self.book.has_waitlist(self.library))
-
-    def test_has_waitlist_should_return_true_book_has_waitlist_items_for_library(self):
-        self.assertFalse(self.book.has_waitlist(self.library))
 
     def test_returns_users_waitlist_added_date_none_if_not_exists(self):
         date = timezone.now()
