@@ -5,7 +5,7 @@ from django.utils import timezone
 from unittest.mock import patch
 
 from books.models import Book, BookCopy, Library
-from waitlist.models import WaitlistItem
+from waitlist.models import WaitlistItem, Waitlist
 
 
 class WaitlistViewSetTest(TestCase):
@@ -17,9 +17,7 @@ class WaitlistViewSetTest(TestCase):
 
         self.library = Library.objects.create(name="My library", slug="myslug")
         self.book = Book.objects.create(author="Author", title="the title", subtitle="The subtitle")
-        self.base_url = "/api/libraries/" + self.library.slug + \
-            "/books/" + str(self.book.id) + \
-            "/waitlist/"
+        self.base_url = f'/api/libraries/{self.library.slug}/books/{str(self.book.id)}/waitlist/'
 
     def test_should_return_201_response_when_create_item_is_successful(self):
         with patch.object(WaitlistItem, 'create_item', return_value=None) as create_mock:
@@ -61,3 +59,10 @@ class WaitlistViewSetTest(TestCase):
             response = self.client.delete(self.base_url)
 
         self.assertEqual(response.data['action']['type'], 'JOIN_WAITLIST')
+
+    def test_check_should_return_the_corresponding_status(self):
+        with patch.object(Waitlist, 'status_for', return_value='MOCKED_STATUS') as mock:
+            response = self.client.get(f'{self.base_url}check/')
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data['status'], 'MOCKED_STATUS')
