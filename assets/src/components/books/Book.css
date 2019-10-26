@@ -61,11 +61,11 @@
 }
 
 .book .book-title {
-    font-size: 16px;
+    font-size: 1.3em;
 }
 
 .book .book-author {
-    font-size: 12px;
+    font-size: 0.9em;
     font-weight: normal;
     color: #999;
     -webkit-line-clamp: 2;
@@ -79,22 +79,4 @@
 .book .book-actions button {
     width: 100%;
     font-size: 1em;
-}
-
-.book .waitlist-indicator {
-    background-color: var(--book-container-background);
-    color: #999;
-    position: absolute;
-    z-index: 2;
-    right: 0;
-    top: 5px;
-    padding: 2px 6px;
-    font-size: 0.8em;
-    border-radius: 0 0 0 4px;
-}
-
-.book .waitlist-indicator .material-icons {
-    font-size: 15px;
-    vertical-align: text-bottom;
-    margin-right: 5px;
 }
