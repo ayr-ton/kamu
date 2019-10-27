@@ -7,6 +7,7 @@ NO_WAITLIST_STATUS = 'NO_WAITLIST'
 FIRST_ON_WAITLIST_STATUS = 'FIRST_ON_WAITLIST'
 OTHERS_ARE_WAITING_STATUS = 'OTHERS_ARE_WAITING'
 
+
 class Waitlist:
     def __init__(self, book_pk, library_slug):
         book = Book.objects.get(pk=book_pk)
