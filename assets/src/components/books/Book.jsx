@@ -5,6 +5,7 @@ import {
   DialogContent,
   Paper,
   Button,
+  DialogActions,
 } from '@material-ui/core';
 
 import BookDetail from './detail/BookDetail';
@@ -50,7 +51,7 @@ export default class Book extends Component {
   performAction(action, eventCategory) {
     const { book, library } = this.props;
     return action(book).then((response) => {
-      this.setState({ book: response });
+      this.setState({ book: response, confirmationOpen: false });
       this.context.updateUser();
       window.ga('send', 'event', eventCategory, book.title, library);
     });
@@ -141,7 +142,7 @@ export default class Book extends Component {
             </div>
           </div>
 
-          <div className="book-actions">
+          <div className="book-actions" data-testid="book-actions">
             {this.actionButtons()}
           </div>
 
@@ -156,11 +157,19 @@ export default class Book extends Component {
           open={this.state.confirmationOpen}
         >
           <DialogContent dividers>
-            We&#39;ve checked and there are other users who are waiting for this particular book.
-            You might want to check with them, before borrowing it.
+            There are other users who are waiting for this particular book.
+            You might want to check with them before borrowing it.
 
             Do you wish to proceed and borrow this book?
           </DialogContent>
+          <DialogActions>
+            <Button onClick={() => this.setState({ confirmationOpen: false })}>
+              Cancel
+            </Button>
+            <Button onClick={() => this.performAction(borrowBook, 'Borrow')}>
+              Confirm and Borrow
+            </Button>
+          </DialogActions>
         </Dialog>
       </React.Fragment>
     );
