@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { shallow } from 'enzyme';
-import { render } from '@testing-library/react';
+import { render, fireEvent, wait } from '@testing-library/react';
 import Button from '@material-ui/core/Button';
 import Book from './Book';
 import {
@@ -18,7 +18,9 @@ import {
   returnBook,
   joinWaitlist,
   leaveWaitlist,
+  checkWaitlist,
 } from '../../services/BookService';
+import { NO_WAITLIST_STATUS, FIRST_ON_WAITLIST_STATUS, OTHERS_ARE_WAITING_STATUS } from '../../utils/constants';
 
 jest.mock('../../services/BookService');
 jest.mock('../../utils/toggles');
@@ -27,32 +29,32 @@ expect.extend({
   toHaveBorrowButton(received) {
     const button = received.find(Button);
     const pass = button.exists()
-          && button.children().text() === 'Borrow'
-          && button.length === 1;
+      && button.children().text() === 'Borrow'
+      && button.length === 1;
     return { pass, message: () => 'expected component to have a borrow button' };
   },
 
   toHaveReturnButton(received) {
     const button = received.find(Button);
     const pass = button.exists()
-          && button.children().text() === 'Return'
-          && button.length === 1;
+      && button.children().text() === 'Return'
+      && button.length === 1;
     return { pass, message: () => 'expected component to have a return button' };
   },
 
   toHaveJoinWaitlistButton(received) {
     const button = received.find(Button);
     const pass = button.exists()
-          && button.children().text() === 'Join the waitlist'
-          && button.length === 1;
+      && button.children().text() === 'Join the waitlist'
+      && button.length === 1;
     return { pass, message: () => 'expected component to have a join waitlist button' };
   },
 
   toHaveLeaveWaitlistButton(received) {
     const button = received.find(Button);
     const pass = button.exists()
-          && button.children().text() === 'Leave the waitlist'
-          && button.length === 1;
+      && button.children().text() === 'Leave the waitlist'
+      && button.length === 1;
     return { pass, message: () => 'expected component to have a leave waitlist button' };
   },
 });
@@ -69,6 +71,7 @@ describe('Book', () => {
   beforeEach(() => {
     global.window.ga = () => { };
     jest.resetAllMocks();
+    isWaitlistFeatureActive.mockReturnValue(true);
   });
 
   it('should contain the book cover as background image', () => {
@@ -79,32 +82,103 @@ describe('Book', () => {
     expect(bookComponent.find('.book-cover').props().style.backgroundImage).toEqual(`url('${book.image_url}')`);
   });
 
-  it('shows the borrow button when the book has a borrow action', () => {
-    const book = someBookWithAvailableCopies();
-    const bookComponent = createComponent(book);
+  describe('borrowing', () => {
+    it('shows the borrow button when the book has a borrow action', () => {
+      const book = someBookWithAvailableCopies();
+      const { getByText } = renderComponent(book);
 
-    expect(bookComponent).toHaveBorrowButton();
-  });
+      expect(getByText('Borrow')).toBeDefined();
+    });
 
-  it('shows the return button when clicking borrow and API sends return action', async () => {
-    borrowBook.mockResolvedValue(someBookWithACopyFromMe());
-    const book = someBookWithAvailableCopies();
-    const bookComponent = createComponent(book);
+    describe('if waitlist feature is enabled', () => {
+      it('if there is no one on the waitlist, user can borrow it with no further confirmation', async () => {
+        checkWaitlist.mockResolvedValue({ status: NO_WAITLIST_STATUS });
+        borrowBook.mockResolvedValue(someBookWithACopyFromMe());
+        const book = someBookWithAvailableCopies();
 
-    await bookComponent.find(Button).simulate('click');
+        const { getByText } = renderComponent(book);
 
-    expect(bookComponent).toHaveReturnButton();
-  });
+        const button = getByText('Borrow');
+        await fireEvent.click(button);
 
-  it('calls the borrow function when clicking on the borrow button', async () => {
-    borrowBook.mockResolvedValue(someBookWithACopyFromMe());
-    const book = someBookWithAvailableCopies();
-    const bookComponent = createComponent(book);
+        await wait(() => {
+          expect(checkWaitlist).toHaveBeenCalledWith(book);
+          expect(borrowBook).toHaveBeenCalledWith(book);
+          expect(getByText('Return')).toBeDefined();
+        });
+      });
 
-    await bookComponent.find(Button).simulate('click');
+      it('if theyre the first on waitlist, user can borrow it with no further confirmation', async () => {
+        checkWaitlist.mockResolvedValue({ status: FIRST_ON_WAITLIST_STATUS });
+        borrowBook.mockResolvedValue(someBookWithACopyFromMe());
+        const book = someBookWithAvailableCopies();
 
-    expect(borrowBook).toHaveBeenCalledWith(book);
-    expect(defaultContext.updateUser).toHaveBeenCalledTimes(1);
+        const { getByText } = renderComponent(book);
+
+        const button = getByText('Borrow');
+        await fireEvent.click(button);
+
+        await wait(() => {
+          expect(checkWaitlist).toHaveBeenCalledWith(book);
+          expect(borrowBook).toHaveBeenCalledWith(book);
+          expect(getByText('Return')).toBeDefined();
+        });
+      });
+
+      it('if there are users waiting for longer, shows a confirmaition dialog to the user', async () => {
+        checkWaitlist.mockResolvedValue({ status: OTHERS_ARE_WAITING_STATUS });
+        const book = someBookWithAvailableCopies();
+
+        const { getByText } = renderComponent(book);
+
+        const button = getByText('Borrow');
+        await fireEvent.click(button);
+
+        await wait(() => {
+          expect(checkWaitlist).toHaveBeenCalledWith(book);
+          expect(borrowBook).not.toHaveBeenCalled();
+          expect(getByText(/Do you wish to proceed and borrow this book?/)).toBeDefined();
+        });
+      });
+    });
+
+    describe('if waitlist feature is disabled', () => {
+      beforeEach(() => {
+        isWaitlistFeatureActive.mockReturnValue(false);
+      });
+
+      it('shows the return button when clicking borrow and API sends return action', async () => {
+        borrowBook.mockResolvedValue(someBookWithACopyFromMe());
+        const book = someBookWithAvailableCopies();
+        const bookComponent = createComponent(book);
+
+        await bookComponent.find(Button).simulate('click');
+
+        expect(bookComponent).toHaveReturnButton();
+      });
+
+      it('calls the borrow function when clicking on the borrow button if the book has no waitlist', async () => {
+        borrowBook.mockResolvedValue(someBookWithACopyFromMe());
+        const book = someBookWithAvailableCopies();
+        const bookComponent = createComponent(book);
+
+        await bookComponent.find(Button).simulate('click');
+
+        expect(borrowBook).toHaveBeenCalledWith(book);
+        expect(defaultContext.updateUser).toHaveBeenCalledTimes(1);
+      });
+
+      it('calls the borrow function when clicking on the borrow button', async () => {
+        borrowBook.mockResolvedValue(someBookWithACopyFromMe());
+        const book = someBookWithAvailableCopies();
+        const bookComponent = createComponent(book);
+
+        await bookComponent.find(Button).simulate('click');
+
+        expect(borrowBook).toHaveBeenCalledWith(book);
+        expect(defaultContext.updateUser).toHaveBeenCalledTimes(1);
+      });
+    });
   });
 
   it('shows the return button when the book has a return action', () => {
