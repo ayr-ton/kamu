@@ -38,7 +38,7 @@ class WaitlistViewSet(FiltersMixin, viewsets.ModelViewSet):
     @action(detail=False, methods=['get'])
     def check(self, request, library_slug=None, book_pk=None):
         return Response({
-            'status': Waitlist(book_pk,library_slug).status_for(request.user),
+            'status': Waitlist(book_pk, library_slug).status_for(request.user),
         }, status=200)
 
     def delete(self, request, library_slug=None, book_pk=None):
