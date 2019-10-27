@@ -27,7 +27,7 @@ jest.mock('../../utils/toggles');
 
 expect.extend({
   toHaveBorrowButton(received) {
-    const button = received.find(Button);
+    const button = findByTestID(received, 'book-actions').find(Button);
     const pass = button.exists()
       && button.children().text() === 'Borrow'
       && button.length === 1;
@@ -35,7 +35,7 @@ expect.extend({
   },
 
   toHaveReturnButton(received) {
-    const button = received.find(Button);
+    const button = findByTestID(received, 'book-actions').find(Button);
     const pass = button.exists()
       && button.children().text() === 'Return'
       && button.length === 1;
@@ -43,7 +43,7 @@ expect.extend({
   },
 
   toHaveJoinWaitlistButton(received) {
-    const button = received.find(Button);
+    const button = findByTestID(received, 'book-actions').find(Button);
     const pass = button.exists()
       && button.children().text() === 'Join the waitlist'
       && button.length === 1;
@@ -51,7 +51,7 @@ expect.extend({
   },
 
   toHaveLeaveWaitlistButton(received) {
-    const button = received.find(Button);
+    const button = findByTestID(received, 'book-actions').find(Button);
     const pass = button.exists()
       && button.children().text() === 'Leave the waitlist'
       && button.length === 1;
@@ -108,7 +108,7 @@ describe('Book', () => {
         });
       });
 
-      it('if theyre the first on waitlist, user can borrow it with no further confirmation', async () => {
+      it('if they\'re the first on waitlist, user can borrow it with no further confirmation', async () => {
         checkWaitlist.mockResolvedValue({ status: FIRST_ON_WAITLIST_STATUS });
         borrowBook.mockResolvedValue(someBookWithACopyFromMe());
         const book = someBookWithAvailableCopies();
@@ -125,19 +125,59 @@ describe('Book', () => {
         });
       });
 
-      it('if there are users waiting for longer, shows a confirmaition dialog to the user', async () => {
+      it('if there are users waiting for longer, shows a confirmation dialog to the user', async () => {
         checkWaitlist.mockResolvedValue({ status: OTHERS_ARE_WAITING_STATUS });
         const book = someBookWithAvailableCopies();
 
         const { getByText } = renderComponent(book);
 
         const button = getByText('Borrow');
-        await fireEvent.click(button);
+        fireEvent.click(button);
 
         await wait(() => {
           expect(checkWaitlist).toHaveBeenCalledWith(book);
           expect(borrowBook).not.toHaveBeenCalled();
           expect(getByText(/Do you wish to proceed and borrow this book?/)).toBeDefined();
+        });
+      });
+
+      it('if users confirms it, book is borrowed', async () => {
+        checkWaitlist.mockResolvedValue({ status: OTHERS_ARE_WAITING_STATUS });
+        borrowBook.mockResolvedValue(someBookWithACopyFromMe());
+        const book = someBookWithAvailableCopies();
+
+        const { getByText, findByText, queryByText } = renderComponent(book);
+
+        const button = getByText('Borrow');
+        fireEvent.click(button);
+
+        const confirmButton = await findByText('Confirm and Borrow');
+        fireEvent.click(confirmButton);
+
+        await wait(() => {
+          expect(borrowBook).toHaveBeenCalledWith(book);
+          expect(getByText('Return')).toBeDefined();
+          expect(queryByText(/Do you wish to proceed and borrow this book?/)).toBeNull();
+        });
+      });
+
+      it('if users cancels it, book is not borrowed and confirmation dialog is closed', async () => {
+        checkWaitlist.mockResolvedValue({ status: OTHERS_ARE_WAITING_STATUS });
+        borrowBook.mockResolvedValue(someBookWithACopyFromMe());
+        const book = someBookWithAvailableCopies();
+
+        const { findByText, queryByText } = renderComponent(book);
+
+        const button = await findByText('Borrow');
+        fireEvent.click(button);
+
+        const cancelButton = await findByText('Cancel');
+        fireEvent.click(cancelButton);
+
+        await wait(() => {
+          expect(borrowBook).not.toHaveBeenCalled();
+          expect(findByText('Borrow')).toBeDefined();
+          expect(queryByText(/Do you wish to proceed and borrow this book?/)).toBeNull();
         });
       });
     });
@@ -152,7 +192,7 @@ describe('Book', () => {
         const book = someBookWithAvailableCopies();
         const bookComponent = createComponent(book);
 
-        await bookComponent.find(Button).simulate('click');
+        await findByTestID(bookComponent, 'book-actions').find(Button).simulate('click');
 
         expect(bookComponent).toHaveReturnButton();
       });
@@ -162,7 +202,7 @@ describe('Book', () => {
         const book = someBookWithAvailableCopies();
         const bookComponent = createComponent(book);
 
-        await bookComponent.find(Button).simulate('click');
+        await findByTestID(bookComponent, 'book-actions').find(Button).simulate('click');
 
         expect(borrowBook).toHaveBeenCalledWith(book);
         expect(defaultContext.updateUser).toHaveBeenCalledTimes(1);
@@ -173,7 +213,7 @@ describe('Book', () => {
         const book = someBookWithAvailableCopies();
         const bookComponent = createComponent(book);
 
-        await bookComponent.find(Button).simulate('click');
+        await findByTestID(bookComponent, 'book-actions').find(Button).simulate('click');
 
         expect(borrowBook).toHaveBeenCalledWith(book);
         expect(defaultContext.updateUser).toHaveBeenCalledTimes(1);
@@ -193,7 +233,7 @@ describe('Book', () => {
     const book = someBookWithACopyFromMe();
     const bookComponent = createComponent(book);
 
-    await bookComponent.find(Button).simulate('click');
+    await findByTestID(bookComponent, 'book-actions').find(Button).simulate('click');
 
     expect(bookComponent).toHaveBorrowButton();
   });
@@ -203,7 +243,7 @@ describe('Book', () => {
     const book = someBookWithACopyFromMe();
     const bookComponent = createComponent(book);
 
-    await bookComponent.find(Button).simulate('click');
+    await findByTestID(bookComponent, 'book-actions').find(Button).simulate('click');
 
     expect(returnBook).toHaveBeenCalledWith(book);
     expect(defaultContext.updateUser).toHaveBeenCalledTimes(1);
@@ -213,7 +253,7 @@ describe('Book', () => {
     const book = someBook([], [], null);
     const bookComponent = createComponent(book);
 
-    expect(bookComponent.find(Button).exists()).toBeFalsy();
+    expect(findByTestID(bookComponent, 'book-actions').find(Button).exists()).toBeFalsy();
   });
 
   describe('if waitlist feature is enabled', () => {
@@ -233,7 +273,7 @@ describe('Book', () => {
       const book = someBookThatCanBeAddedToWaitlist();
       const bookComponent = createComponent(book);
 
-      await bookComponent.find(Button).simulate('click');
+      await findByTestID(bookComponent, 'book-actions').find(Button).simulate('click');
 
       expect(joinWaitlist).toHaveBeenCalledWith(book);
       expect(bookComponent).toHaveLeaveWaitlistButton();
@@ -251,7 +291,7 @@ describe('Book', () => {
       const book = someBookThatIsInMyWaitlist();
       const bookComponent = createComponent(book);
 
-      await bookComponent.find(Button).simulate('click');
+      await findByTestID(bookComponent, 'book-actions').find(Button).simulate('click');
 
       expect(leaveWaitlist).toHaveBeenCalledWith(book);
       expect(bookComponent).toHaveJoinWaitlistButton();
