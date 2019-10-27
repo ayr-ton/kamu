@@ -6,7 +6,10 @@ import {
   Paper,
   Button,
   DialogActions,
+  Icon,
+  DialogTitle,
 } from '@material-ui/core';
+import moment from 'moment';
 
 import BookDetail from './detail/BookDetail';
 import WaitlistIndicator from './WaitlistIndicator';
@@ -156,17 +159,33 @@ export default class Book extends Component {
           aria-labelledby="confirmation-dialog-title"
           open={this.state.confirmationOpen}
         >
-          <DialogContent dividers>
-            There are other users who are waiting for this particular book.
-            You might want to check with them before borrowing it.
+          <DialogTitle className="confirmationTitle">
+            <Icon className="fa fa-clock" />
+          </DialogTitle>
+          <DialogContent className="confirmationContent">
+            <p>
+              There are other users who are waiting for this particular book.
+               You might want to check with them before borrowing it.
+            </p>
 
-            Do you wish to proceed and borrow this book?
+            <p data-testid="waitlist-users">
+              {'Users on the wait list: '}
+              <strong>
+                {book.waitlist_items.sort(((oneItem, anotherItem) => (
+                  moment(oneItem.added_date).diff(anotherItem.added_date)
+                ))).map((item) => (
+                  (item.user.name && item.user.name.trim() !== '' && item.user.name) || item.user.username
+                )).join(', ')}
+              </strong>
+            </p>
+
+            <p>Do you wish to proceed and borrow this book?</p>
           </DialogContent>
           <DialogActions>
             <Button onClick={() => this.setState({ confirmationOpen: false })}>
               Cancel
             </Button>
-            <Button onClick={() => this.performAction(borrowBook, 'Borrow')}>
+            <Button color="primary" onClick={() => this.performAction(borrowBook, 'Borrow')}>
               Confirm and Borrow
             </Button>
           </DialogActions>
