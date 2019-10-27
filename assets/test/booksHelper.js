@@ -1,4 +1,4 @@
-import { currentUser, someUser } from './userHelper';
+import { currentUser, someUser, someOtherUser } from './userHelper';
 import {
   BORROW_BOOK_ACTION, RETURN_BOOK_ACTION, JOIN_WAITLIST_BOOK_ACTION, LEAVE_WAITLIST_BOOK_ACTION,
 } from '../src/utils/constants';
@@ -74,9 +74,27 @@ export const someBookThatIsInMyWaitlist = () => someBook(
     borrow_date: '2019-03-07',
   }],
   [{
+    user: someUser,
+    added_date: '2018-09-01T19:19:08.108170Z',
+  }, {
     user: currentUser,
     added_date: '2019-09-01T19:19:08.108170Z',
   }],
   leaveWaitlistAction,
   '2019-09-01T19:19:08.108170Z',
+);
+
+export const someAvailableBookThatOthersAreInWaitlist = () => someBook(
+  [{
+    id: 1,
+    user: null,
+  }],
+  [{
+    user: someOtherUser,
+    added_date: '2019-09-01T19:19:08.108170Z',
+  }, {
+    user: someUser,
+    added_date: '2018-09-01T19:19:08.108170Z',
+  }],
+  borrowAction,
 );

@@ -80,3 +80,13 @@
     width: 100%;
     font-size: 1em;
 }
+
+div .confirmationTitle {
+    text-align: center;
+    opacity: 0.5;
+    padding-bottom: 0;
+}
+
+div .confirmationContent {
+    padding-bottom: 10px;
+}

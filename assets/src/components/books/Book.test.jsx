@@ -11,6 +11,7 @@ import {
   someBookWithACopyFromMe,
   someBookThatCanBeAddedToWaitlist,
   someBookThatIsInMyWaitlist,
+  someAvailableBookThatOthersAreInWaitlist,
 } from '../../../test/booksHelper';
 import { isWaitlistFeatureActive } from '../../utils/toggles';
 import {
@@ -127,17 +128,20 @@ describe('Book', () => {
 
       it('if there are users waiting for longer, shows a confirmation dialog to the user', async () => {
         checkWaitlist.mockResolvedValue({ status: OTHERS_ARE_WAITING_STATUS });
-        const book = someBookWithAvailableCopies();
+        const book = someAvailableBookThatOthersAreInWaitlist();
 
-        const { getByText } = renderComponent(book);
+        const { getByText, getByTestId } = renderComponent(book);
 
         const button = getByText('Borrow');
         fireEvent.click(button);
 
         await wait(() => {
+          expect(getByTestId('waitlist-users').textContent).toEqual(
+            'Users on the wait list: someuser@example.com, someotheruser@example.com',
+          );
+          expect(getByText(/Do you wish to proceed and borrow this book?/)).toBeDefined();
           expect(checkWaitlist).toHaveBeenCalledWith(book);
           expect(borrowBook).not.toHaveBeenCalled();
-          expect(getByText(/Do you wish to proceed and borrow this book?/)).toBeDefined();
         });
       });
 
