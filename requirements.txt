@@ -50,3 +50,4 @@ drf-nested-routers==0.91
 dj-database-url==0.5.0
 python-decouple==3.1
 django-import-export==1.2.0
+celery[redis]==4.3.0
