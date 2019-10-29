@@ -159,10 +159,10 @@ export default class Book extends Component {
           aria-labelledby="confirmation-dialog-title"
           open={this.state.confirmationOpen}
         >
-          <DialogTitle className="confirmationTitle">
+          <DialogTitle className="confirmation-title">
             <Icon className="fa fa-clock" />
           </DialogTitle>
-          <DialogContent className="confirmationContent">
+          <DialogContent className="confirmation-content">
             <p>
               There are other users who are waiting for this particular book.
                You might want to check with them before borrowing it.

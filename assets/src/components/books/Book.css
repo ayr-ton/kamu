@@ -81,12 +81,12 @@
     font-size: 1em;
 }
 
-div .confirmationTitle {
+div .confirmation-title {
     text-align: center;
     opacity: 0.5;
     padding-bottom: 0;
 }
 
-div .confirmationContent {
+div .confirmation-content {
     padding-bottom: 10px;
 }
