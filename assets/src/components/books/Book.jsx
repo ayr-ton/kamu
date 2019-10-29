@@ -156,7 +156,6 @@ export default class Book extends Component {
           disableBackdropClick
           disableEscapeKeyDown
           maxWidth="xs"
-          aria-labelledby="confirmation-dialog-title"
           open={this.state.confirmationOpen}
         >
           <DialogTitle className="confirmation-title">
