@@ -4,7 +4,7 @@
 
 [![Build Status](https://circleci.com/gh/ayr-ton/kamu.svg?style=svg)](https://circleci.com/gh/ayr-ton/kamu) [![Test Coverage](https://api.codeclimate.com/v1/badges/a16bb5d5b3c9e9557b2f/test_coverage)](https://codeclimate.com/github/ayr-ton/kamu/test_coverage) [![Maintainability](https://api.codeclimate.com/v1/badges/a16bb5d5b3c9e9557b2f/maintainability)](https://codeclimate.com/github/ayr-ton/kamu/maintainability)
 
-Join the Telegram contributors chat at https://t.me/joinchat/AfhaV0XSlMRVFfS4rZaVAw
+Join the Telegram contributors chat at https://t.me/joinchat/AfhaV0XSlMTeaWgWcqALcQ
 
 Kamu is an application that focus on managing a physical library where you can add books, borrow and return them.
 
@@ -15,21 +15,17 @@ In the main page you can see the libraries shared between users. The libraries c
 ## Requirements
 
 - Python 3.6+ for Django backend
-- Node.js 6.10+ for frontend assets
+- Node.js 8+ for frontend assets
 
 ## Installation / Getting started
 
 Here is a quick step-by-step minimal setup, to get the app up and running in your local workstation:
 
 ### MacOS specific
-To install node.js and its package manager ```npm``` you can either download it from the [node.js homepage](https://nodejs.org/en/download/) or use a package manager like:
-- [homebrew](https://brew.sh)
+To install Node.js and npm you can either download it from the [node.js homepage](https://nodejs.org/en/download/) or install it using [homebrew](https://brew.sh):
+
 ```shell
 brew install node
-```
-- [macports](https://www.macports.org/install.php)
-```shell
-port install nodejs
 ```
 
 ### Platform independent
@@ -69,7 +65,7 @@ Create a super user:
 python manage.py createsuperuser
 ```
 
-You will use this super user to login as administrator in your local kamu application.
+You will use this super user to login as administrator in your local Kamu application.
 
 
 Seed the database with initial dump data:
@@ -81,17 +77,16 @@ python manage.py loaddata dump_data/*.json
 Start your local server:
 
 ```shell
-npm run-script start
+npm start
 ```
 
 Now just go to [http://localhost:8000](http://localhost:8000) in your browser :)
 
-**For setup local with authenticate with Okta Preview:**
-Use the "OKTA_METADATA_URL='url-of-okta-saml'" concatenating with the python's commands:
+**For local setup with Okta authentication:**
+Use the `OKTA_METADATA_URL` environment variable, concatenating it with the usual commands. Examples:
 
 ```shell
-  Examples:
-  OKTA_METADATA_URL='url-of-okta-saml' npm run-script start
+  OKTA_METADATA_URL='url-of-okta-saml' npm start
   OKTA_METADATA_URL='url-of-okta-saml' python manage.py migrate
 ```
 
@@ -99,25 +94,27 @@ Another way is to export the var and then execute the commands:
 
 ```shell
   export OKTA_METADATA_URL='url-of-okta-saml'
-  npm run-script start
+  npm start
   python manage.py migrate
 ```
-In case of need authenticate without Okta preview again, execute:
+
+If you wish to disable Okta authentication again, execute:
 
 ```shell
   unset OKTA_METADATA_URL
 ```
 
-## Executing using docker for local development
+## Executing using Docker for local development
 
-We now support Docker =), just go to your favorite console and type:
+We support Docker =), just go to your favorite console and type:
 ```
-cd docker
-docker-compose build
 docker-compose up
+docker-compose ps #To check which port was assigned to the local container
 ```
 
-## Deployment 
+Remember to create a `.env` file with all the environment variables you need for spining up the environment.
+
+## Deployment
 
 We have out of the box support for [Heroku :dragon:](https://www.heroku.com/) and [Dokku :whale:](http://dokku.viewdocs.io/dokku/)
 
@@ -129,10 +126,12 @@ Now, we need the following environment variables before running Kamu for the fir
 ```shell
 SECRET_KEY="django-secret-key" # https://duckduckgo.com/?q=django+secret+key+generator
 DEBUG="true" # Or false, depending if is a testing or production app
-DJANGO_SETTINGS_MODULE="kamu.prod_settings" # If you plan to run a testing version with sqlite, this is not necessary
-DATABASE_URL="" # This variable should be automatically configured by the postgres extension. See prod_settings.py for reference.
+DJANGO_SETTINGS_MODULE="kamu.settings.prod" # If you plan to run a testing version with sqlite, this is not necessary
+DATABASE_URL="" # This variable should be automatically configured by the postgres extension. See settings/prod.py for reference.
 ALLOWED_HOSTS="kamu.example.com" # At this moment, only one domain is supported
-OKTA_METADATA_URL="SECRET-OKTA-STUFF" # On the case of Okta Authentication support 
+OKTA_METADATA_URL="SECRET-OKTA-STUFF" # On the case of Okta Authentication support
+ANALYTICS_ACCOUNT_ID="UA-123456789-1" # Only if you want to enable Google Analytics, otherwise don't set it
+SENTRY_DSN="SECRET-SENTRY-DSN" # Only if you want to enable Sentry, otherwise don't set it
 ```
 See [Dokku environment variables](http://dokku.viewdocs.io/dokku/configuration/environment-variables/) or [Heroku Config Vars](https://devcenter.heroku.com/articles/config-vars) for more details.
 
@@ -140,6 +139,6 @@ On non Okta based deployments, you should run either `dokku run kamu /bin/bash` 
 ```shell
 python manage.py createsuperuser
 ```
-See [#74](https://github.com/ayr-ton/kamu/issues/74) 
+See [#74](https://github.com/ayr-ton/kamu/issues/74)
 
 ![Thanks!](http://gifgifmagazine.com/wp-content/uploads/2018/11/macka-daj-pet-jea.gif)

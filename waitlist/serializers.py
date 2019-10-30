@@ -1,13 +1,13 @@
 from rest_framework import serializers
 
-from books.serializers import UserSerializer, BookCompactSerializer, LibrarySerializer
+from books.serializers import UserSerializer, BookSerializer, LibrarySerializer
 from waitlist.models import WaitlistItem
 
 
 class WaitlistItemSerializer(serializers.ModelSerializer):
     user = UserSerializer()
     library = LibrarySerializer()
-    book = BookCompactSerializer()
+    book = BookSerializer()
     added_date = serializers.DateTimeField()
 
     class Meta:

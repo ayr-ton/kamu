@@ -9,9 +9,7 @@ function isDevelopmentEnvironment(){
 
 function buildEntry(){
   entry = {
-    app: [ './src/index.js'],
-    home: [ './src/home/index.js'],
-    libraries: [ './src/libraries/index.js' ]
+    app: [ './src/index.jsx' ],
   }
 
   if (isDevelopmentEnvironment()) {
@@ -48,12 +46,13 @@ module.exports = {
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
       }),
+      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     ],
 
     module: {
       rules: [
         {
-          test: /\.js$/,
+          test: /\.js(x)?$/,
           exclude: /node_modules/,
           loader: 'babel-loader',
           query: {
@@ -72,6 +71,8 @@ module.exports = {
 
     resolve: {
       modules: ['node_modules'],
-      extensions: ['.js']
-    }
+      extensions: ['.js', '.jsx']
+    },
+
+    mode: process.env.NODE_ENV || 'development'
 };

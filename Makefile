@@ -3,8 +3,13 @@ prod:
 	python manage.py collectstatic --noinput
 
 dev:
-	npm run-script start
+	npm start
 
-sync-upstream:
-	@git fetch upstream
-	@git rebase upstream/master
+test-backend:
+	DJANGO_SETTINGS_MODULE=kamu.settings.test \
+	coverage run manage.py test
+
+test-frontend:
+	npm test
+
+test: test-backend test-frontend

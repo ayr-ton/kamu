@@ -1,0 +1,161 @@
+.dialog-book {
+  width: 100%;
+  height: 100%;
+}
+
+.modal-book {
+  display: flex;
+  flex-flow: row;
+}
+
+.modal-book__close {
+  padding: 0 !important;
+}
+
+.modal-book__image-box {
+  width: 20%;
+  display: flex;
+  flex-flow: column;
+  justify-content: flex-start;
+  align-items: left;
+}
+
+.modal-book__image {
+  width: 90%;
+}
+
+.modal-book__details {
+  width: 80%;
+}
+
+.modal-book__title {
+  font-size: 2em;
+  font-weight: bold;
+  line-height: 1.1em;
+}
+
+.modal-book__author {
+  font-size: 1.3em;
+  margin-top: 1em;
+}
+
+.modal-book__details-container {
+  display: flex;
+  flex-flow: row;
+  margin: 1em 0;
+}
+
+.modal-book__available-wrapper {
+  background-color: var(--availability-container-background);
+  margin-right: 1em;
+  border-radius: 0.8em;
+  padding: 0.5em 1.3em;
+}
+
+.modal-book__detail-label {
+  font-size: 0.8em;
+  margin-bottom: 2px;
+}
+
+.modal-book__detail-value {
+  font-size: 0.9em;
+  font-weight: bold;
+}
+
+.modal-book__publisher-name{
+  margin-right: 1em;
+}
+
+.modal-book__publication-date{
+  margin-right: 1em;
+}
+
+.modal-book__borrowed-with-label{
+  display: flex;
+  flex-flow: row;
+  font-weight: bold;
+  margin-bottom: 0.3em;
+}
+
+.modal-book__description-wrapper {
+  margin-bottom: 1em;
+}
+
+.modal-book__borrowed-person{
+  margin-right: 1em;
+  display: flex;
+}
+.modal-book__borrowed-person img {
+  margin-right: 5px;
+}
+.modal-book__borrowed-person span {
+    display: inline-flex;
+    align-items: center;
+    height: 40px;
+}
+
+.modal-book__borrowed-informations {
+  margin-right: 4em;
+}
+
+.modal-book__borrowed-elapsed-time{
+  background-color: #5c5c5c;
+  color: white;
+  font-size: 0.9em;
+  padding: 0.4em;
+  margin-right: 1.0em;
+}
+
+.modal-book__publisher-wrapper {
+  background-color: var(--publisher-container-background);
+  display: flex;
+  flex-flow: row;
+  margin-right: 1em;
+  border-radius: 0.8em;
+  padding: 0.5em 1.3em;
+}
+
+.modal-book__status {
+  display: flex;
+  flex-flow: row;
+}
+
+.modal-book__description {
+  font-weight: 1.1em;
+}
+
+.modal-book__goodreads {
+  margin-top: 10px;
+}
+
+.modal-book__borrowed-with-wrapper {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.modal-book__borrowed-elapsed-time {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+
+.modal-book__waitlist-label {
+  display: flex;
+}
+
+.modal-book__waitlist-amount {
+  margin-left: 3px;  
+}
+
+.modal-book__borrowed-with {
+  margin-bottom: 10px;
+}
+
+.modal-book__actions-buttons {
+  margin: 10px 0px;
+  width: 90%;
+}
+
+.modal-book__actions-buttons button {
+  width: 100%;
+}

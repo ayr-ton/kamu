@@ -1,0 +1,28 @@
+.my-books {
+  margin-top: 100px;
+}
+
+.my-books section {
+  margin: 1em;
+}
+
+.no-books-message {
+  margin: 20px 10px 50px;
+  font-size: 1.5em;
+  color: var(--secondary-text-color);
+}
+
+.my-books .book-list {
+  flex-wrap: nowrap;
+  overflow-x: scroll;
+  justify-content: flex-start;
+  scrollbar-width: none;
+}
+
+.my-books .book-list::-webkit-scrollbar {
+  display: none;
+}
+
+.my-books .book-list .book {
+  flex-shrink: 0;
+}

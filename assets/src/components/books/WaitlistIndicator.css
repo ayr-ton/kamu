@@ -1,0 +1,17 @@
+.waitlist-indicator {
+    background-color: var(--book-container-background);
+    color: #999;
+    position: absolute;
+    z-index: 2;
+    right: 0;
+    top: 5px;
+    padding: 2px 6px;
+    font-size: 0.8em;
+    border-radius: 0 0 0 4px;
+}
+
+.waitlist-indicator .material-icons {
+    font-size: 1.3em;
+    vertical-align: text-bottom;
+    margin-right: 5px;
+}

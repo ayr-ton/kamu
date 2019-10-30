@@ -14,7 +14,6 @@ from waitlist.views import WaitlistViewSet
 router = routers.DefaultRouter()
 
 router.register(r'libraries', views.LibraryViewSet)
-router.register(r'copies', views.BookCopyViewSet)
 
 library_routers = routers.NestedSimpleRouter(router, r'libraries', lookup='library')
 library_routers.register(r'books', views.BookViewSet, base_name='books')
@@ -22,22 +21,24 @@ library_routers.register(r'books', views.BookViewSet, base_name='books')
 book_routers = routers.NestedSimpleRouter(library_routers, r'books', lookup='book')
 book_routers.register(r'waitlist', WaitlistViewSet, base_name='waitlist')
 
-urlpatterns = [
-    url(r'^$', login_required(TemplateView.as_view(template_name='home.html'))),
-    url(r'^libraries/(?P<slug>.+)/', login_required(TemplateView.as_view(template_name='libraries.html'))),
+if os.environ.get("OKTA_METADATA_URL") is None:
+    login_routes = [ url(r'^accounts/login', admin.site.login) ]
+else:
+    login_routes = [
+        url(r'^accounts/login', django_saml2_auth.views.signin),
+        url(r'^admin/login/$', django_saml2_auth.views.signin),
+        url(r'^okta-login/', include('django_saml2_auth.urls')),
+    ]
+
+urlpatterns = login_routes + [
+    url(r'^admin$', RedirectView.as_view(url = '/admin/')),
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include(router.urls)),
     url(r'^api/', include(library_routers.urls)),
     url(r'^api/', include(book_routers.urls)),
-    url(r'^api/profile', views.UserView.as_view()),
-    url(r'^api/copies/(?P<id>.+)/borrow', views.BookCopyBorrowView.as_view()),
-    url(r'^api/copies/(?P<id>.+)/return', views.BookCopyReturnView.as_view()),
-    url(r'^favicon\.ico$', RedirectView.as_view(url=settings.STATIC_URL + 'images/favicon.ico'))
+    url(r'^api/profile/?$', views.UserView.as_view()),
+    url(r'^api/profile/books', views.UserBooksView.as_view()),
+    url(r'^api/profile/waitlist', views.UserWaitlistView.as_view()),
+    url(r'^favicon\.ico$', RedirectView.as_view(url=settings.STATIC_URL + 'images/favicon.ico')),
+    url(r'', login_required(views.FrontendView.as_view())),
 ]
-
-if os.environ.get("OKTA_METADATA_URL") is None:
-    urlpatterns.append(url(r'^accounts/login', admin.site.login))
-else:
-    urlpatterns.append(url(r'^accounts/login', django_saml2_auth.views.signin))
-    urlpatterns.append(url(r'^admin/login/$', django_saml2_auth.views.signin))
-    urlpatterns.append(url(r'^okta-login/', include('django_saml2_auth.urls')))

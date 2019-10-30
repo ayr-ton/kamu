@@ -1,0 +1,21 @@
+.error-boundary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  height: 100vh;
+  padding: 2em;
+  color: var(--error-boundary-color);
+  text-align: center;
+}
+
+.error-boundary__logo {
+  opacity: 0.3;
+  width: 20em;
+  max-width: 100%;
+}
+
+.error-boundary__title {
+  font-weight: normal;
+}

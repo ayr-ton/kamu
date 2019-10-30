@@ -1,6 +1,0 @@
-OKTA_METADATA_URL=https://okta_metadata_url.example.com
-DJANGO_EMAIL_HOST=localhost
-DJANGO_EMAIL_PORT=2525
-DJANGO_EMAIL_TIMEOUT=1
-DJANGO_EMAIL_CRON_FROM=example@domain.com
-NODE_ENV=local

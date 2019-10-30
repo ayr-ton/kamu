@@ -4,6 +4,20 @@
     "es2015"
   ],
   "plugins": [
-    "transform-async-to-generator"
-  ]
+    "transform-async-to-generator",
+    "babel-plugin-transform-runtime",
+    "babel-plugin-transform-object-rest-spread"
+  ],
+  "env": {
+    "production": {
+      "plugins": [
+        [
+          "babel-plugin-remove-attribute",
+          {
+            "attribute": "data-testid"
+          }
+        ]
+      ]
+    }
+  }
 }

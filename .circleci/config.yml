@@ -50,17 +50,17 @@ jobs:
       - run:
           command: |
               . venv/bin/activate
-              coverage run manage.py test
+              DJANGO_SETTINGS_MODULE=kamu.settings.test coverage run manage.py test
               coverage xml
               ./tmp/cc-test-reporter format-coverage -t coverage.py -o tmp/codeclimate.backend.json coverage.xml
       - persist_to_workspace:
           root: tmp
-          paths: 
+          paths:
             - codeclimate.backend.json
   frontend-tests:
     <<: *defaults
     docker:
-      - image: circleci/node:7
+      - image: circleci/node:8
     steps:
       - checkout
       - attach_workspace:
@@ -74,10 +74,10 @@ jobs:
           paths:
             - ./node_modules
       - run:
-          command: npm run-script lint
+          command: npm run lint
       - run:
           command: |
-              npm run-script test
+              npm test
               ./tmp/cc-test-reporter format-coverage -t lcov -o tmp/codeclimate.frontend.json coverage/lcov.info
       - persist_to_workspace:
           root: tmp
@@ -108,9 +108,6 @@ workflows:
           requires:
              - backend-tests
              - frontend-tests
-          filters:
-             branches:
-               only: master
   nightly:
     jobs:
       - security-checks

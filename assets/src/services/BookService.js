@@ -1,68 +1,23 @@
-import Book from '../models/Book';
-import {fetchFromAPI} from './helpers';
+import fetchFromAPI from './helpers';
 
-const formatBooksRequest = (data) => {
-    let books = [];
+export const getLibraries = () => fetchFromAPI('/libraries/');
 
-    for (const bookJson of data.results) {
-        let book = Object.assign(new Book(), bookJson);
-        books.push(book);
-    }
+export const getBooksByPage = (librarySlug, page, filter = '') => fetchFromAPI(`/libraries/${librarySlug}/books/?page=${page}&book_title=${filter}&book_author=${filter}`).then((data) => {
+  if (!data.results) {
+    throw new Error('Request to load books did not have results');
+  }
 
-    return {
-        count: data.count,
-        next: data.next,
-        previous: data.previous,
-        results: books
-    };
-};
+  return data;
+});
 
-export default class BookService {
-    getLibraries() {
-        return fetchFromAPI('/libraries').then(data => {
-            return data;
-        });
-    }
+export const getMyBooks = () => fetchFromAPI('/profile/books');
 
-    getBooksByPage(librarySlug, page, filter = "") {
-        return fetchFromAPI(`/libraries/${librarySlug}/books/?page=${page}&book_title=${filter}&book_author=${filter}`).then(data => {
+export const getWaitlistBooks = () => fetchFromAPI('/profile/waitlist');
 
-            // If data has no results, returns an empty array
-            if (!data.results) {
-                return null;
-            }
+export const borrowBook = (book) => fetchFromAPI(`${book.url}borrow/`, 'POST');
 
-            return formatBooksRequest(data);
-        });
-    }
+export const returnBook = (book) => fetchFromAPI(`${book.url}return/`, 'POST');
 
-    borrowCopy(book) {
-        const copyID = book.getAvailableCopyID();
-        return fetchFromAPI(`/copies/${copyID}/borrow`, 'POST').then(() => {
-            for (let copy of book.copies) {
-                if (copy.id == copyID) {
-                    copy.user = currentUser;
-                    return true;
-                }
-            }
-            return false;
-        }).catch(() => {
-            return false;
-        });
-    }
+export const joinWaitlist = (book) => fetchFromAPI(`${book.url}waitlist/`, 'POST');
 
-    returnBook(book) {
-        const copyID = book.getBorrowedCopyID();
-        return fetchFromAPI(`/copies/${copyID}/return`, 'POST').then(() => {
-            for (let copy of book.copies) {
-                if (copy.id == copyID) {
-                    copy.user = null;
-                    return true;
-                }
-            }
-            return false;
-        }).catch(() => {
-            return false;
-        });
-    }
-}
+export const leaveWaitlist = (book) => fetchFromAPI(`${book.url}waitlist/`, 'DELETE');

@@ -1,0 +1,82 @@
+
+.book {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 190px;
+    margin: 15px 10px;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    background-color: var(--book-container-background);
+}
+
+.book .book-cover {
+    height: 270px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    margin: 5px;
+    background-size: cover;
+    background-position: center top;
+}
+
+.book .book-cover img {
+    width: 100%;
+    z-index: 1;
+}
+
+.book .book-cover .book-cover-overlay {
+    background-color: #000000;
+    opacity: 0;
+    transition: 0.1s linear;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 2;
+}
+
+.book:hover .book-cover-overlay {
+    opacity: 0.6;
+}
+
+.book .book-details {
+    margin: 10px;
+    flex-grow: 1;
+}
+
+.book .book-title,
+.book .book-author {
+    margin: 5px 0;
+
+    display: block; /* Fallback for non-webkit */
+    display: -webkit-box;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.book .book-title {
+    font-size: 1.3em;
+}
+
+.book .book-author {
+    font-size: 0.9em;
+    font-weight: normal;
+    color: #999;
+    -webkit-line-clamp: 2;
+}
+
+.book .book-actions {
+    margin: 10px;
+    text-align: center;
+}
+
+.book .book-actions button {
+    width: 100%;
+    font-size: 1em;
+}

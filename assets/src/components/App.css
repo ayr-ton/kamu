@@ -1,0 +1,15 @@
+#app-bar {
+    position: sticky;
+    top: 0;
+    z-index: 4;
+}
+
+#content {
+    margin-top: 65px;
+}
+
+.section-title {
+    font-size: 2em;
+    margin: 15px 10px;
+    font-weight: 300;
+}

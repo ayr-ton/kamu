@@ -1,24 +1,38 @@
-extends:
-  "eslint:recommended"
-
-parserOptions:
-  ecmaVersion: 8
-  sourceType: "module"
-  ecmaFeatures:
-    jsx: true
-
-plugins:
-  - react
-
-env:
-  es6: true
-  browser: true
-  mocha: true
-  node: true
-
-globals:
-  currentUser: true
-
-rules:
-  react/jsx-uses-react: error
-  react/jsx-uses-vars: error
+{
+  "plugins": [
+    "react-hooks"
+  ],
+  "extends": [
+    "airbnb",
+    "plugin:jest/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:jsx-a11y/recommended",
+    "plugin:react/recommended"
+  ],
+  "env": {
+    "es6": true,
+    "browser": true,
+    "jest": true
+  },
+  "globals": {
+    "global": true,
+    "module": true,
+    "findByTestID": true
+  },
+  "rules": {
+    "react/destructuring-assignment": 0,
+    "react/no-did-update-set-state": 0,
+    "arrow-parens": [
+      "error",
+      "always"
+    ],
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": true
+      }
+    ],
+    "import/no-named-as-default": 0
+  }
+}
