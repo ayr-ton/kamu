@@ -5,5 +5,4 @@ from whitenoise.django import DjangoWhiteNoise
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "kamu.settings.dev")
 
-application = get_wsgi_application()
-application = DjangoWhiteNoise(application)
+application = DjangoWhiteNoise(get_wsgi_application())
