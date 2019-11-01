@@ -1,5 +1,6 @@
 FROM gliderlabs/herokuish
 
+WORKDIR /app
 COPY . /app
 
 RUN /build

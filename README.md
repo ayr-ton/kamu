@@ -119,7 +119,6 @@ Create database tables:
 ```shell
   docker-compose up -d database
   docker-compose run --rm web /bin/bash
-  cd /app
   .heroku/python/bin/python manage.py migrate
 ```
 
