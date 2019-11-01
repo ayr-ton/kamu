@@ -118,13 +118,13 @@ Create database tables:
 
 ```shell
   docker-compose up -d database
-  docker-compose run --rm web .heroku/python/bin/python manage.py migrate
+  docker-compose run --rm web python manage.py migrate
 ```
 
 Create a super user (for non Okta based usage):
 
 ```shell
-docker-compose run --rm web .heroku/python/bin/python manage.py createsuperuser
+  docker-compose run --rm web python manage.py createsuperuser
 ```
 
 You will use this super user to login as administrator in your local Kamu application.
@@ -133,13 +133,13 @@ You will use this super user to login as administrator in your local Kamu applic
 Seed the database with initial dump data:
 
 ```shell
-docker-compose run --rm web .heroku/python/bin/python manage.py loaddata dump_data/*.json
+  docker-compose run --rm web python manage.py loaddata dump_data/*.json
 ```
 
 Start your local server:
 
 ```shell
-docker-compose up -d web
+  docker-compose up -d web
 ```
 
 Now just go to [http://localhost:8000](http://localhost:8000) in your browser :)

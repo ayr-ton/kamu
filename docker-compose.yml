@@ -3,11 +3,13 @@ version: '3'
 services:
   web:
     build: .
+    image: kamu_web
     ports:
       - "8000:8000"
     environment:
       - DATABASE_URL=postgres://kamu:kamu@database/kamu
       - NODE_ENV=production
+      - DJANGO_SETTINGS_MODULE=kamu.settings.prod
     volumes:
       - ./kamu:/app/kamu
       - ./dev-server.js:/app/dev-server.js
@@ -18,6 +20,8 @@ services:
       - ./waitlist:/app/waitlist
       - cache:/tmp/cache
       - buildpacks:/tmp/buildpacks 
+    depends_on:
+      - database
   database:
     image: postgres
     expose:
