@@ -117,7 +117,6 @@ For building the image:
 Create database tables:
 
 ```shell
-  docker-compose up -d database
   docker-compose run --rm web python manage.py migrate
 ```
 
@@ -154,7 +153,7 @@ Access your local Heroku in the same link [http://localhost:8000](http://localho
 
 ## Deployment
 
-We have out of the box support for [Heroku :dragon:](https://www.heroku.com/) and [Dokku :whale:](http://dokku.viewdocs.io/dokku/)
+We have out of the box support for [Heroku :dragon:](https://www.heroku.com/), [Dokku :whale:](http://dokku.viewdocs.io/dokku/) and [Docker :whale:](https://cloud.docker.com/repository/docker/ayrton/kamu). 
 
 For deployment, create a new Python app and set the remote origin from Dokku or Heroku, push it and enable the Postgres plugin.
 
