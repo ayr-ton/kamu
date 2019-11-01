@@ -6,6 +6,7 @@ services:
     command: npm start
     ports:
       - "8000:8000"
+      - "3000:3000"
     environment:
       - DATABASE_URL=postgres://kamu:kamu@database/kamu
       - NODE_ENV=development
