@@ -106,13 +106,49 @@ If you wish to disable Okta authentication again, execute:
 
 ## Executing using Docker for local development
 
-We support Docker =), just go to your favorite console and type:
-```
-docker-compose up
-docker-compose ps #To check which port was assigned to the local container
+Remember to create a `.env` file with all the environment variables you need for spining up the environment.
+
+For building the image:
+
+```shell
+  docker-compose build
 ```
 
-Remember to create a `.env` file with all the environment variables you need for spining up the environment.
+Create database tables:
+
+```shell
+  docker-compose up -d database
+  docker-compose run --rm web /bin/bash
+  cd /app
+  .heroku/python/bin/python manage.py migrate
+```
+
+Still inside the container, create a super user:
+
+```shell
+.heroku/python/bin/python manage.py createsuperuser
+```
+
+You will use this super user to login as administrator in your local Kamu application.
+
+
+Don't leave the container yet, seed the database with initial dump data:
+
+```shell
+.heroku/python/bin/python manage.py loaddata dump_data/*.json
+```
+
+Leave the container and start your local server:
+
+```shell
+docker-compose up -d web
+```
+
+To check which port was assigned to the local container:
+
+```shell
+docker-compose ps
+```
 
 ## Deployment
 
@@ -126,9 +162,9 @@ Now, we need the following environment variables before running Kamu for the fir
 ```shell
 SECRET_KEY="django-secret-key" # https://duckduckgo.com/?q=django+secret+key+generator
 DEBUG="true" # Or false, depending if is a testing or production app
-DJANGO_SETTINGS_MODULE="kamu.settings.prod" # If you plan to run a testing version with sqlite, this is not necessary
-DATABASE_URL="" # This variable should be automatically configured by the postgres extension. See settings/prod.py for reference.
-ALLOWED_HOSTS="kamu.example.com" # At this moment, only one domain is supported
+DJANGO_SETTINGS_MODULE="kamu.settings.prod" # If you plan to run a testing version
+DATABASE_URL="" # This variable should be automatically configured by the postgres extension.
+ALLOWED_HOSTS="kamu.example.com, kamu.heroku.etc"
 OKTA_METADATA_URL="SECRET-OKTA-STUFF" # On the case of Okta Authentication support
 ANALYTICS_ACCOUNT_ID="UA-123456789-1" # Only if you want to enable Google Analytics, otherwise don't set it
 SENTRY_DSN="SECRET-SENTRY-DSN" # Only if you want to enable Sentry, otherwise don't set it
