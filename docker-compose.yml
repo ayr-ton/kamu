@@ -5,3 +5,36 @@ services:
     build: .
     ports:
       - "8000"
+    environment:
+      - DATABASE_URL=postgres://kamu:kamu@database/kamu
+      - DEBUG=true
+      - NODE_ENV=development
+    volumes:
+      - ./kamu:/app/kamu
+      - ./public:/app/public
+      - ./dev-server.js:/app/dev-server.js
+      - ./assets:/app/assets
+      - ./books:/app/books
+      - ./config:/app/config
+      - ./Makefile:/app/Makefile
+      - ./requirements.txt:/app/requirements.txt
+      - ./package.json:/app/package.json
+      - ./package-lock.json:/app/package-lock.json
+      - ./waitlist:/app/waitlist
+      - cache:/tmp/cache
+      - buildpacks:/tmp/buildpacks 
+  database:
+    image: postgres
+    expose:
+      - 5432
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=kamu
+      - POSTGRES_PASSWORD=kamu
+      - POSTGRES_DB=kamu
+
+volumes:
+  db-data:
+  cache:
+  buildpacks:
