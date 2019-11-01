@@ -4,11 +4,9 @@ services:
   web:
     build: .
     ports:
-      - "8000"
+      - "8000:8000"
     environment:
       - DATABASE_URL=postgres://kamu:kamu@database/kamu
-      - DEBUG=true
-      - NODE_ENV=development
     volumes:
       - ./kamu:/app/kamu
       - ./public:/app/public

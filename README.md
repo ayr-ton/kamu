@@ -144,11 +144,7 @@ Leave the container and start your local server:
 docker-compose up -d web
 ```
 
-To check which port was assigned to the local container:
-
-```shell
-docker-compose ps
-```
+Now just go to [http://localhost:8000](http://localhost:8000) in your browser :)
 
 ## Deployment
 
