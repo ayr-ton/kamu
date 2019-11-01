@@ -1,7 +1,19 @@
 import os
+from decouple import config, Csv
+from dj_database_url import parse as dburl
 
 SETTINGS_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.abspath(os.path.join(SETTINGS_DIR, '..'))
+
+SECRET_KEY = config('SECRET_KEY', default='5%5*wq!wtipnzre-n!d*6@02j)en6*g1sr+!p1zv-krr$aay1=')
+DEBUG = config('DEBUG', default=False, cast=bool)
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='', cast=Csv())
+
+default_dburl = 'sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3')
+
+DATABASES = {
+    'default': config('DATABASE_URL', default=default_dburl, cast=dburl)
+}
 
 INSTALLED_APPS = [
     'django.contrib.admin',
