@@ -139,10 +139,18 @@ Seed the database with initial dump data:
 Start your local server:
 
 ```shell
-  docker-compose up -d web
+  docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d dev
 ```
 
 Now just go to [http://localhost:8000](http://localhost:8000) in your browser :)
+
+For simulating a Heroku like environment:
+
+```shell
+  docker-compose up -d web
+```
+
+Access your local Heroku in the same link [http://localhost:8000](http://localhost:8000)
 
 ## Deployment
 

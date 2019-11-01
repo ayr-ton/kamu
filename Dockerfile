@@ -5,7 +5,8 @@ COPY . /app
 
 RUN /build
 
-ENV PATH=".heroku/node/bin/:.heroku/python/bin:${PATH}"
+ENV PATH="/app/.heroku/node/bin:/app/.heroku/python/bin:${PATH}"
+RUN npm install --only=dev
 
 EXPOSE 8000
 
