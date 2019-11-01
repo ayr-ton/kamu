@@ -118,26 +118,25 @@ Create database tables:
 
 ```shell
   docker-compose up -d database
-  docker-compose run --rm web /bin/bash
-  .heroku/python/bin/python manage.py migrate
+  docker-compose run --rm web .heroku/python/bin/python manage.py migrate
 ```
 
-Still inside the container, create a super user:
+Create a super user (for non Okta based usage):
 
 ```shell
-.heroku/python/bin/python manage.py createsuperuser
+docker-compose run --rm web .heroku/python/bin/python manage.py createsuperuser
 ```
 
 You will use this super user to login as administrator in your local Kamu application.
 
 
-Don't leave the container yet, seed the database with initial dump data:
+Seed the database with initial dump data:
 
 ```shell
-.heroku/python/bin/python manage.py loaddata dump_data/*.json
+docker-compose run --rm web .heroku/python/bin/python manage.py loaddata dump_data/*.json
 ```
 
-Leave the container and start your local server:
+Start your local server:
 
 ```shell
 docker-compose up -d web
