@@ -9,7 +9,7 @@ services:
     environment:
       - DATABASE_URL=postgres://kamu:kamu@database/kamu
       - NODE_ENV=production
-      - DJANGO_SETTINGS_MODULE=kamu.settings.prod
+      - DEBUG=true
     volumes:
       - ./kamu:/app/kamu
       - ./books:/app/books
