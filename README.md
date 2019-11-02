@@ -162,13 +162,14 @@ The buildpacks should configure all the necessary libraries for you.
 Now, we need the following environment variables before running Kamu for the first time:
 ```shell
 SECRET_KEY="django-secret-key" # https://duckduckgo.com/?q=django+secret+key+generator
-DEBUG="true" # Or false, depending if is a testing or production app
+DEBUG=true # Or false, depending if is a testing or production app
 DJANGO_SETTINGS_MODULE="kamu.settings.prod" # If you plan to run a testing version
-DATABASE_URL="" # This variable should be automatically configured by the postgres extension.
+DATABASE_URL=postgres://dbhost/dbname # This variable should be automatically configured by the postgres extension.
 ALLOWED_HOSTS="kamu.example.com, kamu.heroku.etc"
 OKTA_METADATA_URL="SECRET-OKTA-STUFF" # On the case of Okta Authentication support
 ANALYTICS_ACCOUNT_ID="UA-123456789-1" # Only if you want to enable Google Analytics, otherwise don't set it
 SENTRY_DSN="SECRET-SENTRY-DSN" # Only if you want to enable Sentry, otherwise don't set it
+SSL=false # Enabled by default in production like deployments
 ```
 See [Dokku environment variables](http://dokku.viewdocs.io/dokku/configuration/environment-variables/) or [Heroku Config Vars](https://devcenter.heroku.com/articles/config-vars) for more details.
 
