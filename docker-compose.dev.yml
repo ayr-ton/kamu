@@ -1,17 +1,22 @@
 version: '3'
 
 services:
-  web:
-    build: .
+  dev:
     image: kamu_web
+    command: npm start
     ports:
       - "8000:8000"
+      - "3000:3000"
     environment:
       - DATABASE_URL=postgres://kamu:kamu@database/kamu
-      - NODE_ENV=production
-      - DEBUG=true
+      - NODE_ENV=development
     volumes:
       - ./kamu:/app/kamu
+      - ./dev-server.js:/app/dev-server.js
+      - ./package.json:/app/package.json
+      - ./package-lock.json:/app/package-lock.json
+      - ./webpack.config.js:/app/webpack.config.js
+      - ./assets:/app/assets
       - ./books:/app/books
       - ./config:/app/config
       - ./Makefile:/app/Makefile
@@ -21,18 +26,3 @@ services:
       - buildpacks:/tmp/buildpacks 
     depends_on:
       - database
-  database:
-    image: postgres
-    expose:
-      - 5432
-    volumes:
-      - db-data:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_USER=kamu
-      - POSTGRES_PASSWORD=kamu
-      - POSTGRES_DB=kamu
-
-volumes:
-  db-data:
-  cache:
-  buildpacks:
