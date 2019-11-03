@@ -8,6 +8,7 @@ services:
       - "8000:8000"
     environment:
       - DATABASE_URL=postgres://kamu:kamu@database/kamu
+      - CELERY_BROKER_URL=redis://redis:6379/0
       - NODE_ENV=production
       - DEBUG=true
     volumes:
@@ -18,9 +19,31 @@ services:
       - ./requirements.txt:/app/requirements.txt
       - ./waitlist:/app/waitlist
       - cache:/tmp/cache
-      - buildpacks:/tmp/buildpacks 
+      - buildpacks:/tmp/buildpacks
     depends_on:
       - database
+      - redis
+  celery:
+    build: .
+    image: kamu_web
+    command: celery -A kamu worker --loglevel=info
+    environment:
+      - DATABASE_URL=postgres://kamu:kamu@database/kamu
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - NODE_ENV=production
+      - DEBUG=true
+    volumes:
+      - ./kamu:/app/kamu
+      - ./books:/app/books
+      - ./config:/app/config
+      - ./Makefile:/app/Makefile
+      - ./requirements.txt:/app/requirements.txt
+      - ./waitlist:/app/waitlist
+      - cache:/tmp/cache
+      - buildpacks:/tmp/buildpacks
+    depends_on:
+      - database
+      - redis
   database:
     image: postgres
     expose:
@@ -31,6 +54,10 @@ services:
       - POSTGRES_USER=kamu
       - POSTGRES_PASSWORD=kamu
       - POSTGRES_DB=kamu
+  redis:
+    image: redis
+    expose:
+      - 6379
 
 volumes:
   db-data:

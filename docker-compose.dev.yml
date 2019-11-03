@@ -9,6 +9,7 @@ services:
       - "3000:3000"
     environment:
       - DATABASE_URL=postgres://kamu:kamu@database/kamu
+      - CELERY_BROKER_URL=redis://redis:6379/0
       - NODE_ENV=development
     volumes:
       - ./core:/app/core
@@ -23,6 +24,7 @@ services:
       - ./requirements.txt:/app/requirements.txt
       - ./waitlist:/app/waitlist
       - cache:/tmp/cache
-      - buildpacks:/tmp/buildpacks 
+      - buildpacks:/tmp/buildpacks
     depends_on:
       - database
+      - redis
