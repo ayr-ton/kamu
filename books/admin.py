@@ -3,7 +3,15 @@ from django.urls import path
 
 from books import views
 from .models import *
+from import_export import resources
+from import_export.admin import ExportMixin
+from import_export.admin import ExportActionMixin
 
+
+class BookCopyResource(resources.ModelResource):
+    class Meta:
+        model = BookCopy
+        fields = ('book__title', 'book__publisher', 'book__isbn', 'book__publication_date', 'library__slug')
 
 class BookCopyInline(admin.TabularInline):
     model = BookCopy
@@ -36,11 +44,13 @@ class BookAdmin(admin.ModelAdmin):
 
         return my_urls + urls
 
-class BookCopyAdmin(admin.ModelAdmin):
+class BookCopyAdmin(ExportMixin, admin.ModelAdmin):
+    resource_class = BookCopyResource
     list_display = ['id', 'book', 'library', 'user']
     list_per_page = 20
     search_fields = ['book__title', 'user__username']
     autocomplete_fields = ['book', 'library', 'user']
+    list_filter = ('library', )
 
     def add_view(self, request):
         return super(BookCopyAdmin, self).add_view(request)
