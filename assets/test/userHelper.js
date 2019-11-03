@@ -11,3 +11,10 @@ export const someUser = {
   image_url: '',
   borrowed_books_count: 2,
 };
+
+export const someOtherUser = {
+  username: 'someotheruser@example.com',
+  email: 'someotheruser@example.com',
+  image_url: '',
+  borrowed_books_count: 2,
+};

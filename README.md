@@ -10,7 +10,7 @@ Kamu is an application that focus on managing a physical library where you can a
 
 In the main page you can see the libraries shared between users. The libraries can be different unities, cities or name of friends that wants to share books. In the Screenshoot bellow, you can see an example of multiple libraries. 
 
-![Screenshoot for Kamu's multiple libraries](https://github.com/flavia-by-flavia/kamu/raw/b8c728301b9647e092c06aff6ed26a7bd7922397/Screen%20Shot%202018-10-18%20at%2018.47.23.png)
+![Screenshoot for Kamu's multiple libraries](https://github.com/ayr-ton/kamu/raw/272e10d834acde1d4565344e3b1d7f7735c0fe78/screen%20shots/First%20page.png)
 
 ## Requirements
 
@@ -106,17 +106,54 @@ If you wish to disable Okta authentication again, execute:
 
 ## Executing using Docker for local development
 
-We support Docker =), just go to your favorite console and type:
-```
-docker-compose up
-docker-compose ps #To check which port was assigned to the local container
+Remember to create a `.env` file with all the environment variables you need for spining up the environment.
+
+For building the image:
+
+```shell
+  docker-compose build
 ```
 
-Remember to create a `.env` file with all the environment variables you need for spining up the environment.
+Create database tables:
+
+```shell
+  docker-compose run --rm web python manage.py migrate
+```
+
+Create a super user (for non Okta based usage):
+
+```shell
+  docker-compose run --rm web python manage.py createsuperuser
+```
+
+You will use this super user to login as administrator in your local Kamu application.
+
+
+Seed the database with initial dump data:
+
+```shell
+  docker-compose run --rm web python manage.py loaddata dump_data/*.json
+```
+
+Start your local server:
+
+```shell
+  docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d dev
+```
+
+Now just go to [http://localhost:8000](http://localhost:8000) in your browser :)
+
+For simulating a Heroku like environment:
+
+```shell
+  docker-compose up -d web
+```
+
+Access your local Heroku in the same link [http://localhost:8000](http://localhost:8000)
 
 ## Deployment
 
-We have out of the box support for [Heroku :dragon:](https://www.heroku.com/) and [Dokku :whale:](http://dokku.viewdocs.io/dokku/)
+We have out of the box support for [Heroku :dragon:](https://www.heroku.com/), [Dokku :whale:](http://dokku.viewdocs.io/dokku/) and [Docker :whale:](https://cloud.docker.com/repository/docker/ayrton/kamu). 
 
 For deployment, create a new Python app and set the remote origin from Dokku or Heroku, push it and enable the Postgres plugin.
 
@@ -125,13 +162,14 @@ The buildpacks should configure all the necessary libraries for you.
 Now, we need the following environment variables before running Kamu for the first time:
 ```shell
 SECRET_KEY="django-secret-key" # https://duckduckgo.com/?q=django+secret+key+generator
-DEBUG="true" # Or false, depending if is a testing or production app
-DJANGO_SETTINGS_MODULE="kamu.settings.prod" # If you plan to run a testing version with sqlite, this is not necessary
-DATABASE_URL="" # This variable should be automatically configured by the postgres extension. See settings/prod.py for reference.
-ALLOWED_HOSTS="kamu.example.com" # At this moment, only one domain is supported
+DEBUG=true # Or false, depending if is a testing or production app
+DJANGO_SETTINGS_MODULE="kamu.settings.prod" # If you plan to run a testing version
+DATABASE_URL=postgres://dbhost/dbname # This variable should be automatically configured by the postgres extension.
+ALLOWED_HOSTS="kamu.example.com, kamu.heroku.etc"
 OKTA_METADATA_URL="SECRET-OKTA-STUFF" # On the case of Okta Authentication support
 ANALYTICS_ACCOUNT_ID="UA-123456789-1" # Only if you want to enable Google Analytics, otherwise don't set it
 SENTRY_DSN="SECRET-SENTRY-DSN" # Only if you want to enable Sentry, otherwise don't set it
+SSL=false # Enabled by default in production like deployments
 ```
 See [Dokku environment variables](http://dokku.viewdocs.io/dokku/configuration/environment-variables/) or [Heroku Config Vars](https://devcenter.heroku.com/articles/config-vars) for more details.
 

@@ -1,9 +1,11 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.utils import timezone
-from django.db.utils import IntegrityError
 
 from books.models import Book, BookCopy, Library
+
+def add_to_waitlist(book, user, library, added_date):
+    book.waitlistitem_set.create(library=library, user=user, added_date=added_date)
 
 
 class BookTestCase(TestCase):
@@ -13,7 +15,7 @@ class BookTestCase(TestCase):
         self.library = Library.objects.create(name="Santiago", slug="slug")
         self.library2 = Library.objects.create(name="Santiago", slug="slug")
         self.user = User.objects.create(username="claudia", email="claudia@gmail.com")
-        self.user2 = User.objects.create(username="Marielle Franco", email="marielle@gmail.com")
+        self.another_user = User.objects.create(username="Marielle Franco", email="marielle@gmail.com")
 
     def test_can_create_book(self):
         self.assertEqual(self.book.author, "Author")
@@ -70,13 +72,13 @@ class BookTestCase(TestCase):
         self.assertBookAction('RETURN', action)
 
     def test_has_join_waitlist_action_when_user_has_not_borrowed_and_no_copies_are_available(self):
-        self.book.bookcopy_set.create(library=self.library, user=self.user2)
+        self.book.bookcopy_set.create(library=self.library, user=self.another_user)
         action = self.book.available_action(library=self.library, user=self.user)
         self.assertBookAction('JOIN_WAITLIST', action)
 
     def test_has_leave_waitlist_action_when_user_is_on_waitlist(self):
-        self.book.bookcopy_set.create(library=self.library, user=self.user2)
-        self.book.waitlistitem_set.create(library=self.library, user=self.user, added_date=timezone.now())
+        self.book.bookcopy_set.create(library=self.library, user=self.another_user)
+        add_to_waitlist(self.book, self.user, self.library, timezone.now())
         action = self.book.available_action(library=self.library, user=self.user)
         self.assertBookAction('LEAVE_WAITLIST', action)
 
@@ -91,28 +93,28 @@ class BookTestCase(TestCase):
         self.assertEqual(copies[1].user, None)
 
     def test_borrow_throws_error_and_does_not_borrow_when_all_copies_are_borrowed(self):
-        self.book.bookcopy_set.create(library=self.library, user=self.user2)
+        self.book.bookcopy_set.create(library=self.library, user=self.another_user)
 
         with self.assertRaises(ValueError):
             self.book.borrow(library=self.library, user=self.user)
 
         copies = self.book.bookcopy_set.all()
-        self.assertEqual(copies[0].user, self.user2)
+        self.assertEqual(copies[0].user, self.another_user)
 
     def test_borrow_removes_user_from_waitlist_if_successful(self):
         self.book.bookcopy_set.create(library=self.library, user=None)
-        self.book.waitlistitem_set.create(library=self.library, user=self.user2, added_date=timezone.now())
-        self.book.waitlistitem_set.create(library=self.library, user=self.user, added_date=timezone.now())
+        add_to_waitlist(self.book, self.another_user, self.library, timezone.now())
+        add_to_waitlist(self.book, self.user, self.library, timezone.now())
 
         self.book.borrow(library=self.library, user=self.user)
 
         waitlist_items = self.book.waitlistitem_set.filter(library=self.library)
         self.assertEqual(len(waitlist_items), 1)
-        self.assertEqual(waitlist_items[0].user, self.user2)
+        self.assertEqual(waitlist_items[0].user, self.another_user)
 
     def test_borrow_does_not_remove_user_from_waitlist_if_borrow_fails(self):
-        self.book.bookcopy_set.create(library=self.library, user=self.user2)
-        self.book.waitlistitem_set.create(library=self.library, user=self.user, added_date=timezone.now())
+        self.book.bookcopy_set.create(library=self.library, user=self.another_user)
+        add_to_waitlist(self.book, self.user, self.library, timezone.now())
 
         with self.assertRaises(ValueError):
             self.book.borrow(library=self.library, user=self.user)
@@ -123,28 +125,28 @@ class BookTestCase(TestCase):
 
     def test_return_removes_user_and_date_on_borrowed_copy(self):
         self.book.bookcopy_set.create(library=self.library, user=self.user)
-        self.book.bookcopy_set.create(library=self.library, user=self.user2)
+        self.book.bookcopy_set.create(library=self.library, user=self.another_user)
 
         self.book.returnToLibrary(library=self.library, user=self.user)
 
         copies = self.book.bookcopy_set.all()
         self.assertEqual(copies[0].user, None)
         self.assertEqual(copies[0].borrow_date, None)
-        self.assertEqual(copies[1].user, self.user2)
+        self.assertEqual(copies[1].user, self.another_user)
 
     def test_return_throws_error_and_does_not_unset_user_when_user_is_not_borrowed(self):
-        self.book.bookcopy_set.create(library=self.library, user=self.user2)
+        self.book.bookcopy_set.create(library=self.library, user=self.another_user)
 
         with self.assertRaises(ValueError):
             self.book.returnToLibrary(library=self.library, user=self.user)
 
         copies = self.book.bookcopy_set.all()
-        self.assertEqual(copies[0].user, self.user2)
+        self.assertEqual(copies[0].user, self.another_user)
 
     def test_returns_users_waitlist_added_date_none_if_not_exists(self):
         date = timezone.now()
         self.book.bookcopy_set.create(library=self.library, user=None)
-        self.book.waitlistitem_set.create(library=self.library, user=self.user2, added_date=date)
+        self.book.waitlistitem_set.create(library=self.library, user=self.another_user, added_date=date)
 
         returned_date = self.book.users_waitlist_added_date(user=self.user, library=self.library)
         self.assertEqual(returned_date, None)
@@ -153,7 +155,7 @@ class BookTestCase(TestCase):
         date = timezone.now()
         self.book.bookcopy_set.create(library=self.library, user=None)
         self.book.waitlistitem_set.create(library=self.library, user=self.user, added_date=date)
-        self.book.waitlistitem_set.create(library=self.library, user=self.user2, added_date=timezone.now())
+        self.book.waitlistitem_set.create(library=self.library, user=self.another_user, added_date=timezone.now())
 
         returned_date = self.book.users_waitlist_added_date(user=self.user, library=self.library)
         self.assertEqual(returned_date, date)
