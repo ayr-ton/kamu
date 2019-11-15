@@ -11,14 +11,38 @@ from import_export.widgets import ForeignKeyWidget
 
 
 class BookCopyResource(resources.ModelResource):
-    title = fields.Field(attribute='book__title', column_name='Title')
-    publisher = fields.Field(attribute='book__publisher', column_name='Publisher')
-    isbn = fields.Field(attribute='book__isbn', column_name='ISBN')
-    publication_date = fields.Field(attribute='book__publication_date', column_name='Publication date')
-    username = fields.Field(attribute='user__username', column_name='user')
-    user_email = fields.Field(attribute='user__email', column_name='Email')
-    borrow_date = fields.Field(attribute='borrow_date', column_name='Borrow date')
-    library = fields.Field(attribute='library__slug', column_name='Library')
+    title = fields.Field(
+        attribute='book__title',
+        column_name='Title'
+    )
+    publisher = fields.Field(
+        attribute='book__publisher',
+        column_name='Publisher'
+    )
+    isbn = fields.Field(
+        attribute='book__isbn',
+        column_name='ISBN'
+    )
+    publication_date = fields.Field(
+        attribute='book__publication_date',
+        column_name='Publication date'
+    )
+    username = fields.Field(
+        attribute='user__username',
+        column_name='user'
+    )
+    user_email = fields.Field(
+        attribute='user__email',
+        column_name='Email'
+    )
+    borrow_date = fields.Field(
+        attribute='borrow_date',
+        column_name='Borrow date'
+    )
+    library = fields.Field(
+        attribute='library__slug',
+        column_name='Library'
+    )
 
     class Meta:
         model = BookCopy
