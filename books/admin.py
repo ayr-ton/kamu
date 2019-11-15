@@ -29,7 +29,7 @@ class BookCopyResource(resources.ModelResource):
     )
     username = fields.Field(
         attribute='user__username',
-        column_name='user'
+        column_name='User'
     )
     user_email = fields.Field(
         attribute='user__email',
