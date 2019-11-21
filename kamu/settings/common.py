@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'waitlist',
     'django_saml2_auth',
     'filters',
+    'import_export',
 ]
 
 MIDDLEWARE = [
