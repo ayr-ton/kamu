@@ -42,21 +42,24 @@ backend-deps:
 
 backend-tests:
 	. venv/bin/activate
-	DJANGO_SETTINGS_MODULE=kamu.settings.test coverage run manage.py test $\
+	DJANGO_SETTINGS_MODULE=kamu.settings.test coverage run manage.py test \
 	coverage xml
-	./tmp/cc-test-reporter format-coverage -t coverage.py $\
+	./tmp/cc-test-reporter format-coverage -t coverage.py \
 	-o tmp/codeclimate.backend.json coverage.xml
+
+frontend-deps:
+	npm i
 
 frontend-lint:
 	npm run lint
 
 frontend-tests:
 	npm test
-	./tmp/cc-test-reporter format-coverage -t lcov $\
+	./tmp/cc-test-reporter format-coverage -t lcov \
 	-o tmp/codeclimate.frontend.json coverage/lcov.info
 
 upload-coverage:
-	./tmp/cc-test-reporter sum-coverage tmp/codeclimate.*.json -p 2 $\
+	./tmp/cc-test-reporter sum-coverage tmp/codeclimate.*.json -p 2 \
 	-o tmp/codeclimate.total.json
 	./tmp/cc-test-reporter upload-coverage -i tmp/codeclimate.total.json
 

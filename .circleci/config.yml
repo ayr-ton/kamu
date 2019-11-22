@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 defaults: &defaults
   working_directory: ~/kamu
   docker:
@@ -10,8 +10,7 @@ jobs:
       - checkout
       - run:
           name:  Download cc-test-reporter
-          command: |
-            make download-cc-test-reporter
+          command: make download-cc-test-reporter
       - persist_to_workspace:
           root: tmp
           paths:
@@ -45,8 +44,7 @@ jobs:
             paths:
               - "venv"
       - run:
-          command: |
-              make backend-tests
+          command: make backend-tests
           root: tmp
           paths:
             - codeclimate.backend.json
@@ -61,7 +59,7 @@ jobs:
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
-          command: npm i
+          command: make frontend-deps
       - save_cache:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
@@ -69,9 +67,7 @@ jobs:
       - run:
           command: make frontend-lint
       - run:
-          command: |
-              make frontend-tests
-      - persist_to_workspace:
+          command: make frontend-tests
           root: tmp
           paths: 
             - codeclimate.frontend.json
@@ -82,8 +78,7 @@ jobs:
           at: ~/kamu/tmp
       - run:
           name: Upload coverage results to Code Climate
-          command: |
-            make upload-coverage
+          command: make upload-coverage
 workflows:
   version: 2
   build_and_test:
