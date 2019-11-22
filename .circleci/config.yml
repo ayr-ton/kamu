@@ -7,12 +7,11 @@ jobs:
   build:
     <<: *defaults
     steps:
+      - checkout
       - run:
           name:  Download cc-test-reporter
           command: |
-            mkdir -p tmp/
-            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./tmp/cc-test-reporter
-            chmod +x ./tmp/cc-test-reporter
+            make download-cc-test-reporter
       - persist_to_workspace:
           root: tmp
           paths:
@@ -25,7 +24,7 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
-          command: sh ci/security-checks.sh
+          command: make security-checks
       - store_artifacts:
           path: /tmp/artifacts/hawkeye_report.json
   backend-tests:
@@ -40,20 +39,14 @@ jobs:
           key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
       - run:
           command: |
-              python3 -m venv venv
-              . venv/bin/activate
-              pip install -r requirements.txt
+              make backend-deps
       - save_cache:
             key: deps1-{{ .Branch }}-{{ checksum "requirements.txt" }}
             paths:
               - "venv"
       - run:
           command: |
-              . venv/bin/activate
-              DJANGO_SETTINGS_MODULE=kamu.settings.test coverage run manage.py test
-              coverage xml
-              ./tmp/cc-test-reporter format-coverage -t coverage.py -o tmp/codeclimate.backend.json coverage.xml
-      - persist_to_workspace:
+              make backend-tests
           root: tmp
           paths:
             - codeclimate.backend.json
@@ -74,11 +67,10 @@ jobs:
           paths:
             - ./node_modules
       - run:
-          command: npm run lint
+          command: make frontend-lint
       - run:
           command: |
-              npm test
-              ./tmp/cc-test-reporter format-coverage -t lcov -o tmp/codeclimate.frontend.json coverage/lcov.info
+              make frontend-tests
       - persist_to_workspace:
           root: tmp
           paths: 
@@ -91,8 +83,7 @@ jobs:
       - run:
           name: Upload coverage results to Code Climate
           command: |
-            ./tmp/cc-test-reporter sum-coverage tmp/codeclimate.*.json -p 2 -o tmp/codeclimate.total.json
-            ./tmp/cc-test-reporter upload-coverage -i tmp/codeclimate.total.json
+            make upload-coverage
 workflows:
   version: 2
   build_and_test:
