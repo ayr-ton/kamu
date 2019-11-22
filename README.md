@@ -114,6 +114,12 @@ For building the image:
   make docker-build
 ```
 
+If you're not planning to use a heroku like build or touch docker files, you can also pull from Dockerhub:
+
+```shell 
+  make docker-pull
+```
+
 Create database tables:
 
 ```shell
@@ -143,10 +149,10 @@ Start your local server:
 
 Now just go to [http://localhost:8000](http://localhost:8000) in your browser :)
 
-For simulating a Heroku like environment:
+For simulating a Heroku like environment (recommended to make build first):
 
 ```shell
-  make docker-prod
+  make docker-heroku
 ```
 
 Access your local Heroku in the same link [http://localhost:8000](http://localhost:8000)

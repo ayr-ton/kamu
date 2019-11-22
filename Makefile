@@ -5,6 +5,9 @@ prod:
 docker-build:
 	docker-compose build
 
+docker-pull:
+	docker pull ayrton/kamu
+
 docker-migrate:
 	docker-compose run --rm web python manage.py migrate
 
@@ -16,6 +19,9 @@ docker-loaddata:
 
 docker-dev:
 	docker-compose -f docker-compose.yml -f docker-compose.dev.yml up dev
+
+docker-heroku:
+	docker-compose up web
 
 docker-down:
 	docker-compose down
