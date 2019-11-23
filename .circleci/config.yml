@@ -74,6 +74,7 @@ jobs:
   upload-coverage:
     <<: *defaults
     steps:
+      - checkout
       - attach_workspace:
           at: ~/kamu/tmp
       - run:
