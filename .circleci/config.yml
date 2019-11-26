@@ -45,6 +45,7 @@ jobs:
               - "venv"
       - run:
           command: make backend-tests
+      - persist_to_workspace:
           root: tmp
           paths:
             - codeclimate.backend.json
@@ -68,6 +69,7 @@ jobs:
           command: make frontend-lint
       - run:
           command: make frontend-tests
+      - persist_to_workspace:
           root: tmp
           paths: 
             - codeclimate.frontend.json

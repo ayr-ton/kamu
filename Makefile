@@ -28,7 +28,7 @@ docker-down:
 
 download-cc-test-reporter:
 	mkdir -p tmp/
-	curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 $\
+	curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 \
 	> ./tmp/cc-test-reporter
 	chmod +x ./tmp/cc-test-reporter
 
@@ -42,7 +42,7 @@ backend-deps:
 
 backend-tests:
 	. venv/bin/activate
-	DJANGO_SETTINGS_MODULE=kamu.settings.test coverage run manage.py test \
+	DJANGO_SETTINGS_MODULE=kamu.settings.test coverage run manage.py test
 	coverage xml
 	./tmp/cc-test-reporter format-coverage -t coverage.py \
 	-o tmp/codeclimate.backend.json coverage.xml
