@@ -111,19 +111,25 @@ Remember to create a `.env` file with all the environment variables you need for
 For building the image:
 
 ```shell
-  docker-compose build
+  make docker-build
+```
+
+If you're not planning to use a heroku like build or touch docker files, you can also pull from Dockerhub:
+
+```shell 
+  make docker-pull
 ```
 
 Create database tables:
 
 ```shell
-  docker-compose run --rm web python manage.py migrate
+  make docker-migrate
 ```
 
 Create a super user (for non Okta based usage):
 
 ```shell
-  docker-compose run --rm web python manage.py createsuperuser
+  make docker-createsuperuser
 ```
 
 You will use this super user to login as administrator in your local Kamu application.
@@ -132,24 +138,30 @@ You will use this super user to login as administrator in your local Kamu applic
 Seed the database with initial dump data:
 
 ```shell
-  docker-compose run --rm web python manage.py loaddata dump_data/*.json
+  make docker-loaddata
 ```
 
 Start your local server:
 
 ```shell
-  docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d dev
+  make docker-dev
 ```
 
 Now just go to [http://localhost:8000](http://localhost:8000) in your browser :)
 
-For simulating a Heroku like environment:
+For simulating a Heroku like environment (recommended to make build first):
 
 ```shell
-  docker-compose up -d web
+  make docker-heroku
 ```
 
 Access your local Heroku in the same link [http://localhost:8000](http://localhost:8000)
+
+Stop your environment:
+
+```shell
+  make docker-down
+```
 
 ## Deployment
 

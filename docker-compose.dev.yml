@@ -2,7 +2,7 @@ version: '3'
 
 services:
   dev:
-    image: kamu_web
+    image: ayrton/kamu
     command: npm start
     ports:
       - "8000:8000"

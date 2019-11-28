@@ -3,7 +3,7 @@ version: '3'
 services:
   web:
     build: .
-    image: kamu_web
+    image: ayrton/kamu
     ports:
       - "8000:8000"
     environment:
