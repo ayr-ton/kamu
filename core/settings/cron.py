@@ -10,11 +10,13 @@ CRON_EMAIL_NOTIFICATION_SETTINGS = {
     'TEMPLATE_BODY':  '''
         Hi!,
 
-        We noticed you still have the book <b>{bookName}</b> borrowed in <b>{borrowedDate}</b>. 
+        We noticed you still have the book <b>{bookName}</b> borrowed in <b>{borrowedDate}</b>.
 
         This is only a friendly reminder to return the book to the library.
 
-        If you are still reading the book, please ignore this message, but consider that other people might be waiting for you to return it.
+        If you are still reading the book, please ignore this message, 
+        
+        but consider that other people might be waiting for you to return it.
 
         Greetings from Kamu team.
 
@@ -23,7 +25,7 @@ CRON_EMAIL_NOTIFICATION_SETTINGS = {
     'BORROW_MAX_TERM_MONTH': 3
 }
 
-EMAIL_HOST=os.environ.get('DJANGO_EMAIL_HOST')
-EMAIL_PORT=os.environ.get('DJANGO_EMAIL_PORT')
-EMAIL_TIMEOUT=int(os.environ.get('DJANGO_EMAIL_TIMEOUT', '1'))
-EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.environ.get('DJANGO_EMAIL_HOST')
+EMAIL_PORT = os.environ.get('DJANGO_EMAIL_PORT')
+EMAIL_TIMEOUT = int(os.environ.get('DJANGO_EMAIL_TIMEOUT', '1'))
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

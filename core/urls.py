@@ -22,7 +22,7 @@ book_routers = routers.NestedSimpleRouter(library_routers, r'books', lookup='boo
 book_routers.register(r'waitlist', WaitlistViewSet, base_name='waitlist')
 
 if os.environ.get("OKTA_METADATA_URL") is None:
-    login_routes = [ url(r'^accounts/login', admin.site.login) ]
+    login_routes = [url(r'^accounts/login', admin.site.login)]
 else:
     login_routes = [
         url(r'^accounts/login', django_saml2_auth.views.signin),
@@ -31,7 +31,7 @@ else:
     ]
 
 urlpatterns = login_routes + [
-    url(r'^admin$', RedirectView.as_view(url = '/admin/')),
+    url(r'^admin$', RedirectView.as_view(url='/admin/')),
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include(router.urls)),
     url(r'^api/', include(library_routers.urls)),

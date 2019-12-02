@@ -104,7 +104,7 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 50
 }
 
-if os.environ.get("OKTA_METADATA_URL") != None:
+if os.environ.get("OKTA_METADATA_URL") is not None:
     SAML2_AUTH = {
         'DEFAULT_NEXT_URL': '/',
         'NEW_USER_PROFILE': {
