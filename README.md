@@ -104,7 +104,7 @@ If you wish to disable Okta authentication again, execute:
   unset OKTA_METADATA_URL
 ```
 
-## Executing using Docker for local development
+## Using Docker for local development
 
 Remember to create a `.env` file with all the environment variables you need for spining up the environment.
 
