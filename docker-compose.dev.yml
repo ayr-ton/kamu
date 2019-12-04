@@ -11,7 +11,7 @@ services:
       - DATABASE_URL=postgres://kamu:kamu@database/kamu
       - NODE_ENV=development
     volumes:
-      - ./kamu:/app/kamu
+      - ./core:/app/core
       - ./dev-server.js:/app/dev-server.js
       - ./package.json:/app/package.json
       - ./package-lock.json:/app/package-lock.json
