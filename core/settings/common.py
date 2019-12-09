@@ -41,12 +41,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'kamu.urls'
+ROOT_URLCONF = 'core.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'kamu/templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'core/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -59,7 +59,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'kamu.wsgi.application'
+WSGI_APPLICATION = 'core.wsgi.application'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -104,7 +104,7 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 50
 }
 
-if os.environ.get("OKTA_METADATA_URL") != None:
+if os.environ.get("OKTA_METADATA_URL") is not None:
     SAML2_AUTH = {
         'DEFAULT_NEXT_URL': '/',
         'NEW_USER_PROFILE': {

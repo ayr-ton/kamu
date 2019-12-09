@@ -42,7 +42,7 @@ backend-deps:
 
 backend-tests:
 	. venv/bin/activate
-	DJANGO_SETTINGS_MODULE=kamu.settings.test coverage run manage.py test
+	DJANGO_SETTINGS_MODULE=core.settings.test coverage run manage.py test
 	coverage xml
 	./tmp/cc-test-reporter format-coverage -t coverage.py \
 	-o tmp/codeclimate.backend.json coverage.xml

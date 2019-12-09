@@ -11,7 +11,7 @@ services:
       - NODE_ENV=production
       - DEBUG=true
     volumes:
-      - ./kamu:/app/kamu
+      - ./core:/app/core
       - ./books:/app/books
       - ./config:/app/config
       - ./Makefile:/app/Makefile
