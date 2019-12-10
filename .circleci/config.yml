@@ -23,7 +23,7 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
-          command: make security-checks
+          command: apk add make && make security-checks
       - store_artifacts:
           path: /tmp/artifacts/hawkeye_report.json
   backend-tests:
