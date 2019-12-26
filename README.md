@@ -175,7 +175,7 @@ Now, we need the following environment variables before running Kamu for the fir
 ```shell
 SECRET_KEY="django-secret-key" # https://duckduckgo.com/?q=django+secret+key+generator
 DEBUG=true # Or false, depending if is a testing or production app
-DJANGO_SETTINGS_MODULE="kamu.settings.prod" # If you plan to run a testing version
+DJANGO_SETTINGS_MODULE="core.settings.prod" # If you plan to run a testing version
 DATABASE_URL=postgres://dbhost/dbname # This variable should be automatically configured by the postgres extension.
 ALLOWED_HOSTS="kamu.example.com, kamu.heroku.etc"
 OKTA_METADATA_URL="SECRET-OKTA-STUFF" # On the case of Okta Authentication support
