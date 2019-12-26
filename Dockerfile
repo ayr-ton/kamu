@@ -1,4 +1,4 @@
-FROM gliderlabs/herokuish
+FROM gliderlabs/herokuish:v0.5.4
 
 WORKDIR /app
 COPY . /app
