@@ -41,7 +41,7 @@ requests==2.21.0
 six==1.11.0
 urllib3==1.24.2
 voluptuous==0.10.5
-waitress==1.4.1
+waitress==1.4.2
 WebOb==1.7.4
 whitenoise==3.3.1
 wrapt==1.10.11
