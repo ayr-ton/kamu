@@ -24,7 +24,6 @@ import {
   OTHERS_ARE_WAITING_STATUS,
 } from '../../utils/constants';
 import { BookPropType } from '../../utils/propTypes';
-import { isWaitlistFeatureActive } from '../../utils/toggles';
 import UserContext from '../UserContext';
 
 import './Book.css';
@@ -61,8 +60,6 @@ export default class Book extends Component {
   }
 
   async borrow() {
-    if (!isWaitlistFeatureActive()) return this.performAction(borrowBook, 'Borrow');
-
     const { book } = this.props;
     const { status } = await checkWaitlist(book);
     if (status !== OTHERS_ARE_WAITING_STATUS) {
@@ -81,11 +78,9 @@ export default class Book extends Component {
       case RETURN_BOOK_ACTION:
         return <Button color={color} onClick={() => this.performAction(returnBook, 'Return')}>Return</Button>;
       case JOIN_WAITLIST_BOOK_ACTION:
-        return isWaitlistFeatureActive()
-          && <Button color={color} onClick={() => this.performAction(joinWaitlist, 'JoinWaitlist')}>Join the waitlist</Button>;
+        return <Button color={color} onClick={() => this.performAction(joinWaitlist, 'JoinWaitlist')}>Join the waitlist</Button>;
       case LEAVE_WAITLIST_BOOK_ACTION:
-        return isWaitlistFeatureActive()
-          && <Button color={color} onClick={() => this.performAction(leaveWaitlist, 'LeaveWaitlist')}>Leave the waitlist</Button>;
+        return <Button color={color} onClick={() => this.performAction(leaveWaitlist, 'LeaveWaitlist')}>Leave the waitlist</Button>;
       default:
         return null;
     }
