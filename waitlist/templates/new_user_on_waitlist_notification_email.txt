@@ -1,0 +1,10 @@
+Dear Kamu user,
+
+{{waitlist_user_name}} is waiting for the book {{book_title}} on Kamu.
+
+You are receiving this notification because you currently have this book borrowed and no other copies are available in {{library_name}}.
+
+This is only a friendly reminder to return the book to the library if you have finished reading it.
+If you have already returned this book, please log in to Kamu and mark the book as returned.
+
+Greetings from Kamu team

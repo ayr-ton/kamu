@@ -1,12 +1,10 @@
 from django.contrib.auth.models import User
 from django.core import mail
-from django.db import IntegrityError
 from django.test import TestCase
 from django.utils import timezone
-from unittest.mock import patch
 
 from books.models import Book, BookCopy, Library
-from waitlist.models import WaitlistItem, Waitlist
+from waitlist.models import WaitlistItem
 from waitlist.tasks import send_new_user_on_waitlist_notification
 
 
@@ -26,7 +24,7 @@ class WaitlistTasksTest(TestCase):
         BookCopy.objects.create(book=self.book, library=self.library, user=borrower1)
         BookCopy.objects.create(book=self.book, library=self.library, user=borrower2)
 
-        send_new_user_on_waitlist_notification(self.waitlist_item)
+        send_new_user_on_waitlist_notification(self.waitlist_item.id)
 
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].to, [borrower1.email, borrower2.email])
@@ -34,7 +32,7 @@ class WaitlistTasksTest(TestCase):
     def test_does_not_send_waitlist_email_to_a_book_without_borrowers(self):
         BookCopy.objects.create(book=self.book, library=self.library, user=None)
 
-        send_new_user_on_waitlist_notification(self.waitlist_item)
+        send_new_user_on_waitlist_notification(self.waitlist_item.id)
 
         self.assertEqual(len(mail.outbox), 0)
 
@@ -42,6 +40,16 @@ class WaitlistTasksTest(TestCase):
         borrower1 = User.objects.create(username="person 1", email="person1@gmail.com")
         BookCopy.objects.create(book=self.book, library=self.library, user=borrower1)
 
-        send_new_user_on_waitlist_notification(self.waitlist_item)
+        send_new_user_on_waitlist_notification(self.waitlist_item.id)
 
         self.assertEqual(mail.outbox[0].subject, 'Claudia Silva is waiting for the book Clean Code on Kamu')
+
+    def test_includes_details_in_email_body(self):
+        borrower1 = User.objects.create(username="person 1", email="person1@gmail.com")
+        BookCopy.objects.create(book=self.book, library=self.library, user=borrower1)
+
+        send_new_user_on_waitlist_notification(self.waitlist_item.id)
+
+        email_body = mail.outbox[0].body
+        self.assertIn('Claudia Silva is waiting for the book Clean Code', email_body)
+        self.assertIn('no other copies are available in Santiago', email_body)

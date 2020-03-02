@@ -124,6 +124,7 @@ if os.environ.get("OKTA_METADATA_URL") is not None:
 
 CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', 'redis://localhost:6379/0')
 
+EMAIL_FROM=os.environ.get('DJANGO_EMAIL_FROM')
 EMAIL_HOST=os.environ.get('DJANGO_EMAIL_HOST')
 EMAIL_PORT=os.environ.get('DJANGO_EMAIL_PORT')
 EMAIL_HOST_USER=os.environ.get('DJANGO_EMAIL_HOST_USER')
