@@ -147,12 +147,6 @@ Start your local server:
   make docker-dev
 ```
 
-If you'd like to run the Celery worker for async features such as mail sending, start it too:
-
-```shell
-  docker-compose up -d celery
-```
-
 Now just go to [http://localhost:8000](http://localhost:8000) in your browser :)
 
 For simulating a Heroku like environment (recommended to make build first):
