@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.utils import timezone
@@ -82,6 +84,8 @@ class WaitlistItemTest(TestCase):
         )
         self.assertEqual(self.book.waitlist_items.count(), 1)
 
+
+@patch('waitlist.models.send_new_user_on_waitlist_notification')
 class CreateItemTest(TestCase):
     def setUp(self):
         self.book = Book.objects.create(author="Author", title="the title", subtitle="The subtitle",
@@ -90,7 +94,7 @@ class CreateItemTest(TestCase):
         self.user = User.objects.create(username="claudia", email="claudia@gmail.com")
         self.copy = BookCopy.objects.create(book=self.book, library=self.library, user=self.user)
 
-    def test_should_create_waitlist_item_and_return_its_value(self):
+    def test_should_create_waitlist_item_and_return_its_value(self, _):
         initialCount = WaitlistItem.objects.all().count()
 
         item = WaitlistItem.create_item(
@@ -105,13 +109,13 @@ class CreateItemTest(TestCase):
         self.assertEqual(item.library, self.library)
         self.assertIsNotNone(item.added_date)
 
-    def test_should_create_and_return_waitlist_item_if_theres_only_unavailable_copies(self):
+    def test_should_create_and_return_waitlist_item_if_theres_only_unavailable_copies(self, _):
         item = WaitlistItem.create_item(
             self.library, self.book, self.user,
         )
         self.assertIsInstance(item, WaitlistItem)
 
-    def test_should_not_create_waitlist_item_and_raise_exception_if_there_are_available_copies(self):
+    def test_should_not_create_waitlist_item_and_raise_exception_if_there_are_available_copies(self, _):
         self.copy.user = None
         self.copy.save()
 
@@ -120,13 +124,21 @@ class CreateItemTest(TestCase):
                 self.library, self.book, self.user,
             )
 
-    def test_should_not_create_waitlist_item_and_raise_exception_if_there_are_no_copies(self):
+    def test_should_not_create_waitlist_item_and_raise_exception_if_there_are_no_copies(self, _):
         self.copy.delete()
 
         with self.assertRaises(ValueError):
             item = WaitlistItem.create_item(
                 self.library, self.book, self.user,
             )
+
+    def test_that_a_creation_of_waitlist_item_starts_a_notification_task(self, notification_task):
+        borrower1 = User.objects.create(username="person 1", email="person1@gmail.com")
+        self.book.bookcopy_set.create(library=self.library, user=borrower1)
+        self.waitlist_item = WaitlistItem.create_item(
+            book=self.book, library=self.library, user=self.user,
+        )
+        notification_task.delay.assert_called_with(self.waitlist_item.id)
 
 
 def add_to_waitlist(book, user, library, added_date):
