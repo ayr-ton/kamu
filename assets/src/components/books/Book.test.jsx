@@ -13,7 +13,6 @@ import {
   someBookThatIsInMyWaitlist,
   someAvailableBookThatOthersAreInWaitlist,
 } from '../../../test/booksHelper';
-import { isWaitlistFeatureActive } from '../../utils/toggles';
 import {
   borrowBook,
   returnBook,
@@ -24,7 +23,6 @@ import {
 import { NO_WAITLIST_STATUS, FIRST_ON_WAITLIST_STATUS, OTHERS_ARE_WAITING_STATUS } from '../../utils/constants';
 
 jest.mock('../../services/BookService');
-jest.mock('../../utils/toggles');
 
 expect.extend({
   toHaveBorrowButton(received) {
@@ -72,7 +70,6 @@ describe('Book', () => {
   beforeEach(() => {
     global.window.ga = () => { };
     jest.resetAllMocks();
-    isWaitlistFeatureActive.mockReturnValue(true);
   });
 
   it('should contain the book cover as background image', () => {
@@ -91,136 +88,96 @@ describe('Book', () => {
       expect(getByText('Borrow')).toBeDefined();
     });
 
-    describe('if waitlist feature is enabled', () => {
-      it('if there is no one on the waitlist, user can borrow it with no further confirmation', async () => {
-        checkWaitlist.mockResolvedValue({ status: NO_WAITLIST_STATUS });
-        borrowBook.mockResolvedValue(someBookWithACopyFromMe());
-        const book = someBookWithAvailableCopies();
+    it('if there is no one on the waitlist, user can borrow it with no further confirmation', async () => {
+      checkWaitlist.mockResolvedValue({ status: NO_WAITLIST_STATUS });
+      borrowBook.mockResolvedValue(someBookWithACopyFromMe());
+      const book = someBookWithAvailableCopies();
 
-        const { getByText } = renderComponent(book);
+      const { getByText } = renderComponent(book);
 
-        const button = getByText('Borrow');
-        await fireEvent.click(button);
+      const button = getByText('Borrow');
+      await fireEvent.click(button);
 
-        await wait(() => {
-          expect(checkWaitlist).toHaveBeenCalledWith(book);
-          expect(borrowBook).toHaveBeenCalledWith(book);
-          expect(getByText('Return')).toBeDefined();
-        });
-      });
-
-      it('if they\'re the first on waitlist, user can borrow it with no further confirmation', async () => {
-        checkWaitlist.mockResolvedValue({ status: FIRST_ON_WAITLIST_STATUS });
-        borrowBook.mockResolvedValue(someBookWithACopyFromMe());
-        const book = someBookWithAvailableCopies();
-
-        const { getByText } = renderComponent(book);
-
-        const button = getByText('Borrow');
-        await fireEvent.click(button);
-
-        await wait(() => {
-          expect(checkWaitlist).toHaveBeenCalledWith(book);
-          expect(borrowBook).toHaveBeenCalledWith(book);
-          expect(getByText('Return')).toBeDefined();
-        });
-      });
-
-      it('if there are users waiting for longer, shows a confirmation dialog to the user', async () => {
-        checkWaitlist.mockResolvedValue({ status: OTHERS_ARE_WAITING_STATUS });
-        const book = someAvailableBookThatOthersAreInWaitlist();
-
-        const { getByText, getByTestId } = renderComponent(book);
-
-        const button = getByText('Borrow');
-        fireEvent.click(button);
-
-        await wait(() => {
-          expect(getByTestId('waitlist-users').textContent).toEqual(
-            'Users on the wait list: someuser@example.com, someotheruser@example.com',
-          );
-          expect(getByText(/Do you wish to proceed and borrow this book?/)).toBeDefined();
-          expect(checkWaitlist).toHaveBeenCalledWith(book);
-          expect(borrowBook).not.toHaveBeenCalled();
-        });
-      });
-
-      it('if users confirms it, book is borrowed', async () => {
-        checkWaitlist.mockResolvedValue({ status: OTHERS_ARE_WAITING_STATUS });
-        borrowBook.mockResolvedValue(someBookWithACopyFromMe());
-        const book = someBookWithAvailableCopies();
-
-        const { getByText, findByText, queryByText } = renderComponent(book);
-
-        const button = getByText('Borrow');
-        fireEvent.click(button);
-
-        const confirmButton = await findByText('Confirm and Borrow');
-        fireEvent.click(confirmButton);
-
-        await wait(() => {
-          expect(borrowBook).toHaveBeenCalledWith(book);
-          expect(getByText('Return')).toBeDefined();
-          expect(queryByText(/Do you wish to proceed and borrow this book?/)).toBeNull();
-        });
-      });
-
-      it('if users cancels it, book is not borrowed and confirmation dialog is closed', async () => {
-        checkWaitlist.mockResolvedValue({ status: OTHERS_ARE_WAITING_STATUS });
-        borrowBook.mockResolvedValue(someBookWithACopyFromMe());
-        const book = someBookWithAvailableCopies();
-
-        const { findByText, queryByText } = renderComponent(book);
-
-        const button = await findByText('Borrow');
-        fireEvent.click(button);
-
-        const cancelButton = await findByText('Cancel');
-        fireEvent.click(cancelButton);
-
-        await wait(() => {
-          expect(borrowBook).not.toHaveBeenCalled();
-          expect(findByText('Borrow')).toBeDefined();
-          expect(queryByText(/Do you wish to proceed and borrow this book?/)).toBeNull();
-        });
+      await wait(() => {
+        expect(checkWaitlist).toHaveBeenCalledWith(book);
+        expect(borrowBook).toHaveBeenCalledWith(book);
+        expect(getByText('Return')).toBeDefined();
       });
     });
 
-    describe('if waitlist feature is disabled', () => {
-      beforeEach(() => {
-        isWaitlistFeatureActive.mockReturnValue(false);
-      });
+    it('if they\'re the first on waitlist, user can borrow it with no further confirmation', async () => {
+      checkWaitlist.mockResolvedValue({ status: FIRST_ON_WAITLIST_STATUS });
+      borrowBook.mockResolvedValue(someBookWithACopyFromMe());
+      const book = someBookWithAvailableCopies();
 
-      it('shows the return button when clicking borrow and API sends return action', async () => {
-        borrowBook.mockResolvedValue(someBookWithACopyFromMe());
-        const book = someBookWithAvailableCopies();
-        const bookComponent = createComponent(book);
+      const { getByText } = renderComponent(book);
 
-        await findByTestID(bookComponent, 'book-actions').find(Button).simulate('click');
+      const button = getByText('Borrow');
+      await fireEvent.click(button);
 
-        expect(bookComponent).toHaveReturnButton();
-      });
-
-      it('calls the borrow function when clicking on the borrow button if the book has no waitlist', async () => {
-        borrowBook.mockResolvedValue(someBookWithACopyFromMe());
-        const book = someBookWithAvailableCopies();
-        const bookComponent = createComponent(book);
-
-        await findByTestID(bookComponent, 'book-actions').find(Button).simulate('click');
-
+      await wait(() => {
+        expect(checkWaitlist).toHaveBeenCalledWith(book);
         expect(borrowBook).toHaveBeenCalledWith(book);
-        expect(defaultContext.updateUser).toHaveBeenCalledTimes(1);
+        expect(getByText('Return')).toBeDefined();
       });
+    });
 
-      it('calls the borrow function when clicking on the borrow button', async () => {
-        borrowBook.mockResolvedValue(someBookWithACopyFromMe());
-        const book = someBookWithAvailableCopies();
-        const bookComponent = createComponent(book);
+    it('if there are users waiting for longer, shows a confirmation dialog to the user', async () => {
+      checkWaitlist.mockResolvedValue({ status: OTHERS_ARE_WAITING_STATUS });
+      const book = someAvailableBookThatOthersAreInWaitlist();
 
-        await findByTestID(bookComponent, 'book-actions').find(Button).simulate('click');
+      const { getByText, getByTestId } = renderComponent(book);
 
+      const button = getByText('Borrow');
+      fireEvent.click(button);
+
+      await wait(() => {
+        expect(getByTestId('waitlist-users').textContent).toEqual(
+          'Users on the wait list: someuser@example.com, someotheruser@example.com',
+        );
+        expect(getByText(/Do you wish to proceed and borrow this book?/)).toBeDefined();
+        expect(checkWaitlist).toHaveBeenCalledWith(book);
+        expect(borrowBook).not.toHaveBeenCalled();
+      });
+    });
+
+    it('if users confirms it, book is borrowed', async () => {
+      checkWaitlist.mockResolvedValue({ status: OTHERS_ARE_WAITING_STATUS });
+      borrowBook.mockResolvedValue(someBookWithACopyFromMe());
+      const book = someBookWithAvailableCopies();
+
+      const { getByText, findByText, queryByText } = renderComponent(book);
+
+      const button = getByText('Borrow');
+      fireEvent.click(button);
+
+      const confirmButton = await findByText('Confirm and Borrow');
+      fireEvent.click(confirmButton);
+
+      await wait(() => {
         expect(borrowBook).toHaveBeenCalledWith(book);
-        expect(defaultContext.updateUser).toHaveBeenCalledTimes(1);
+        expect(getByText('Return')).toBeDefined();
+        expect(queryByText(/Do you wish to proceed and borrow this book?/)).toBeNull();
+      });
+    });
+
+    it('if users cancels it, book is not borrowed and confirmation dialog is closed', async () => {
+      checkWaitlist.mockResolvedValue({ status: OTHERS_ARE_WAITING_STATUS });
+      borrowBook.mockResolvedValue(someBookWithACopyFromMe());
+      const book = someBookWithAvailableCopies();
+
+      const { findByText, queryByText } = renderComponent(book);
+
+      const button = await findByText('Borrow');
+      fireEvent.click(button);
+
+      const cancelButton = await findByText('Cancel');
+      fireEvent.click(cancelButton);
+
+      await wait(() => {
+        expect(borrowBook).not.toHaveBeenCalled();
+        expect(findByText('Borrow')).toBeDefined();
+        expect(queryByText(/Do you wish to proceed and borrow this book?/)).toBeNull();
       });
     });
   });
@@ -260,79 +217,60 @@ describe('Book', () => {
     expect(findByTestID(bookComponent, 'book-actions').find(Button).exists()).toBeFalsy();
   });
 
-  describe('if waitlist feature is enabled', () => {
-    beforeEach(() => {
-      isWaitlistFeatureActive.mockReturnValue(true);
-    });
+  it('shows the join waitlist button when book can be added to waitlist', async () => {
+    const book = someBookThatCanBeAddedToWaitlist();
+    const bookComponent = createComponent(book);
 
-    it('shows the join waitlist button when book can be added to waitlist', async () => {
-      const book = someBookThatCanBeAddedToWaitlist();
-      const bookComponent = createComponent(book);
-
-      expect(bookComponent).toHaveJoinWaitlistButton();
-    });
-
-    it('calls the joinWaitlist method when clicking on the join the waitlist button', async () => {
-      joinWaitlist.mockResolvedValue(someBookThatIsInMyWaitlist());
-      const book = someBookThatCanBeAddedToWaitlist();
-      const bookComponent = createComponent(book);
-
-      await findByTestID(bookComponent, 'book-actions').find(Button).simulate('click');
-
-      expect(joinWaitlist).toHaveBeenCalledWith(book);
-      expect(bookComponent).toHaveLeaveWaitlistButton();
-    });
-
-    it('shows the leave waitlist button when book is on waitlist', async () => {
-      const book = someBookThatIsInMyWaitlist();
-      const bookComponent = createComponent(book);
-
-      expect(bookComponent).toHaveLeaveWaitlistButton();
-    });
-
-    it('calls the leaveWaitlist method when clicking on the leave waitlist button', async () => {
-      leaveWaitlist.mockResolvedValue(someBookThatCanBeAddedToWaitlist());
-      const book = someBookThatIsInMyWaitlist();
-      const bookComponent = createComponent(book);
-
-      await findByTestID(bookComponent, 'book-actions').find(Button).simulate('click');
-
-      expect(leaveWaitlist).toHaveBeenCalledWith(book);
-      expect(bookComponent).toHaveJoinWaitlistButton();
-    });
-
-    it('has a waitlist indicator when book is on users waitlist', async () => {
-      const book = someBookThatIsInMyWaitlist();
-      const { getByTestId, getByText } = renderComponent(book);
-
-      expect(getByTestId('waitlist-indicator')).toBeDefined();
-      expect(getByText(/Sep 1, 2019/)).toBeDefined();
-    });
-
-    it('doest not have a waitlist indicator when book is not on users waitlist', async () => {
-      const booksNotOnWaitlist = [
-        someBookWithACopyFromMe(),
-        someBookWithAvailableCopies(),
-        someBookThatCanBeAddedToWaitlist(),
-      ];
-
-      booksNotOnWaitlist.forEach((book) => {
-        const { queryByTestId } = renderComponent(book);
-        expect(queryByTestId('waitlist-indicator')).toBeNull();
-      });
-    });
+    expect(bookComponent).toHaveJoinWaitlistButton();
   });
 
-  describe('if waitlist feature is disabled', () => {
-    beforeEach(() => {
-      isWaitlistFeatureActive.mockReturnValue(false);
-    });
+  it('calls the joinWaitlist method when clicking on the join the waitlist button', async () => {
+    joinWaitlist.mockResolvedValue(someBookThatIsInMyWaitlist());
+    const book = someBookThatCanBeAddedToWaitlist();
+    const bookComponent = createComponent(book);
 
-    it('does not show the join waitlist button when book can be added to waitlist', async () => {
-      const book = someBookThatCanBeAddedToWaitlist();
-      const bookComponent = createComponent(book);
+    await findByTestID(bookComponent, 'book-actions').find(Button).simulate('click');
 
-      expect(bookComponent).not.toHaveJoinWaitlistButton();
+    expect(joinWaitlist).toHaveBeenCalledWith(book);
+    expect(bookComponent).toHaveLeaveWaitlistButton();
+  });
+
+  it('shows the leave waitlist button when book is on waitlist', async () => {
+    const book = someBookThatIsInMyWaitlist();
+    const bookComponent = createComponent(book);
+
+    expect(bookComponent).toHaveLeaveWaitlistButton();
+  });
+
+  it('calls the leaveWaitlist method when clicking on the leave waitlist button', async () => {
+    leaveWaitlist.mockResolvedValue(someBookThatCanBeAddedToWaitlist());
+    const book = someBookThatIsInMyWaitlist();
+    const bookComponent = createComponent(book);
+
+    await findByTestID(bookComponent, 'book-actions').find(Button).simulate('click');
+
+    expect(leaveWaitlist).toHaveBeenCalledWith(book);
+    expect(bookComponent).toHaveJoinWaitlistButton();
+  });
+
+  it('has a waitlist indicator when book is on users waitlist', async () => {
+    const book = someBookThatIsInMyWaitlist();
+    const { getByTestId, getByText } = renderComponent(book);
+
+    expect(getByTestId('waitlist-indicator')).toBeDefined();
+    expect(getByText(/Sep 1, 2019/)).toBeDefined();
+  });
+
+  it('doest not have a waitlist indicator when book is not on users waitlist', async () => {
+    const booksNotOnWaitlist = [
+      someBookWithACopyFromMe(),
+      someBookWithAvailableCopies(),
+      someBookThatCanBeAddedToWaitlist(),
+    ];
+
+    booksNotOnWaitlist.forEach((book) => {
+      const { queryByTestId } = renderComponent(book);
+      expect(queryByTestId('waitlist-indicator')).toBeNull();
     });
   });
 

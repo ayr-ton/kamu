@@ -10,9 +10,6 @@ export const isToggleOn = (toggle) => {
   return isActive(localStorage.getItem(toggleKey));
 };
 
-export const isWaitlistFeatureActive = () => isToggleOn('waitlist');
-
 export default {
   isToggleOn,
-  isWaitlistFeatureActive,
 };
