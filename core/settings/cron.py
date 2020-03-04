@@ -25,7 +25,3 @@ CRON_EMAIL_NOTIFICATION_SETTINGS = {
     'BORROW_MAX_TERM_MONTH': 3
 }
 
-EMAIL_HOST = os.environ.get('DJANGO_EMAIL_HOST')
-EMAIL_PORT = os.environ.get('DJANGO_EMAIL_PORT')
-EMAIL_TIMEOUT = int(os.environ.get('DJANGO_EMAIL_TIMEOUT', '1'))
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

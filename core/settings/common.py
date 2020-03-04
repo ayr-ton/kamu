@@ -121,3 +121,12 @@ if os.environ.get("OKTA_METADATA_URL") is not None:
         }
     }
     SAML2_AUTH['METADATA_AUTO_CONF_URL'] = os.environ['OKTA_METADATA_URL']
+
+CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', 'redis://localhost:6379/0')
+
+EMAIL_FROM=os.environ.get('DJANGO_EMAIL_FROM')
+EMAIL_HOST=os.environ.get('DJANGO_EMAIL_HOST')
+EMAIL_PORT=os.environ.get('DJANGO_EMAIL_PORT')
+EMAIL_HOST_USER=os.environ.get('DJANGO_EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD=os.environ.get('DJANGO_EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS=True

@@ -18,7 +18,10 @@ docker-loaddata:
 	docker-compose run --rm web python manage.py loaddata dump_data/*.json
 
 docker-dev:
-	docker-compose -f docker-compose.yml -f docker-compose.dev.yml up dev
+	docker-compose -f docker-compose.yml -f docker-compose.dev.yml up dev celery
+
+docker-stop:
+	docker-compose -f docker-compose.yml -f docker-compose.dev.yml stop
 
 docker-heroku:
 	docker-compose up web
