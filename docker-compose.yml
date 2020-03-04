@@ -23,10 +23,10 @@ services:
     depends_on:
       - database
       - redis
-  celery:
+  worker:
     build: .
     image: ayrton/kamu
-    command: celery -A core worker --loglevel=info
+    command: ["/start", "worker"]
     environment:
       - DATABASE_URL=postgres://kamu:kamu@database/kamu
       - CELERY_BROKER_URL=redis://redis:6379/0
