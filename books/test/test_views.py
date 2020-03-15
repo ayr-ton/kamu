@@ -199,6 +199,7 @@ class LibraryViewSetQueryParameters(TestCase):
         self.assertEqual(books[0]['title'], 'book a')
 
 
+@patch('books.models.send_waitlist_book_available_notification')
 class BookViewSetTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username="claudia")
@@ -209,45 +210,45 @@ class BookViewSetTest(TestCase):
         self.book = Book.objects.create(author="Author", title="the title", subtitle="The subtitle")
         self.base_url = "/api/libraries/" + self.library.slug + "/books/" + str(self.book.id)
 
-    def test_borrow_calls_borrow_on_book_and_returns_200(self):
+    def test_borrow_calls_borrow_on_book_and_returns_200(self, _):
         with patch.object(Book, 'borrow') as mock_borrow:
             response = self.client.post(self.base_url + '/borrow/')
             self.assertEqual(200, response.status_code)
             mock_borrow.assert_called_once_with(user=self.user, library=self.library)
 
-    def test_borrow_returns_404_when_called_with_invalid_book(self):
+    def test_borrow_returns_404_when_called_with_invalid_book(self, _):
         response = self.client.post('/api/libraries/' + self.library.slug + '/books/123/borrow/')
         self.assertEqual(404, response.status_code)
 
-    def test_borrow_returns_copies_and_action(self):
+    def test_borrow_returns_copies_and_action(self, _):
         self.book.bookcopy_set.create(user=None, library=self.library)
         response = self.client.post(self.base_url + '/borrow/')
         self.assertEqual(response.data['action']['type'], 'RETURN')
         self.assertEqual(response.data['copies'][0]['user']['username'], self.user.username)
 
-    def test_borrow_returns_400_when_throws_error(self):
+    def test_borrow_returns_400_when_throws_error(self, _):
         with patch.object(Book, 'borrow', side_effect=ValueError('some error')):
             response = self.client.post(self.base_url + '/borrow/')
             self.assertEqual(400, response.status_code)
             self.assertEqual('some error', response.data['message'])
 
-    def test_return_calls_return_on_book_and_returns_200(self):
+    def test_return_calls_return_on_book_and_returns_200(self, _):
         with patch.object(Book, 'returnToLibrary') as mock_return:
             response = self.client.post(self.base_url + '/return/')
             self.assertEqual(200, response.status_code)
             mock_return.assert_called_once_with(user=self.user, library=self.library)
 
-    def test_return_returns_404_when_called_with_invalid_book(self):
+    def test_return_returns_404_when_called_with_invalid_book(self, _):
         response = self.client.post('/api/libraries/' + self.library.slug + '/books/123/return/')
         self.assertEqual(404, response.status_code)
 
-    def test_return_returns_copies_and_action(self):
+    def test_return_returns_copies_and_action(self, _):
         self.book.bookcopy_set.create(user=self.user, library=self.library)
         response = self.client.post(self.base_url + '/return/')
         self.assertEqual(response.data['action']['type'], 'BORROW')
         self.assertIsNone(response.data['copies'][0]['user'])
 
-    def test_return_returns_400_when_throws_error(self):
+    def test_return_returns_400_when_throws_error(self, _):
         with patch.object(Book, 'returnToLibrary', side_effect=ValueError('some error')):
             response = self.client.post(self.base_url + '/return/')
             self.assertEqual(400, response.status_code)
