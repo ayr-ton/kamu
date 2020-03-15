@@ -13,33 +13,21 @@ def send_new_user_on_waitlist_notification(waitlist_item_id):
     waitlist_item = apps.get_model('waitlist', 'WaitlistItem').objects.get(pk=waitlist_item_id)
     book = waitlist_item.book
     borrowers = [copy.user for copy in book.bookcopy_set.exclude(user=None)]
+    waitlist_user_name = f'{waitlist_item.user.first_name} {waitlist_item.user.last_name}'
 
     logger.info(f'Starting a waitlist notification task for book {book.title} ' +
                 f'({len(borrowers)} borrowers in {waitlist_item.library.name})')
 
-    if len(borrowers) == 0:
-        logger.debug(f'Exiting task because the book {book.title} has no borrowers in {waitlist_item.library.name}')
-        return
-
-    email_list = [user.email for user in borrowers]
-    logger.info(f'Sending waitlist notification email to {email_list}')
-
-    waitlist_user_name = f'{waitlist_item.user.first_name} {waitlist_item.user.last_name}'
-    subject = f'{waitlist_user_name} is waiting for the book {book.title} on Kamu'
-    message = render_to_string('new_user_on_waitlist_notification_email.txt', {
-        'waitlist_user_name': waitlist_user_name,
-        'book_title': book.title,
-        'library_name': waitlist_item.library.name,
-    })
-
-    mail.send_mail(
-        subject,
-        message,
-        settings.EMAIL_FROM,
-        email_list,
+    send_email_notification(
+        users=borrowers,
+        subject=f'{waitlist_user_name} is waiting for the book {book.title} on Kamu',
+        template_name='new_user_on_waitlist_notification_email.txt',
+        context={
+            'waitlist_user_name': waitlist_user_name,
+            'book_title': book.title,
+            'library_name': waitlist_item.library.name,
+        }
     )
-
-    logger.info(f'Waitlist email notification sent successfully')
 
 
 @task
@@ -49,25 +37,34 @@ def send_waitlist_book_available_notification(book_copy_id):
     waitlist_items = apps.get_model('waitlist', 'WaitlistItem').objects.filter(book=book, library=book_copy.library)
     users_on_waitlist = [item.user for item in waitlist_items]
 
-    logger.info(f'Starting a waitlist notification task for book {book.title} available' +
+    logger.info(f'Starting a waitlist notification task for book {book.title} available ' +
                 f'({len(users_on_waitlist)} users on waitlist in {book_copy.library.name})')
 
-    if len(users_on_waitlist) == 0:
-        logger.debug(f'Exiting task because the book {book.title} has no users on waitlist in {book_copy.library.name}')
+    send_email_notification(
+        users=users_on_waitlist,
+        subject=f'{book.title} is now available on Kamu',
+        template_name='waitlist_book_available_email.txt',
+        context={
+            'book_title': book.title,
+            'library_name': book_copy.library.name,
+        }
+    )
+
+
+def send_email_notification(users, subject, template_name, context):
+    if len(users) == 0:
+        logger.debug(f'Exiting mail task because the user list is empty.')
         return
 
-    email_list = [user.email for user in users_on_waitlist]
-    logger.info(f'Sending waitlist book available notification email to {email_list}')
-
-    subject = f'{book.title} is now available on Kamu'
-    message = render_to_string('waitlist_book_available_email.txt', {
-        'book_title': book.title,
-        'library_name': book_copy.library.name,
-    })
+    email_list = [user.email for user in users]
+    logger.info(f'Sending email notification to {email_list} with subject "{subject}"')
 
     mail.send_mail(
         subject,
-        message,
+        render_to_string(template_name, context),
         settings.EMAIL_FROM,
         email_list,
     )
+
+    logger.info(f'Email notification sent successfully.')
+
