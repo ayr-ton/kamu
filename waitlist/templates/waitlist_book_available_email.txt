@@ -1,0 +1,8 @@
+Dear Kamu user,
+
+A copy of the book {{book_title}}, that is on your waitlist, is now available in {{library_name}}.
+
+You are receiving this notification because you currently have this book on your waitlist.
+If you are no longer waiting for this book, please log in to Kamu and remove it from your waitlist.
+
+Greetings from Kamu team
