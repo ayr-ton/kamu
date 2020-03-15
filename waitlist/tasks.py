@@ -42,6 +42,7 @@ def send_new_user_on_waitlist_notification(waitlist_item_id):
     logger.info(f'Waitlist email notification sent successfully')
 
 
+@task
 def send_waitlist_book_available_notification(book_copy_id):
     book_copy = apps.get_model('books', 'BookCopy').objects.get(pk=book_copy_id)
     book = book_copy.book
