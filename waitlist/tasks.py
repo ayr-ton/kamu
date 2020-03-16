@@ -34,7 +34,9 @@ def send_new_user_on_waitlist_notification(waitlist_item_id):
 def send_waitlist_book_available_notification(book_copy_id):
     book_copy = apps.get_model('books', 'BookCopy').objects.get(pk=book_copy_id)
     book = book_copy.book
-    waitlist_items = apps.get_model('waitlist', 'WaitlistItem').objects.filter(book=book, library=book_copy.library)
+    waitlist_items = apps.get_model('waitlist', 'WaitlistItem').objects.filter(
+        book=book, library=book_copy.library
+    )
     users_on_waitlist = [item.user for item in waitlist_items]
 
     logger.info(f'Starting a waitlist notification task for book {book.title} available ' +
@@ -67,4 +69,3 @@ def send_email_notification(users, subject, template_name, context):
     )
 
     logger.info(f'Email notification sent successfully.')
-
