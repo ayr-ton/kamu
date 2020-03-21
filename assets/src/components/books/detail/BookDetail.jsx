@@ -18,7 +18,6 @@ import './BookDetail.css';
 class BookDetail extends Component {
   constructor(props) {
     super(props);
-    this.changeOpenStatus = this.props.changeOpenStatus.bind(this);
     this.close = this.close.bind(this);
     this.actionButtons = this.props.actionButtons.bind(this);
   }
@@ -76,10 +75,10 @@ class BookDetail extends Component {
 
     return (
       <Dialog
-        open={this.props.open}
         onClose={this.close}
         maxWidth="md"
         data-testid="book-detail-wrapper"
+        open
       >
         <DialogActions>
           {actions}
@@ -120,10 +119,8 @@ class BookDetail extends Component {
 BookDetail.propTypes = {
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   librarySlug: PropTypes.string.isRequired,
-  changeOpenStatus: PropTypes.func.isRequired,
   actionButtons: PropTypes.func.isRequired,
   book: BookPropType.isRequired,
-  open: PropTypes.bool.isRequired,
 };
 
 export { BookDetail };

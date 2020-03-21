@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { Link, Dialog } from '@material-ui/core';
+import { Link } from '@material-ui/core';
 import { fireEvent, render } from '@testing-library/react';
 
 import { BookDetail } from './BookDetail';
@@ -12,9 +12,7 @@ const shallowBookDetail = (props) => shallow(<BookDetail history={{}} {...props}
 const book = someBook();
 const testDefaultProps = {
   book,
-  changeOpenStatus: jest.fn(),
   actionButtons: jest.fn(),
-  open: true,
   librarySlug: 'sp',
 };
 
@@ -27,16 +25,6 @@ describe('Book Detail', () => {
     fireEvent.click(closeButton);
 
     expect(history.push).toHaveBeenCalledWith('/libraries/sp');
-  });
-
-  it('renders closed Dialog if open is set to false', () => {
-    const bookDetail = shallowBookDetail({ ...testDefaultProps, open: false });
-    expect(bookDetail.find(Dialog).props().open).toBeFalsy();
-  });
-
-  it('render open Dialog if open is set to true', () => {
-    const bookDetail = shallowBookDetail({ ...testDefaultProps });
-    expect(bookDetail.find(Dialog).props().open).toBeTruthy();
   });
 
   it('renders img with book cover if book\'s image_url is informed', () => {
