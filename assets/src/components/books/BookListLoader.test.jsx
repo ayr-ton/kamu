@@ -1,9 +1,9 @@
 import React from 'react';
 import {
-  render,
   waitForElement,
   waitForElementToBeRemoved,
 } from '@testing-library/react';
+import { renderWithRouter as render } from '../../../test/renderWithRouter';
 
 import BookListLoader from './BookListLoader';
 

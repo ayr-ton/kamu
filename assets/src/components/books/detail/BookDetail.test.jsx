@@ -1,22 +1,34 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { Link, Dialog } from '@material-ui/core';
+import { fireEvent, render } from '@testing-library/react';
 
-import BookDetail from './BookDetail';
+import { BookDetail } from './BookDetail';
 import { someBook, someBookWithAvailableCopies, someBookWithNoAvailableCopies } from '../../../../test/booksHelper';
 import BookBorrowers from './BookBorrowers';
 import BookPublicationInfo from './BookPublicationInfo';
 
-const shallowBookDetail = (props) => shallow(<BookDetail {...props} />);
+const shallowBookDetail = (props) => shallow(<BookDetail history={{}} {...props} />);
 const book = someBook();
 const testDefaultProps = {
   book,
   changeOpenStatus: jest.fn(),
   actionButtons: jest.fn(),
   open: true,
+  librarySlug: 'sp',
 };
 
 describe('Book Detail', () => {
+  it('redirects to the library when dialog is closed', () => {
+    const history = { push: jest.fn() };
+    const { getByTestId } = render(<BookDetail history={history} {...testDefaultProps} />);
+    const closeButton = getByTestId('modal-close-button');
+
+    fireEvent.click(closeButton);
+
+    expect(history.push).toHaveBeenCalledWith('/libraries/sp');
+  });
+
   it('renders closed Dialog if open is set to false', () => {
     const bookDetail = shallowBookDetail({ ...testDefaultProps, open: false });
     expect(bookDetail.find(Dialog).props().open).toBeFalsy();

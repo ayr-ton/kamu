@@ -1,10 +1,7 @@
 import React from 'react';
-import {
-  render,
-  waitForElement,
-  waitForElementToBeRemoved,
-} from '@testing-library/react';
+import { waitForElement, waitForElementToBeRemoved } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+import { renderWithRouter as render } from '../../../../test/renderWithRouter';
 
 import BookDetailLoader from './BookDetailLoader';
 

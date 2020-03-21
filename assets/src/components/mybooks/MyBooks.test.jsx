@@ -1,5 +1,6 @@
 import React from 'react';
-import { render, waitForElement } from '@testing-library/react';
+import { waitForElement } from '@testing-library/react';
+import { renderWithRouter as render } from '../../../test/renderWithRouter';
 
 import MyBooks from './MyBooks';
 import { getMyBooks, getWaitlistBooks } from '../../services/BookService';

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router';
 import IconButton from '@material-ui/core/IconButton';
 import Dialog from '@material-ui/core/Dialog';
 import Link from '@material-ui/core/Link';
@@ -12,11 +13,18 @@ import { BookPropType } from '../../../utils/propTypes';
 
 import './BookDetail.css';
 
-export default class BookDetail extends Component {
+// TODO: analytics
+
+class BookDetail extends Component {
   constructor(props) {
     super(props);
     this.changeOpenStatus = this.props.changeOpenStatus.bind(this);
+    this.close = this.close.bind(this);
     this.actionButtons = this.props.actionButtons.bind(this);
+  }
+
+  close() {
+    this.props.history.push(`/libraries/${this.props.librarySlug}`);
   }
 
   renderAvailability() {
@@ -61,7 +69,7 @@ export default class BookDetail extends Component {
     const { book } = this.props;
 
     const actions = [
-      <IconButton onClick={this.changeOpenStatus} key="clear" className="modal-book__close">
+      <IconButton onClick={this.close} key="clear" className="modal-book__close" data-testid="modal-close-button">
         <Clear />
       </IconButton>,
     ];
@@ -69,7 +77,7 @@ export default class BookDetail extends Component {
     return (
       <Dialog
         open={this.props.open}
-        onClose={this.changeOpenStatus}
+        onClose={this.close}
         maxWidth="md"
         data-testid="book-detail-wrapper"
       >
@@ -110,8 +118,13 @@ export default class BookDetail extends Component {
 }
 
 BookDetail.propTypes = {
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  librarySlug: PropTypes.string.isRequired,
   changeOpenStatus: PropTypes.func.isRequired,
   actionButtons: PropTypes.func.isRequired,
   book: BookPropType.isRequired,
   open: PropTypes.bool.isRequired,
 };
+
+export { BookDetail };
+export default withRouter(BookDetail);

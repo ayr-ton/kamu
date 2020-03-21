@@ -18,6 +18,7 @@ const BookDetailLoader = (props) => {
       book={book}
       changeOpenStatus={() => {}}
       open
+      librarySlug={props.librarySlug}
     />
   );
 };

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { shallow } from 'enzyme';
 import { render, fireEvent, wait } from '@testing-library/react';
 import Button from '@material-ui/core/Button';
-import Book from './Book';
+import { Book } from './Book';
 import {
   someBook,
   someBookWithAvailableCopies,
@@ -63,8 +63,8 @@ Book.contextTypes = {
 };
 
 const defaultContext = { updateUser: jest.fn() };
-const createComponent = (book) => shallow(<Book book={book} library="bh" />, { context: defaultContext });
-const renderComponent = (book) => render(<Book book={book} library="bh" />);
+const createComponent = (book) => shallow(<Book book={book} library="bh" history={{}} />, { context: defaultContext });
+const renderComponent = (book, history = {}) => render(<Book book={book} library="bh" history={history} />);
 
 describe('Book', () => {
   beforeEach(() => {
@@ -78,6 +78,17 @@ describe('Book', () => {
     const bookComponent = createComponent(book);
 
     expect(bookComponent.find('.book-cover').props().style.backgroundImage).toEqual(`url('${book.image_url}')`);
+  });
+
+  it('should redirect to the book detail page when clicking book title', () => {
+    const book = someBook();
+    const history = { push: jest.fn() };
+
+    const { getByText } = renderComponent(book, history);
+
+    fireEvent.click(getByText(book.title));
+
+    expect(history.push).toHaveBeenCalledWith(`/libraries/bh/book/${book.id}`);
   });
 
   describe('borrowing', () => {

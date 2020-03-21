@@ -1,26 +1,19 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import '@testing-library/jest-dom/extend-expect';
 import BookList from './BookList';
-import { someBookWithAvailableCopies } from '../../../test/booksHelper';
-
-const shallowBookList = (props) => shallow(<BookList {...props} />);
+import { someBook } from '../../../test/booksHelper';
+import { renderWithRouter as render } from '../../../test/renderWithRouter';
 
 describe('Book list', () => {
-  it('renders without crashing', () => {
-    const bookList = shallowBookList({ books: [] });
-    expect(bookList.exists()).toBeTruthy();
-  });
-
   it('should render the list of books', () => {
     const books = [
-      someBookWithAvailableCopies(),
+      { ...someBook(), id: 1, title: 'Book 1' },
+      { ...someBook(), id: 2, title: 'Another book' },
     ];
-    const bookList = shallowBookList({ books, library: 'poa' });
 
-    const bookComponents = bookList.find('Book');
+    const { getByText } = render(<BookList books={books} library="poa" />);
 
-    expect(bookComponents).toHaveLength(books.length);
-    expect(bookComponents.at(0).props().book).toEqual(books[0]);
-    expect(bookComponents.at(0).props().library).toEqual('poa');
+    expect(getByText('Book 1')).toBeInTheDocument();
+    expect(getByText('Another book')).toBeInTheDocument();
   });
 });

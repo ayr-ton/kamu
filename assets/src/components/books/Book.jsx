@@ -10,8 +10,8 @@ import {
   DialogTitle,
 } from '@material-ui/core';
 import moment from 'moment';
+import { withRouter } from 'react-router';
 
-import BookDetail from './detail/BookDetail';
 import WaitlistIndicator from './WaitlistIndicator';
 import {
   joinWaitlist, borrowBook, returnBook, leaveWaitlist, checkWaitlist,
@@ -28,13 +28,12 @@ import UserContext from '../UserContext';
 
 import './Book.css';
 
-export default class Book extends Component {
+class Book extends Component {
   constructor(props) {
     super(props);
     this.state = {
       zDepth: 1,
       book: props.book,
-      open: false,
       confirmationOpen: false,
     };
 
@@ -42,13 +41,17 @@ export default class Book extends Component {
     this.onMouseOut = this.onMouseOut.bind(this);
     this.actionButtons = this.actionButtons.bind(this);
     this.performAction = this.performAction.bind(this);
-    this.changeOpenStatus = this.changeOpenStatus.bind(this);
     this.borrow = this.borrow.bind(this);
+    this.openBookDetails = this.openBookDetails.bind(this);
   }
 
   onMouseOver() { return this.setState({ zDepth: 5 }); }
 
   onMouseOut() { this.setState({ zDepth: 1 }); }
+
+  openBookDetails() {
+    this.props.history.push(`/libraries/${this.props.library}/book/${this.props.book.id}`);
+  }
 
   performAction(action, eventCategory) {
     const { book, library } = this.props;
@@ -86,33 +89,9 @@ export default class Book extends Component {
     }
   }
 
-  changeOpenStatus() {
-    const currentlyOpened = this.state.open;
-    this.setState({ open: !currentlyOpened }, this.trackAnalytics);
-  }
-
-  trackAnalytics() {
-    if (this.state.open) {
-      window.ga('send', 'event', 'Show Detail', this.props.book.title, this.props.library);
-    }
-  }
-
   render() {
     const { book } = this.state;
     const isOnUsersWaitlist = book.waitlist_added_date != null;
-
-    let contentDetail;
-
-    if (this.state.open) {
-      contentDetail = (
-        <BookDetail
-          open={this.state.open}
-          book={book}
-          changeOpenStatus={this.changeOpenStatus}
-          actionButtons={this.actionButtons}
-        />
-      );
-    }
 
     const bookCover = {
       backgroundImage: `url('${book.image_url}')`,
@@ -129,7 +108,7 @@ export default class Book extends Component {
           onMouseOut={this.onMouseOut}
           onBlur={this.onMouseOut}
         >
-          <div role="button" className="book-info" onClick={this.changeOpenStatus} onKeyPress={this.changeOpenStatus} tabIndex={0}>
+          <div role="button" className="book-info" onClick={this.openBookDetails} onKeyPress={this.openBookDetails} tabIndex={0}>
             <div className="book-cover" style={bookCover}>
               <div className="book-cover-overlay" />
             </div>
@@ -145,7 +124,6 @@ export default class Book extends Component {
           </div>
 
           {isOnUsersWaitlist && <WaitlistIndicator addedDate={book.waitlist_added_date} />}
-          {contentDetail}
         </Paper>
         <Dialog
           disableBackdropClick
@@ -192,6 +170,7 @@ export default class Book extends Component {
 Book.contextType = UserContext;
 
 Book.propTypes = {
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   book: BookPropType.isRequired,
   library: PropTypes.string,
 };
@@ -199,3 +178,6 @@ Book.propTypes = {
 Book.defaultProps = {
   library: '',
 };
+
+export { Book };
+export default withRouter(Book);
