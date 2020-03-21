@@ -2,6 +2,7 @@ import {
   getLibraries,
   getBooksByPage,
   getMyBooks,
+  getBook,
   borrowBook,
   returnBook,
   joinWaitlist,
@@ -96,6 +97,17 @@ describe('Book Service', () => {
 
     return getWaitlistBooks().then((data) => {
       expect(data).toEqual(response);
+    });
+  });
+
+  it('returns a book from a library', () => {
+    const book = someBook();
+    const librarySlug = 'sp';
+    fetchFromAPI.mockResolvedValue(book);
+
+    return getBook(librarySlug, book.id).then((data) => {
+      expect(data).toEqual(book);
+      expect(fetchFromAPI).toHaveBeenCalledWith(`/libraries/${librarySlug}/books/${book.id}/`);
     });
   });
 

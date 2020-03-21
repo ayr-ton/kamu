@@ -71,6 +71,7 @@ export default class BookDetail extends Component {
         open={this.props.open}
         onClose={this.changeOpenStatus}
         maxWidth="md"
+        data-testid="book-detail-wrapper"
       >
         <DialogActions>
           {actions}

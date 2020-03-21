@@ -5,12 +5,14 @@ import { MemoryRouter } from 'react-router';
 import App from './App';
 import { getLoggedUser } from '../services/ProfileService';
 import {
+  getBook,
   getBooksByPage, getLibraries, getMyBooks, getWaitlistBooks,
 } from '../services/BookService';
 
 import { currentUser } from '../../test/userHelper';
 import { lightTheme, darkTheme } from '../styling/themes';
 import { trackEvent } from '../utils/analytics';
+import { someBook } from '../../test/booksHelper';
 
 jest.mock('../services/ProfileService');
 jest.mock('../services/BookService');
@@ -31,6 +33,7 @@ describe('App', () => {
     getMyBooks.mockResolvedValue({ results: [] });
     getWaitlistBooks.mockResolvedValue({ results: [] });
     getLibraries.mockResolvedValue({ results: [{ slug: 'bh', id: 1 }] });
+    getBook.mockResolvedValue(someBook());
     component = createComponent('/');
   });
 
@@ -57,8 +60,14 @@ describe('App', () => {
       expect(findByTestID(component, 'my-books-wrapper').exists()).toBeTruthy();
     });
 
-    it('routes to my books component when path is /library/:slug', () => {
+    it('routes to library component when path is /library/:slug', () => {
       component = createComponent('/libraries/bh');
+      expect(findByTestID(component, 'library-wrapper').exists()).toBeTruthy();
+    });
+
+    it('routes to book detail and library component when path is /library/:slug/book/:id', async () => {
+      component = createComponent('/libraries/bh/book/123');
+      expect(findByTestID(component, 'book-detail-loader').exists()).toBeTruthy();
       expect(findByTestID(component, 'library-wrapper').exists()).toBeTruthy();
     });
   });
