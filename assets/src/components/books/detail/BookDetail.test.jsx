@@ -1,32 +1,19 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { Link } from '@material-ui/core';
-import { fireEvent, render } from '@testing-library/react';
-
-import { BookDetail } from './BookDetail';
 import { someBook, someBookWithAvailableCopies, someBookWithNoAvailableCopies } from '../../../../test/booksHelper';
 import BookBorrowers from './BookBorrowers';
 import BookPublicationInfo from './BookPublicationInfo';
+import BookDetail from './BookDetail';
 
 const shallowBookDetail = (props) => shallow(<BookDetail history={{}} {...props} />);
 const book = someBook();
 const testDefaultProps = {
   book,
-  actionButtons: jest.fn(),
   librarySlug: 'sp',
 };
 
 describe('Book Detail', () => {
-  it('redirects to the library when dialog is closed', () => {
-    const history = { push: jest.fn() };
-    const { getByTestId } = render(<BookDetail history={history} {...testDefaultProps} />);
-    const closeButton = getByTestId('modal-close-button');
-
-    fireEvent.click(closeButton);
-
-    expect(history.push).toHaveBeenCalledWith('/libraries/sp');
-  });
-
   it('renders img with book cover if book\'s image_url is informed', () => {
     const bookDetail = shallowBookDetail({ ...testDefaultProps });
     expect(bookDetail.find('img.modal-book__image').props().src).toEqual(
@@ -38,14 +25,6 @@ describe('Book Detail', () => {
     testDefaultProps.book.image_url = null;
     const bookDetail = shallowBookDetail({ ...testDefaultProps });
     expect(bookDetail.find('img.modal-book__image')).toHaveLength(0);
-  });
-
-  it('renders components returned by actionButtons prop function', () => {
-    testDefaultProps.actionButtons.mockReturnValue(<div>mocked action buttons</div>);
-    const bookDetail = shallowBookDetail({ ...testDefaultProps });
-    expect(
-      bookDetail.find('.modal-book__image-box div.modal-book__actions-buttons').text(),
-    ).toEqual('mocked action buttons');
   });
 
   it('renders book title and author', () => {

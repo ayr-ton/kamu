@@ -1,28 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Dialog,
-  DialogContent,
-  Paper,
-  Button,
-  DialogActions,
-  Icon,
-  DialogTitle,
-} from '@material-ui/core';
-import moment from 'moment';
+import { Paper } from '@material-ui/core';
 import { withRouter } from 'react-router';
 
+import BookActionButton from './BookActionButton';
 import WaitlistIndicator from './WaitlistIndicator';
-import {
-  joinWaitlist, borrowBook, returnBook, leaveWaitlist, checkWaitlist,
-} from '../../services/BookService';
-import {
-  BORROW_BOOK_ACTION,
-  RETURN_BOOK_ACTION,
-  JOIN_WAITLIST_BOOK_ACTION,
-  LEAVE_WAITLIST_BOOK_ACTION,
-  OTHERS_ARE_WAITING_STATUS,
-} from '../../utils/constants';
 import { BookPropType } from '../../utils/propTypes';
 import UserContext from '../UserContext';
 
@@ -34,14 +16,10 @@ class Book extends Component {
     this.state = {
       zDepth: 1,
       book: props.book,
-      confirmationOpen: false,
     };
 
     this.onMouseOver = this.onMouseOver.bind(this);
     this.onMouseOut = this.onMouseOut.bind(this);
-    this.actionButtons = this.actionButtons.bind(this);
-    this.performAction = this.performAction.bind(this);
-    this.borrow = this.borrow.bind(this);
     this.openBookDetails = this.openBookDetails.bind(this);
   }
 
@@ -51,42 +29,6 @@ class Book extends Component {
 
   openBookDetails() {
     this.props.history.push(`/libraries/${this.props.library}/book/${this.props.book.id}`);
-  }
-
-  performAction(action, eventCategory) {
-    const { book, library } = this.props;
-    return action(book).then((response) => {
-      this.setState({ book: response, confirmationOpen: false });
-      this.context.updateUser();
-      window.ga('send', 'event', eventCategory, book.title, library);
-    });
-  }
-
-  async borrow() {
-    const { book } = this.props;
-    const { status } = await checkWaitlist(book);
-    if (status !== OTHERS_ARE_WAITING_STATUS) {
-      return this.performAction(borrowBook, 'Borrow');
-    }
-
-    return this.setState({ confirmationOpen: true });
-  }
-
-  actionButtons(color = 'secondary') {
-    const { action } = this.state.book;
-    if (!action) return null;
-    switch (action.type) {
-      case BORROW_BOOK_ACTION:
-        return <Button color={color} onClick={() => this.borrow()}>Borrow</Button>;
-      case RETURN_BOOK_ACTION:
-        return <Button color={color} onClick={() => this.performAction(returnBook, 'Return')}>Return</Button>;
-      case JOIN_WAITLIST_BOOK_ACTION:
-        return <Button color={color} onClick={() => this.performAction(joinWaitlist, 'JoinWaitlist')}>Join the waitlist</Button>;
-      case LEAVE_WAITLIST_BOOK_ACTION:
-        return <Button color={color} onClick={() => this.performAction(leaveWaitlist, 'LeaveWaitlist')}>Leave the waitlist</Button>;
-      default:
-        return null;
-    }
   }
 
   render() {
@@ -120,54 +62,15 @@ class Book extends Component {
           </div>
 
           <div className="book-actions" data-testid="book-actions">
-            {this.actionButtons()}
+            <BookActionButton book={book} library={this.props.library} />
           </div>
 
           {isOnUsersWaitlist && <WaitlistIndicator addedDate={book.waitlist_added_date} />}
         </Paper>
-        <Dialog
-          disableBackdropClick
-          disableEscapeKeyDown
-          maxWidth="xs"
-          open={this.state.confirmationOpen}
-        >
-          <DialogTitle className="confirmation-title">
-            <Icon className="fa fa-clock" />
-          </DialogTitle>
-          <DialogContent className="confirmation-content">
-            <p>
-              There are other users who are waiting for this particular book.
-               You might want to check with them before borrowing it.
-            </p>
-
-            <p data-testid="waitlist-users">
-              {'Users on the wait list: '}
-              <strong>
-                {book.waitlist_items.sort(((oneItem, anotherItem) => (
-                  moment(oneItem.added_date).diff(anotherItem.added_date)
-                ))).map((item) => (
-                  (item.user.name && item.user.name.trim() !== '' && item.user.name) || item.user.username
-                )).join(', ')}
-              </strong>
-            </p>
-
-            <p>Do you wish to proceed and borrow this book?</p>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => this.setState({ confirmationOpen: false })}>
-              Cancel
-            </Button>
-            <Button color="primary" onClick={() => this.performAction(borrowBook, 'Borrow')}>
-              Confirm and Borrow
-            </Button>
-          </DialogActions>
-        </Dialog>
       </React.Fragment>
     );
   }
 }
-
-Book.contextType = UserContext;
 
 Book.propTypes = {
   history: PropTypes.shape({ push: PropTypes.func }).isRequired,

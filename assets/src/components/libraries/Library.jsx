@@ -7,6 +7,8 @@ import SearchBar from './SearchBar';
 import { setRegion } from '../../services/UserPreferences';
 import LoadingIndicator from '../LoadingIndicator';
 import ErrorMessage from '../error/ErrorMessage';
+import BookDetailContainer from '../books/detail/BookDetailContainer';
+import { Route } from 'react-router-dom';
 
 const initialState = {
   books: [],
@@ -91,6 +93,16 @@ class Library extends Component {
   render() {
     return this.state.hasError ? <ErrorMessage /> : (
       <div data-testid="library-wrapper">
+        <Route
+          path="/libraries/:slug/book/:bookId"
+          render={({ match }) => (
+            <BookDetailContainer
+              librarySlug={match.params.slug}
+              bookId={match.params.bookId}
+              data-testid="book-detail-loader"
+            />
+          )}
+        />
         <SearchBar onChange={this.searchTermChanged} query={this.state.searchTerm} />
         <InfiniteScroll
           loadMore={this.loadBooks}

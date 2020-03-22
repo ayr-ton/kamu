@@ -5,7 +5,7 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 import UserContext from './UserContext';
 import Header from './Header';
 import LibrarySelector from './home/LibrarySelector';
-import BookDetailLoader from './books/detail/BookDetailLoader';
+import BookDetailContainer from './books/detail/BookDetailContainer';
 import LibraryRedirector from './home/LibraryRedirector';
 import Library from './libraries/Library';
 import MyBooks from './mybooks/MyBooks';
@@ -78,16 +78,7 @@ class App extends Component {
                     <Library slug={match.params.slug} history={history} />
                   )}
                 />
-                <Route
-                  path="/libraries/:slug/book/:bookId"
-                  render={({ match }) => (
-                    <BookDetailLoader
-                      librarySlug={match.params.slug}
-                      bookId={match.params.bookId}
-                      data-testid="book-detail-loader"
-                    />
-                  )}
-                />
+
               </div>
               <Route path="/" render={trackAnalyticsPageView} />
             </React.Fragment>

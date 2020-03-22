@@ -1,31 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router';
-import IconButton from '@material-ui/core/IconButton';
-import Dialog from '@material-ui/core/Dialog';
 import Link from '@material-ui/core/Link';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
-import Clear from '@material-ui/icons/Clear';
 import BookBorrowers from './BookBorrowers';
 import BookPublicationInfo from './BookPublicationInfo';
+import BookActionButton from '../BookActionButton';
 import { BookPropType } from '../../../utils/propTypes';
 
 import './BookDetail.css';
 
-// TODO: analytics
-
 class BookDetail extends Component {
-  constructor(props) {
-    super(props);
-    this.close = this.close.bind(this);
-    this.actionButtons = this.props.actionButtons.bind(this);
-  }
-
-  close() {
-    this.props.history.push(`/libraries/${this.props.librarySlug}`);
-  }
-
   renderAvailability() {
     const { copies } = this.props.book;
     const availableCopies = copies.filter((book) => !book.user).length;
@@ -65,63 +48,40 @@ class BookDetail extends Component {
   }
 
   render() {
-    const { book } = this.props;
-
-    const actions = [
-      <IconButton onClick={this.close} key="clear" className="modal-book__close" data-testid="modal-close-button">
-        <Clear />
-      </IconButton>,
-    ];
-
+    const { book, librarySlug } = this.props;
     return (
-      <Dialog
-        onClose={this.close}
-        maxWidth="md"
-        data-testid="book-detail-wrapper"
-        open
-      >
-        <DialogActions>
-          {actions}
-        </DialogActions>
+      <div className="modal-book">
+        <div className="modal-book__image-box">
+          {book.image_url && <img src={book.image_url} alt="Book cover" className="modal-book__image" />}
 
-        <DialogContent className="modal-container">
-          <div className="modal-book">
-            <div className="modal-book__image-box">
-              {book.image_url && <img src={book.image_url} alt="Book cover" className="modal-book__image" />}
-
-              <div className="modal-book__actions-buttons">
-                {this.actionButtons('primary')}
-              </div>
-            </div>
-
-            <div className="modal-book__details">
-              <div className="modal-book__title">{book.title}</div>
-              <div className="modal-book__author">{book.author}</div>
-
-              <div className="modal-book__details-container">
-                {this.renderAvailability()}
-                <BookPublicationInfo book={book} />
-              </div>
-
-              {this.renderDescription()}
-
-              <div className="modal-book__status">
-                <BookBorrowers copies={this.props.book.copies} />
-              </div>
-            </div>
+          <div className="modal-book__actions-buttons">
+            <BookActionButton book={book} library={librarySlug} color="primary" />
           </div>
-        </DialogContent>
-      </Dialog>
+        </div>
+
+        <div className="modal-book__details">
+          <div className="modal-book__title">{book.title}</div>
+          <div className="modal-book__author">{book.author}</div>
+
+          <div className="modal-book__details-container">
+            {this.renderAvailability()}
+            <BookPublicationInfo book={book} />
+          </div>
+
+          {this.renderDescription()}
+
+          <div className="modal-book__status">
+            <BookBorrowers copies={book.copies} />
+          </div>
+        </div>
+      </div>
     );
   }
 }
 
 BookDetail.propTypes = {
-  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
   librarySlug: PropTypes.string.isRequired,
-  actionButtons: PropTypes.func.isRequired,
   book: BookPropType.isRequired,
 };
 
-export { BookDetail };
-export default withRouter(BookDetail);
+export default BookDetail;
