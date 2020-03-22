@@ -2,6 +2,8 @@ from django.conf import settings
 from django.db import models
 from django.utils import timezone
 
+from waitlist.tasks import send_waitlist_book_available_notification
+
 BOOK_RETURN_ACTION = 'RETURN'
 BOOK_BORROW_ACTION = 'BORROW'
 BOOK_JOIN_WAITLIST_ACTION = 'JOIN_WAITLIST'
@@ -69,6 +71,8 @@ class Book(models.Model):
         borrowed_copy.user = None
         borrowed_copy.borrow_date = None
         borrowed_copy.save()
+
+        send_waitlist_book_available_notification.delay(borrowed_copy.pk)
 
     def __get_available_copy(self, library):
         return self.bookcopy_set.filter(library=library, user=None).first()

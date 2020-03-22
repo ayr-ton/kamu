@@ -165,18 +165,18 @@ class WaitlistTest(TestCase):
         waitlist = Waitlist(self.book.id, self.library.slug)
         self.assertEqual(len(waitlist.items), 2)
 
-    def test_status_for_shoud_return_NO_WAITLIST_if_waitlist_is_empty(self):
+    def test_status_for_should_return_NO_WAITLIST_if_waitlist_is_empty(self):
         waitlist = Waitlist(self.book_with_no_waitlist.id, self.library.slug)
 
         self.assertTrue(waitlist.is_empty())
         self.assertEqual(waitlist.status_for(self.yet_another_user), 'NO_WAITLIST')
 
-    def test_status_for_shoud_return_FIRST_ON_WAITLIST_if_user_is_on_waitlist_the_longest(self):
+    def test_status_for_should_return_FIRST_ON_WAITLIST_if_user_is_on_waitlist_the_longest(self):
         waitlist = Waitlist(self.book.id, self.library.slug)
 
         self.assertEqual(waitlist.status_for(self.another_user), 'FIRST_ON_WAITLIST')
 
-    def test_status_for_shoud_return_OTHERS_ARE_WAITING_if_there_are_users_waiting_for_longer(self):
+    def test_status_for_should_return_OTHERS_ARE_WAITING_if_there_are_users_waiting_for_longer(self):
         waitlist = Waitlist(self.book.id, self.library.slug)
 
         self.assertEqual(waitlist.status_for(self.yet_another_user), 'OTHERS_ARE_WAITING')
