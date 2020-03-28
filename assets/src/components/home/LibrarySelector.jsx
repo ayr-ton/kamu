@@ -5,6 +5,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import { withRouter } from 'react-router';
 import { getLibraries } from '../../services/BookService';
+import { libraryUrl } from '../../utils/urls';
 
 import './LibrarySelector.css';
 
@@ -34,7 +35,7 @@ class LibrarySelector extends Component {
             <ListItem
               className="library"
               key={library.id}
-              onClick={() => this.props.history.push(`/libraries/${library.slug}`)}
+              onClick={() => this.props.history.push(libraryUrl(library.slug))}
               button
             >
               {library.name}

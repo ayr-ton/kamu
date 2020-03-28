@@ -17,6 +17,7 @@ import {
   OTHERS_ARE_WAITING_STATUS,
 } from '../../utils/constants';
 import performAction from '../../utils/bookAction';
+import { bookIdFromUrl, bookUrl, libraryUrl } from '../../utils/urls';
 import WaitlistWarningDialog from '../books/WaitlistWarningDialog';
 
 const initialState = {
@@ -132,15 +133,15 @@ class Library extends Component {
     return this.state.hasError ? <ErrorMessage /> : (
       <div data-testid="library-wrapper">
         <Route
-          path="/libraries/:slug/book/:bookId"
+          path="/libraries/:slug/book/:book"
           render={({ match }) => (
             <BookDetailContainer
               librarySlug={slug}
-              bookId={match.params.bookId}
+              bookId={bookIdFromUrl(match.params.book)}
               data-testid="book-detail-loader"
               onAction={(action, book) => {
                 if (action === CLOSE_BOOK_ACTION) {
-                  return this.props.history.push(`/libraries/${slug}`);
+                  return this.props.history.push(libraryUrl(slug));
                 }
                 return this.performActionAndUpdateState(action, book);
               }}
@@ -159,7 +160,7 @@ class Library extends Component {
             books={this.state.books}
             onAction={(action, book) => {
               if (action === OPEN_BOOK_ACTION) {
-                return this.props.history.push(`/libraries/${slug}/book/${book.id}`);
+                return this.props.history.push(bookUrl(book, slug));
               }
               return this.performActionAndUpdateState(action, book);
             }}
