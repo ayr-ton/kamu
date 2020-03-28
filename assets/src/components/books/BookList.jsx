@@ -5,21 +5,23 @@ import { BookPropType } from '../../utils/propTypes';
 
 import './BookList.css';
 
-function BookList(props) {
+function BookList({ books, onAction }) {
   return (
     <div className="book-list" data-testid="book-list-container">
-      {props.books.map((book) => (<Book key={book.id} book={book} library={props.library} />))}
+      {books.map((book) => (
+        <Book
+          key={book.id}
+          book={book}
+          onAction={(action) => onAction(action, book)}
+        />
+      ))}
     </div>
   );
 }
 
 BookList.propTypes = {
   books: PropTypes.arrayOf(BookPropType).isRequired,
-  library: PropTypes.string,
-};
-
-BookList.defaultProps = {
-  library: '',
+  onAction: PropTypes.func.isRequired,
 };
 
 export default BookList;

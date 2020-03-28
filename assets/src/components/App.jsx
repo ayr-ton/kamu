@@ -5,7 +5,6 @@ import { MuiThemeProvider } from '@material-ui/core/styles';
 import UserContext from './UserContext';
 import Header from './Header';
 import LibrarySelector from './home/LibrarySelector';
-import BookDetailContainer from './books/detail/BookDetailContainer';
 import LibraryRedirector from './home/LibraryRedirector';
 import Library from './libraries/Library';
 import MyBooks from './mybooks/MyBooks';

@@ -48,14 +48,14 @@ class BookDetail extends Component {
   }
 
   render() {
-    const { book, librarySlug } = this.props;
+    const { book, onAction } = this.props;
     return (
-      <div className="modal-book">
+      <div className="modal-book" data-testid="book-detail">
         <div className="modal-book__image-box">
           {book.image_url && <img src={book.image_url} alt="Book cover" className="modal-book__image" />}
 
           <div className="modal-book__actions-buttons">
-            <BookActionButton book={book} library={librarySlug} color="primary" />
+            <BookActionButton action={book.action.type} onClick={onAction} color="primary" />
           </div>
         </div>
 
@@ -80,8 +80,8 @@ class BookDetail extends Component {
 }
 
 BookDetail.propTypes = {
-  librarySlug: PropTypes.string.isRequired,
   book: BookPropType.isRequired,
+  onAction: PropTypes.func.isRequired,
 };
 
 export default BookDetail;

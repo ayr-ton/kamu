@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function ErrorMessage() {
   return (
-    <div className="error-boundary">
+    <div className="error-boundary" data-testid="error-message">
       <img src="/static/images/logo.svg" alt="Kamu logo" className="error-boundary__logo" />
       <h1 className="error-boundary__title">
         Something went wrong.

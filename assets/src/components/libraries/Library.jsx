@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 import PropTypes from 'prop-types';
+import { Route } from 'react-router-dom';
+import { withRouter } from 'react-router';
 import { getBooksByPage } from '../../services/BookService';
 import BookList from '../books/BookList';
 import SearchBar from './SearchBar';
@@ -8,7 +10,8 @@ import { setRegion } from '../../services/UserPreferences';
 import LoadingIndicator from '../LoadingIndicator';
 import ErrorMessage from '../error/ErrorMessage';
 import BookDetailContainer from '../books/detail/BookDetailContainer';
-import { Route } from 'react-router-dom';
+import { CLOSE_BOOK_ACTION, OPEN_BOOK_ACTION } from '../../utils/constants';
+import performAction from '../../utils/bookAction';
 
 const initialState = {
   books: [],
@@ -31,6 +34,11 @@ class Library extends Component {
 
     this.loadBooks = this.loadBooks.bind(this);
     this.searchTermChanged = this.searchTermChanged.bind(this);
+    this.performActionAndUpdateState = this.performActionAndUpdateState.bind(this);
+  }
+
+  componentDidMount() {
+    this.loadBooks();
   }
 
   componentDidUpdate(prevProps) {
@@ -90,27 +98,50 @@ class Library extends Component {
     });
   }
 
+  async performActionAndUpdateState(action, book) {
+    const { books } = this.state;
+    const updatedBook = await performAction(action, book, this.props.slug);
+    this.setState({ books: books.map((it) => (it.id === updatedBook.id ? updatedBook : it)) });
+    return updatedBook;
+  }
+
   render() {
+    const { slug } = this.props;
     return this.state.hasError ? <ErrorMessage /> : (
       <div data-testid="library-wrapper">
         <Route
           path="/libraries/:slug/book/:bookId"
           render={({ match }) => (
             <BookDetailContainer
-              librarySlug={match.params.slug}
+              librarySlug={slug}
               bookId={match.params.bookId}
               data-testid="book-detail-loader"
+              onAction={(action, book) => {
+                if (action === CLOSE_BOOK_ACTION) {
+                  return this.props.history.push(`/libraries/${slug}`);
+                }
+                return this.performActionAndUpdateState(action, book);
+              }}
             />
           )}
         />
         <SearchBar onChange={this.searchTermChanged} query={this.state.searchTerm} />
         <InfiniteScroll
+          initialLoad={false}
           loadMore={this.loadBooks}
           hasMore={this.state.hasNextPage}
           threshold={950}
           loader={<LoadingIndicator key="loading-indicator" />}
         >
-          <BookList books={this.state.books} library={this.props.slug} />
+          <BookList
+            books={this.state.books}
+            onAction={(action, book) => {
+              if (action === OPEN_BOOK_ACTION) {
+                return this.props.history.push(`/libraries/${slug}/book/${book.id}`);
+              }
+              return this.performActionAndUpdateState(action, book);
+            }}
+          />
         </InfiniteScroll>
       </div>
     );
@@ -120,6 +151,7 @@ class Library extends Component {
 Library.propTypes = {
   slug: PropTypes.string.isRequired,
   history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
     replace: PropTypes.func.isRequired,
     location: PropTypes.shape({
       search: PropTypes.string,
@@ -127,4 +159,5 @@ Library.propTypes = {
   }).isRequired,
 };
 
-export default Library;
+export { Library };
+export default withRouter(Library);

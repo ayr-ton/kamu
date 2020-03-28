@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import LoadingIndicator from '../../LoadingIndicator';
-import BookDetail from './BookDetail';
-import { getBook } from '../../../services/BookService';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import Dialog from '@material-ui/core/Dialog';
 import IconButton from '@material-ui/core/IconButton';
 import Clear from '@material-ui/icons/Clear';
-import { withRouter } from 'react-router';
+import { getBook } from '../../../services/BookService';
+import BookDetail from './BookDetail';
+import LoadingIndicator from '../../LoadingIndicator';
+import { CLOSE_BOOK_ACTION } from '../../../utils/constants';
 
 // TODO: analytics
 
@@ -20,7 +20,7 @@ const BookDetailContainer = (props) => {
   }, []);
 
   function close() {
-    props.history.push(`/libraries/${props.librarySlug}`);
+    props.onAction(CLOSE_BOOK_ACTION, book);
   }
 
   return (
@@ -37,10 +37,16 @@ const BookDetailContainer = (props) => {
       </DialogActions>
 
       <DialogContent className="modal-container">
-        {book && <BookDetail
-          book={book}
-          librarySlug={props.librarySlug}
-        />}
+        {book && (
+          <BookDetail
+            book={book}
+            onAction={(action) => {
+              props.onAction(action, book).then((updatedBook) => {
+                if (updatedBook) setBook(updatedBook);
+              });
+            }}
+          />
+        )}
         {(book == null) && <LoadingIndicator />}
       </DialogContent>
     </Dialog>
@@ -50,8 +56,7 @@ const BookDetailContainer = (props) => {
 BookDetailContainer.propTypes = {
   librarySlug: PropTypes.string.isRequired,
   bookId: PropTypes.string.isRequired,
-  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  onAction: PropTypes.func.isRequired,
 };
 
-export { BookDetailContainer };
-export default withRouter(BookDetailContainer);
+export default BookDetailContainer;

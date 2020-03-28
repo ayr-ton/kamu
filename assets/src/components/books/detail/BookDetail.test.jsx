@@ -1,16 +1,19 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { Link } from '@material-ui/core';
+import { render, fireEvent } from '@testing-library/react';
 import { someBook, someBookWithAvailableCopies, someBookWithNoAvailableCopies } from '../../../../test/booksHelper';
 import BookBorrowers from './BookBorrowers';
 import BookPublicationInfo from './BookPublicationInfo';
 import BookDetail from './BookDetail';
+import { BORROW_BOOK_ACTION } from '../../../utils/constants';
 
-const shallowBookDetail = (props) => shallow(<BookDetail history={{}} {...props} />);
+const shallowBookDetail = (props) => shallow(<BookDetail {...props} />);
 const book = someBook();
+const onAction = jest.fn();
 const testDefaultProps = {
   book,
-  librarySlug: 'sp',
+  onAction,
 };
 
 describe('Book Detail', () => {
@@ -89,5 +92,13 @@ describe('Book Detail', () => {
     expect(
       bookDetail.find('.modal-book__status').find(BookBorrowers).props().copies,
     ).toEqual(testDefaultProps.book.copies);
+  });
+
+  it('should propagate button action when clicking action button', () => {
+    const { getByText } = render(<BookDetail book={book} onAction={onAction} />);
+
+    fireEvent.click(getByText('Borrow'));
+
+    expect(onAction).toHaveBeenCalledWith(BORROW_BOOK_ACTION);
   });
 });
