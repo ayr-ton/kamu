@@ -10,8 +10,6 @@ import BookDetail from './BookDetail';
 import LoadingIndicator from '../../LoadingIndicator';
 import { CLOSE_BOOK_ACTION } from '../../../utils/constants';
 
-// TODO: analytics
-
 const BookDetailContainer = (props) => {
   const [book, setBook] = useState(null);
 

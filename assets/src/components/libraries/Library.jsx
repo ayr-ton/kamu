@@ -3,15 +3,21 @@ import InfiniteScroll from 'react-infinite-scroller';
 import PropTypes from 'prop-types';
 import { Route } from 'react-router-dom';
 import { withRouter } from 'react-router';
-import { getBooksByPage } from '../../services/BookService';
+import { checkWaitlist, getBooksByPage } from '../../services/BookService';
 import BookList from '../books/BookList';
 import SearchBar from './SearchBar';
 import { setRegion } from '../../services/UserPreferences';
 import LoadingIndicator from '../LoadingIndicator';
 import ErrorMessage from '../error/ErrorMessage';
 import BookDetailContainer from '../books/detail/BookDetailContainer';
-import { CLOSE_BOOK_ACTION, OPEN_BOOK_ACTION } from '../../utils/constants';
+import {
+  BORROW_BOOK_ACTION,
+  CLOSE_BOOK_ACTION,
+  OPEN_BOOK_ACTION,
+  OTHERS_ARE_WAITING_STATUS,
+} from '../../utils/constants';
 import performAction from '../../utils/bookAction';
+import WaitlistWarningDialog from '../books/WaitlistWarningDialog';
 
 const initialState = {
   books: [],
@@ -20,6 +26,8 @@ const initialState = {
   searchTerm: '',
   isLoading: false,
   hasError: false,
+  confirmationOpen: false,
+  confirmationWaitlistBook: null,
 };
 
 class Library extends Component {
@@ -98,10 +106,24 @@ class Library extends Component {
     });
   }
 
-  async performActionAndUpdateState(action, book) {
+  async performActionAndUpdateState(action, book, shouldCheckWaitlist = true) {
     const { books } = this.state;
+    if (shouldCheckWaitlist && action === BORROW_BOOK_ACTION) {
+      const { status } = await checkWaitlist(book);
+      if (status === OTHERS_ARE_WAITING_STATUS) {
+        return this.setState({
+          confirmationOpen: true,
+          confirmationWaitlistBook: book,
+        });
+      }
+    }
+
     const updatedBook = await performAction(action, book, this.props.slug);
-    this.setState({ books: books.map((it) => (it.id === updatedBook.id ? updatedBook : it)) });
+    this.setState({
+      books: books.map((it) => (it.id === updatedBook.id ? updatedBook : it)),
+      confirmationOpen: false,
+      confirmationWaitlistBook: null,
+    });
     return updatedBook;
   }
 
@@ -143,6 +165,21 @@ class Library extends Component {
             }}
           />
         </InfiniteScroll>
+        <WaitlistWarningDialog
+          open={this.state.confirmationOpen}
+          waitlistItems={this.state.confirmationWaitlistBook
+            ? this.state.confirmationWaitlistBook.waitlist_items : []
+          }
+          onCancel={() => this.setState({
+            confirmationOpen: false,
+            confirmationWaitlistBook: null,
+          })}
+          onConfirm={() => this.performActionAndUpdateState(
+            BORROW_BOOK_ACTION,
+            this.state.confirmationWaitlistBook,
+            false,
+          )}
+        />
       </div>
     );
   }
