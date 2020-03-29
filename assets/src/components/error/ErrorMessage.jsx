@@ -1,15 +1,23 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-export default function ErrorMessage() {
+import './ErrorMessage.css';
+
+export default function ErrorMessage({ title, subtitle }) {
   return (
-    <div className="error-boundary" data-testid="error-message">
-      <img src="/static/images/logo.svg" alt="Kamu logo" className="error-boundary__logo" />
-      <h1 className="error-boundary__title">
-        Something went wrong.
+    <div className="error-message" data-testid="error-message">
+      <img src="/static/images/logo.svg" alt="Kamu logo" className="error-message__logo" />
+      <h1 className="error-message__title">
+        {title}
       </h1>
-      <p className="error-boundary__description">
-        An error happened while loading this page. Please try again.
+      <p className="error-message__description">
+        {subtitle}
       </p>
     </div>
   );
 }
+
+ErrorMessage.propTypes = {
+  title: PropTypes.string.isRequired,
+  subtitle: PropTypes.string.isRequired,
+};

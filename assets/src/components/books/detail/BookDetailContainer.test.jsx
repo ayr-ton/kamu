@@ -58,5 +58,21 @@ describe('BookDetailContainer', () => {
     expect(onAction).toHaveBeenCalledWith(BORROW_BOOK_ACTION, book);
   });
 
-  // TODO: test for when book is not found
+  test('shows an error message when book is not found', async () => {
+    getBook.mockRejectedValue(new Error('Not Found'));
+
+    const { getByTestId, findByText } = renderComponent();
+
+    await waitForElementToBeRemoved(() => getByTestId('loading-indicator'));
+    expect(await findByText(/could not find the book/i)).toBeVisible();
+  });
+
+  test('shows an error message when book fails loading', async () => {
+    getBook.mockRejectedValue(new Error('Internal Server Error'));
+
+    const { getByTestId, findByText } = renderComponent();
+
+    await waitForElementToBeRemoved(() => getByTestId('loading-indicator'));
+    expect(await findByText(/could not load the book/i)).toBeVisible();
+  });
 });

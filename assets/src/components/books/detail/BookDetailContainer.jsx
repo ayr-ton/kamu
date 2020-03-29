@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -10,15 +10,23 @@ import BookDetail from './BookDetail';
 import LoadingIndicator from '../../LoadingIndicator';
 import { CLOSE_BOOK_ACTION } from '../../../utils/constants';
 import useDocumentTitle from '../../../utils/useDocumentTitle';
+import ErrorMessage from '../../error/ErrorMessage';
 
 const BookDetailContainer = (props) => {
   const [book, setBook] = useState(null);
+  const [error, setError] = useState(null);
   let pageTitle = null;
   if (book && book.title) pageTitle = book.title;
   useDocumentTitle(pageTitle);
 
   useEffect(() => {
-    getBook(props.librarySlug, props.bookId).then(setBook);
+    getBook(props.librarySlug, props.bookId).then(setBook).catch((e) => {
+      if (/not found/i.test(e.message)) {
+        setError('Sorry, we could not find the book you were looking for.');
+      } else {
+        setError('Sorry, we could not load the book. Please try again.');
+      }
+    });
   }, []);
 
   function close() {
@@ -49,7 +57,13 @@ const BookDetailContainer = (props) => {
             }}
           />
         )}
-        {(book == null) && <LoadingIndicator />}
+        {(book == null && error == null) && <LoadingIndicator />}
+        {(error) && (
+          <ErrorMessage
+            title="There was an error loading this book."
+            subtitle={error}
+          />
+        )}
       </DialogContent>
     </Dialog>
   );

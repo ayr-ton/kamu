@@ -19,6 +19,7 @@ import {
   NO_WAITLIST_STATUS,
   OTHERS_ARE_WAITING_STATUS,
 } from '../../utils/constants';
+import UserContext from '../UserContext';
 
 jest.mock('../../services/BookService');
 jest.mock('../../services/UserPreferences');
@@ -158,6 +159,20 @@ describe('Library', () => {
 
         fireEvent.click(within(bookDetail).getByText('Borrow'));
         expect(await findAllByText('Return')).toHaveLength(2);
+      });
+    });
+
+    it('updates the user context after book action', async () => {
+      const updateUser = jest.fn();
+      const { findByText } = render(
+        <UserContext.Provider value={{ updateUser }}>
+          <LibraryContainer slug="bh" />
+        </UserContext.Provider>,
+      );
+
+      fireEvent.click(await findByText('Borrow'));
+      await wait(() => {
+        expect(updateUser).toHaveBeenCalled();
       });
     });
 

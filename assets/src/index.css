@@ -24,7 +24,7 @@ body.light {
 body.dark {
     --background-color: var(--blackish);
     --color: var(--whitish);
-    --error-boundary-color: var(--light-grey);
+    --error-message-color: var(--light-grey);
     --secondary-text-color: var(--dark-grey);
 
     --availability-container-background: var(--dark-grey);

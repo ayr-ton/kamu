@@ -1,13 +1,13 @@
 import React from 'react';
 import {
-  fireEvent,
-  waitForElement,
-  waitForElementToBeRemoved,
+  act, fireEvent, waitForElement, waitForElementToBeRemoved,
 } from '@testing-library/react';
+import { wait } from '@testing-library/dom';
 import { renderWithRouter as render } from '../../../test/renderWithRouter';
 import { someBookWithACopyFromMe, someBookWithAvailableCopies } from '../../../test/booksHelper';
 import BookListLoader from './BookListLoader';
 import performAction from '../../utils/bookAction';
+import UserContext from '../UserContext';
 
 jest.mock('../../utils/bookAction');
 
@@ -22,7 +22,6 @@ describe('BookListLoader', () => {
     await waitForElement(() => getAllByTestId('book-list-container'));
 
     expect(bookSource).toHaveBeenCalledTimes(1);
-
     expect(getAllByTestId('book-container')).toHaveLength(1);
   });
 
@@ -32,7 +31,6 @@ describe('BookListLoader', () => {
     const { getByTestId } = render(<BookListLoader source={bookSource} noBooksMessage="" />);
 
     expect(getByTestId('loading-indicator')).toBeDefined();
-
     await waitForElementToBeRemoved(() => getByTestId('loading-indicator'));
   });
 
@@ -58,5 +56,22 @@ describe('BookListLoader', () => {
 
     fireEvent.click(await findByText('Return'));
     expect(await findByText('Borrow')).toBeVisible();
+  });
+
+  it('updates the user context after book action', async () => {
+    const bookSource = jest.fn().mockResolvedValueOnce({ results: books });
+    performAction.mockResolvedValue(someBookWithAvailableCopies());
+    const updateUser = jest.fn();
+
+    const { findByText } = render(
+      <UserContext.Provider value={{ updateUser }}>
+        <BookListLoader source={bookSource} noBooksMessage="" />
+      </UserContext.Provider>,
+    );
+
+    await act(async () => {
+      fireEvent.click(await findByText('Return'));
+      await wait(() => expect(updateUser).toHaveBeenCalled());
+    });
   });
 });

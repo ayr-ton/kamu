@@ -1,0 +1,15 @@
+.error-message {
+  padding: 2em;
+  color: var(--error-message-color);
+  text-align: center;
+}
+
+.error-message__logo {
+  opacity: 0.3;
+  width: 20em;
+  max-width: 100%;
+}
+
+.error-message__title {
+  font-weight: normal;
+}

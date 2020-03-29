@@ -19,6 +19,7 @@ import {
 import performAction from '../../utils/bookAction';
 import { bookIdFromUrl, bookUrl, libraryUrl } from '../../utils/urls';
 import WaitlistWarningDialog from '../books/WaitlistWarningDialog';
+import UserContext from '../UserContext';
 
 const initialState = {
   books: [],
@@ -125,6 +126,7 @@ class Library extends Component {
       confirmationOpen: false,
       confirmationWaitlistBook: null,
     });
+    this.context.updateUser();
     return updatedBook;
   }
 
@@ -196,6 +198,8 @@ Library.propTypes = {
     }).isRequired,
   }).isRequired,
 };
+
+Library.contextType = UserContext;
 
 export { Library };
 export default withRouter(Library);

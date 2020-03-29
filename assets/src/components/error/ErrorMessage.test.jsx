@@ -2,7 +2,12 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import ErrorMessage from './ErrorMessage';
 
-const createComponent = () => shallow(<ErrorMessage />);
+const createComponent = () => shallow(
+  <ErrorMessage
+    title="Something went wrong."
+    subtitle="An error happened while loading this page. Please try again."
+  />,
+);
 
 describe('Error Message', () => {
   it('has a title', () => {

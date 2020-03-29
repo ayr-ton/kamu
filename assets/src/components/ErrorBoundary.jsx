@@ -24,7 +24,14 @@ class ErrorBoundary extends Component {
   }
 
   render() {
-    return this.state.hasError ? <ErrorMessage /> : this.props.children;
+    return this.state.hasError ? (
+      <div className="error-boundary">
+        <ErrorMessage
+          title="Something went wrong."
+          subtitle="An error happened while loading this page. Please try again."
+        />
+      </div>
+    ) : this.props.children;
   }
 }
 
