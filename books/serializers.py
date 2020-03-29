@@ -88,6 +88,22 @@ class BookSerializer(serializers.ModelSerializer):
         return reverse('books-detail', kwargs=url_kwargs, request=self.context['request'])
 
 
+class BookCompactSerializer(BookSerializer):
+    class Meta:
+        model = Book
+        fields = (
+            'id',
+            'title',
+            'subtitle',
+            'author',
+            'url',
+            'image_url',
+            'waitlist_added_date',
+            'waitlist_items',
+            'action',
+        )
+
+
 class WaitlistItemSerializer(serializers.ModelSerializer):
     user = UserSerializer()
 

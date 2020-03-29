@@ -8,7 +8,6 @@ from django.utils import timezone
 from unittest.mock import patch
 
 from books.models import Book, Library, BookCopy
-from books.serializers import BookSerializer
 
 
 class LibraryViewSet(TestCase):
@@ -43,12 +42,10 @@ class LibraryViewSet(TestCase):
         self.assertEqual(self.library.name, response.data['name'])
         self.assertEqual(self.library.slug, response.data['slug'])
 
-        # Get the books
         response = self.client.get(response.data['books'])
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(1, response.data['count'])
-        self.assertEqual(1, len(response.data['results'][0]['copies']))
 
     def test_can_retrieve_books_from_library(self):
         response = self.client.get("/api/libraries/" + self.library.slug + "/books/")

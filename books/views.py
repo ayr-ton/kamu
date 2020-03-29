@@ -119,7 +119,7 @@ class BookViewSet(FiltersMixin, viewsets.ModelViewSet):
 
         page = self.paginate_queryset(books)
 
-        serializer = BookSerializer(page, many=True, context={
+        serializer = BookCompactSerializer(page, many=True, context={
             'request': request,
             'library': library,
             'user': request.user,
@@ -181,7 +181,7 @@ class UserBooksView(APIView):
     def get(self, request, format=None):
         user_copies = BookCopy.objects.filter(user=request.user)
         return Response({
-            'results': list(map(lambda book_copy: BookSerializer(book_copy.book, context={
+            'results': list(map(lambda book_copy: BookCompactSerializer(book_copy.book, context={
                 'user': request.user,
                 'request': request,
                 'library': book_copy.library
