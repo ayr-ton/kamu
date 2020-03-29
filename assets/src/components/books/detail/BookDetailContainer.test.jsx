@@ -1,6 +1,5 @@
 import React from 'react';
 import { fireEvent, waitForElement, waitForElementToBeRemoved } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 import { renderWithRouter as render } from '../../../../test/renderWithRouter';
 
 import BookDetailContainer from './BookDetailContainer';

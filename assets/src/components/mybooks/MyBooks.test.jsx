@@ -9,7 +9,7 @@ import { someBookWithACopyFromMe } from '../../../test/booksHelper';
 
 jest.mock('../../services/BookService');
 
-describe('MyBooks', () => {
+describe('My Books', () => {
   const books = [someBookWithACopyFromMe()];
 
   test('makes an api call and displays the books that were returned', async () => {

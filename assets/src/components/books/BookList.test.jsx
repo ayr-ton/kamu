@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 import BookList from './BookList';
 import { someBook } from '../../../test/booksHelper';
 import { OPEN_BOOK_ACTION } from '../../utils/constants';

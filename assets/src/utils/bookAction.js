@@ -9,7 +9,7 @@ import {
   RETURN_BOOK_ACTION,
 } from './constants';
 
-export default function performAction(action, book, library) {
+export default function performAction(action, book, library = '') {
   let eventCategory;
   let actionFunction;
   if (action === BORROW_BOOK_ACTION) {

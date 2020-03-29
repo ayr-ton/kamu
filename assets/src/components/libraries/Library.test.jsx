@@ -1,6 +1,5 @@
 import React from 'react';
 import { act, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 import { wait, waitForElement, within } from '@testing-library/dom';
 import {
   borrowBook, checkWaitlist, getBook, getBooksByPage,

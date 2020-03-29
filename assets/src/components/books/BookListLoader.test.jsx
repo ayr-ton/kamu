@@ -1,13 +1,15 @@
 import React from 'react';
 import {
+  fireEvent,
   waitForElement,
   waitForElementToBeRemoved,
 } from '@testing-library/react';
 import { renderWithRouter as render } from '../../../test/renderWithRouter';
-
+import { someBookWithACopyFromMe, someBookWithAvailableCopies } from '../../../test/booksHelper';
 import BookListLoader from './BookListLoader';
+import performAction from '../../utils/bookAction';
 
-import { someBookWithACopyFromMe } from '../../../test/booksHelper';
+jest.mock('../../utils/bookAction');
 
 describe('BookListLoader', () => {
   const books = [someBookWithACopyFromMe()];
@@ -46,5 +48,15 @@ describe('BookListLoader', () => {
     const noBooksComponent = await waitForElement(() => getByTestId('no-books-message'));
 
     expect(noBooksComponent.textContent).toEqual(expectedMessage);
+  });
+
+  it('updates the action button in book card after returning book', async () => {
+    const bookSource = jest.fn().mockResolvedValueOnce({ results: books });
+    performAction.mockResolvedValue(someBookWithAvailableCopies());
+
+    const { findByText } = render(<BookListLoader source={bookSource} noBooksMessage="" />);
+
+    fireEvent.click(await findByText('Return'));
+    expect(await findByText('Borrow')).toBeVisible();
   });
 });
