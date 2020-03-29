@@ -9,9 +9,13 @@ import { getBook } from '../../../services/BookService';
 import BookDetail from './BookDetail';
 import LoadingIndicator from '../../LoadingIndicator';
 import { CLOSE_BOOK_ACTION } from '../../../utils/constants';
+import useDocumentTitle from '../../../utils/useDocumentTitle';
 
 const BookDetailContainer = (props) => {
   const [book, setBook] = useState(null);
+  let pageTitle = null;
+  if (book && book.title) pageTitle = book.title;
+  useDocumentTitle(pageTitle);
 
   useEffect(() => {
     getBook(props.librarySlug, props.bookId).then(setBook);
