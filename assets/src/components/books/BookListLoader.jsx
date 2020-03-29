@@ -3,13 +3,17 @@ import PropTypes from 'prop-types';
 import BookList from './BookList';
 import LoadingIndicator from '../LoadingIndicator';
 import performAction from '../../utils/bookAction';
+import { OPEN_BOOK_ACTION } from '../../utils/constants';
 
 const BookListLoader = (props) => {
   const [books, setBooks] = useState(null);
 
-  const onAction = (action, book) => performAction(action, book).then((updatedBook) => setBooks(
-    books.map((it) => (it.id === updatedBook.id ? updatedBook : it)),
-  ));
+  const onAction = (action, book) => {
+    if (action === OPEN_BOOK_ACTION) return;
+    performAction(action, book).then((updatedBook) => setBooks(
+      books.map((it) => (it.id === updatedBook.id ? updatedBook : it)),
+    ));
+  };
 
   useEffect(() => {
     props.source().then((data) => {
