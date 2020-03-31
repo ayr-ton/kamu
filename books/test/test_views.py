@@ -207,6 +207,17 @@ class BookViewSetTest(TestCase):
         self.book = Book.objects.create(author="Author", title="the title", subtitle="The subtitle")
         self.base_url = "/api/libraries/" + self.library.slug + "/books/" + str(self.book.id)
 
+    def test_retrieve_returns_200_when_called_with_book_from_that_library(self, _):
+        self.book.bookcopy_set.create(library=self.library)
+        response = self.client.get('/api/libraries/' + self.library.slug + '/books/' + str(self.book.id) + '/')
+        self.assertEqual(200, response.status_code)
+
+    def test_retrieve_returns_404_when_called_with_book_from_other_library(self, _):
+        other_book = Book.objects.create(author="Author", title="the title", subtitle="The subtitle")
+        other_book.bookcopy_set.create(library=Library.objects.create(name="Quito", slug="quito"))
+        response = self.client.get('/api/libraries/' + self.library.slug + '/books/' + str(other_book.id) + '/')
+        self.assertEqual(404, response.status_code)
+
     def test_borrow_calls_borrow_on_book_and_returns_200(self, _):
         with patch.object(Book, 'borrow') as mock_borrow:
             response = self.client.post(self.base_url + '/borrow/')

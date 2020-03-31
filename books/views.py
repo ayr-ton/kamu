@@ -2,7 +2,7 @@ import os
 from django.contrib import messages, admin
 from django.db.models import Count
 from django.db.models import Q
-from django.http import Http404
+from django.http import Http404, HttpResponseNotFound
 from django.shortcuts import render, redirect, get_object_or_404
 
 from django.utils import timezone
@@ -130,6 +130,8 @@ class BookViewSet(FiltersMixin, viewsets.ModelViewSet):
     def retrieve(self, request, pk, library_slug=None):
         book = get_object_or_404(self.queryset, pk=pk)
         library = get_object_or_404(Library, slug=library_slug)
+        if not book.bookcopy_set.filter(library=library).exists():
+            raise Http404()
         return self.__serialize_book(book, library, request)
 
     @action(detail=True, methods=['post'])
