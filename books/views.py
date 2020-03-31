@@ -2,10 +2,9 @@ import os
 from django.contrib import messages, admin
 from django.db.models import Count
 from django.db.models import Q
-from django.http import Http404, HttpResponseNotFound
+from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 
-from django.utils import timezone
 from django.utils.http import urlencode
 from django.views.generic.base import View, TemplateView
 from filters.mixins import (
