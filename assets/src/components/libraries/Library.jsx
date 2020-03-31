@@ -132,7 +132,12 @@ class Library extends Component {
 
   render() {
     const { slug } = this.props;
-    return this.state.hasError ? <ErrorMessage /> : (
+    return this.state.hasError ? (
+      <ErrorMessage
+        title="Something went wrong."
+        subtitle="An error happened while loading this page. Please try again."
+      />
+    ) : (
       <div data-testid="library-wrapper">
         <Route
           path="/libraries/:slug/book/:book"
