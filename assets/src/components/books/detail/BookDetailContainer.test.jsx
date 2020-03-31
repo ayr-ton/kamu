@@ -1,6 +1,7 @@
 import React from 'react';
-import { fireEvent, waitForElement, waitForElementToBeRemoved } from '@testing-library/react';
-import { renderWithRouter as render } from '../../../../test/renderWithRouter';
+import {
+  fireEvent, render, waitForElement, waitForElementToBeRemoved,
+} from '@testing-library/react';
 
 import BookDetailContainer from './BookDetailContainer';
 

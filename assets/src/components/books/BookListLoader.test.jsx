@@ -1,9 +1,8 @@
 import React from 'react';
 import {
-  act, fireEvent, waitForElement, waitForElementToBeRemoved,
+  act, fireEvent, render, waitForElement, waitForElementToBeRemoved,
 } from '@testing-library/react';
 import { wait } from '@testing-library/dom';
-import { renderWithRouter as render } from '../../../test/renderWithRouter';
 import { someBookWithACopyFromMe, someBookWithAvailableCopies } from '../../../test/booksHelper';
 import BookListLoader from './BookListLoader';
 import performAction from '../../utils/bookAction';

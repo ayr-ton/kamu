@@ -1,11 +1,8 @@
 import React from 'react';
-import { waitForElement } from '@testing-library/react';
-import { renderWithRouter as render } from '../../../test/renderWithRouter';
-
-import MyBooks from './MyBooks';
+import { render, waitForElement } from '@testing-library/react';
 import { getMyBooks, getWaitlistBooks } from '../../services/BookService';
-
 import { someBookWithACopyFromMe } from '../../../test/booksHelper';
+import MyBooks from './MyBooks';
 
 jest.mock('../../services/BookService');
 
