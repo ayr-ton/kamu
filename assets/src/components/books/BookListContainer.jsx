@@ -6,7 +6,7 @@ import performAction from '../../utils/bookAction';
 import { OPEN_BOOK_ACTION } from '../../utils/constants';
 import UserContext from '../UserContext';
 
-const BookListLoader = (props) => {
+const BookListContainer = (props) => {
   const [books, setBooks] = useState(null);
   const context = useContext(UserContext);
 
@@ -37,9 +37,9 @@ const BookListLoader = (props) => {
   return <BookList books={books} onAction={onAction} />;
 };
 
-BookListLoader.propTypes = {
+BookListContainer.propTypes = {
   source: PropTypes.func.isRequired,
   noBooksMessage: PropTypes.string.isRequired,
 };
 
-export default BookListLoader;
+export default BookListContainer;
