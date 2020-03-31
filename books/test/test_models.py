@@ -131,7 +131,7 @@ class BookTestCase(TestCase):
         self.book.bookcopy_set.create(library=self.library, user=self.user)
         self.book.bookcopy_set.create(library=self.library, user=self.another_user)
 
-        self.book.returnToLibrary(library=self.library, user=self.user)
+        self.book.return_to_library(library=self.library, user=self.user)
 
         copies = self.book.bookcopy_set.all()
         self.assertEqual(copies[0].user, None)
@@ -142,7 +142,7 @@ class BookTestCase(TestCase):
         self.book.bookcopy_set.create(library=self.library, user=self.another_user)
 
         with self.assertRaises(ValueError):
-            self.book.returnToLibrary(library=self.library, user=self.user)
+            self.book.return_to_library(library=self.library, user=self.user)
 
         copies = self.book.bookcopy_set.all()
         self.assertEqual(copies[0].user, self.another_user)
@@ -150,7 +150,7 @@ class BookTestCase(TestCase):
     def test_return_starts_a_notification_task_to_waitlist(self, notification_task):
         book_copy = self.book.bookcopy_set.create(library=self.library, user=self.user)
 
-        self.book.returnToLibrary(library=self.library, user=self.user)
+        self.book.return_to_library(library=self.library, user=self.user)
 
         notification_task.delay.assert_called_with(book_copy.id)
 

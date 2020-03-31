@@ -241,7 +241,7 @@ class BookViewSetTest(TestCase):
             self.assertEqual('some error', response.data['message'])
 
     def test_return_calls_return_on_book_and_returns_200(self, _):
-        with patch.object(Book, 'returnToLibrary') as mock_return:
+        with patch.object(Book, 'return_to_library') as mock_return:
             response = self.client.post(self.base_url + '/return/')
             self.assertEqual(200, response.status_code)
             mock_return.assert_called_once_with(user=self.user, library=self.library)
@@ -257,7 +257,7 @@ class BookViewSetTest(TestCase):
         self.assertIsNone(response.data['copies'][0]['user'])
 
     def test_return_returns_400_when_throws_error(self, _):
-        with patch.object(Book, 'returnToLibrary', side_effect=ValueError('some error')):
+        with patch.object(Book, 'return_to_library', side_effect=ValueError('some error')):
             response = self.client.post(self.base_url + '/return/')
             self.assertEqual(400, response.status_code)
             self.assertEqual('some error', response.data['message'])

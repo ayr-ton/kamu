@@ -63,7 +63,7 @@ class Book(models.Model):
 
         self.__get_waitlist_query(user=user, library=library).delete()
 
-    def returnToLibrary(self, user, library):
+    def return_to_library(self, user, library):
         borrowed_copy = self.__get_borrowed_copy(user=user, library=library)
         if borrowed_copy is None:
             raise ValueError('Book cannot be returned because it was not borrowed by the user.')

@@ -146,12 +146,12 @@ class BookViewSet(FiltersMixin, viewsets.ModelViewSet):
         )
 
     @action(detail=True, methods=['post'], url_path='return', name='Return')
-    def returnToLibrary(self, request, library_slug=None, pk=None):
+    def return_to_library(self, request, library_slug=None, pk=None):
         book = get_object_or_404(self.queryset, pk=pk)
         library = get_object_or_404(Library, slug=library_slug)
         return self.__handle_book_action(
             book=book,
-            action=book.returnToLibrary,
+            action=book.return_to_library,
             library=library,
             request=request,
         )
