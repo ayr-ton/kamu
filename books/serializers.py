@@ -89,6 +89,8 @@ class BookSerializer(serializers.ModelSerializer):
 
 
 class BookCompactSerializer(BookSerializer):
+    library = serializers.SerializerMethodField()
+
     class Meta:
         model = Book
         fields = (
@@ -101,7 +103,11 @@ class BookCompactSerializer(BookSerializer):
             'waitlist_added_date',
             'waitlist_items',
             'action',
+            'library',
         )
+
+    def get_library(self, obj):
+        return self.context.get('library').slug
 
 
 class WaitlistItemSerializer(serializers.ModelSerializer):

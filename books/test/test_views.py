@@ -319,6 +319,10 @@ class UserBooksViewTest(TestCase):
         expected_url = 'http://testserver/api/libraries/' + self.library.slug + '/books/' + str(self.book.id) + '/'
         self.assertEqual(response.data['results'][0]['url'], expected_url)
 
+    def test_has_library_for_each_book(self):
+        response = self.client.get("/api/profile/books")
+        self.assertEqual(response.data['results'][0]['library'], self.library.slug)
+
 
 class UserWaitlistViewTest(TestCase):
     def setUp(self):
@@ -347,6 +351,9 @@ class UserWaitlistViewTest(TestCase):
         expected_url = 'http://testserver/api/libraries/' + self.library.slug + '/books/' + str(self.book.id) + '/'
         self.assertEqual(response.data['results'][0]['url'], expected_url)
 
+    def test_has_library_for_each_book(self):
+        response = self.client.get("/api/profile/waitlist")
+        self.assertEqual(response.data['results'][0]['library'], self.library.slug)
 
 class IsbnViewTest(TestCase):
     def setUp(self):
