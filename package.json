@@ -31,7 +31,7 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "css-loader": "^0.23.1",
-    "lodash": "^4.17.13",
+    "lodash": "^4.17.19",
     "material-icons": "latest",
     "moment": "^2.23.0",
     "prop-types": "^15.7.2",
