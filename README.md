@@ -3,6 +3,7 @@
 > – Ralph Waldo Emerson
 
 [![Build Status](https://circleci.com/gh/ayr-ton/kamu.svg?style=svg)](https://circleci.com/gh/ayr-ton/kamu) [![Test Coverage](https://api.codeclimate.com/v1/badges/a16bb5d5b3c9e9557b2f/test_coverage)](https://codeclimate.com/github/ayr-ton/kamu/test_coverage) [![Maintainability](https://api.codeclimate.com/v1/badges/a16bb5d5b3c9e9557b2f/maintainability)](https://codeclimate.com/github/ayr-ton/kamu/maintainability)
+[![Open Source Helpers](https://www.codetriage.com/ayr-ton/kamu/badges/users.svg)](https://www.codetriage.com/ayr-ton/kamu)
 
 Join the Matrix.org contributors chat at https://matrix.to/#/#kamu:matrix.org
 
