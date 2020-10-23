@@ -106,6 +106,8 @@ REST_FRAMEWORK = {
 
 if os.environ.get("OKTA_METADATA_URL") is not None:
     SAML2_AUTH = {
+        'METADATA_AUTO_CONF_URL': os.environ['OKTA_METADATA_URL'],
+        'ENTITY_ID': os.environ['OKTA_ENTITY_ID'],
         'DEFAULT_NEXT_URL': '/',
         'NEW_USER_PROFILE': {
             'USER_GROUPS': [],
@@ -120,7 +122,6 @@ if os.environ.get("OKTA_METADATA_URL") is not None:
             'last_name': 'lastName',
         }
     }
-    SAML2_AUTH['METADATA_AUTO_CONF_URL'] = os.environ['OKTA_METADATA_URL']
 
 CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', 'redis://localhost:6379/0')
 

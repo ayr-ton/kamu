@@ -12,6 +12,9 @@
     "OKTA_METADATA_URL": {
       "required": false
     },
+    "OKTA_ENTITY_ID": {
+      "required": false
+    },
     "SECRET_KEY": {
       "required": true
     },

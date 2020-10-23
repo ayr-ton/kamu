@@ -84,17 +84,17 @@ npm start
 Now just go to [http://localhost:8000](http://localhost:8000) in your browser :)
 
 **For local setup with Okta authentication:**
-Use the `OKTA_METADATA_URL` environment variable, concatenating it with the usual commands. Examples:
+Use the `OKTA_METADATA_URL` and `OKTA_ENTITY_ID` environment variables, concatenating it with the usual commands. Examples:
 
 ```shell
-  OKTA_METADATA_URL='url-of-okta-saml' npm start
-  OKTA_METADATA_URL='url-of-okta-saml' python manage.py migrate
+  OKTA_METADATA_URL='url-of-okta-saml' OKTA_ENTITY_ID='url-of-okta-login' npm start
+  OKTA_METADATA_URL='url-of-okta-saml' OKTA_ENTITY_ID='url-of-okta-login' python manage.py migrate
 ```
 
 Another way is to export the var and then execute the commands:
 
 ```shell
-  export OKTA_METADATA_URL='url-of-okta-saml'
+  export OKTA_METADATA_URL='url-of-okta-saml' OKTA_ENTITY_ID='url-of-okta-login'
   npm start
   python manage.py migrate
 ```
@@ -102,7 +102,7 @@ Another way is to export the var and then execute the commands:
 If you wish to disable Okta authentication again, execute:
 
 ```shell
-  unset OKTA_METADATA_URL
+  unset OKTA_METADATA_URL OKTA_ENTITY_ID
 ```
 
 ## Using Docker for local development
@@ -180,6 +180,7 @@ DJANGO_SETTINGS_MODULE="core.settings.prod" # If you plan to run a testing versi
 DATABASE_URL=postgres://dbhost/dbname # This variable should be automatically configured by the postgres extension.
 ALLOWED_HOSTS="kamu.example.com, kamu.heroku.etc"
 OKTA_METADATA_URL="SECRET-OKTA-STUFF" # On the case of Okta Authentication support
+OKTA_ENTITY_ID="http://kamu.example.com/okta-login/acs/" # On the case of Okta Authentication support, the URL to the acs login route
 ANALYTICS_ACCOUNT_ID="UA-123456789-1" # Only if you want to enable Google Analytics, otherwise don't set it
 SENTRY_DSN="SECRET-SENTRY-DSN" # Only if you want to enable Sentry, otherwise don't set it
 SSL=false # Enabled by default in production like deployments
