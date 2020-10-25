@@ -176,26 +176,22 @@ class BookTestCase(TestCase):
 
 
 class LibraryTestCase(TestCase):
-    def test_can_create_library(self):
+    def setUp(self):
+        self.book = Book.objects.create(author="Author", title="the title", subtitle="The subtitle",
+                                        publication_date=timezone.now())
         self.library = Library.objects.create(name="Santiago", slug="slug")
 
+    def test_can_create_library(self):
         self.assertEqual(self.library.name, "Santiago")
         self.assertEqual(self.library.slug, "slug")
 
     def test_library_should_have_one_book(self):
-        self.book = Book.objects.create(author="Author", title="the title", subtitle="The subtitle",
-                                        publication_date=timezone.now())
-
-        self.library = Library.objects.create(name="Santiago", slug="slug")
         self.user = User.objects.create(username="claudia", email="claudia@gmail.com")
         self.bookCopy = BookCopy.objects.create(book=self.book, library=self.library, user=self.user)
 
         self.assertEqual(1, len(self.library.books.all()))
 
     def test_library_should_have_correct_book(self):
-        self.book = Book.objects.create(author="Author", title="the title", subtitle="The subtitle",
-                                        publication_date=timezone.now())
-
         self.library = Library.objects.create(name="Santiago", slug="slug")
         self.user = User.objects.create(username="claudia", email="claudia@gmail.com")
         self.bookCopy = BookCopy.objects.create(book=self.book, library=self.library, user=self.user)
