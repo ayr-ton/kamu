@@ -179,6 +179,15 @@ class BookTestCase(TestCase):
         book_copy = self.book.bookcopy_set.first()
         self.assertTrue(book_copy.missing)
 
+    def test_warn_book_was_found(self, _):
+        self.book.bookcopy_set.create(library=self.library, user=None)
+        self.book.report_as_missing(library=self.library)
+
+        self.book.warn_book_was_found(library=self.library)
+
+        book_copy = self.book.bookcopy_set.first()
+        self.assertFalse(book_copy.missing)
+
     def assertBookAction(self, type, actual):
         self.assertEqual(type, actual['type'])
 

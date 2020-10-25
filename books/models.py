@@ -75,9 +75,17 @@ class Book(models.Model):
         send_waitlist_book_available_notification.delay(borrowed_copy.pk)
 
     def report_as_missing(self, library):
-        book_copy = self.bookcopy_set.filter(library=library).first()
+        book_copy = self.__get_copy(library=library)
         book_copy.missing = True
         book_copy.save()
+
+    def warn_book_was_found(self, library):
+        book_copy = self.__get_copy(library=library)
+        book_copy.missing = False
+        book_copy.save()
+
+    def __get_copy(self, library):
+        return self.bookcopy_set.filter(library=library).first()
 
     def __get_available_copy(self, library):
         return self.bookcopy_set.filter(library=library, user=None).first()
