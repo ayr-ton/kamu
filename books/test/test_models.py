@@ -10,7 +10,6 @@ from books.models import Book, BookCopy, Library
 def add_to_waitlist(book, user, library, added_date):
     book.waitlistitem_set.create(library=library, user=user, added_date=added_date)
 
-
 @patch('books.models.send_waitlist_book_available_notification')
 class BookTestCase(TestCase):
     def setUp(self):
@@ -25,6 +24,7 @@ class BookTestCase(TestCase):
         self.assertEqual(self.book.author, "Author")
         self.assertEqual(self.book.title, "the title")
         self.assertEqual(self.book.subtitle, "The subtitle")
+        self.assertFalse(self.book.missing)
 
     def test_is_available_if_has_a_copy_with_no_user_on_library(self, _):
         self.book.bookcopy_set.create(library=self.library, user=None)
@@ -171,7 +171,16 @@ class BookTestCase(TestCase):
         returned_date = self.book.users_waitlist_added_date(user=self.user, library=self.library)
         self.assertEqual(returned_date, date)
 
-    def assertBookAction(self, type, actual):
+    def test_report_book_as_missing(self, _):
+        self.book.bookcopy_set.create(library=self.library, user=None)
+
+        self.book.report_as_missing(library=self.library)
+
+        book_copy = self.book.bookcopy_set.first()
+        self.assertTrue(book_copy.missing)
+
+
+def assertBookAction(self, type, actual):
         self.assertEqual(type, actual['type'])
 
 
