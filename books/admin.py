@@ -5,9 +5,7 @@ from books import views
 from .models import *
 from import_export import resources
 from import_export.admin import ExportMixin
-from import_export.admin import ExportActionMixin
 from import_export import fields
-from import_export.widgets import ForeignKeyWidget
 
 
 class BookCopyResource(resources.ModelResource):
