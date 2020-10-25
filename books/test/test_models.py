@@ -179,8 +179,7 @@ class BookTestCase(TestCase):
         book_copy = self.book.bookcopy_set.first()
         self.assertTrue(book_copy.missing)
 
-
-def assertBookAction(self, type, actual):
+    def assertBookAction(self, type, actual):
         self.assertEqual(type, actual['type'])
 
 
