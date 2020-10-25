@@ -24,6 +24,7 @@ class Book(models.Model):
     number_of_pages = models.IntegerField(null=True, blank=True)
     publication_date = models.DateField(null=True, blank=True)
     publisher = models.CharField(max_length=255, null=True, blank=True)
+    missing = models.BooleanField(default=False)
 
     def __str__(self):
         return "%s (%s)" % (self.title, self.author)
