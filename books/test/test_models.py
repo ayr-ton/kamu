@@ -183,7 +183,7 @@ class BookTestCase(TestCase):
         self.book.bookcopy_set.create(library=self.library, user=None)
         self.book.report_as_missing(library=self.library)
 
-        self.book.warn_book_was_found(library=self.library)
+        self.book.was_found(library=self.library)
 
         book_copy = self.book.bookcopy_set.first()
         self.assertFalse(book_copy.missing)

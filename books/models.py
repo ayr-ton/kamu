@@ -79,7 +79,7 @@ class Book(models.Model):
         book_copy.missing = True
         book_copy.save()
 
-    def warn_book_was_found(self, library):
+    def was_found(self, library):
         book_copy = self.__get_copy(library=library)
         book_copy.missing = False
         book_copy.save()
