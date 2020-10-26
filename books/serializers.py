@@ -32,7 +32,7 @@ class BookCopySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BookCopy
-        fields = ('user', 'borrow_date')
+        fields = ('user', 'borrow_date', 'missing')
 
 
 class BookSerializer(serializers.ModelSerializer):
