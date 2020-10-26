@@ -171,31 +171,44 @@ class BookTestCase(TestCase):
         returned_date = self.book.users_waitlist_added_date(user=self.user, library=self.library)
         self.assertEqual(returned_date, date)
 
+    def test_report_book_as_missing(self, _):
+        self.book.bookcopy_set.create(library=self.library, user=None)
+
+        self.book.report_as_missing(library=self.library)
+
+        book_copy = self.book.bookcopy_set.first()
+        self.assertTrue(book_copy.missing)
+
+    def test_warn_book_was_found(self, _):
+        self.book.bookcopy_set.create(library=self.library, user=None)
+        self.book.report_as_missing(library=self.library)
+
+        self.book.was_found(library=self.library)
+
+        book_copy = self.book.bookcopy_set.first()
+        self.assertFalse(book_copy.missing)
+
     def assertBookAction(self, type, actual):
         self.assertEqual(type, actual['type'])
 
 
 class LibraryTestCase(TestCase):
-    def test_can_create_library(self):
+    def setUp(self):
+        self.book = Book.objects.create(author="Author", title="the title", subtitle="The subtitle",
+                                        publication_date=timezone.now())
         self.library = Library.objects.create(name="Santiago", slug="slug")
 
+    def test_can_create_library(self):
         self.assertEqual(self.library.name, "Santiago")
         self.assertEqual(self.library.slug, "slug")
 
     def test_library_should_have_one_book(self):
-        self.book = Book.objects.create(author="Author", title="the title", subtitle="The subtitle",
-                                        publication_date=timezone.now())
-
-        self.library = Library.objects.create(name="Santiago", slug="slug")
         self.user = User.objects.create(username="claudia", email="claudia@gmail.com")
         self.bookCopy = BookCopy.objects.create(book=self.book, library=self.library, user=self.user)
 
         self.assertEqual(1, len(self.library.books.all()))
 
     def test_library_should_have_correct_book(self):
-        self.book = Book.objects.create(author="Author", title="the title", subtitle="The subtitle",
-                                        publication_date=timezone.now())
-
         self.library = Library.objects.create(name="Santiago", slug="slug")
         self.user = User.objects.create(username="claudia", email="claudia@gmail.com")
         self.bookCopy = BookCopy.objects.create(book=self.book, library=self.library, user=self.user)

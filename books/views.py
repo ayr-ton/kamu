@@ -155,6 +155,26 @@ class BookViewSet(FiltersMixin, viewsets.ModelViewSet):
             request=request,
         )
 
+    @action(detail=True, methods=['patch'], url_path='missing', name='Report as missing')
+    def report_missing(self, request, library_slug=None, pk=None):
+        book = get_object_or_404(self.queryset, pk=pk)
+        library = get_object_or_404(Library, slug=library_slug)
+        try:
+            book.report_as_missing(library=library)
+            return self.__serialize_book(book, library, request)
+        except ValueError as error:
+            return Response({'message': str(error)}, status=400)
+
+    @action(detail=True, methods=['patch'], url_path='found', name='Report book found')
+    def report_found(self, request, library_slug=None, pk=None):
+        book = get_object_or_404(self.queryset, pk=pk)
+        library = get_object_or_404(Library, slug=library_slug)
+        try:
+            book.was_found(library=library)
+            return self.__serialize_book(book, library, request)
+        except ValueError as error:
+            return Response({'message': str(error)}, status=400)
+
     def __handle_book_action(self, book, action, library, request):
         try:
             action(library=library, user=request.user)

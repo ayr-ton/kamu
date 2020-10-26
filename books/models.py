@@ -74,6 +74,19 @@ class Book(models.Model):
 
         send_waitlist_book_available_notification.delay(borrowed_copy.pk)
 
+    def report_as_missing(self, library):
+        book_copy = self.__get_copy(library=library)
+        book_copy.missing = True
+        book_copy.save()
+
+    def was_found(self, library):
+        book_copy = self.__get_copy(library=library)
+        book_copy.missing = False
+        book_copy.save()
+
+    def __get_copy(self, library):
+        return self.bookcopy_set.filter(library=library).first()
+
     def __get_available_copy(self, library):
         return self.bookcopy_set.filter(library=library, user=None).first()
 
@@ -105,6 +118,7 @@ class BookCopy(models.Model):
     library = models.ForeignKey(Library, related_name='copies', on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
     borrow_date = models.DateField(null=True, blank=True)
+    missing = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = 'Book copies'
