@@ -262,6 +262,38 @@ class BookViewSetTest(TestCase):
             self.assertEqual(400, response.status_code)
             self.assertEqual('some error', response.data['message'])
 
+    def test_report_missing_calls_report_as_missing_and_returns_200(self, _):
+        with patch.object(Book, 'report_as_missing') as mock_report_as_missing:
+            response = self.client.patch(self.base_url + '/missing/')
+            self.assertEqual(200, response.status_code)
+            mock_report_as_missing.assert_called_once_with(library=self.library)
+
+    def test_report_missing_returns_404_when_called_with_invalid_book(self, _):
+        response = self.client.patch('/api/libraries/' + self.library.slug + '/books/123/missing/')
+        self.assertEqual(404, response.status_code)
+
+    def test_report_missing_400_when_throws_error(self, _):
+        with patch.object(Book, 'report_as_missing', side_effect=ValueError('some error')):
+            response = self.client.patch(self.base_url + '/missing/')
+            self.assertEqual(400, response.status_code)
+            self.assertEqual('some error', response.data['message'])
+
+    def test_found_calls_was_found_and_returns_200(self, _):
+        with patch.object(Book, 'was_found') as mock_was_found:
+            response = self.client.patch(self.base_url + '/found/')
+            self.assertEqual(200, response.status_code)
+            mock_was_found.assert_called_once_with(library=self.library)
+
+    def test_found_returns_404_when_called_with_invalid_book(self, _):
+        response = self.client.patch('/api/libraries/' + self.library.slug + '/books/123/found/')
+        self.assertEqual(404, response.status_code)
+
+    def test_found_400_when_throws_error(self, _):
+        with patch.object(Book, 'was_found', side_effect=ValueError('some error')):
+            response = self.client.patch(self.base_url + '/found/')
+            self.assertEqual(400, response.status_code)
+            self.assertEqual('some error', response.data['message'])
+
 
 class UserViewTest(TestCase):
     def setUp(self):
@@ -354,6 +386,7 @@ class UserWaitlistViewTest(TestCase):
     def test_has_library_for_each_book(self):
         response = self.client.get("/api/profile/waitlist")
         self.assertEqual(response.data['results'][0]['library'], self.library.slug)
+
 
 class IsbnViewTest(TestCase):
     def setUp(self):
