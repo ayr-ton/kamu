@@ -5,6 +5,7 @@ import {
   BORROW_BOOK_ACTION,
   JOIN_WAITLIST_BOOK_ACTION,
   LEAVE_WAITLIST_BOOK_ACTION,
+  REPORT_BOOK_FOUND,
   REPORT_BOOK_MISSING,
   RETURN_BOOK_ACTION,
 } from '../../utils/constants';
@@ -21,6 +22,8 @@ export default function BookActionButton({ action, onClick, color }) {
       return <Button color={color} onClick={() => onClick(action)}>Leave the waitlist</Button>;
     case REPORT_BOOK_MISSING:
       return <Button color={color} onClick={() => onClick(action)}>Missing</Button>;
+    case REPORT_BOOK_FOUND:
+      return <Button color={color} onClick={() => onClick(action)}>Found</Button>;
     default:
       return null;
   }

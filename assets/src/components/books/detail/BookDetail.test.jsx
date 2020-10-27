@@ -6,7 +6,11 @@ import { someBook, someBookWithAvailableCopies, someBookWithNoAvailableCopies } 
 import BookBorrowers from './BookBorrowers';
 import BookPublicationInfo from './BookPublicationInfo';
 import BookDetail from './BookDetail';
-import { BORROW_BOOK_ACTION, REPORT_BOOK_MISSING } from '../../../utils/constants';
+import {
+  BORROW_BOOK_ACTION,
+  REPORT_BOOK_FOUND,
+  REPORT_BOOK_MISSING,
+} from '../../../utils/constants';
 
 const shallowBookDetail = (props) => shallow(<BookDetail {...props} />);
 const book = someBook();
@@ -108,5 +112,20 @@ describe('Book Detail', () => {
     bookDetail.getByText('Missing').click();
 
     expect(onAction).toHaveBeenCalledWith(REPORT_BOOK_MISSING);
+  });
+
+  it('should propagate report book found action when clicking on found button', () => {
+    const bookWithMissingCopy = someBook(
+      [{
+        id: 1,
+        user: null,
+        missing: true,
+      }],
+    );
+    const bookDetail = render(<BookDetail book={bookWithMissingCopy} onAction={onAction} />);
+
+    bookDetail.getByText('Found').click();
+
+    expect(onAction).toHaveBeenCalledWith(REPORT_BOOK_FOUND);
   });
 });

@@ -5,10 +5,17 @@ import BookBorrowers from './BookBorrowers';
 import BookPublicationInfo from './BookPublicationInfo';
 import BookActionButton from '../BookActionButton';
 import { BookPropType } from '../../../utils/propTypes';
-import { REPORT_BOOK_MISSING } from '../../../utils/constants';
+import { REPORT_BOOK_FOUND, REPORT_BOOK_MISSING } from '../../../utils/constants';
 import './BookDetail.css';
 
 class BookDetail extends Component {
+  renderReportBookAsMissingOrAsFound() {
+    const { book, onAction } = this.props;
+    const doesBookHasAMissingCopy = book.copies.find((it) => it.missing);
+    const action = doesBookHasAMissingCopy ? REPORT_BOOK_FOUND : REPORT_BOOK_MISSING;
+    return <BookActionButton action={action} onClick={onAction} />;
+  }
+
   renderAvailability() {
     const { copies } = this.props.book;
     const availableCopies = copies.filter((book) => !book.user).length;
@@ -62,7 +69,7 @@ class BookDetail extends Component {
         <div className="modal-book__details">
           <div className="modal-book__title">
             <span>{book.title}</span>
-            <BookActionButton action={REPORT_BOOK_MISSING} onClick={onAction} />
+            {this.renderReportBookAsMissingOrAsFound()}
           </div>
           <div className="modal-book__author">{book.author}</div>
 
