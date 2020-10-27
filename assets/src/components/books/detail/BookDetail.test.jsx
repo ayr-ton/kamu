@@ -109,7 +109,7 @@ describe('Book Detail', () => {
   it('should propagate report book missing action when clicking on missing button', () => {
     const bookDetail = render(<BookDetail book={book} onAction={onAction} />);
 
-    bookDetail.getByText('Missing').click();
+    bookDetail.getByText('Report Missing').click();
 
     expect(onAction).toHaveBeenCalledWith(REPORT_BOOK_MISSING);
   });
@@ -124,7 +124,7 @@ describe('Book Detail', () => {
     );
     const bookDetail = render(<BookDetail book={bookWithMissingCopy} onAction={onAction} />);
 
-    bookDetail.getByText('Found').click();
+    bookDetail.getByText('Report Found').click();
 
     expect(onAction).toHaveBeenCalledWith(REPORT_BOOK_FOUND);
   });

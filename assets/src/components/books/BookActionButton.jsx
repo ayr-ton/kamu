@@ -21,9 +21,9 @@ export default function BookActionButton({ action, onClick, color }) {
     case LEAVE_WAITLIST_BOOK_ACTION:
       return <Button color={color} onClick={() => onClick(action)}>Leave the waitlist</Button>;
     case REPORT_BOOK_MISSING:
-      return <Button size="small" variant="outlined" color={color} onClick={() => onClick(action)}>Missing</Button>;
+      return <Button size="small" variant="outlined" color={color} onClick={() => onClick(action)}>Report Missing</Button>;
     case REPORT_BOOK_FOUND:
-      return <Button size="small" variant="outlined" color={color} onClick={() => onClick(action)}>Found</Button>;
+      return <Button size="small" variant="outlined" color={color} onClick={() => onClick(action)}>Report Found</Button>;
     default:
       return null;
   }
