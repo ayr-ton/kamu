@@ -6,7 +6,11 @@ import { someBook, someBookWithAvailableCopies, someBookWithNoAvailableCopies } 
 import BookBorrowers from './BookBorrowers';
 import BookPublicationInfo from './BookPublicationInfo';
 import BookDetail from './BookDetail';
-import { BORROW_BOOK_ACTION } from '../../../utils/constants';
+import {
+  BORROW_BOOK_ACTION,
+  REPORT_BOOK_FOUND,
+  REPORT_BOOK_MISSING,
+} from '../../../utils/constants';
 
 const shallowBookDetail = (props) => shallow(<BookDetail {...props} />);
 const book = someBook();
@@ -34,7 +38,7 @@ describe('Book Detail', () => {
     const bookDetail = shallowBookDetail({ ...testDefaultProps });
     expect(
       bookDetail.find('.modal-book__details div.modal-book__title').text(),
-    ).toEqual('Test Driven Development');
+    ).toEqual('Test Driven Development<BookActionButton />');
     expect(
       bookDetail.find('.modal-book__details div.modal-book__author').text(),
     ).toEqual('Kent Beck');
@@ -100,5 +104,28 @@ describe('Book Detail', () => {
     fireEvent.click(getByText('Borrow'));
 
     expect(onAction).toHaveBeenCalledWith(BORROW_BOOK_ACTION);
+  });
+
+  it('should propagate report book missing action when clicking on missing button', () => {
+    const bookDetail = render(<BookDetail book={book} onAction={onAction} />);
+
+    bookDetail.getByText('Report Missing').click();
+
+    expect(onAction).toHaveBeenCalledWith(REPORT_BOOK_MISSING);
+  });
+
+  it('should propagate report book found action when clicking on found button', () => {
+    const bookWithMissingCopy = someBook(
+      [{
+        id: 1,
+        user: null,
+        missing: true,
+      }],
+    );
+    const bookDetail = render(<BookDetail book={bookWithMissingCopy} onAction={onAction} />);
+
+    bookDetail.getByText('Report Found').click();
+
+    expect(onAction).toHaveBeenCalledWith(REPORT_BOOK_FOUND);
   });
 });

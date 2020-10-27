@@ -1,11 +1,12 @@
 import {
-  borrowBook, returnBook, joinWaitlist, leaveWaitlist,
+  borrowBook, returnBook, joinWaitlist, leaveWaitlist, reportMissing, reportFound,
 } from '../services/BookService';
 import { trackEvent } from './analytics';
 import {
   BORROW_BOOK_ACTION,
   JOIN_WAITLIST_BOOK_ACTION,
-  LEAVE_WAITLIST_BOOK_ACTION,
+  LEAVE_WAITLIST_BOOK_ACTION, REPORT_BOOK_FOUND,
+  REPORT_BOOK_MISSING,
   RETURN_BOOK_ACTION,
 } from './constants';
 import performAction from './bookAction';
@@ -51,5 +52,19 @@ describe('performAction', () => {
     const result = performAction(LEAVE_WAITLIST_BOOK_ACTION, book, library);
 
     expect(result).toEqual(expectedResult);
+  });
+
+  it('calls missing book api and sends analytics event when action is REPORT_BOOK_MISSING', () => {
+    performAction(REPORT_BOOK_MISSING, book, library);
+
+    expect(reportMissing).toHaveBeenCalledWith(book);
+    expect(trackEvent).toHaveBeenCalledWith('ReportBookMissing', book.title, library);
+  });
+
+  it('calls found book api and sends analytics event when action is REPORT_BOOK_FOUND', () => {
+    performAction(REPORT_BOOK_FOUND, book, library);
+
+    expect(reportFound).toHaveBeenCalledWith(book);
+    expect(trackEvent).toHaveBeenCalledWith('ReportBookFound', book.title, library);
   });
 });
