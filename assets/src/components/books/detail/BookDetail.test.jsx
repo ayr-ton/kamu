@@ -38,7 +38,7 @@ describe('Book Detail', () => {
     const bookDetail = shallowBookDetail({ ...testDefaultProps });
     expect(
       bookDetail.find('.modal-book__details div.modal-book__title').text(),
-    ).toEqual('Test Driven Development');
+    ).toEqual('Test Driven Development<BookActionButton />');
     expect(
       bookDetail.find('.modal-book__details div.modal-book__author').text(),
     ).toEqual('Kent Beck');
