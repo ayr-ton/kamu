@@ -6,7 +6,7 @@ import { someBook, someBookWithAvailableCopies, someBookWithNoAvailableCopies } 
 import BookBorrowers from './BookBorrowers';
 import BookPublicationInfo from './BookPublicationInfo';
 import BookDetail from './BookDetail';
-import { BORROW_BOOK_ACTION } from '../../../utils/constants';
+import { BORROW_BOOK_ACTION, REPORT_BOOK_MISSING } from '../../../utils/constants';
 
 const shallowBookDetail = (props) => shallow(<BookDetail {...props} />);
 const book = someBook();
@@ -100,5 +100,13 @@ describe('Book Detail', () => {
     fireEvent.click(getByText('Borrow'));
 
     expect(onAction).toHaveBeenCalledWith(BORROW_BOOK_ACTION);
+  });
+
+  it('should propagate report book missing action when clicking on missing button', () => {
+    const bookDetail = render(<BookDetail book={book} onAction={onAction} />);
+
+    bookDetail.getByText('Missing').click();
+
+    expect(onAction).toHaveBeenCalledWith(REPORT_BOOK_MISSING);
   });
 });

@@ -25,3 +25,5 @@ export const joinWaitlist = (book) => fetchFromAPI(`${book.url}waitlist/`, 'POST
 export const leaveWaitlist = (book) => fetchFromAPI(`${book.url}waitlist/`, 'DELETE');
 
 export const checkWaitlist = (book) => fetchFromAPI(`${book.url}waitlist/check/`, 'GET');
+
+export const reportMissing = (book) => fetchFromAPI(`${book.url}missing/`, 'PATCH');

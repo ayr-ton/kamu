@@ -5,7 +5,7 @@ import BookBorrowers from './BookBorrowers';
 import BookPublicationInfo from './BookPublicationInfo';
 import BookActionButton from '../BookActionButton';
 import { BookPropType } from '../../../utils/propTypes';
-
+import { REPORT_BOOK_MISSING } from '../../../utils/constants';
 import './BookDetail.css';
 
 class BookDetail extends Component {
@@ -60,7 +60,10 @@ class BookDetail extends Component {
         </div>
 
         <div className="modal-book__details">
-          <div className="modal-book__title">{book.title}</div>
+          <div className="modal-book__title">
+            <span>{book.title}</span>
+            <BookActionButton action={REPORT_BOOK_MISSING} onClick={onAction} />
+          </div>
           <div className="modal-book__author">{book.author}</div>
 
           <div className="modal-book__details-container">

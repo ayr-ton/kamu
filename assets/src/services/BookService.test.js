@@ -8,6 +8,7 @@ import {
   joinWaitlist,
   leaveWaitlist,
   getWaitlistBooks,
+  reportMissing,
 } from './BookService';
 import fetchFromAPI from './helpers';
 import {
@@ -153,6 +154,24 @@ describe('Book Service', () => {
       const result = await leaveWaitlist(book);
 
       expect(fetchFromAPI).toHaveBeenCalledWith(`${book.url}waitlist/`, 'DELETE');
+      expect(result).toEqual(updatedBook);
+    });
+
+    it('should call the missing endpoint and return the updated book', async () => {
+      const book = someBookWithAvailableCopies();
+      const updatedBook = someBook(
+        [{
+          id: 1,
+          user: null,
+          missing: true,
+        }],
+      );
+
+      fetchFromAPI.mockResolvedValue(updatedBook);
+
+      const result = await reportMissing(book);
+
+      expect(fetchFromAPI).toHaveBeenCalledWith(`${book.url}missing/`, 'PATCH');
       expect(result).toEqual(updatedBook);
     });
   });
