@@ -34,6 +34,11 @@
   line-height: 1.1em;
 }
 
+.modal-book__title button {
+  margin-left: 1em;
+  min-width: 6em;
+}
+
 .modal-book__author {
   font-size: 1.3em;
   margin-top: 1em;
@@ -144,7 +149,7 @@
 }
 
 .modal-book__waitlist-amount {
-  margin-left: 3px;  
+  margin-left: 3px;
 }
 
 .modal-book__borrowed-with {

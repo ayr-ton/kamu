@@ -13,7 +13,8 @@ class BookDetail extends Component {
     const { book, onAction } = this.props;
     const doesBookHasAMissingCopy = book.copies.find((it) => it.missing);
     const action = doesBookHasAMissingCopy ? REPORT_BOOK_FOUND : REPORT_BOOK_MISSING;
-    return <BookActionButton action={action} onClick={onAction} />;
+    const color = doesBookHasAMissingCopy ? 'secondary' : 'primary';
+    return <BookActionButton color={color} action={action} onClick={onAction} />;
   }
 
   renderAvailability() {
