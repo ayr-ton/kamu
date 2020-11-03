@@ -1,6 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import ListItem from '@material-ui/core/ListItem';
+import { render } from '@testing-library/react';
 import { LibrarySelector } from './LibrarySelector';
 import { getLibraries } from '../../services/BookService';
 
@@ -9,7 +8,6 @@ jest.mock('../../services/BookService');
 const history = { push: jest.fn() };
 
 describe('LibrarySelector', () => {
-  let librarySelector;
   const libraries = {
     count: 1,
     next: null,
@@ -26,13 +24,14 @@ describe('LibrarySelector', () => {
 
   beforeEach(() => {
     getLibraries.mockResolvedValue(libraries);
-    librarySelector = shallow(<LibrarySelector history={history} />);
   });
 
   it('redirects to the library page when clicking', async () => {
-    await librarySelector.instance().loadLibraries();
+    const librarySelector = render(<LibrarySelector history={history} />);
 
-    librarySelector.find(ListItem).simulate('click');
+    const bhItem = await librarySelector.findByText('Belo Horizonte');
+
+    bhItem.click();
 
     expect(history.push).toHaveBeenCalledWith('/libraries/bh');
   });

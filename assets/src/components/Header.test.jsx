@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Badge from '@material-ui/core/Badge';
+import { render } from '@testing-library/react';
 import { Header } from './Header';
 import { getRegion, clearRegion } from '../services/UserPreferences';
 
@@ -24,11 +25,10 @@ describe('Header', () => {
     window.location.assign = jest.fn();
     jest.resetAllMocks();
   });
-
   it('clears the region and redirects to home when clicking change region', () => {
-    const header = createComponent();
+    const header = render(<Header {...defaultProps} />);
 
-    header.find('#change-region-button').simulate('click');
+    header.getByText('Change region').click();
 
     expect(clearRegion).toHaveBeenCalled();
     expect(history.push).toHaveBeenCalledWith('/');

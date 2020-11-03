@@ -1,22 +1,16 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { render } from '@testing-library/react';
 import ErrorMessage from './ErrorMessage';
 
-const createComponent = () => shallow(
-  <ErrorMessage
-    title="Something went wrong."
-    subtitle="An error happened while loading this page. Please try again."
-  />,
-);
-
 describe('Error Message', () => {
-  it('has a title', () => {
-    const component = createComponent();
-    expect(component.find('h1').text()).toEqual('Something went wrong.');
-  });
-
-  it('has a message', () => {
-    const component = createComponent();
-    expect(component.find('p').text()).toEqual('An error happened while loading this page. Please try again.');
+  it('has a title and a message', () => {
+    const errorMessage = render(
+      <ErrorMessage
+        title="Something went wrong"
+        subtitle="An error happened while loading this page. Please try again."
+      />,
+    );
+    errorMessage.getByText('Something went wrong');
+    errorMessage.getByText('An error happened while loading this page. Please try again.');
   });
 });

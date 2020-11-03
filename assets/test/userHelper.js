@@ -10,6 +10,7 @@ export const someUser = {
   email: 'someuser@example.com',
   image_url: '',
   borrowed_books_count: 2,
+  name: 'Some User',
 };
 
 export const someOtherUser = {
