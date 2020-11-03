@@ -48,14 +48,8 @@ export default class SearchBar extends Component {
           />
           {this.state.searchTerm !== ''
             && (
-              <div className="search-bar-close-icon-container" data-testid="nameInput">
-                <Close
-                  inputprops={
-                    { 'data-testid': 'nameInput' }
-                  }
-                  className="search-bar-close-icon"
-                  onClick={this.onClear}
-                />
+              <div className="search-bar-close-icon-container">
+                <Close className="search-bar-close-icon" onClick={this.onClear} />
               </div>
             )}
         </div>
