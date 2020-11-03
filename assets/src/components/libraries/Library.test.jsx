@@ -222,7 +222,7 @@ describe('Library', () => {
 
       await wait(() => {
         expect(getByTestId('waitlist-users')).toHaveTextContent(
-          'Users on the wait list: someuser@example.com, someotheruser@example.com',
+          'Users on the wait list: Some User, someotheruser@example.com',
         );
         expect(getByText(/Do you wish to proceed and borrow this book?/)).toBeDefined();
         expect(checkWaitlist).toHaveBeenCalledWith(bookThatOthersAreInWaitlist);
