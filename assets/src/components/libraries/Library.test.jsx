@@ -138,7 +138,7 @@ describe('Library', () => {
 
     beforeEach(() => {
       getBooksByPage.mockResolvedValueOnce({ ...mockGetBooksByPageResponse, results: [book] });
-      borrowBook.mockResolvedValueOnce(someBookWithACopyFromMe());
+      borrowBook.mockResolvedValueOnce({ ...someBookWithACopyFromMe(), id: book.id });
       checkWaitlist.mockResolvedValue({ status: NO_WAITLIST_STATUS });
     });
 

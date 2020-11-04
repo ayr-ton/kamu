@@ -68,7 +68,7 @@ describe('Book list container', () => {
 
   it('updates the action button in book card after returning book', async () => {
     const bookSource = jest.fn().mockResolvedValueOnce({ results: books });
-    performAction.mockResolvedValue(someBookWithAvailableCopies());
+    performAction.mockResolvedValue({ ...someBookWithAvailableCopies(), id: books[0].id });
 
     const { findByText } = render(<BookListContainer source={bookSource} noBooksMessage="" history={history} />);
 
@@ -78,7 +78,7 @@ describe('Book list container', () => {
 
   it('updates the user context after book action', async () => {
     const bookSource = jest.fn().mockResolvedValueOnce({ results: books });
-    performAction.mockResolvedValue(someBookWithAvailableCopies());
+    performAction.mockResolvedValue({ ...someBookWithAvailableCopies(), id: books[0].id });
     const updateUser = jest.fn();
 
     const { findByText } = render(
