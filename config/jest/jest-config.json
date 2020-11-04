@@ -27,5 +27,8 @@
   },
   "transformIgnorePatterns": [
     "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs)$"
+  ],
+  "watchPathIgnorePatterns": [
+    "<rootDir>/node_modules/"
   ]
 }
