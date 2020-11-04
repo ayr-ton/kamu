@@ -16,11 +16,16 @@ describe('Book list container', () => {
     ...someBookWithACopyFromMe(),
     library: 'library',
   }];
+  let history;
+
+  beforeEach(() => {
+    history = { push: jest.fn() };
+  });
 
   test('makes an api call and displays the books that were returned', async () => {
     const bookSource = jest.fn().mockResolvedValueOnce({ results: books });
 
-    const { getAllByTestId } = render(<BookListContainer source={bookSource} noBooksMessage="" history={{}} />);
+    const { getAllByTestId } = render(<BookListContainer source={bookSource} noBooksMessage="" history={history} />);
 
     await waitForElement(() => getAllByTestId('book-list-container'));
 
@@ -31,7 +36,7 @@ describe('Book list container', () => {
   test('shows a loading indicator while loading the books', async () => {
     const bookSource = jest.fn().mockResolvedValueOnce({ results: books });
 
-    const { getByTestId } = render(<BookListContainer source={bookSource} noBooksMessage="" history={{}} />);
+    const { getByTestId } = render(<BookListContainer source={bookSource} noBooksMessage="" history={history} />);
 
     expect(getByTestId('loading-indicator')).toBeDefined();
     await waitForElementToBeRemoved(() => getByTestId('loading-indicator'));
@@ -44,7 +49,7 @@ describe('Book list container', () => {
     const { getByTestId } = render(<BookListContainer
       source={bookSource}
       noBooksMessage={expectedMessage}
-      history={{}}
+      history={history}
     />);
 
     const noBooksComponent = await waitForElement(() => getByTestId('no-books-message'));
@@ -53,7 +58,6 @@ describe('Book list container', () => {
   });
 
   test('redirects to the book detail in library when clicking book', async () => {
-    const history = { push: jest.fn() };
     const bookSource = jest.fn().mockResolvedValueOnce({ results: books });
     const { findByText } = render(<BookListContainer source={bookSource} noBooksMessage="" history={history} />);
 
@@ -66,7 +70,7 @@ describe('Book list container', () => {
     const bookSource = jest.fn().mockResolvedValueOnce({ results: books });
     performAction.mockResolvedValue(someBookWithAvailableCopies());
 
-    const { findByText } = render(<BookListContainer source={bookSource} noBooksMessage="" history={{}} />);
+    const { findByText } = render(<BookListContainer source={bookSource} noBooksMessage="" history={history} />);
 
     fireEvent.click(await findByText('Return'));
     expect(await findByText('Borrow')).toBeVisible();
@@ -79,7 +83,7 @@ describe('Book list container', () => {
 
     const { findByText } = render(
       <UserContext.Provider value={{ updateUser }}>
-        <BookListContainer source={bookSource} noBooksMessage="" history={{}} />
+        <BookListContainer source={bookSource} noBooksMessage="" history={history} />
       </UserContext.Provider>,
     );
 
