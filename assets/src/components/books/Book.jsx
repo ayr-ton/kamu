@@ -5,17 +5,13 @@ import { Paper } from '@material-ui/core';
 import BookActionButton from './BookActionButton';
 import WaitlistIndicator from './WaitlistIndicator';
 import { BookPropType } from '../../utils/propTypes';
-import { OPEN_BOOK_ACTION } from '../../utils/constants';
+import { PLACEHOLDER_BOOK_COVER, OPEN_BOOK_ACTION } from '../../utils/constants';
 
 import './Book.css';
 
 function Book({ book, onAction }) {
   const [isHighlighted, setIsHighlighted] = React.useState(false);
   const isOnUsersWaitlist = book.waitlist_added_date != null;
-
-  const bookCover = {
-    backgroundImage: `url('${book.image_url}')`,
-  };
 
   const openDetail = () => onAction(OPEN_BOOK_ACTION);
 
@@ -29,9 +25,21 @@ function Book({ book, onAction }) {
       onMouseLeave={() => setIsHighlighted(false)}
       onBlur={() => setIsHighlighted(false)}
     >
-      <div role="button" className="book-info" onClick={openDetail} onKeyPress={openDetail} tabIndex={0}>
-        <div className="book-cover" style={bookCover} data-testid="book-cover">
-          <div className="book-cover-overlay" />
+      <div
+        role="button"
+        className="book-info"
+        onClick={openDetail}
+        onKeyPress={openDetail}
+        tabIndex={0}
+      >
+        <div className="book-cover" data-testid="book-cover">
+          <img
+            src={book.image_url}
+            alt={`Cover of ${book.title}`}
+            onError={(e) => {
+              e.target.src = PLACEHOLDER_BOOK_COVER;
+            }}
+          />
         </div>
 
         <div className="book-details">
@@ -44,7 +52,9 @@ function Book({ book, onAction }) {
         <BookActionButton action={book.action.type} onClick={onAction} />
       </div>
 
-      {isOnUsersWaitlist && <WaitlistIndicator addedDate={book.waitlist_added_date} />}
+      {isOnUsersWaitlist && (
+        <WaitlistIndicator addedDate={book.waitlist_added_date} />
+      )}
     </Paper>
   );
 }

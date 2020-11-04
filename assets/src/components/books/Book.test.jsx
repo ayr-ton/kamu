@@ -21,12 +21,12 @@ describe('Book', () => {
     jest.resetAllMocks();
   });
 
-  it('should contain the book cover as background image', () => {
+  it('should contain the book cover image', () => {
     const book = someBook();
 
-    const { getByTestId } = renderComponent(book);
+    const { getByRole } = renderComponent(book);
 
-    expect(getByTestId('book-cover')).toHaveStyle(`background-image: url('${book.image_url}')`);
+    expect(getByRole('img')).toHaveAttribute('src', book.image_url);
   });
 
   it('should propagate open book action when clicking book title', () => {

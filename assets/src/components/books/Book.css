@@ -24,23 +24,14 @@
 
 .book .book-cover img {
     width: 100%;
+    height: 100%;
     z-index: 1;
-}
-
-.book .book-cover .book-cover-overlay {
-    background-color: #000000;
-    opacity: 0;
     transition: 0.1s linear;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 2;
+    object-fit: cover;
 }
 
-.book:hover .book-cover-overlay {
-    opacity: 0.6;
+.book:hover .book-cover img {
+    filter: brightness(0.4);
 }
 
 .book .book-details {
