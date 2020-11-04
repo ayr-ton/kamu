@@ -24,4 +24,4 @@ BookList.propTypes = {
   onAction: PropTypes.func.isRequired,
 };
 
-export default BookList;
+export default React.memo(BookList);

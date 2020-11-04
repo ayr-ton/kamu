@@ -42,6 +42,7 @@ class Library extends Component {
       searchTerm,
     };
 
+    this.onBookAction = this.onBookAction.bind(this);
     this.loadBooks = this.loadBooks.bind(this);
     this.searchTermChanged = this.searchTermChanged.bind(this);
     this.performActionAndUpdateState = this.performActionAndUpdateState.bind(this);
@@ -56,6 +57,17 @@ class Library extends Component {
       this.setState(initialState);
       this.loadBooks();
     }
+  }
+
+  onBookAction(action, book) {
+    if (action === CLOSE_BOOK_ACTION) {
+      return this.props.history.push(libraryUrl(this.props.slug));
+    }
+    if (action === OPEN_BOOK_ACTION) {
+      return this.props.history.push(bookUrl(book, this.props.slug));
+    }
+
+    return this.performActionAndUpdateState(action, book);
   }
 
   async loadBooks() {
@@ -146,12 +158,7 @@ class Library extends Component {
               librarySlug={slug}
               bookId={bookIdFromUrl(match.params.book)}
               data-testid="book-detail-loader"
-              onAction={(action, book) => {
-                if (action === CLOSE_BOOK_ACTION) {
-                  return this.props.history.push(libraryUrl(slug));
-                }
-                return this.performActionAndUpdateState(action, book);
-              }}
+              onAction={this.onBookAction}
             />
           )}
         />
@@ -165,12 +172,7 @@ class Library extends Component {
         >
           <BookList
             books={this.state.books}
-            onAction={(action, book) => {
-              if (action === OPEN_BOOK_ACTION) {
-                return this.props.history.push(bookUrl(book, slug));
-              }
-              return this.performActionAndUpdateState(action, book);
-            }}
+            onAction={this.onBookAction}
           />
         </InfiniteScroll>
         <WaitlistWarningDialog
