@@ -17,41 +17,41 @@ describe('Book Detail', () => {
 
     const bookCover = bookDetail.getByAltText('Book cover');
     expect(bookCover).toBeInTheDocument();
-    expect(bookDetail.getByAltText('Book cover').closest('img'))
+    expect(bookCover.closest('img'))
       .toHaveAttribute('src', 'http://books.google.com.br/books/content?id=gFgnde_vwMAC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api');
   });
 
-  it('does not render img with book cover if book\'s image_url is not informed', () => {
+  it('does not render  book\'s cover image when image_url is not informed', () => {
     book.image_url = null;
     const bookDetail = render(<BookDetail book={book} onAction={onAction} />);
-    expect(bookDetail.queryByText('Booker cover')).not.toBeInTheDocument();
+    expect(bookDetail.queryByAltText('Book cover')).not.toBeInTheDocument();
   });
 
   it('renders book title and author', () => {
     const bookDetail = render(<BookDetail book={book} onAction={onAction} />);
 
-    bookDetail.getByText('Test Driven Development');
-    bookDetail.getByText('Kent Beck');
+    expect(bookDetail.getByText('Test Driven Development')).toBeInTheDocument();
+    expect(bookDetail.getByText('Kent Beck')).toBeInTheDocument();
   });
 
   it('renders \'1 of 1\' when 1 out of 1 copies are available', () => {
     const bookWithAvailableCopies = someBookWithAvailableCopies();
     const bookDetail = render(<BookDetail book={bookWithAvailableCopies} onAction={onAction} />);
 
-    bookDetail.getByText('1 of 1', { exact: true });
+    expect(bookDetail.getByText('1 of 1', { exact: true })).toBeInTheDocument();
   });
 
   it('renders BookPublicationInfo component', () => {
     const bookDetail = render(<BookDetail book={book} onAction={onAction} />);
 
-    bookDetail.getByText('Publisher');
-    bookDetail.getByText('Addison-Wesley Professional', { exact: true });
+    expect(bookDetail.getByText('Publisher')).toBeInTheDocument();
+    expect(bookDetail.getByText('Addison-Wesley Professional', { exact: true })).toBeInTheDocument();
 
-    bookDetail.getByText('Publication date', { exact: true });
-    bookDetail.getByText('2003-05-17', { exact: true });
+    expect(bookDetail.getByText('Publication date', { exact: true })).toBeInTheDocument();
+    expect(bookDetail.getByText('2003-05-17', { exact: true })).toBeInTheDocument();
 
-    bookDetail.getByText('Pages');
-    bookDetail.getByText('220');
+    expect(bookDetail.getByText('Pages')).toBeInTheDocument();
+    expect(bookDetail.getByText('220')).toBeInTheDocument();
   });
 
   it('renders description and goodreads link', () => {
@@ -69,9 +69,9 @@ describe('Book Detail', () => {
 
     const bookDetail = render(<BookDetail book={bookWithNoAvailableCopies} onAction={onAction} />);
 
-    bookDetail.getByText('Borrowed');
-    bookDetail.getByText('2 years ago');
-    bookDetail.getByText('Some User');
+    expect(bookDetail.getByText('Borrowed')).toBeInTheDocument();
+    expect(bookDetail.getByText('2 years ago')).toBeInTheDocument();
+    expect(bookDetail.getByText('Some User')).toBeInTheDocument();
   });
 
   it('should propagate button action when clicking on borrow button', () => {

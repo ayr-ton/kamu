@@ -31,7 +31,7 @@ describe('BookBorrowers', () => {
     expect(bookBorrowers.getByText('Borrowed')).toBeInTheDocument();
     expect(bookBorrowers.getByText('2 years ago')).toBeInTheDocument();
     expect(bookBorrowers.getByText('Some User')).toBeInTheDocument();
-    // TODO how can we check if Avatar is being rendered?
+    expect(bookBorrowers.getByRole('img')).toHaveAttribute('src', 'http://user-avatar-image.com');
   });
 
   it('renders information about how long a person is with a book if borrow_date is in the copy data', () => {
