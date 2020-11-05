@@ -66,7 +66,9 @@ function Header({ history, toggleTheme, theme }) {
 }
 
 Header.propTypes = {
-  history: PropTypes.shape({}).isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
   toggleTheme: PropTypes.func.isRequired,
   theme: PropTypes.shape({
     palette: PropTypes.shape({

@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  fireEvent, render, waitForElement, waitForElementToBeRemoved,
-} from '@testing-library/react';
+import { fireEvent, render, waitForElementToBeRemoved } from '@testing-library/react';
 
 import BookDetailContainer from './BookDetailContainer';
 
@@ -13,16 +11,16 @@ jest.mock('../../../services/BookService');
 
 describe('BookDetailContainer', () => {
   const book = someBook();
-  const renderComponent = (props = {}) => render(
-    <BookDetailContainer librarySlug="sp" bookId="123" history={{}} onAction={jest.fn()} {...props} />,
+  const renderComponent = ({ onAction = jest.fn() } = {}) => render(
+    <BookDetailContainer librarySlug="sp" bookId="123" history={{}} onAction={onAction} />,
   );
 
   test('makes an api call to fetch book and displays the book that was returned', async () => {
     getBook.mockResolvedValue(book);
 
-    const { getByTestId, getByText } = renderComponent();
+    const { findByTestId, getByText } = renderComponent();
 
-    await waitForElement(() => getByTestId('book-detail-wrapper'));
+    await findByTestId('book-detail-wrapper');
 
     expect(getBook).toHaveBeenCalledWith('sp', '123');
     expect(getByText(book.title)).toBeVisible();
@@ -51,10 +49,9 @@ describe('BookDetailContainer', () => {
   it('should propagate button action when clicking action button', async () => {
     getBook.mockResolvedValue(book);
     const onAction = jest.fn().mockResolvedValue(book);
-    const { getByText, getByTestId } = renderComponent({ onAction });
-    await waitForElement(() => getByTestId('book-detail-wrapper'));
+    const { findByText } = renderComponent({ onAction });
 
-    fireEvent.click(getByText('Borrow'));
+    fireEvent.click(await findByText('Borrow'));
 
     expect(onAction).toHaveBeenCalledWith(BORROW_BOOK_ACTION, book);
   });

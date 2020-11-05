@@ -1,6 +1,7 @@
 import React from 'react';
-import { act, fireEvent } from '@testing-library/react';
-import { wait, waitForElement, within } from '@testing-library/dom';
+import {
+  act, fireEvent, waitFor, within,
+} from '@testing-library/react';
 import {
   borrowBook, checkWaitlist, getBook, getBooksByPage,
 } from '../../services/BookService';
@@ -71,17 +72,15 @@ describe('Library', () => {
 
   it('sets the library in the users preferences when books are loaded', async () => {
     const { getAllByTestId } = render(<Library history={history} slug="bh" />);
-    await wait(() => getAllByTestId('book-container'));
+    await waitFor(() => getAllByTestId('book-container'));
 
     expect(setRegion).toHaveBeenCalledWith('bh');
   });
 
   it('does not set the library in the users preferences when books fail to load', async () => {
     getBooksByPage.mockRejectedValue(new Error());
-    const { getByTestId } = render(<Library history={history} slug="bh" />);
-    await wait(() => getByTestId('error-message'));
-
-    expect(setRegion).not.toHaveBeenCalled();
+    render(<Library history={history} slug="bh" />);
+    await waitFor(() => expect(setRegion).not.toHaveBeenCalled());
   });
 
   it('shows an error message when loading books fails', async () => {
@@ -123,11 +122,11 @@ describe('Library', () => {
     const book = someBook();
     getBooksByPage.mockResolvedValue({ ...mockGetBooksByPageResponse, results: [book] });
     getBook.mockResolvedValueOnce(book);
-    const { findByText, queryByTestId } = render(<LibraryContainer slug="bh" />);
+    const { findByText, findByTestId, queryByTestId } = render(<LibraryContainer slug="bh" />);
 
     await act(async () => {
       fireEvent.click(await findByText(book.title));
-      await waitForElement(() => queryByTestId('book-detail-wrapper'));
+      await findByTestId('book-detail-wrapper');
       fireEvent.click(queryByTestId('modal-close-button'));
       expect(queryByTestId('book-detail-wrapper')).toBeNull();
     });
@@ -138,7 +137,7 @@ describe('Library', () => {
 
     beforeEach(() => {
       getBooksByPage.mockResolvedValueOnce({ ...mockGetBooksByPageResponse, results: [book] });
-      borrowBook.mockResolvedValueOnce(someBookWithACopyFromMe());
+      borrowBook.mockResolvedValueOnce({ ...someBookWithACopyFromMe(), id: book.id });
       checkWaitlist.mockResolvedValue({ status: NO_WAITLIST_STATUS });
     });
 
@@ -151,15 +150,13 @@ describe('Library', () => {
 
     it('updates the action buttons after borrowing book from book detail', async () => {
       getBook.mockResolvedValueOnce(book);
-      const { findByText, findAllByText, findByTestId } = render(<LibraryContainer slug="bh" />);
+      const { findByText, getAllByText, findByTestId } = render(<LibraryContainer slug="bh" />);
 
-      await act(async () => {
-        fireEvent.click(await findByText(book.title));
-        const bookDetail = await findByTestId('book-detail');
+      fireEvent.click(await findByText(book.title));
+      const bookDetail = await findByTestId('book-detail');
 
-        fireEvent.click(within(bookDetail).getByText('Borrow'));
-        expect(await findAllByText('Return')).toHaveLength(2);
-      });
+      fireEvent.click(within(bookDetail).getByText('Borrow'));
+      await waitFor(() => expect(getAllByText('Return')).toHaveLength(2));
     });
 
     it('updates the user context after book action', async () => {
@@ -171,7 +168,7 @@ describe('Library', () => {
       );
 
       fireEvent.click(await findByText('Borrow'));
-      await wait(() => {
+      await waitFor(() => {
         expect(updateUser).toHaveBeenCalled();
       });
     });
@@ -179,12 +176,12 @@ describe('Library', () => {
     it('if there is no one on the waitlist, user can borrow it with no further confirmation', async () => {
       checkWaitlist.mockResolvedValue({ status: NO_WAITLIST_STATUS });
 
-      const { getByText, queryByTestId } = render(<LibraryContainer slug="bh" />);
-      await waitForElement(() => queryByTestId('book-container'));
+      const { getByText, findByTestId } = render(<LibraryContainer slug="bh" />);
+      await findByTestId('book-container');
       const button = getByText('Borrow');
       fireEvent.click(button);
 
-      await wait(() => {
+      await waitFor(() => {
         expect(checkWaitlist).toHaveBeenCalledWith(book);
         expect(borrowBook).toHaveBeenCalledWith(book);
         expect(getByText('Return')).toBeDefined();
@@ -194,13 +191,13 @@ describe('Library', () => {
     it('if they\'re the first on waitlist, user can borrow it with no further confirmation', async () => {
       checkWaitlist.mockResolvedValue({ status: FIRST_ON_WAITLIST_STATUS });
 
-      const { getByText, queryByTestId } = render(<LibraryContainer slug="bh" />);
-      await waitForElement(() => queryByTestId('book-container'));
+      const { getByText, findByTestId } = render(<LibraryContainer slug="bh" />);
+      await findByTestId('book-container');
 
       const button = getByText('Borrow');
       await fireEvent.click(button);
 
-      await wait(() => {
+      await waitFor(() => {
         expect(checkWaitlist).toHaveBeenCalledWith(book);
         expect(borrowBook).toHaveBeenCalledWith(book);
         expect(getByText('Return')).toBeDefined();
@@ -214,13 +211,13 @@ describe('Library', () => {
         ...mockGetBooksByPageResponse, results: [bookThatOthersAreInWaitlist],
       });
 
-      const { getByText, getByTestId, queryByTestId } = render(<LibraryContainer slug="bh" />);
-      await waitForElement(() => queryByTestId('book-container'));
+      const { getByText, getByTestId, findByTestId } = render(<LibraryContainer slug="bh" />);
+      await findByTestId('book-container');
 
       const button = getByText('Borrow');
       fireEvent.click(button);
 
-      await wait(() => {
+      await waitFor(() => {
         expect(getByTestId('waitlist-users')).toHaveTextContent(
           'Users on the wait list: Some User, someotheruser@example.com',
         );
@@ -234,9 +231,9 @@ describe('Library', () => {
       checkWaitlist.mockResolvedValue({ status: OTHERS_ARE_WAITING_STATUS });
 
       const {
-        getByText, findByText, queryByText, queryByTestId,
+        getByText, findByText, queryByText, findByTestId,
       } = render(<LibraryContainer slug="bh" />);
-      await waitForElement(() => queryByTestId('book-container'));
+      await findByTestId('book-container');
 
       const button = getByText('Borrow');
       fireEvent.click(button);
@@ -244,7 +241,7 @@ describe('Library', () => {
       const confirmButton = await findByText('Confirm and Borrow');
       fireEvent.click(confirmButton);
 
-      await wait(() => {
+      await waitFor(() => {
         expect(borrowBook).toHaveBeenCalledWith(book);
         expect(getByText('Return')).toBeDefined();
         expect(queryByText(/Do you wish to proceed and borrow this book?/)).toBeNull();
@@ -254,8 +251,8 @@ describe('Library', () => {
     it('if users cancels it, book is not borrowed and confirmation dialog is closed', async () => {
       checkWaitlist.mockResolvedValue({ status: OTHERS_ARE_WAITING_STATUS });
 
-      const { findByText, queryByText, queryByTestId } = render(<LibraryContainer slug="bh" />);
-      await waitForElement(() => queryByTestId('book-container'));
+      const { findByText, queryByText, findByTestId } = render(<LibraryContainer slug="bh" />);
+      await findByTestId('book-container');
 
       const button = await findByText('Borrow');
       fireEvent.click(button);
@@ -263,7 +260,7 @@ describe('Library', () => {
       const cancelButton = await findByText('Cancel');
       fireEvent.click(cancelButton);
 
-      await wait(() => {
+      await waitFor(() => {
         expect(borrowBook).not.toHaveBeenCalled();
         expect(findByText('Borrow')).toBeDefined();
         expect(queryByText(/Do you wish to proceed and borrow this book?/)).toBeNull();

@@ -18,7 +18,7 @@
     "<rootDir>/assets/test/**/?(*.)test.{js,jsx,mjs}",
     "<rootDir>/assets/test/**/?(*.)test.integration.{js,jsx,mjs}"
   ],
-  "testEnvironment": "jsdom",
+  "testEnvironment": "jest-environment-jsdom-sixteen",
   "testURL": "http://localhost:8080",
   "transform": {
     "^.+\\.(js|jsx|mjs)$": "<rootDir>/node_modules/babel-jest",
@@ -27,5 +27,8 @@
   },
   "transformIgnorePatterns": [
     "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs)$"
+  ],
+  "watchPathIgnorePatterns": [
+    "<rootDir>/node_modules/"
   ]
 }

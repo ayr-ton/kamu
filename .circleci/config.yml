@@ -52,7 +52,7 @@ jobs:
   frontend-tests:
     <<: *defaults
     docker:
-      - image: circleci/node:8
+      - image: circleci/node:12
     steps:
       - checkout
       - attach_workspace:

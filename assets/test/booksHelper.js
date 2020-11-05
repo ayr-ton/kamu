@@ -8,13 +8,15 @@ export const returnAction = { type: RETURN_BOOK_ACTION };
 export const joinWaitlistAction = { type: JOIN_WAITLIST_BOOK_ACTION };
 export const leaveWaitlistAction = { type: LEAVE_WAITLIST_BOOK_ACTION };
 
+const randomId = () => Math.floor(Math.random() * 100);
+
 export const someBook = (
   copies = [],
   waitlistItems = [],
   action = borrowAction,
   waitlistAddedDate = null,
 ) => ({
-  id: 1,
+  id: randomId(),
   author: 'Kent Beck',
   title: 'Test Driven Development',
   subtitle: 'By Example',
@@ -33,7 +35,7 @@ export const someBook = (
 
 export const someBookWithNoAvailableCopies = () => someBook(
   [{
-    id: 1,
+    id: randomId(),
     user: someUser,
     borrow_date: '2019-03-07',
   }],
@@ -43,14 +45,14 @@ export const someBookWithNoAvailableCopies = () => someBook(
 
 export const someBookWithAvailableCopies = () => someBook(
   [{
-    id: 1,
+    id: randomId(),
     user: null,
   }],
 );
 
 export const someBookWithACopyFromMe = () => someBook(
   [{
-    id: 1,
+    id: randomId(),
     user: currentUser,
   }],
   [],
@@ -59,7 +61,7 @@ export const someBookWithACopyFromMe = () => someBook(
 
 export const someBookThatCanBeAddedToWaitlist = () => someBook(
   [{
-    id: 1,
+    id: randomId(),
     user: someUser,
     borrow_date: '2019-03-07',
   }],
@@ -69,7 +71,7 @@ export const someBookThatCanBeAddedToWaitlist = () => someBook(
 
 export const someBookThatIsInMyWaitlist = () => someBook(
   [{
-    id: 1,
+    id: randomId(),
     user: someUser,
     borrow_date: '2019-03-07',
   }],
@@ -86,7 +88,7 @@ export const someBookThatIsInMyWaitlist = () => someBook(
 
 export const someAvailableBookThatOthersAreInWaitlist = () => someBook(
   [{
-    id: 1,
+    id: randomId(),
     user: null,
   }],
   [{

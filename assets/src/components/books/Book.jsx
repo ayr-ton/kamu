@@ -1,68 +1,62 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Paper } from '@material-ui/core';
 
 import BookActionButton from './BookActionButton';
 import WaitlistIndicator from './WaitlistIndicator';
 import { BookPropType } from '../../utils/propTypes';
+import { PLACEHOLDER_BOOK_COVER, OPEN_BOOK_ACTION } from '../../utils/constants';
 
 import './Book.css';
-import { OPEN_BOOK_ACTION } from '../../utils/constants';
 
-class Book extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      zDepth: 1,
-    };
+function Book({ book, onAction }) {
+  const [isHighlighted, setIsHighlighted] = React.useState(false);
+  const isOnUsersWaitlist = book.waitlist_added_date != null;
 
-    this.onMouseOver = this.onMouseOver.bind(this);
-    this.onMouseOut = this.onMouseOut.bind(this);
-  }
+  const openDetail = () => onAction(OPEN_BOOK_ACTION);
 
-  onMouseOver() { return this.setState({ zDepth: 5 }); }
-
-  onMouseOut() { this.setState({ zDepth: 1 }); }
-
-  render() {
-    const { book } = this.props;
-    const isOnUsersWaitlist = book.waitlist_added_date != null;
-
-    const bookCover = {
-      backgroundImage: `url('${book.image_url}')`,
-    };
-
-    const openDetail = () => this.props.onAction(OPEN_BOOK_ACTION);
-
-    return (
-      <Paper
-        className="book"
-        data-testid="book-container"
-        elevation={this.state.zDepth}
-        onMouseOver={this.onMouseOver}
-        onFocus={this.onMouseOver}
-        onMouseOut={this.onMouseOut}
-        onBlur={this.onMouseOut}
+  return (
+    <Paper
+      className="book"
+      data-testid="book-container"
+      elevation={isHighlighted ? 5 : 1}
+      onMouseEnter={() => setIsHighlighted(true)}
+      onFocus={() => setIsHighlighted(true)}
+      onMouseLeave={() => setIsHighlighted(false)}
+      onBlur={() => setIsHighlighted(false)}
+    >
+      <div
+        role="button"
+        className="book-info"
+        onClick={openDetail}
+        onKeyPress={openDetail}
+        tabIndex={0}
       >
-        <div role="button" className="book-info" onClick={openDetail} onKeyPress={openDetail} tabIndex={0}>
-          <div className="book-cover" style={bookCover} data-testid="book-cover">
-            <div className="book-cover-overlay" />
-          </div>
-
-          <div className="book-details">
-            <h1 className="book-title">{book.title}</h1>
-            <h2 className="book-author">{book.author}</h2>
-          </div>
+        <div className="book-cover" data-testid="book-cover">
+          <img
+            src={book.image_url}
+            alt={`Cover of ${book.title}`}
+            onError={(e) => {
+              e.target.src = PLACEHOLDER_BOOK_COVER;
+            }}
+          />
         </div>
 
-        <div className="book-actions" data-testid="book-actions">
-          <BookActionButton action={book.action.type} onClick={this.props.onAction} />
+        <div className="book-details">
+          <h1 className="book-title">{book.title}</h1>
+          <h2 className="book-author">{book.author}</h2>
         </div>
+      </div>
 
-        {isOnUsersWaitlist && <WaitlistIndicator addedDate={book.waitlist_added_date} />}
-      </Paper>
-    );
-  }
+      <div className="book-actions" data-testid="book-actions">
+        <BookActionButton action={book.action.type} onClick={onAction} />
+      </div>
+
+      {isOnUsersWaitlist && (
+        <WaitlistIndicator addedDate={book.waitlist_added_date} />
+      )}
+    </Paper>
+  );
 }
 
 Book.propTypes = {
