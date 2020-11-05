@@ -21,7 +21,8 @@ const mountComponent = (props) => mount(<Header {...defaultProps} {...props} />)
 
 describe('Header', () => {
   beforeEach(() => {
-    window.location.assign = jest.fn();
+    delete global.location;
+    global.location = { assign: jest.fn() };
     jest.resetAllMocks();
   });
 
@@ -68,7 +69,7 @@ describe('Header', () => {
 
     header.find('#admin-button').simulate('click');
 
-    expect(window.location.assign).toHaveBeenCalledWith('/admin');
+    expect(global.location.assign).toHaveBeenCalledWith('/admin');
   });
 
   it('redirects to library page when clicking on home button', () => {
@@ -94,7 +95,7 @@ describe('Header', () => {
 
     header.find('#add-book-button').simulate('click');
 
-    expect(window.location.assign).toHaveBeenCalledWith('/admin/books/book/isbn/');
+    expect(global.location.assign).toHaveBeenCalledWith('/admin/books/book/isbn/');
   });
 
   it('has a badge with the borrowed book count in my books button', async () => {

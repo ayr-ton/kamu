@@ -1,6 +1,7 @@
 import React from 'react';
 import { MuiThemeProvider } from '@material-ui/core';
 import { mount } from 'enzyme';
+import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import App from './App';
 import { getLoggedUser } from '../services/ProfileService';
@@ -37,17 +38,17 @@ describe('App', () => {
     component = createComponent('/');
   });
 
-  it('renders without crashing', () => {
-    expect(component.exists()).toBeTruthy();
+  it('has a header with a logo and navigation buttons', () => {
+    render(<MemoryRouter initialEntries={['/']}><App /></MemoryRouter>);
+
+    expect(screen.getByRole('img', { name: /kamu logo/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /home/i })).toBeInTheDocument();
   });
 
-  it('has a header', () => {
-    expect(findByTestID(component, 'header').exists()).toBeTruthy();
-  });
+  it('shows current user\'s borrow count on my books button', async () => {
+    render(<MemoryRouter initialEntries={['/']}><App /></MemoryRouter>);
 
-  it('shows fetched user\'s related information', () => {
-    const usersBooksCountBadge = findByTestID(component, 'my-books-button');
-    expect(usersBooksCountBadge.text()).toEqual(currentUser.borrowed_books_count.toString());
+    await waitFor(() => expect(screen.getByRole('button', { name: /my books/i })).toHaveTextContent(currentUser.borrowed_books_count.toString()));
   });
 
   describe('routing', () => {

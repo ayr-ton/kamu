@@ -1,8 +1,7 @@
 import React from 'react';
 import {
-  act, fireEvent, render, waitForElement, waitForElementToBeRemoved,
+  act, fireEvent, render, waitFor, waitForElementToBeRemoved,
 } from '@testing-library/react';
-import { wait } from '@testing-library/dom';
 import { someBookWithACopyFromMe, someBookWithAvailableCopies } from '../../../test/booksHelper';
 import { BookListContainer } from './BookListContainer';
 import performAction from '../../utils/bookAction';
@@ -25,9 +24,9 @@ describe('Book list container', () => {
   test('makes an api call and displays the books that were returned', async () => {
     const bookSource = jest.fn().mockResolvedValueOnce({ results: books });
 
-    const { getAllByTestId } = render(<BookListContainer source={bookSource} noBooksMessage="" history={history} />);
+    const { getAllByTestId, findAllByTestId } = render(<BookListContainer source={bookSource} noBooksMessage="" history={history} />);
 
-    await waitForElement(() => getAllByTestId('book-list-container'));
+    await findAllByTestId('book-list-container');
 
     expect(bookSource).toHaveBeenCalledTimes(1);
     expect(getAllByTestId('book-container')).toHaveLength(1);
@@ -46,13 +45,13 @@ describe('Book list container', () => {
     const bookSource = jest.fn().mockResolvedValueOnce({ results: [] });
     const expectedMessage = "You don't have any books";
 
-    const { getByTestId } = render(<BookListContainer
+    const { findByTestId } = render(<BookListContainer
       source={bookSource}
       noBooksMessage={expectedMessage}
       history={history}
     />);
 
-    const noBooksComponent = await waitForElement(() => getByTestId('no-books-message'));
+    const noBooksComponent = await findByTestId('no-books-message');
 
     expect(noBooksComponent.textContent).toEqual(expectedMessage);
   });
@@ -89,7 +88,7 @@ describe('Book list container', () => {
 
     await act(async () => {
       fireEvent.click(await findByText('Return'));
-      await wait(() => expect(updateUser).toHaveBeenCalled());
+      await waitFor(() => expect(updateUser).toHaveBeenCalled());
     });
   });
 });
