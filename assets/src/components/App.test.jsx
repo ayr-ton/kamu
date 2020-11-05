@@ -1,5 +1,6 @@
 import React from 'react';
-import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import App from './App';
 import { getLoggedUser } from '../services/ProfileService';
 import {
@@ -82,7 +83,7 @@ describe('App', () => {
     it('changes to dark theme when change theme button is clicked', () => {
       renderWithRouter(<App />);
 
-      fireEvent.click(screen.getByRole('button', { name: /change theme/i }));
+      userEvent.click(screen.getByRole('button', { name: /change theme/i }));
 
       expect(document.getElementsByTagName('body')[0].className).toEqual('dark');
       expect(trackEvent).toHaveBeenCalledWith('Preferences', 'Toggle Theme', 'dark');
@@ -91,7 +92,7 @@ describe('App', () => {
     it('stores chosen theme as default in local storage', () => {
       renderWithRouter(<App />);
 
-      fireEvent.click(screen.getByRole('button', { name: /change theme/i }));
+      userEvent.click(screen.getByRole('button', { name: /change theme/i }));
 
       expect(localStorage.getItem('theme')).toEqual('dark');
     });

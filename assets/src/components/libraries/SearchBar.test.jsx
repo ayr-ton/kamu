@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent } from '@testing-library/dom';
+import userEvent from '@testing-library/user-event';
 import { render } from '@testing-library/react';
 import SearchBar from './SearchBar';
 
@@ -23,10 +23,10 @@ describe('SearchBar', () => {
 
     const inputField = searchBarComponent.getByPlaceholderText('Search by book title or author');
 
-    fireEvent.change(inputField, { target: { value: 'test' } });
+    userEvent.type(inputField, 'test');
     expect(inputField.value).toBe('test');
 
-    fireEvent.click(searchBarComponent.getByRole('img', { name: 'Close' }));
+    userEvent.click(searchBarComponent.getByRole('img', { name: 'Close' }));
     expect(inputField.value).toBe('');
   });
 
@@ -37,7 +37,7 @@ describe('SearchBar', () => {
 
     const inputField = searchBarComponent.getByPlaceholderText('Search by book title or author');
 
-    fireEvent.change(inputField, { target: { value: `${searchTerm}` } });
+    userEvent.type(inputField, searchTerm);
 
     expect(onChange).toHaveBeenCalledWith(searchTerm);
   });
@@ -49,7 +49,7 @@ describe('SearchBar', () => {
 
     const inputField = searchBarComponent.getByPlaceholderText('Search by book title or author');
 
-    fireEvent.change(inputField, { target: { value: 'test  ' } });
+    userEvent.type(inputField, 'test  ');
 
     expect(onChangeMock).not.toHaveBeenCalledWith('test');
   });

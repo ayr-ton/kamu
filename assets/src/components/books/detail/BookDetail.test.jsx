@@ -1,5 +1,6 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { someBook, someBookWithAvailableCopies, someBookWithNoAvailableCopies } from '../../../../test/booksHelper';
 import BookDetail from './BookDetail';
 import {
@@ -77,7 +78,7 @@ describe('Book Detail', () => {
   it('should propagate button action when clicking on borrow button', () => {
     const { getByText } = render(<BookDetail book={book} onAction={onAction} />);
 
-    fireEvent.click(getByText('Borrow'));
+    userEvent.click(getByText('Borrow'));
 
     expect(onAction).toHaveBeenCalledWith(BORROW_BOOK_ACTION);
   });

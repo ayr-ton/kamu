@@ -7,9 +7,9 @@ describe('BookPublicationInfo', () => {
   it('renders information about publication if this information is present', () => {
     const bookDetail = render(<BookPublicationInfo book={someBook()} />);
 
-    bookDetail.getByText('Addison-Wesley Professional');
-    bookDetail.getByText('2003-05-17');
-    bookDetail.getByText('220');
+    expect(bookDetail.getByText('Addison-Wesley Professional')).toBeInTheDocument();
+    expect(bookDetail.getByText('2003-05-17')).toBeInTheDocument();
+    expect(bookDetail.getByText('220')).toBeInTheDocument();
   });
 
   it('does not render information about publication if this info is missing', () => {

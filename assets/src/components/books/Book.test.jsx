@@ -1,5 +1,6 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import Book from './Book';
 import {
   someBook,
@@ -33,7 +34,7 @@ describe('Book', () => {
     const book = someBook();
     const { getByText } = renderComponent(book);
 
-    fireEvent.click(getByText(book.title));
+    userEvent.click(getByText(book.title));
 
     expect(onAction).toHaveBeenCalledWith(OPEN_BOOK_ACTION);
   });
@@ -42,7 +43,7 @@ describe('Book', () => {
     const book = someBookWithAvailableCopies();
     const { getByText } = renderComponent(book);
 
-    fireEvent.click(getByText('Borrow'));
+    userEvent.click(getByText('Borrow'));
 
     expect(onAction).toHaveBeenCalledWith(BORROW_BOOK_ACTION);
   });

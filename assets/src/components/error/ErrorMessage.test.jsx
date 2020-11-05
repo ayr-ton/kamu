@@ -10,7 +10,7 @@ describe('Error Message', () => {
         subtitle="An error happened while loading this page. Please try again."
       />,
     );
-    errorMessage.getByText('Something went wrong');
-    errorMessage.getByText('An error happened while loading this page. Please try again.');
+    expect(errorMessage.getByText('Something went wrong')).toBeInTheDocument();
+    expect(errorMessage.getByText('An error happened while loading this page. Please try again.')).toBeInTheDocument();
   });
 });

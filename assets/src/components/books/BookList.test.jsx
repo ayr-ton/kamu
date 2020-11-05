@@ -1,5 +1,6 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import BookList from './BookList';
 import { someBook } from '../../../test/booksHelper';
 import { OPEN_BOOK_ACTION } from '../../utils/constants';
@@ -22,7 +23,7 @@ describe('Book list', () => {
     const onAction = jest.fn();
 
     const { getByText } = render(<BookList books={books} onAction={onAction} />);
-    await fireEvent.click(getByText(books[0].title));
+    await userEvent.click(getByText(books[0].title));
 
     expect(onAction).toHaveBeenCalledWith(OPEN_BOOK_ACTION, books[0]);
   });

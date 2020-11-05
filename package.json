@@ -48,6 +48,7 @@
   "devDependencies": {
     "@testing-library/jest-dom": "^5.11.1",
     "@testing-library/react": "^11.1.1",
+    "@testing-library/user-event": "^12.2.0",
     "babel": "^6.3.26",
     "babel-jest": "^23.6.0",
     "babel-plugin-remove-attribute": "^1.0.0",
