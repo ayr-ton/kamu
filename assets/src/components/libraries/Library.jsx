@@ -178,8 +178,7 @@ class Library extends Component {
         <WaitlistWarningDialog
           open={this.state.confirmationOpen}
           waitlistItems={this.state.confirmationWaitlistBook
-            ? this.state.confirmationWaitlistBook.waitlist_items : []
-          }
+            ? this.state.confirmationWaitlistBook.waitlist_items : []}
           onCancel={() => this.setState({
             confirmationOpen: false,
             confirmationWaitlistBook: null,

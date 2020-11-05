@@ -1,4 +1,7 @@
 {
+  "parserOptions": {
+    "ecmaVersion": 2018
+  },
   "plugins": [
     "react-hooks"
   ],
@@ -17,12 +20,12 @@
   },
   "globals": {
     "global": true,
-    "module": true,
-    "findByTestID": true
+    "module": true
   },
   "rules": {
     "react/destructuring-assignment": 0,
     "react/no-did-update-set-state": 0,
+    "react/jsx-fragments": 0,
     "arrow-parens": [
       "error",
       "always"

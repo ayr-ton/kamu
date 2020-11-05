@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 import BookPublicationInfo from './BookPublicationInfo';
 import { someBook } from '../../../../test/booksHelper';
 
-const shallowBookPublicationInfo = (props) => shallow(<BookPublicationInfo {...props} />);
+const shallowBookPublicationInfo = ({ book }) => shallow(<BookPublicationInfo book={book} />);
 
 describe('BookPublicationInfo', () => {
   let testDefaultProps;

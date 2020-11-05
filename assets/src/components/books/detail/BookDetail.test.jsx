@@ -12,7 +12,9 @@ import {
   REPORT_BOOK_MISSING,
 } from '../../../utils/constants';
 
-const shallowBookDetail = (props) => shallow(<BookDetail {...props} />);
+const shallowBookDetail = ({ book, onAction }) => shallow(
+  <BookDetail book={book} onAction={onAction} />,
+);
 const book = someBook();
 const onAction = jest.fn();
 const testDefaultProps = {

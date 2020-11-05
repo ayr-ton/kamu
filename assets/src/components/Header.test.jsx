@@ -11,13 +11,10 @@ jest.mock('./UserContext', () => ({
 }));
 
 const history = { push: jest.fn() };
-const defaultProps = {
-  history,
-  toggleTheme: () => { },
-};
-
-const createComponent = (props) => shallow(<Header {...defaultProps} {...props} />);
-const mountComponent = (props) => mount(<Header {...defaultProps} {...props} />);
+const createComponent = ({ theme, toggleTheme = () => {} } = {}) => shallow(
+  <Header theme={theme} toggleTheme={toggleTheme} history={history} />,
+);
+const mountComponent = () => mount(<Header toggleTheme={() => {}} history={history} />);
 
 describe('Header', () => {
   beforeEach(() => {
@@ -38,7 +35,7 @@ describe('Header', () => {
   it('displays the default logo', () => {
     const header = createComponent();
 
-    const logo = findByTestID(header, 'header-logo-link').find('img');
+    const logo = header.find({ 'data-testid': 'header-logo-link' }).first().find('img');
 
     expect(logo.props().src).toEqual('/static/images/logo.svg');
   });
@@ -46,7 +43,7 @@ describe('Header', () => {
   it('displays the alternative logo if dark mode is active', () => {
     const header = createComponent({ theme: { palette: { type: 'dark' } } });
 
-    const logo = findByTestID(header, 'header-logo-link').find('img');
+    const logo = header.find({ 'data-testid': 'header-logo-link' }).first().find('img');
 
     expect(logo.props().src).toEqual('/static/images/logo-dark.svg');
   });
@@ -101,7 +98,7 @@ describe('Header', () => {
   it('has a badge with the borrowed book count in my books button', async () => {
     mockContext.mockReturnValue({ user: { borrowed_books_count: 5 } });
 
-    const header = await mountComponent();
+    const header = mountComponent();
 
     const badge = header.find('#my-books-button').find(Badge);
 
@@ -113,7 +110,7 @@ describe('Header', () => {
     const toggleTheme = jest.fn();
     const header = createComponent({ toggleTheme });
 
-    findByTestID(header, 'change-theme-button').simulate('click');
+    header.find({ 'data-testid': 'change-theme-button' }).first().simulate('click');
 
     expect(toggleTheme).toHaveBeenCalled();
   });

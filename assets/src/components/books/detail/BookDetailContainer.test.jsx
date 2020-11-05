@@ -11,8 +11,8 @@ jest.mock('../../../services/BookService');
 
 describe('BookDetailContainer', () => {
   const book = someBook();
-  const renderComponent = (props = {}) => render(
-    <BookDetailContainer librarySlug="sp" bookId="123" history={{}} onAction={jest.fn()} {...props} />,
+  const renderComponent = ({ onAction = jest.fn() } = {}) => render(
+    <BookDetailContainer librarySlug="sp" bookId="123" history={{}} onAction={onAction} />,
   );
 
   test('makes an api call to fetch book and displays the book that was returned', async () => {

@@ -4,7 +4,6 @@ import moment from 'moment';
 import Avatar from '@material-ui/core/Avatar';
 import { BookCopyPropType } from '../../../utils/propTypes';
 
-
 const BookBorrowers = ({ copies }) => {
   const borrowedCopies = copies.filter((copy) => copy.user);
 

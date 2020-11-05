@@ -5,16 +5,20 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 
-function RouterWrapper(options) {
+function RouterWrapper(initialEntries) {
   return ({ children }) => (
-    <MemoryRouter {...options}>
+    <MemoryRouter initialEntries={initialEntries}>
       {children}
     </MemoryRouter>
   );
 }
 
-export const renderWithRouter = (component, options = {}) => render(component, {
-  wrapper: RouterWrapper(options),
-});
+export const renderWithRouter = (component, { initialEntries, ...options } = {}) => render(
+  component,
+  {
+    wrapper: RouterWrapper(initialEntries),
+    ...options,
+  },
+);
 
 export default renderWithRouter;

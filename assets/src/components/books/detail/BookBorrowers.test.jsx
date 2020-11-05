@@ -5,7 +5,7 @@ import Avatar from '@material-ui/core/Avatar';
 import BookBorrowers from './BookBorrowers';
 import { someBookWithNoAvailableCopies, someBookWithAvailableCopies } from '../../../../test/booksHelper';
 
-const shallowBookBorrowers = (props) => shallow(<BookBorrowers {...props} />);
+const shallowBookBorrowers = ({ copies }) => shallow(<BookBorrowers copies={copies} />);
 
 describe('BookBorrowers', () => {
   let testDefaultProps;
