@@ -4,10 +4,9 @@ import userEvent from '@testing-library/user-event';
 import { Header } from './Header';
 import { getRegion, clearRegion } from '../services/UserPreferences';
 
-const mockContext = jest.fn();
 jest.mock('../services/UserPreferences');
 jest.mock('./UserContext', () => ({
-  Consumer: ({ children }) => children(jest.fn()),
+  Consumer: ({ children }) => children({ user: { borrowed_books_count: 5 } }),
 }));
 
 const history = { push: jest.fn() };
@@ -106,8 +105,6 @@ describe('Header', () => {
   });
 
   it('has a badge with the borrowed book count in my books button', () => {
-    mockContext.mockReturnValue({ user: { borrowed_books_count: 5 } });
-
     const header = createComponent();
 
     expect(header.getByText(/5/i)).toBeInTheDocument();
