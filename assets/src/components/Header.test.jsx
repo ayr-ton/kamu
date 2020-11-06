@@ -1,32 +1,32 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
-import Badge from '@material-ui/core/Badge';
+import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Header } from './Header';
 import { getRegion, clearRegion } from '../services/UserPreferences';
 
 const mockContext = jest.fn();
 jest.mock('../services/UserPreferences');
 jest.mock('./UserContext', () => ({
-  Consumer: ({ children }) => children(mockContext()),
+  Consumer: ({ children }) => children(jest.fn()),
 }));
 
 const history = { push: jest.fn() };
-const createComponent = ({ theme, toggleTheme = () => {} } = {}) => shallow(
+const createComponent = ({ theme, toggleTheme = () => {} } = {}) => render(
   <Header theme={theme} toggleTheme={toggleTheme} history={history} />,
 );
-const mountComponent = () => mount(<Header toggleTheme={() => {}} history={history} />);
 
 describe('Header', () => {
   beforeEach(() => {
     delete global.location;
     global.location = { assign: jest.fn() };
-    jest.resetAllMocks();
   });
 
   it('clears the region and redirects to home when clicking change region', () => {
     const header = createComponent();
 
-    header.find('#change-region-button').simulate('click');
+    const changeRegionButton = header.getByRole('button', { name: 'Change region' });
+
+    userEvent.click(changeRegionButton);
 
     expect(clearRegion).toHaveBeenCalled();
     expect(history.push).toHaveBeenCalledWith('/');
@@ -35,28 +35,30 @@ describe('Header', () => {
   it('displays the default logo', () => {
     const header = createComponent();
 
-    const logo = header.find({ 'data-testid': 'header-logo-link' }).first().find('img');
+    const logo = header.getByAltText('Kamu logo');
 
-    expect(logo.props().src).toEqual('/static/images/logo.svg');
+    expect(logo).toHaveAttribute('src', '/static/images/logo.svg');
   });
 
   it('displays the alternative logo if dark mode is active', () => {
     const header = createComponent({ theme: { palette: { type: 'dark' } } });
 
-    const logo = header.find({ 'data-testid': 'header-logo-link' }).first().find('img');
+    const logo = header.getByAltText('Kamu logo');
 
-    expect(logo.props().src).toEqual('/static/images/logo-dark.svg');
+    expect(logo).toHaveAttribute('src', '/static/images/logo-dark.svg');
   });
 
   it('displays the menu', () => {
     const header = createComponent();
-    expect(header.find('.header-menu').exists()).toBeTruthy();
+    expect(header.getByRole('button', { name: /library home/i })).toBeInTheDocument();
   });
 
   it('redirects to my books page when clicking on my books', () => {
     const header = createComponent();
 
-    header.find('#my-books-button').simulate('click');
+    const myBooks = header.getByRole('button', { name: /my books/i });
+
+    userEvent.click(myBooks);
 
     expect(history.push).toHaveBeenCalledWith('/my-books');
   });
@@ -64,7 +66,9 @@ describe('Header', () => {
   it('redirects to admin page when clicking on admin button', () => {
     const header = createComponent();
 
-    header.find('#admin-button').simulate('click');
+    const admin = header.getByRole('button', { name: /administration/i });
+
+    userEvent.click(admin);
 
     expect(global.location.assign).toHaveBeenCalledWith('/admin');
   });
@@ -73,7 +77,9 @@ describe('Header', () => {
     getRegion.mockReturnValue('bh');
     const header = createComponent();
 
-    header.find('#home-button').simulate('click');
+    const home = header.getByRole('button', { name: /library home/i });
+
+    userEvent.click(home);
 
     expect(history.push).toHaveBeenCalledWith('/libraries/bh');
   });
@@ -82,7 +88,9 @@ describe('Header', () => {
     getRegion.mockReturnValue(null);
     const header = createComponent();
 
-    header.find('#home-button').simulate('click');
+    const home = header.getByRole('button', { name: /library home/i });
+
+    userEvent.click(home);
 
     expect(history.push).toHaveBeenCalledWith('/');
   });
@@ -90,27 +98,28 @@ describe('Header', () => {
   it('redirects to add book page when clicking on add book button', () => {
     const header = createComponent();
 
-    header.find('#add-book-button').simulate('click');
+    const home = header.getByRole('button', { name: /add a book/i });
+
+    userEvent.click(home);
 
     expect(global.location.assign).toHaveBeenCalledWith('/admin/books/book/isbn/');
   });
 
-  it('has a badge with the borrowed book count in my books button', async () => {
+  it('has a badge with the borrowed book count in my books button', () => {
     mockContext.mockReturnValue({ user: { borrowed_books_count: 5 } });
 
-    const header = mountComponent();
+    const header = createComponent();
 
-    const badge = header.find('#my-books-button').find(Badge);
-
-    expect(badge.exists()).toBeTruthy();
-    expect(badge.props().badgeContent).toEqual(5);
+    expect(header.getByText(/5/i)).toBeInTheDocument();
   });
 
   it('calls toggleTheme prop when change theme button is clicked', () => {
     const toggleTheme = jest.fn();
     const header = createComponent({ toggleTheme });
 
-    header.find({ 'data-testid': 'change-theme-button' }).first().simulate('click');
+    const home = header.getByRole('button', { name: /change theme/i });
+
+    userEvent.click(home);
 
     expect(toggleTheme).toHaveBeenCalled();
   });
