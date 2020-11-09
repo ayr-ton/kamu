@@ -1,16 +1,11 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { render } from '@testing-library/react';
 import LibraryRedirector from './LibraryRedirector';
 import { getRegion } from '../../services/UserPreferences';
 
 jest.mock('../../services/UserPreferences');
 
 const history = { push: jest.fn() };
-const createComponent = () => shallow(
-  <LibraryRedirector history={history}>
-    <div>some element</div>
-  </LibraryRedirector>,
-);
 
 describe('Library Redirector', () => {
   beforeEach(() => {
@@ -19,16 +14,14 @@ describe('Library Redirector', () => {
 
   it('should redirect to the library when a region is set', () => {
     getRegion.mockReturnValueOnce('bh');
-
-    createComponent();
+    render(<LibraryRedirector history={history} />);
 
     expect(history.push).toHaveBeenCalledWith('/libraries/bh');
   });
 
   it('should not redirect when a region is not set', () => {
     getRegion.mockReturnValueOnce(null);
-
-    createComponent();
+    render(<LibraryRedirector history={history}><div>some element</div></LibraryRedirector>);
 
     expect(history.push).not.toHaveBeenCalled();
   });
@@ -36,16 +29,24 @@ describe('Library Redirector', () => {
   it('should not render any children when a region is set', () => {
     getRegion.mockReturnValueOnce('bh');
 
-    const libraryRedirector = createComponent();
+    const libraryRedirector = render(
+      <LibraryRedirector history={history}>
+        <div>some element</div>
+      </LibraryRedirector>,
+    );
 
-    expect(libraryRedirector.children()).toHaveLength(0);
+    expect(libraryRedirector.container.children).toHaveLength(0);
   });
 
   it('should render its children when a region is not set', () => {
     getRegion.mockReturnValueOnce(null);
 
-    const libraryRedirector = createComponent();
+    const libraryRedirector = render(
+      <LibraryRedirector history={history}>
+        <div>some element</div>
+      </LibraryRedirector>,
+    );
 
-    expect(libraryRedirector.children()).toHaveLength(1);
+    expect(libraryRedirector.container.children).toHaveLength(1);
   });
 });

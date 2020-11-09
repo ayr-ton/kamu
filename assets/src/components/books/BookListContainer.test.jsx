@@ -1,7 +1,8 @@
 import React from 'react';
 import {
-  act, fireEvent, render, waitFor, waitForElementToBeRemoved,
+  act, render, waitFor, waitForElementToBeRemoved,
 } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { someBookWithACopyFromMe, someBookWithAvailableCopies } from '../../../test/booksHelper';
 import { BookListContainer } from './BookListContainer';
 import performAction from '../../utils/bookAction';
@@ -60,7 +61,7 @@ describe('Book list container', () => {
     const bookSource = jest.fn().mockResolvedValueOnce({ results: books });
     const { findByText } = render(<BookListContainer source={bookSource} noBooksMessage="" history={history} />);
 
-    fireEvent.click(await findByText(books[0].title));
+    userEvent.click(await findByText(books[0].title));
 
     expect(history.push).toHaveBeenCalledWith(bookUrl(books[0], books[0].library));
   });
@@ -71,7 +72,7 @@ describe('Book list container', () => {
 
     const { findByText } = render(<BookListContainer source={bookSource} noBooksMessage="" history={history} />);
 
-    fireEvent.click(await findByText('Return'));
+    userEvent.click(await findByText('Return'));
     expect(await findByText('Borrow')).toBeVisible();
   });
 
@@ -87,7 +88,7 @@ describe('Book list container', () => {
     );
 
     await act(async () => {
-      fireEvent.click(await findByText('Return'));
+      userEvent.click(await findByText('Return'));
       await waitFor(() => expect(updateUser).toHaveBeenCalled());
     });
   });

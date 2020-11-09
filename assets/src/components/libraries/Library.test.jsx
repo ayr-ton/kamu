@@ -1,7 +1,8 @@
 import React from 'react';
 import {
-  act, fireEvent, waitFor, within,
+  act, waitFor, within,
 } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import {
   borrowBook, checkWaitlist, getBook, getBooksByPage,
 } from '../../services/BookService';
@@ -47,15 +48,16 @@ describe('Library', () => {
 
   it('shows the search term in the search bar when location has a query parameter', () => {
     history.location.search = '?q=test+search';
-    const { getByPlaceholderText } = render(<Library history={history} slug="bh" />);
-    expect(getByPlaceholderText(/search/i)).toHaveValue('test search');
+    const component = render(<Library history={history} slug="bh" />);
+    expect(component.getByPlaceholderText(/search/i)).toHaveValue('test search');
   });
 
   it('keeps the previous query params in the url even when search is updated', async () => {
     history.location.search = '?toggle=active';
-    const { getByPlaceholderText } = render(<Library history={history} slug="bh" />);
+    const component = render(<Library history={history} slug="bh" />);
 
-    await fireEvent.change(getByPlaceholderText(/search/i), { target: { value: 'test search' } });
+    const searchInput = component.getByPlaceholderText(/search/i);
+    await userEvent.type(searchInput, 'test search');
 
     expect(history.replace).toHaveBeenCalledWith({ search: 'toggle=active&q=test+search' });
     history.location.search = '';
@@ -63,9 +65,9 @@ describe('Library', () => {
 
   it('removes the search query from the url when search field is cleared', async () => {
     history.location.search = '?q=test+search';
-    const { getByPlaceholderText } = render(<Library history={history} slug="bh" />);
+    const component = render(<Library history={history} slug="bh" />);
 
-    await fireEvent.change(getByPlaceholderText(/search/i), { target: { value: '' } });
+    await userEvent.clear(component.getByPlaceholderText(/search/i));
 
     expect(history.replace).toHaveBeenCalledWith({ search: '' });
   });
@@ -113,7 +115,7 @@ describe('Library', () => {
     const { findByText, findByTestId } = render(<LibraryContainer slug="bh" />);
 
     await act(async () => {
-      await fireEvent.click(await findByText(book.title));
+      await userEvent.click(await findByText(book.title));
       expect(await findByTestId('book-detail-wrapper')).toBeInTheDocument();
     });
   });
@@ -125,9 +127,9 @@ describe('Library', () => {
     const { findByText, findByTestId, queryByTestId } = render(<LibraryContainer slug="bh" />);
 
     await act(async () => {
-      fireEvent.click(await findByText(book.title));
+      userEvent.click(await findByText(book.title));
       await findByTestId('book-detail-wrapper');
-      fireEvent.click(queryByTestId('modal-close-button'));
+      userEvent.click(queryByTestId('modal-close-button'));
       expect(queryByTestId('book-detail-wrapper')).toBeNull();
     });
   });
@@ -144,7 +146,7 @@ describe('Library', () => {
     it('updates the action button in book card after borrowing book from library', async () => {
       const { findByText } = render(<LibraryContainer slug="bh" />);
 
-      fireEvent.click(await findByText('Borrow'));
+      userEvent.click(await findByText('Borrow'));
       expect(await findByText('Return')).toBeVisible();
     });
 
@@ -152,10 +154,10 @@ describe('Library', () => {
       getBook.mockResolvedValueOnce(book);
       const { findByText, getAllByText, findByTestId } = render(<LibraryContainer slug="bh" />);
 
-      fireEvent.click(await findByText(book.title));
+      userEvent.click(await findByText(book.title));
       const bookDetail = await findByTestId('book-detail');
 
-      fireEvent.click(within(bookDetail).getByText('Borrow'));
+      userEvent.click(within(bookDetail).getByText('Borrow'));
       await waitFor(() => expect(getAllByText('Return')).toHaveLength(2));
     });
 
@@ -167,7 +169,7 @@ describe('Library', () => {
         </UserContext.Provider>,
       );
 
-      fireEvent.click(await findByText('Borrow'));
+      userEvent.click(await findByText('Borrow'));
       await waitFor(() => {
         expect(updateUser).toHaveBeenCalled();
       });
@@ -179,7 +181,7 @@ describe('Library', () => {
       const { getByText, findByTestId } = render(<LibraryContainer slug="bh" />);
       await findByTestId('book-container');
       const button = getByText('Borrow');
-      fireEvent.click(button);
+      userEvent.click(button);
 
       await waitFor(() => {
         expect(checkWaitlist).toHaveBeenCalledWith(book);
@@ -195,7 +197,7 @@ describe('Library', () => {
       await findByTestId('book-container');
 
       const button = getByText('Borrow');
-      await fireEvent.click(button);
+      await userEvent.click(button);
 
       await waitFor(() => {
         expect(checkWaitlist).toHaveBeenCalledWith(book);
@@ -215,11 +217,11 @@ describe('Library', () => {
       await findByTestId('book-container');
 
       const button = getByText('Borrow');
-      fireEvent.click(button);
+      userEvent.click(button);
 
       await waitFor(() => {
         expect(getByTestId('waitlist-users')).toHaveTextContent(
-          'Users on the wait list: someuser@example.com, someotheruser@example.com',
+          'Users on the wait list: Some User, someotheruser@example.com',
         );
         expect(getByText(/Do you wish to proceed and borrow this book?/)).toBeDefined();
         expect(checkWaitlist).toHaveBeenCalledWith(bookThatOthersAreInWaitlist);
@@ -236,10 +238,10 @@ describe('Library', () => {
       await findByTestId('book-container');
 
       const button = getByText('Borrow');
-      fireEvent.click(button);
+      userEvent.click(button);
 
       const confirmButton = await findByText('Confirm and Borrow');
-      fireEvent.click(confirmButton);
+      userEvent.click(confirmButton);
 
       await waitFor(() => {
         expect(borrowBook).toHaveBeenCalledWith(book);
@@ -255,10 +257,10 @@ describe('Library', () => {
       await findByTestId('book-container');
 
       const button = await findByText('Borrow');
-      fireEvent.click(button);
+      userEvent.click(button);
 
       const cancelButton = await findByText('Cancel');
-      fireEvent.click(cancelButton);
+      userEvent.click(cancelButton);
 
       await waitFor(() => {
         expect(borrowBook).not.toHaveBeenCalled();

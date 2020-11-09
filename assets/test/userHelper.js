@@ -8,8 +8,9 @@ export const currentUser = {
 export const someUser = {
   username: 'someuser@example.com',
   email: 'someuser@example.com',
-  image_url: '',
+  image_url: 'http://user-avatar-image.com',
   borrowed_books_count: 2,
+  name: 'Some User',
 };
 
 export const someOtherUser = {

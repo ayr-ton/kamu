@@ -1,60 +1,56 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import Close from '@material-ui/icons/Close';
-import TextField from '@material-ui/core/TextField';
+import userEvent from '@testing-library/user-event';
+import { render } from '@testing-library/react';
 import SearchBar from './SearchBar';
 
 describe('SearchBar', () => {
   let searchBarComponent;
   const searchTerm = 'search term text';
-  const onChange = jest.fn();
 
   it('should render with empty search term', () => {
-    searchBarComponent = shallow(<SearchBar onChange={onChange} query="" />);
-    expect(searchBarComponent.state().searchTerm).toEqual('');
+    searchBarComponent = render(<SearchBar onChange={() => {}} query="" />);
+    const input = searchBarComponent.getByPlaceholderText('Search by book title or author');
+    expect(input.value).toBe('');
   });
 
   it('should render with passed search term', () => {
-    searchBarComponent = shallow(<SearchBar onChange={onChange} query="test search" />);
-    expect(searchBarComponent.state().searchTerm).toEqual('test search');
+    searchBarComponent = render(<SearchBar onChange={() => {}} query="test search" />);
+    expect(searchBarComponent.getByDisplayValue('test search')).toBeInTheDocument();
   });
 
   it('should clear search term when click in close icon', () => {
-    searchBarComponent = shallow(<SearchBar onChange={onChange} query="" />);
-    searchBarComponent.setState({ searchTerm });
+    searchBarComponent = render(<SearchBar onChange={() => {}} query="" />);
 
-    searchBarComponent.find(Close).simulate('click');
+    const inputField = searchBarComponent.getByPlaceholderText('Search by book title or author');
 
-    expect(searchBarComponent.state().searchTerm).toEqual('');
+    userEvent.type(inputField, 'test');
+    expect(inputField.value).toBe('test');
+
+    userEvent.click(searchBarComponent.getByRole('img', { name: 'Close' }));
+    expect(inputField.value).toBe('');
   });
 
   it('should call onchange function passing the trimmed search term when textfield changes', () => {
-    const textfieldChangeEvent = {
-      target: {
-        value: `${searchTerm} `,
-      },
-    };
+    const onChange = jest.fn();
 
-    searchBarComponent = shallow(<SearchBar onChange={onChange} query="" />);
-    const textField = searchBarComponent.find(TextField);
+    searchBarComponent = render(<SearchBar onChange={onChange} query="" />);
 
-    textField.props().onChange(textfieldChangeEvent);
+    const inputField = searchBarComponent.getByPlaceholderText('Search by book title or author');
+
+    userEvent.type(inputField, searchTerm);
 
     expect(onChange).toHaveBeenCalledWith(searchTerm);
   });
 
   it('should not call onchange function when trimmed text does not change', () => {
-    const textfieldChangeEvent = {
-      target: {
-        value: 'test  ',
-      },
-    };
+    const onChangeMock = jest.fn();
 
-    searchBarComponent = shallow(<SearchBar onChange={onChange} query="test " />);
-    const textField = searchBarComponent.find(TextField);
+    searchBarComponent = render(<SearchBar onChange={onChangeMock} query="test " />);
 
-    textField.props().onChange(textfieldChangeEvent);
+    const inputField = searchBarComponent.getByPlaceholderText('Search by book title or author');
 
-    expect(onChange).not.toHaveBeenCalledWith('test  ');
+    userEvent.type(inputField, 'test  ');
+
+    expect(onChangeMock).not.toHaveBeenCalledWith('test');
   });
 });

@@ -49,7 +49,7 @@ export default class SearchBar extends Component {
           {this.state.searchTerm !== ''
             && (
               <div className="search-bar-close-icon-container">
-                <Close className="search-bar-close-icon" onClick={this.onClear} />
+                <Close className="search-bar-close-icon" onClick={this.onClear} titleAccess="Close" />
               </div>
             )}
         </div>

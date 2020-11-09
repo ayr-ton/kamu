@@ -1,5 +1,6 @@
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import BookActionButton from './BookActionButton';
 import {
   BORROW_BOOK_ACTION,
@@ -55,7 +56,7 @@ describe('Action button', () => {
       <BookActionButton onClick={onClick} action={BORROW_BOOK_ACTION} />,
     );
 
-    await fireEvent.click(getByRole('button'));
+    await userEvent.click(getByRole('button'));
     expect(onClick).toHaveBeenCalledWith(BORROW_BOOK_ACTION);
   });
 });

@@ -1,5 +1,6 @@
 import React from 'react';
-import { fireEvent, render, waitForElementToBeRemoved } from '@testing-library/react';
+import { render, waitForElementToBeRemoved } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import BookDetailContainer from './BookDetailContainer';
 
@@ -41,7 +42,7 @@ describe('BookDetailContainer', () => {
     const { findByTestId } = renderComponent({ onAction });
     const closeButton = await findByTestId('modal-close-button');
 
-    fireEvent.click(closeButton);
+    userEvent.click(closeButton);
 
     expect(onAction).toHaveBeenCalledWith(CLOSE_BOOK_ACTION, expect.anything());
   });
@@ -51,7 +52,7 @@ describe('BookDetailContainer', () => {
     const onAction = jest.fn().mockResolvedValue(book);
     const { findByText } = renderComponent({ onAction });
 
-    fireEvent.click(await findByText('Borrow'));
+    userEvent.click(await findByText('Borrow'));
 
     expect(onAction).toHaveBeenCalledWith(BORROW_BOOK_ACTION, book);
   });
