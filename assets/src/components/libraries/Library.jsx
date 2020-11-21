@@ -71,7 +71,7 @@ class Library extends Component {
   }
 
   async loadBooks() {
-    if (this.state.isLoading) return;
+    if (this.state.isLoading || !this.state.hasNextPage) return;
 
     this.setState({ isLoading: true, hasNextPage: false });
 
