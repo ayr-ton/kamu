@@ -67,7 +67,7 @@ describe('Library', () => {
     history.location.search = '?q=test+search';
     const component = render(<Library history={history} slug="bh" />);
 
-    await userEvent.clear(component.getByPlaceholderText(/search/i));
+    userEvent.clear(component.getByPlaceholderText(/search/i));
 
     expect(history.replace).toHaveBeenCalledWith({ search: '' });
   });
@@ -115,7 +115,7 @@ describe('Library', () => {
     const { findByText, findByTestId } = render(<LibraryContainer slug="bh" />);
 
     await act(async () => {
-      await userEvent.click(await findByText(book.title));
+      userEvent.click(await findByText(book.title));
       expect(await findByTestId('book-detail-wrapper')).toBeInTheDocument();
     });
   });
@@ -197,7 +197,7 @@ describe('Library', () => {
       await findByTestId('book-container');
 
       const button = getByText('Borrow');
-      await userEvent.click(button);
+      userEvent.click(button);
 
       await waitFor(() => {
         expect(checkWaitlist).toHaveBeenCalledWith(book);
