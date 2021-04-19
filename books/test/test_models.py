@@ -92,9 +92,8 @@ class BookTestCase(TestCase):
 
         self.book.borrow(library=self.library, user=self.user)
 
-        copies = self.book.bookcopy_set.all()
-        self.assertEqual(copies[0].user, self.user)
-        self.assertEqual(copies[1].user, None)
+        copies = self.book.bookcopy_set.filter(library=self.library, user=self.user)
+        self.assertEqual(len(copies), 1)
 
     def test_borrow_throws_error_and_does_not_borrow_when_all_copies_are_borrowed(self, _):
         self.book.bookcopy_set.create(library=self.library, user=self.another_user)
@@ -133,10 +132,8 @@ class BookTestCase(TestCase):
 
         self.book.return_to_library(library=self.library, user=self.user)
 
-        copies = self.book.bookcopy_set.all()
-        self.assertEqual(copies[0].user, None)
-        self.assertEqual(copies[0].borrow_date, None)
-        self.assertEqual(copies[1].user, self.another_user)
+        copies = self.book.bookcopy_set.filter(library=self.library, user=None, borrow_date=None)
+        self.assertEqual(len(copies), 1)
 
     def test_return_throws_error_and_does_not_unset_user_when_user_is_not_borrowed(self, _):
         self.book.bookcopy_set.create(library=self.library, user=self.another_user)

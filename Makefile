@@ -23,6 +23,9 @@ docker-dev:
 docker-stop:
 	docker-compose -f docker-compose.yml -f docker-compose.dev.yml stop
 
+docker-test:
+	docker-compose run --rm -e DJANGO_SETTINGS_MODULE=core.settings.test web coverage run manage.py test
+
 docker-heroku:
 	docker-compose up web
 

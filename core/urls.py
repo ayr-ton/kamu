@@ -16,10 +16,10 @@ router = routers.DefaultRouter()
 router.register(r'libraries', views.LibraryViewSet)
 
 library_routers = routers.NestedSimpleRouter(router, r'libraries', lookup='library')
-library_routers.register(r'books', views.BookViewSet, base_name='books')
+library_routers.register(r'books', views.BookViewSet, basename='books')
 
 book_routers = routers.NestedSimpleRouter(library_routers, r'books', lookup='book')
-book_routers.register(r'waitlist', WaitlistViewSet, base_name='waitlist')
+book_routers.register(r'waitlist', WaitlistViewSet, basename='waitlist')
 
 if os.environ.get("OKTA_METADATA_URL") is None:
     login_routes = [url(r'^accounts/login', admin.site.login)]
