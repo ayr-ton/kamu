@@ -1,7 +1,7 @@
 from unittest.mock import patch
 
 from django.contrib.auth.models import User
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.utils import timezone
 
 from books.models import Book, BookCopy, Library
@@ -92,8 +92,9 @@ class BookTestCase(TestCase):
 
         self.book.borrow(library=self.library, user=self.user)
 
-        copies = self.book.bookcopy_set.filter(library=self.library, user=self.user)
-        self.assertEqual(len(copies), 1)
+        copies = self.book.bookcopy_set.order_by('id')
+        self.assertEqual(copies[0].user, self.user)
+        self.assertEqual(copies[1].user, None)
 
     def test_borrow_throws_error_and_does_not_borrow_when_all_copies_are_borrowed(self, _):
         self.book.bookcopy_set.create(library=self.library, user=self.another_user)
@@ -101,7 +102,7 @@ class BookTestCase(TestCase):
         with self.assertRaises(ValueError):
             self.book.borrow(library=self.library, user=self.user)
 
-        copies = self.book.bookcopy_set.all()
+        copies = self.book.bookcopy_set.order_by('id')
         self.assertEqual(copies[0].user, self.another_user)
 
     def test_borrow_removes_user_from_waitlist_if_successful(self, _):
@@ -132,8 +133,10 @@ class BookTestCase(TestCase):
 
         self.book.return_to_library(library=self.library, user=self.user)
 
-        copies = self.book.bookcopy_set.filter(library=self.library, user=None, borrow_date=None)
-        self.assertEqual(len(copies), 1)
+        copies = self.book.bookcopy_set.order_by('id')
+        self.assertEqual(copies[0].user, None)
+        self.assertEqual(copies[0].borrow_date, None)
+        self.assertEqual(copies[1].user, self.another_user)
 
     def test_return_throws_error_and_does_not_unset_user_when_user_is_not_borrowed(self, _):
         self.book.bookcopy_set.create(library=self.library, user=self.another_user)
@@ -141,15 +144,24 @@ class BookTestCase(TestCase):
         with self.assertRaises(ValueError):
             self.book.return_to_library(library=self.library, user=self.user)
 
-        copies = self.book.bookcopy_set.all()
+        copies = self.book.bookcopy_set.order_by('id')
         self.assertEqual(copies[0].user, self.another_user)
 
-    def test_return_starts_a_notification_task_to_waitlist(self, notification_task):
+    @override_settings(KAMU_ENABLE_ASYNC_TASKS=True)
+    def test_return_starts_a_notification_task_when_toggle_on(self, notification_task):
         book_copy = self.book.bookcopy_set.create(library=self.library, user=self.user)
 
         self.book.return_to_library(library=self.library, user=self.user)
 
-        notification_task.delay.assert_called_with(book_copy.id)
+        notification_task.assert_called_with(book_copy.id)
+
+    @override_settings(KAMU_ENABLE_ASYNC_TASKS=False)
+    def test_return_skips_notification_task_when_toggle_off(self, notification_task):
+        self.book.bookcopy_set.create(library=self.library, user=self.user)
+
+        self.book.return_to_library(library=self.library, user=self.user)
+
+        notification_task.assert_not_called()
 
     def test_returns_users_waitlist_added_date_none_if_not_exists(self, _):
         date = timezone.now()

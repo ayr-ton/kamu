@@ -1,21 +1,20 @@
-from celery import task
-from celery.utils.log import get_task_logger
+import logging
+
 from django.apps import apps
 from django.conf import settings
 from django.core import mail
 from django.template.loader import render_to_string
 
-logger = get_task_logger(__name__)
+logger = logging.getLogger(__name__)
 
 
-@task
 def send_new_user_on_waitlist_notification(waitlist_item_id):
     waitlist_item = apps.get_model('waitlist', 'WaitlistItem').objects.get(pk=waitlist_item_id)
     book = waitlist_item.book
     borrowers = [copy.user for copy in book.bookcopy_set.exclude(user=None)]
     waitlist_user_name = f'{waitlist_item.user.first_name} {waitlist_item.user.last_name}'
 
-    logger.info(f'Starting a waitlist notification task for book {book.title} ' +
+    logger.info(f'Starting a waitlist notification task for book {book.title} '
                 f'({len(borrowers)} borrowers in {waitlist_item.library.name})')
 
     send_email_notification(
@@ -30,7 +29,6 @@ def send_new_user_on_waitlist_notification(waitlist_item_id):
     )
 
 
-@task
 def send_waitlist_book_available_notification(book_copy_id):
     book_copy = apps.get_model('books', 'BookCopy').objects.get(pk=book_copy_id)
     book = book_copy.book
@@ -39,7 +37,7 @@ def send_waitlist_book_available_notification(book_copy_id):
     )
     users_on_waitlist = [item.user for item in waitlist_items]
 
-    logger.info(f'Starting a waitlist notification task for book {book.title} available ' +
+    logger.info(f'Starting a waitlist notification task for book {book.title} available '
                 f'({len(users_on_waitlist)} users on waitlist in {book_copy.library.name})')
 
     send_email_notification(
@@ -55,7 +53,7 @@ def send_waitlist_book_available_notification(book_copy_id):
 
 def send_email_notification(users, subject, template_name, context):
     if len(users) == 0:
-        logger.debug(f'Exiting mail task because the user list is empty.')
+        logger.debug('Exiting mail task because the user list is empty.')
         return
 
     email_list = [user.email for user in users]
@@ -68,4 +66,4 @@ def send_email_notification(users, subject, template_name, context):
         email_list,
     )
 
-    logger.info(f'Email notification sent successfully.')
+    logger.info('Email notification sent successfully.')

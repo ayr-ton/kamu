@@ -1,8 +1,4 @@
-from .common import *
-from .cron import *
-import os
-
-PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+from .common import *  # noqa: F401,F403
+from .cron import *  # noqa: F401,F403
 
 DEBUG = True

@@ -1,9 +1,5 @@
 import os
 
-CRONJOBS = [
-    ('* * * * *', 'books.cron.send_notification.send_borrows_out_of_time_notifications')
-]
-
 CRON_EMAIL_NOTIFICATION_SETTINGS = {
     'TEMPLATE_FROM': os.environ.get('DJANGO_EMAIL_CRON_FROM', 'notifications@kamu.com'),
     'TEMPLATE_SUBJECT': 'Kamu friendly reminder',
@@ -24,4 +20,3 @@ CRON_EMAIL_NOTIFICATION_SETTINGS = {
     ''',
     'BORROW_MAX_TERM_MONTH': 3
 }
-

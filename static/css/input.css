@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+/* Scan Django template directories for Tailwind class usage */
+@source "../../core/templates/";
+@source "../../books/templates/";
+@source "../../waitlist/templates/";
+
+/* Class-based dark mode (toggle via .dark on <html>) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-primary-50: #eff6ff;
+  --color-primary-500: #3b82f6;
+  --color-primary-600: #2563eb;
+  --color-primary-700: #1d4ed8;
+  --color-primary-900: #1e3a5f;
+  --font-sans: "Open Sans", system-ui, sans-serif;
+}
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@utility btn {
+  border-radius: var(--radius-lg);
+  padding-block: var(--spacing-2);
+  padding-inline: var(--spacing-4);
+  font-weight: var(--font-weight-medium);
+  transition-property: color, background-color;
+  transition-duration: 200ms;
+}
+
+@utility btn-primary {
+  @apply btn bg-primary-600 text-white hover:bg-primary-700;
+}
+
+@utility btn-secondary {
+  @apply btn bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200;
+}
+
+@utility btn-danger {
+  @apply btn bg-red-600 text-white hover:bg-red-700;
+}
+
+@utility card {
+  @apply bg-white dark:bg-gray-800 rounded-xl shadow-xs border border-gray-200 dark:border-gray-700 p-4;
+}

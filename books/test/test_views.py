@@ -10,384 +10,6 @@ from unittest.mock import patch
 from books.models import Book, Library, BookCopy
 
 
-class LibraryViewSet(TestCase):
-    def setUp(self):
-        self.user = User.objects.create_user(username="claudia")
-        self.user.set_password("123")
-        self.user.save()
-        self.client.force_login(user=self.user)
-
-        self.library = Library.objects.create(name="Santiago", slug="scl")
-        self.library2 = Library.objects.create(name="Belo Horizonte", slug="bh")
-        self.book = Book.objects.create(author="Author", title="Book A", subtitle="The subtitle",
-                                        publication_date=timezone.now())
-        self.book.bookcopy_set.create(library=self.library)
-
-    def test_returns_the_list_of_libraries_ordered_alphabetically(self):
-        response = self.client.get("/api/libraries/")
-
-        self.assertEqual(response.status_code, 200)
-
-        libraries = response.data['results']
-        self.assertEqual(2, response.data['count'])
-        self.assertEqual(self.library2.name, libraries[0]['name'])
-        self.assertEqual(self.library2.slug, libraries[0]['slug'])
-        self.assertEqual(self.library.name, libraries[1]['name'])
-        self.assertEqual(self.library.slug, libraries[1]['slug'])
-
-    def test_can_retrieve_library_information_with_existing_slug(self):
-        response = self.client.get("/api/libraries/" + self.library.slug + "/")
-
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(self.library.name, response.data['name'])
-        self.assertEqual(self.library.slug, response.data['slug'])
-
-        response = self.client.get(response.data['books'])
-
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(1, response.data['count'])
-
-    def test_can_retrieve_books_from_library(self):
-        response = self.client.get("/api/libraries/" + self.library.slug + "/books/")
-
-        self.assertEqual(response.status_code, 200)
-
-        response = json.loads(json.dumps(response.data))
-
-        self.assertEqual(response['count'], 1)
-        self.assertIsNone(response['next'])
-        self.assertIsNone(response['previous'])
-        self.assertEqual(len(response['results']), 1)
-
-        book = response['results'][0]
-        self.assertEqual(book['title'], self.book.title)
-        self.assertEqual(book['author'], self.book.author)
-        self.assertEqual(book['subtitle'], self.book.subtitle)
-
-    def test_returns_404_when_fetching_books_from_an_invalid_library(self):
-        response = self.client.get("/api/libraries/blablabla/books/")
-        self.assertEqual(response.status_code, 404)
-
-    def test_has_action_for_each_book(self):
-        book2 = Book.objects.create(author="Author", title="Book B")
-        book2.bookcopy_set.create(library=self.library, user=self.user)
-
-        response = self.client.get("/api/libraries/" + self.library.slug + "/books/")
-
-        response = json.loads(json.dumps(response.data))
-        books = response['results']
-
-        self.assertEqual(books[0]['action']['type'], 'BORROW')
-        self.assertEqual(books[1]['action']['type'], 'RETURN')
-
-    def test_has_url_for_each_book(self):
-        response = self.client.get("/api/libraries/" + self.library.slug + "/books/")
-        books = response.data['results']
-
-        expected_url = 'http://testserver/api/libraries/' + self.library.slug + '/books/' + str(self.book.id) + '/'
-        self.assertEqual(books[0]['url'], expected_url)
-
-    def test_has_waitlist_added_date_for_each_book(self):
-        date = timezone.now()
-        user2 = User.objects.create(username="Marielle Franco", email="marielle@gmail.com")
-        book2 = Book.objects.create(author="Author", title="Book B")
-        book2.bookcopy_set.create(library=self.library, user=user2)
-        book2.waitlistitem_set.create(library=self.library, user=self.user, added_date=date)
-
-        response = self.client.get("/api/libraries/" + self.library.slug + "/books/")
-        books = response.data['results']
-
-        self.assertEqual(books[0]['waitlist_added_date'], None)
-        self.assertEqual(books[1]['waitlist_added_date'], date)
-
-
-class LibraryViewSetQueryParameters(TestCase):
-    def setUp(self):
-        self.user = User.objects.create_user(username="claudia")
-        self.user.set_password("123")
-        self.user.save()
-        self.client.force_login(user=self.user)
-
-        self.library = Library.objects.create(name="My library", slug="myslug")
-
-        self.base_url = "/api/libraries/" + self.library.slug + "/books/?"
-
-        books_dict = [
-            {'author': 'author a', 'title': 'book a', 'isbn': '1001'},
-            {'author': 'author b', 'title': 'book b', 'isbn': '1002'},
-            {'author': 'author not', 'title': 'book not', 'isbn': '2003'},
-            {'author': 'author amazing', 'title': 'book amazing', 'isbn': '2004'},
-        ]
-
-        for book_dict in books_dict:
-            book = Book.objects.create(**book_dict)
-            BookCopy.objects.create(book=book, library=self.library)
-
-    def get_request_result_as_json(self, url):
-        request = self.client.get(url)
-        return json.loads(json.dumps(request.data))["results"]
-
-    def test_working_endpoint(self):
-        self.request = self.client.get("/api/libraries/" + self.library.slug + "/books/")
-
-        self.assertEqual(self.request.status_code, 200)
-
-    def test_empty_search(self):
-        books = self.get_request_result_as_json(self.base_url + "book_title=&book_author=")
-        self.assertEqual(len(books), 4)
-
-    def test_search_for_books_title(self):
-        books = self.get_request_result_as_json(self.base_url + "book_title=invalid")
-        self.assertEqual(len(books), 0)
-
-        books = self.get_request_result_as_json(self.base_url + "book_title=book")
-        self.assertEqual(len(books), 4)
-
-        books = self.get_request_result_as_json(self.base_url + "book_title=a")
-        self.assertEqual(len(books), 2)
-
-        books = self.get_request_result_as_json(self.base_url + "book_title=not")
-        self.assertEqual(len(books), 1)
-
-        books = self.get_request_result_as_json(self.base_url + "book_title=ama")
-        self.assertEqual(len(books), 1)
-
-        books = self.get_request_result_as_json(self.base_url + "book_title=amazing")
-        self.assertEqual(len(books), 1)
-
-        books = self.get_request_result_as_json(self.base_url + "book_title=book amazing")
-        self.assertEqual(len(books), 1)
-
-    def test_search_for_books_author(self):
-        books = self.get_request_result_as_json(self.base_url + "book_author=invalid")
-        self.assertEqual(len(books), 0)
-
-        books = self.get_request_result_as_json(self.base_url + "book_author=a")
-        self.assertEqual(len(books), 4)
-
-        books = self.get_request_result_as_json(self.base_url + "book_author=author a")
-        self.assertEqual(len(books), 2)
-
-        books = self.get_request_result_as_json(self.base_url + "book_author=ot")
-        self.assertEqual(len(books), 1)
-
-        books = self.get_request_result_as_json(self.base_url + "book_author=author b")
-        self.assertEqual(len(books), 1)
-
-        books = self.get_request_result_as_json(self.base_url + " book_author=author amazing ")
-        self.assertEqual(len(books), 1)
-
-    def test_search_for_books_author_or_books_title(self):
-        books = self.get_request_result_as_json(self.base_url + "book_author=a&book_title=book a")
-        self.assertEqual(len(books), 4)
-
-        books = self.get_request_result_as_json(self.base_url + "book_author=author a&book_title=book a")
-        self.assertEqual(len(books), 2)
-
-        books = self.get_request_result_as_json(self.base_url + "book_author=author amazing&book_title=book a")
-        self.assertEqual(len(books), 2)
-
-        books = self.get_request_result_as_json(self.base_url + "book_author=author amazing&book_title=book amazing")
-        self.assertEqual(len(books), 1)
-
-    def test_search_for_books_isbn_returns_exact_match(self):
-        books = self.get_request_result_as_json(self.base_url + "book_isbn=1001")
-        self.assertEqual(len(books), 1)
-        self.assertEqual(books[0]['title'], 'book a')
-
-
-@patch('books.models.send_waitlist_book_available_notification')
-class BookViewSetTest(TestCase):
-    def setUp(self):
-        self.user = User.objects.create_user(username="claudia")
-        self.user.set_password("123")
-        self.user.save()
-        self.client.force_login(user=self.user)
-        self.library = Library.objects.create(name="Santiago", slug="slug")
-        self.book = Book.objects.create(author="Author", title="the title", subtitle="The subtitle")
-        self.base_url = "/api/libraries/" + self.library.slug + "/books/" + str(self.book.id)
-
-    def test_retrieve_returns_200_when_called_with_book_from_that_library(self, _):
-        self.book.bookcopy_set.create(library=self.library)
-        response = self.client.get('/api/libraries/' + self.library.slug + '/books/' + str(self.book.id) + '/')
-        self.assertEqual(200, response.status_code)
-
-    def test_retrieve_returns_404_when_called_with_book_from_other_library(self, _):
-        other_book = Book.objects.create(author="Author", title="the title", subtitle="The subtitle")
-        other_book.bookcopy_set.create(library=Library.objects.create(name="Quito", slug="quito"))
-        response = self.client.get('/api/libraries/' + self.library.slug + '/books/' + str(other_book.id) + '/')
-        self.assertEqual(404, response.status_code)
-
-    def test_borrow_calls_borrow_on_book_and_returns_200(self, _):
-        with patch.object(Book, 'borrow') as mock_borrow:
-            response = self.client.post(self.base_url + '/borrow/')
-            self.assertEqual(200, response.status_code)
-            mock_borrow.assert_called_once_with(user=self.user, library=self.library)
-
-    def test_borrow_returns_404_when_called_with_invalid_book(self, _):
-        response = self.client.post('/api/libraries/' + self.library.slug + '/books/123/borrow/')
-        self.assertEqual(404, response.status_code)
-
-    def test_borrow_returns_copies_and_action(self, _):
-        self.book.bookcopy_set.create(user=None, library=self.library)
-        response = self.client.post(self.base_url + '/borrow/')
-        self.assertEqual(response.data['action']['type'], 'RETURN')
-        self.assertEqual(response.data['copies'][0]['user']['username'], self.user.username)
-
-    def test_borrow_returns_400_when_throws_error(self, _):
-        with patch.object(Book, 'borrow', side_effect=ValueError('some error')):
-            response = self.client.post(self.base_url + '/borrow/')
-            self.assertEqual(400, response.status_code)
-            self.assertEqual('some error', response.data['message'])
-
-    def test_return_calls_return_on_book_and_returns_200(self, _):
-        with patch.object(Book, 'return_to_library') as mock_return:
-            response = self.client.post(self.base_url + '/return/')
-            self.assertEqual(200, response.status_code)
-            mock_return.assert_called_once_with(user=self.user, library=self.library)
-
-    def test_return_returns_404_when_called_with_invalid_book(self, _):
-        response = self.client.post('/api/libraries/' + self.library.slug + '/books/123/return/')
-        self.assertEqual(404, response.status_code)
-
-    def test_return_returns_copies_and_action(self, _):
-        self.book.bookcopy_set.create(user=self.user, library=self.library)
-        response = self.client.post(self.base_url + '/return/')
-        self.assertEqual(response.data['action']['type'], 'BORROW')
-        self.assertIsNone(response.data['copies'][0]['user'])
-
-    def test_return_returns_400_when_throws_error(self, _):
-        with patch.object(Book, 'return_to_library', side_effect=ValueError('some error')):
-            response = self.client.post(self.base_url + '/return/')
-            self.assertEqual(400, response.status_code)
-            self.assertEqual('some error', response.data['message'])
-
-    def test_report_missing_calls_report_as_missing_and_returns_200(self, _):
-        with patch.object(Book, 'report_as_missing') as mock_report_as_missing:
-            response = self.client.patch(self.base_url + '/missing/')
-            self.assertEqual(200, response.status_code)
-            mock_report_as_missing.assert_called_once_with(library=self.library)
-
-    def test_report_missing_returns_404_when_called_with_invalid_book(self, _):
-        response = self.client.patch('/api/libraries/' + self.library.slug + '/books/123/missing/')
-        self.assertEqual(404, response.status_code)
-
-    def test_report_missing_400_when_throws_error(self, _):
-        with patch.object(Book, 'report_as_missing', side_effect=ValueError('some error')):
-            response = self.client.patch(self.base_url + '/missing/')
-            self.assertEqual(400, response.status_code)
-            self.assertEqual('some error', response.data['message'])
-
-    def test_found_calls_was_found_and_returns_200(self, _):
-        with patch.object(Book, 'was_found') as mock_was_found:
-            response = self.client.patch(self.base_url + '/found/')
-            self.assertEqual(200, response.status_code)
-            mock_was_found.assert_called_once_with(library=self.library)
-
-    def test_found_returns_404_when_called_with_invalid_book(self, _):
-        response = self.client.patch('/api/libraries/' + self.library.slug + '/books/123/found/')
-        self.assertEqual(404, response.status_code)
-
-    def test_found_400_when_throws_error(self, _):
-        with patch.object(Book, 'was_found', side_effect=ValueError('some error')):
-            response = self.client.patch(self.base_url + '/found/')
-            self.assertEqual(400, response.status_code)
-            self.assertEqual('some error', response.data['message'])
-
-
-class UserViewTest(TestCase):
-    def setUp(self):
-        self.user = User.objects.create_user(username="claudia")
-        self.user.set_password("123")
-        self.user.save()
-        self.client.force_login(user=self.user)
-
-    def test_user_should_be_able_to_see_its_own_profile(self):
-        self.request = self.client.get("/api/profile")
-        user_json = json.loads(json.dumps(self.request.data))
-
-        self.assertEqual(self.user.username, user_json['user']['username'])
-
-    def test_user_profile_includes_borrowed_books_count(self):
-        library = Library.objects.create(name="Santiago", slug="slug")
-        book = Book.objects.create(author="Author", title="the title", subtitle="The subtitle")
-        BookCopy.objects.create(book=book, library=library, user=self.user)
-
-        self.request = self.client.get("/api/profile")
-        user_json = json.loads(json.dumps(self.request.data))
-
-        self.assertEqual(1, user_json['user']['borrowed_books_count'])
-
-
-class UserBooksViewTest(TestCase):
-    def setUp(self):
-        self.user = User.objects.create_user(username="claudia")
-        self.user.set_password("123")
-        self.user.save()
-        self.client.force_login(user=self.user)
-
-        self.library = Library.objects.create(name="Santiago", slug="slug")
-        self.book = Book.objects.create(author="Author", title="The title")
-        self.book.bookcopy_set.create(library=self.library, user=self.user)
-
-    def test_user_should_get_their_borrowed_books(self):
-        availableBook = Book.objects.create(author="Author", title="Another title")
-        availableBook.bookcopy_set.create(library=self.library)
-
-        response = self.client.get("/api/profile/books")
-
-        self.assertEqual(200, response.status_code)
-        self.assertEqual(len(response.data['results']), 1)
-        self.assertEqual(response.data['results'][0]['title'], self.book.title)
-
-    def test_has_return_action_for_each_book(self):
-        response = self.client.get("/api/profile/books")
-
-        self.assertEqual(response.data['results'][0]['action']['type'], 'RETURN')
-
-    def test_has_url_for_each_book(self):
-        response = self.client.get("/api/profile/books")
-
-        expected_url = 'http://testserver/api/libraries/' + self.library.slug + '/books/' + str(self.book.id) + '/'
-        self.assertEqual(response.data['results'][0]['url'], expected_url)
-
-    def test_has_library_for_each_book(self):
-        response = self.client.get("/api/profile/books")
-        self.assertEqual(response.data['results'][0]['library'], self.library.slug)
-
-
-class UserWaitlistViewTest(TestCase):
-    def setUp(self):
-        self.user = User.objects.create_user(username="claudia")
-        self.user.set_password("123")
-        self.user.save()
-        self.client.force_login(user=self.user)
-
-        self.library = Library.objects.create(name="Santiago", slug="slug")
-        self.book = Book.objects.create(author="Author", title="The title")
-        self.book.waitlistitem_set.create(library=self.library, user=self.user, added_date=timezone.now())
-
-    def test_user_should_get_their_waitlisted_books(self):
-        availableBook = Book.objects.create(author="Author", title="Another title")
-        availableBook.bookcopy_set.create(library=self.library)
-
-        response = self.client.get("/api/profile/waitlist")
-
-        self.assertEqual(200, response.status_code)
-        self.assertEqual(len(response.data['results']), 1)
-        self.assertEqual(response.data['results'][0]['title'], self.book.title)
-
-    def test_has_url_for_each_book(self):
-        response = self.client.get("/api/profile/waitlist")
-
-        expected_url = 'http://testserver/api/libraries/' + self.library.slug + '/books/' + str(self.book.id) + '/'
-        self.assertEqual(response.data['results'][0]['url'], expected_url)
-
-    def test_has_library_for_each_book(self):
-        response = self.client.get("/api/profile/waitlist")
-        self.assertEqual(response.data['results'][0]['library'], self.library.slug)
-
-
 class IsbnViewTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username="claudia", is_staff=True, is_superuser=True)
@@ -470,30 +92,553 @@ class IsbnViewTest(TestCase):
         self.assertTemplateUsed(response, 'admin/change_form.html')
 
 
-class FrontendViewTest(TestCase):
+class BookDetailViewTest(TestCase):
     def setUp(self):
-        user = User.objects.create_user(username="claudia", is_staff=True, is_superuser=True)
-        user.set_password("pwd12345")
-        user.save()
-        self.client.force_login(user=user)
+        self.user = User.objects.create_user(username="claudia")
+        self.user.set_password("123")
+        self.user.save()
+        self.client.force_login(self.user)
 
-    def test_should_render_frontend_template(self):
-        response = self.client.get('/')
+        self.library = Library.objects.create(name="Quito", slug="quito")
+        self.book = Book.objects.create(
+            author="Martin Fowler", title="Refactoring",
+            subtitle="Improving the Design of Existing Code",
+            description="A great book about refactoring.",
+            isbn="9780201485677", publisher="Addison-Wesley",
+            publication_date=timezone.now(), number_of_pages=455,
+            image_url="http://example.com/cover.jpg",
+        )
+        self.copy = BookCopy.objects.create(book=self.book, library=self.library)
+        self.url = f"/libraries/quito/books/{self.book.pk}/"
 
+    def test_book_detail_returns_200(self):
+        response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'index.html')
 
-    def test_should_render_with_analytics_disabled_when_var_is_not_present(self):
-        if 'ANALYTICS_ACCOUNT_ID' in os.environ:
-            del os.environ['ANALYTICS_ACCOUNT_ID']
-        response = self.client.get('/')
+    def test_book_detail_requires_login(self):
+        self.client.logout()
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 302)
 
-        self.assertNotContains(response, 'analytics.js')
+    def test_book_detail_uses_correct_template(self):
+        response = self.client.get(self.url)
+        self.assertTemplateUsed(response, "books/book_detail.html")
 
-    def test_should_render_with_analytics_enabled_when_var_is_present(self):
-        analyticsAccountId = 'UA-12345678-1'
-        os.environ['ANALYTICS_ACCOUNT_ID'] = analyticsAccountId
-        response = self.client.get('/')
+    def test_book_detail_shows_book_info(self):
+        response = self.client.get(self.url)
+        self.assertContains(response, "Refactoring")
+        self.assertContains(response, "Martin Fowler")
+        self.assertContains(response, "Improving the Design of Existing Code")
+        self.assertContains(response, "A great book about refactoring.")
+        self.assertContains(response, "9780201485677")
+        self.assertContains(response, "Addison-Wesley")
+        self.assertContains(response, "455 pages")
 
-        self.assertContains(response, 'analytics.js')
-        self.assertContains(response, analyticsAccountId)
+    def test_book_detail_shows_availability(self):
+        response = self.client.get(self.url)
+        self.assertContains(response, "Available")
+
+    def test_book_detail_shows_action_button(self):
+        response = self.client.get(self.url)
+        self.assertContains(response, "Borrow")
+
+    def test_book_detail_returns_404_for_book_not_in_library(self):
+        other_library = Library.objects.create(name="Santiago", slug="santiago")
+        url = f"/libraries/santiago/books/{self.book.pk}/"
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+
+    def test_book_detail_shows_borrowed_status(self):
+        self.copy.user = self.user
+        self.copy.borrow_date = timezone.now()
+        self.copy.save()
+        response = self.client.get(self.url)
+        self.assertContains(response, "Borrowed by claudia")
+
+    def test_book_detail_shows_goodreads_link(self):
+        response = self.client.get(self.url)
+        self.assertContains(response, "goodreads.com/search?q=9780201485677")
+
+
+class BorrowReturnViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="claudia")
+        self.user.set_password("123")
+        self.user.save()
+        self.client.force_login(self.user)
+
+        self.library = Library.objects.create(name="Quito", slug="quito")
+        self.book = Book.objects.create(author="Author", title="A Book")
+        self.copy = BookCopy.objects.create(book=self.book, library=self.library)
+        self.borrow_url = f"/libraries/quito/books/{self.book.pk}/borrow/"
+        self.return_url = f"/libraries/quito/books/{self.book.pk}/return/"
+
+    def test_borrow_book_post_borrows_copy(self):
+        response = self.client.post(self.borrow_url)
+        self.copy.refresh_from_db()
+        self.assertEqual(self.copy.user, self.user)
+
+    def test_borrow_returns_updated_action_fragment_for_htmx(self):
+        response = self.client.post(self.borrow_url, HTTP_HX_REQUEST="true")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Return")
+        self.assertTemplateUsed(response, "books/partials/book_action.html")
+
+    def test_borrow_redirects_for_non_htmx(self):
+        response = self.client.post(self.borrow_url)
+        self.assertEqual(response.status_code, 302)
+
+    @patch('books.models.run_async_task')
+    def test_return_book_post_returns_copy(self, _):
+        self.copy.user = self.user
+        self.copy.borrow_date = timezone.now()
+        self.copy.save()
+        response = self.client.post(self.return_url)
+        self.copy.refresh_from_db()
+        self.assertIsNone(self.copy.user)
+
+    @patch('books.models.run_async_task')
+    def test_return_returns_updated_action_fragment_for_htmx(self, _):
+        self.copy.user = self.user
+        self.copy.borrow_date = timezone.now()
+        self.copy.save()
+        response = self.client.post(self.return_url, HTTP_HX_REQUEST="true")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Borrow")
+        self.assertTemplateUsed(response, "books/partials/book_action.html")
+
+
+class WaitlistViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="claudia")
+        self.user.set_password("123")
+        self.user.save()
+        self.client.force_login(self.user)
+
+        self.library = Library.objects.create(name="Quito", slug="quito")
+        self.book = Book.objects.create(author="Author", title="A Book")
+        self.borrower = User.objects.create_user(username="borrower")
+        self.copy = BookCopy.objects.create(
+            book=self.book, library=self.library,
+            user=self.borrower, borrow_date=timezone.now(),
+        )
+        self.join_url = f"/libraries/quito/books/{self.book.pk}/waitlist/join/"
+        self.leave_url = f"/libraries/quito/books/{self.book.pk}/waitlist/leave/"
+
+    @patch('waitlist.models.run_async_task')
+    def test_join_waitlist_creates_item(self, _):
+        response = self.client.post(self.join_url)
+        self.assertTrue(
+            self.book.waitlistitem_set.filter(user=self.user, library=self.library).exists()
+        )
+
+    @patch('waitlist.models.run_async_task')
+    def test_join_waitlist_returns_updated_button(self, _):
+        response = self.client.post(self.join_url, HTTP_HX_REQUEST="true")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Leave Waitlist")
+
+    def test_leave_waitlist_removes_item(self):
+        self.book.waitlistitem_set.create(
+            user=self.user, library=self.library, added_date=timezone.now()
+        )
+        response = self.client.post(self.leave_url)
+        self.assertFalse(
+            self.book.waitlistitem_set.filter(user=self.user, library=self.library).exists()
+        )
+
+    def test_leave_waitlist_returns_updated_button(self):
+        self.book.waitlistitem_set.create(
+            user=self.user, library=self.library, added_date=timezone.now()
+        )
+        response = self.client.post(self.leave_url, HTTP_HX_REQUEST="true")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Join Waitlist")
+
+
+class MyBooksViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="claudia")
+        self.user.set_password("123")
+        self.user.save()
+        self.client.force_login(self.user)
+
+        self.library = Library.objects.create(name="Quito", slug="quito")
+
+    def test_my_books_returns_200(self):
+        response = self.client.get("/my-books/")
+        self.assertEqual(response.status_code, 200)
+
+    def test_my_books_requires_login(self):
+        self.client.logout()
+        response = self.client.get("/my-books/")
+        self.assertEqual(response.status_code, 302)
+
+    def test_my_books_uses_correct_template(self):
+        response = self.client.get("/my-books/")
+        self.assertTemplateUsed(response, "books/my_books.html")
+
+    def test_my_books_shows_borrowed_books(self):
+        book = Book.objects.create(author="Author", title="Borrowed Book")
+        BookCopy.objects.create(
+            book=book, library=self.library,
+            user=self.user, borrow_date=timezone.now(),
+        )
+        response = self.client.get("/my-books/")
+        self.assertContains(response, "Borrowed Book")
+
+    def test_my_books_shows_waitlist(self):
+        book = Book.objects.create(author="Author", title="Waitlisted Book")
+        BookCopy.objects.create(book=book, library=self.library)
+        book.waitlistitem_set.create(
+            user=self.user, library=self.library, added_date=timezone.now()
+        )
+        response = self.client.get("/my-books/")
+        self.assertContains(response, "Waitlisted Book")
+
+    def test_my_books_does_not_show_other_users_books(self):
+        other_user = User.objects.create_user(username="other")
+        book = Book.objects.create(author="Author", title="Others Book")
+        BookCopy.objects.create(
+            book=book, library=self.library,
+            user=other_user, borrow_date=timezone.now(),
+        )
+        response = self.client.get("/my-books/")
+        self.assertNotContains(response, "Others Book")
+
+
+class AddBookViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="claudia")
+        self.client.force_login(self.user)
+        self.library = Library.objects.create(name="Quito", slug="quito")
+
+    def test_add_book_page_returns_200(self):
+        response = self.client.get("/libraries/quito/add-book/")
+        self.assertEqual(response.status_code, 200)
+
+    def test_add_book_requires_login(self):
+        self.client.logout()
+        response = self.client.get("/libraries/quito/add-book/")
+        self.assertEqual(response.status_code, 302)
+
+    def test_add_book_uses_correct_template(self):
+        response = self.client.get("/libraries/quito/add-book/")
+        self.assertTemplateUsed(response, "books/add_book.html")
+
+    def test_add_book_returns_404_for_invalid_library(self):
+        response = self.client.get("/libraries/nonexistent/add-book/")
+        self.assertEqual(response.status_code, 404)
+
+    def test_add_book_shows_library_name(self):
+        response = self.client.get("/libraries/quito/add-book/")
+        self.assertContains(response, "Quito")
+
+    @patch("books.views.lookup_isbn")
+    def test_isbn_lookup_returns_book_preview(self, mock_lookup):
+        mock_lookup.return_value = {
+            "isbn": "9780201633610",
+            "title": "Design Patterns",
+            "subtitle": "",
+            "author": "Erich Gamma",
+            "publisher": "Addison-Wesley",
+            "description": "A classic.",
+            "publication_date": "1994",
+            "number_of_pages": 395,
+            "image_url": "http://covers.openlibrary.org/b/isbn/9780201633610-L.jpg",
+        }
+        response = self.client.post(
+            "/libraries/quito/add-book/lookup/",
+            {"isbn": "9780201633610"},
+            HTTP_HX_REQUEST="true",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Design Patterns")
+        self.assertContains(response, "Erich Gamma")
+        self.assertTemplateUsed(response, "books/partials/book_preview.html")
+
+    @patch("books.views.lookup_isbn")
+    def test_isbn_lookup_shows_not_found_message(self, mock_lookup):
+        mock_lookup.return_value = {}
+        response = self.client.post(
+            "/libraries/quito/add-book/lookup/",
+            {"isbn": "0000000000000"},
+            HTTP_HX_REQUEST="true",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "No book found")
+
+    @patch("books.views.lookup_isbn")
+    def test_isbn_lookup_warns_if_book_already_in_library(self, mock_lookup):
+        book = Book.objects.create(
+            title="Existing Book", author="Author", isbn="9780201633610"
+        )
+        BookCopy.objects.create(book=book, library=self.library)
+        mock_lookup.return_value = {
+            "isbn": "9780201633610", "title": "Existing Book",
+            "author": "Author", "publisher": "", "subtitle": "",
+            "description": "", "publication_date": "", "number_of_pages": "",
+            "image_url": "",
+        }
+        response = self.client.post(
+            "/libraries/quito/add-book/lookup/",
+            {"isbn": "9780201633610"},
+            HTTP_HX_REQUEST="true",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "already")
+
+    @patch("books.views.lookup_isbn")
+    def test_add_book_confirm_creates_book_and_copy(self, mock_lookup):
+        mock_lookup.return_value = {
+            "isbn": "9780201633610", "title": "Design Patterns",
+            "subtitle": "", "author": "Erich Gamma",
+            "publisher": "Addison-Wesley", "description": "A classic.",
+            "publication_date": "", "number_of_pages": 395,
+            "image_url": "http://example.com/cover.jpg",
+        }
+        response = self.client.post("/libraries/quito/add-book/confirm/", {
+            "isbn": "9780201633610",
+        })
+        self.assertTrue(Book.objects.filter(isbn="9780201633610").exists())
+        book = Book.objects.get(isbn="9780201633610")
+        self.assertTrue(BookCopy.objects.filter(book=book, library=self.library).exists())
+        self.assertEqual(book.title, "Design Patterns")
+
+    @patch("books.views.lookup_isbn")
+    def test_add_book_confirm_redirects_to_book_detail(self, mock_lookup):
+        mock_lookup.return_value = {
+            "isbn": "9780201633610", "title": "Design Patterns",
+            "subtitle": "", "author": "Erich Gamma",
+            "publisher": "Addison-Wesley", "description": "",
+            "publication_date": "", "number_of_pages": "",
+            "image_url": "",
+        }
+        response = self.client.post("/libraries/quito/add-book/confirm/", {
+            "isbn": "9780201633610",
+        })
+        book = Book.objects.get(isbn="9780201633610")
+        self.assertRedirects(
+            response,
+            f"/libraries/quito/books/{book.pk}/",
+            fetch_redirect_response=False,
+        )
+
+    @patch("books.views.lookup_isbn")
+    def test_add_book_confirm_creates_only_copy_for_existing_book(self, mock_lookup):
+        existing = Book.objects.create(
+            title="Design Patterns", author="Erich Gamma", isbn="9780201633610"
+        )
+        mock_lookup.return_value = {
+            "isbn": "9780201633610", "title": "Design Patterns",
+            "subtitle": "", "author": "Erich Gamma",
+            "publisher": "Addison-Wesley", "description": "",
+            "publication_date": "", "number_of_pages": "",
+            "image_url": "",
+        }
+        response = self.client.post("/libraries/quito/add-book/confirm/", {
+            "isbn": "9780201633610",
+        })
+        self.assertEqual(Book.objects.filter(isbn="9780201633610").count(), 1)
+        self.assertTrue(
+            BookCopy.objects.filter(book=existing, library=self.library).exists()
+        )
+
+    @patch("books.views.lookup_isbn")
+    def test_add_book_confirm_fails_when_isbn_not_found(self, mock_lookup):
+        mock_lookup.return_value = {}
+        response = self.client.post("/libraries/quito/add-book/confirm/", {
+            "isbn": "0000000000000",
+        })
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(Book.objects.filter(isbn="0000000000000").exists())
+
+
+class BookListViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="claudia")
+        self.user.set_password("123")
+        self.user.save()
+        self.client.force_login(self.user)
+
+        self.library = Library.objects.create(name="Quito", slug="quito")
+        self.book = Book.objects.create(
+            author="Martin Fowler", title="Refactoring",
+            image_url="http://example.com/cover.jpg",
+        )
+        BookCopy.objects.create(book=self.book, library=self.library)
+
+    def test_book_list_requires_login(self):
+        self.client.logout()
+        response = self.client.get("/libraries/quito/")
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("login", response.url)
+
+    def test_book_list_returns_200(self):
+        response = self.client.get("/libraries/quito/")
+        self.assertEqual(response.status_code, 200)
+
+    def test_book_list_returns_404_for_invalid_library(self):
+        response = self.client.get("/libraries/nonexistent/")
+        self.assertEqual(response.status_code, 404)
+
+    def test_book_list_uses_correct_template(self):
+        response = self.client.get("/libraries/quito/")
+        self.assertTemplateUsed(response, "books/book_list.html")
+
+    def test_book_list_shows_books_for_library(self):
+        response = self.client.get("/libraries/quito/")
+        self.assertContains(response, "Refactoring")
+        self.assertContains(response, "Martin Fowler")
+
+    def test_book_list_does_not_show_books_from_other_libraries(self):
+        other_library = Library.objects.create(name="Santiago", slug="santiago")
+        other_book = Book.objects.create(author="Other Author", title="Other Book")
+        BookCopy.objects.create(book=other_book, library=other_library)
+
+        response = self.client.get("/libraries/quito/")
+        self.assertContains(response, "Refactoring")
+        self.assertNotContains(response, "Other Book")
+
+    def test_book_list_shows_availability_for_available_book(self):
+        response = self.client.get("/libraries/quito/")
+        self.assertContains(response, "Available")
+
+    def test_book_list_shows_borrowed_status(self):
+        borrower = User.objects.create_user(username="borrower")
+        copy = BookCopy.objects.get(book=self.book, library=self.library)
+        copy.user = borrower
+        copy.borrow_date = timezone.now()
+        copy.save()
+
+        response = self.client.get("/libraries/quito/")
+        self.assertContains(response, "Borrowed")
+
+    def test_book_list_paginates_results(self):
+        for i in range(25):
+            book = Book.objects.create(author="Author", title=f"Book {i:02d}")
+            BookCopy.objects.create(book=book, library=self.library)
+
+        response = self.client.get("/libraries/quito/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "page=2")
+
+    def test_book_list_second_page(self):
+        for i in range(25):
+            book = Book.objects.create(author="Author", title=f"Book {i:02d}")
+            BookCopy.objects.create(book=book, library=self.library)
+
+        response = self.client.get("/libraries/quito/?page=2")
+        self.assertEqual(response.status_code, 200)
+
+    def test_book_list_htmx_returns_fragment(self):
+        response = self.client.get(
+            "/libraries/quito/",
+            HTTP_HX_REQUEST="true",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "books/partials/book_list_items.html")
+        self.assertTemplateNotUsed(response, "base.html")
+
+    def test_book_list_search_filters_by_title(self):
+        book2 = Book.objects.create(author="Kent Beck", title="TDD by Example")
+        BookCopy.objects.create(book=book2, library=self.library)
+
+        response = self.client.get("/libraries/quito/?q=Refactoring")
+        self.assertContains(response, "Refactoring")
+        self.assertNotContains(response, "TDD by Example")
+
+    def test_book_list_search_filters_by_author(self):
+        book2 = Book.objects.create(author="Kent Beck", title="TDD by Example")
+        BookCopy.objects.create(book=book2, library=self.library)
+
+        response = self.client.get("/libraries/quito/?q=Kent")
+        self.assertContains(response, "TDD by Example")
+        self.assertNotContains(response, "Refactoring")
+
+    def test_book_list_search_filters_by_isbn(self):
+        self.book.isbn = "9780201485677"
+        self.book.save()
+        book2 = Book.objects.create(author="Kent Beck", title="TDD by Example")
+        BookCopy.objects.create(book=book2, library=self.library)
+
+        response = self.client.get("/libraries/quito/?q=9780201485677")
+        self.assertContains(response, "Refactoring")
+        self.assertNotContains(response, "TDD by Example")
+
+    def test_book_list_empty_search_shows_all(self):
+        book2 = Book.objects.create(author="Kent Beck", title="TDD by Example")
+        BookCopy.objects.create(book=book2, library=self.library)
+
+        response = self.client.get("/libraries/quito/?q=")
+        self.assertContains(response, "Refactoring")
+        self.assertContains(response, "TDD by Example")
+
+    def test_book_list_sets_last_library_cookie(self):
+        response = self.client.get("/libraries/quito/")
+        self.assertEqual(response.cookies["last_library"].value, "quito")
+
+    def test_book_list_shows_library_name(self):
+        response = self.client.get("/libraries/quito/")
+        self.assertContains(response, "Quito")
+
+
+class LibraryListViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="claudia")
+        self.user.set_password("123")
+        self.user.save()
+
+    def test_library_list_requires_login(self):
+        response = self.client.get("/")
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("login", response.url)
+
+    def test_library_list_returns_200(self):
+        self.client.force_login(self.user)
+        response = self.client.get("/")
+        self.assertEqual(response.status_code, 200)
+
+    def test_library_list_uses_correct_template(self):
+        self.client.force_login(self.user)
+        response = self.client.get("/")
+        self.assertTemplateUsed(response, "books/library_list.html")
+
+    def test_library_list_shows_all_libraries(self):
+        self.client.force_login(self.user)
+        Library.objects.create(name="Quito", slug="quito")
+        Library.objects.create(name="Santiago", slug="santiago")
+        response = self.client.get("/")
+        self.assertContains(response, "Quito")
+        self.assertContains(response, "Santiago")
+
+    def test_library_list_links_to_book_listing(self):
+        self.client.force_login(self.user)
+        Library.objects.create(name="Quito", slug="quito")
+        response = self.client.get("/")
+        self.assertContains(response, '/libraries/quito/')
+
+    def test_library_list_shows_libraries_ordered_by_name(self):
+        self.client.force_login(self.user)
+        Library.objects.create(name="Zurich", slug="zurich")
+        Library.objects.create(name="Atlanta", slug="atlanta")
+        response = self.client.get("/")
+        content = response.content.decode()
+        self.assertLess(content.index("Atlanta"), content.index("Zurich"))
+
+    def test_library_list_redirects_to_last_visited(self):
+        self.client.force_login(self.user)
+        Library.objects.create(name="Quito", slug="quito")
+        self.client.cookies["last_library"] = "quito"
+        response = self.client.get("/")
+        self.assertRedirects(response, "/libraries/quito/", fetch_redirect_response=False)
+
+    def test_library_list_ignores_invalid_last_visited_cookie(self):
+        self.client.force_login(self.user)
+        Library.objects.create(name="Quito", slug="quito")
+        self.client.cookies["last_library"] = "nonexistent"
+        response = self.client.get("/")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Quito")
+
+

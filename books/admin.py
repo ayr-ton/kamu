@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path
 
 from books import views
-from .models import *
+from .models import Book, BookCopy, Library
 from import_export import resources
 from import_export.admin import ExportMixin
 from import_export import fields
@@ -63,12 +63,14 @@ class BookCopyInline(admin.TabularInline):
     readonly_fields = ['book', 'user']
 
 
+@admin.register(Library)
 class LibraryAdmin(admin.ModelAdmin):
     inlines = [BookCopyInline]
     list_display = ['name']
     search_fields = ['name']
 
 
+@admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
     inlines = [BookCopyInline]
     list_display = ['isbn', 'title', 'author']
@@ -87,6 +89,7 @@ class BookAdmin(admin.ModelAdmin):
         return my_urls + urls
 
 
+@admin.register(BookCopy)
 class BookCopyAdmin(ExportMixin, admin.ModelAdmin):
     resource_class = BookCopyResource
     list_display = ['id', 'book', 'library', 'user']
@@ -102,6 +105,3 @@ class BookCopyAdmin(ExportMixin, admin.ModelAdmin):
 admin.site.site_header = 'Kamu administration'
 admin.site.site_title = 'Kamu administration'
 admin.site.index_title = 'Kamu'
-admin.site.register(Book, BookAdmin)
-admin.site.register(Library, LibraryAdmin)
-admin.site.register(BookCopy, BookCopyAdmin)

@@ -1,0 +1,62 @@
+{% if error %}
+<div class="card p-6 text-center">
+  <svg class="w-12 h-12 mx-auto text-gray-300 dark:text-gray-600 mb-3" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" aria-hidden="true">
+    <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+  </svg>
+  <p class="text-gray-500 dark:text-gray-400">{{ error }}</p>
+</div>
+
+{% elif book_data %}
+<div class="card overflow-hidden">
+  <div class="flex gap-4 p-6">
+    {% if book_data.image_url %}
+    <div class="flex-shrink-0 w-24">
+      <div class="aspect-[2/3] rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700">
+        <img src="{{ book_data.image_url }}" alt="{{ book_data.title }}" class="w-full h-full object-cover" loading="lazy">
+      </div>
+    </div>
+    {% endif %}
+    <div class="flex-1 min-w-0">
+      <h2 class="text-lg font-bold">{{ book_data.title }}</h2>
+      {% if book_data.subtitle %}
+      <p class="text-sm text-gray-500 dark:text-gray-400 mt-0.5">{{ book_data.subtitle }}</p>
+      {% endif %}
+      <p class="text-gray-600 dark:text-gray-300 mt-1">{{ book_data.author }}</p>
+      <div class="flex flex-wrap gap-x-4 gap-y-1 mt-2 text-sm text-gray-500 dark:text-gray-400">
+        {% if book_data.publisher %}
+        <span>{{ book_data.publisher }}</span>
+        {% endif %}
+        {% if book_data.publication_date %}
+        <span>{{ book_data.publication_date }}</span>
+        {% endif %}
+        {% if book_data.number_of_pages %}
+        <span>{{ book_data.number_of_pages }} pages</span>
+        {% endif %}
+      </div>
+      {% if book_data.description %}
+      <p class="text-sm text-gray-500 dark:text-gray-400 mt-3 line-clamp-3">{{ book_data.description }}</p>
+      {% endif %}
+      <p class="text-xs text-gray-400 dark:text-gray-500 mt-2">ISBN {{ book_data.isbn }}</p>
+    </div>
+  </div>
+
+  <div class="border-t border-gray-200 dark:border-gray-700 px-6 py-4">
+    {% if already_in_library %}
+    <div class="flex items-center gap-2 text-yellow-600 dark:text-yellow-400 text-sm mb-3">
+      <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+      </svg>
+      <span>This book already exists in {{ library.name }}.</span>
+    </div>
+    {% else %}
+    <form method="post" action="{% url 'add-book-confirm' slug=library.slug %}">
+      {% csrf_token %}
+      <input type="hidden" name="isbn" value="{{ book_data.isbn }}">
+      <button type="submit" class="btn-primary w-full">
+        Add to {{ library.name }}
+      </button>
+    </form>
+    {% endif %}
+  </div>
+</div>
+{% endif %}
