@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}{{ book.title }} — {{ library.name }} — Kamu{% endblock %}
+
+{% block content %}
+<nav class="mb-6 text-sm text-gray-500 dark:text-gray-400">
+  <a href="/" class="hover:text-primary-600 dark:hover:text-primary-500">Libraries</a>
+  <span class="mx-1">/</span>
+  <a href="{% url 'book-list' slug=library.slug %}" class="hover:text-primary-600 dark:hover:text-primary-500">{{ library.name }}</a>
+  <span class="mx-1">/</span>
+  <span class="text-gray-900 dark:text-gray-100">{{ book.title }}</span>
+</nav>
+
+<div class="flex flex-col md:flex-row gap-8">
+  <div class="flex-shrink-0 w-full md:w-56">
+    <div class="aspect-[2/3] rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
+      {% if book.image_url %}
+      <img src="{{ book.image_url }}" alt="{{ book.title }}" class="w-full h-full object-cover">
+      {% else %}
+      <svg class="w-16 h-16 text-gray-300 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+      </svg>
+      {% endif %}
+    </div>
+
+    <div id="book-action-{{ book.pk }}" class="mt-4">
+      {% include "books/partials/book_action.html" %}
+    </div>
+  </div>
+
+  <div class="flex-1 min-w-0">
+    <h1 class="text-2xl font-bold">{{ book.title }}</h1>
+    {% if book.subtitle %}
+    <p class="text-lg text-gray-500 dark:text-gray-400 mt-1">{{ book.subtitle }}</p>
+    {% endif %}
+    <p class="text-gray-600 dark:text-gray-300 mt-1">{{ book.author }}</p>
+
+    <div class="flex flex-wrap gap-x-6 gap-y-1 mt-4 text-sm text-gray-500 dark:text-gray-400">
+      {% if book.publisher %}
+      <span>{{ book.publisher }}</span>
+      {% endif %}
+      {% if book.publication_date %}
+      <span>{{ book.publication_date|date:"Y" }}</span>
+      {% endif %}
+      {% if book.number_of_pages %}
+      <span>{{ book.number_of_pages }} pages</span>
+      {% endif %}
+      {% if book.isbn %}
+      <span>ISBN {{ book.isbn }}</span>
+      {% endif %}
+    </div>
+
+    {% if book.description %}
+    <div class="mt-6 prose prose-sm dark:prose-invert max-w-none">
+      <p>{{ book.description }}</p>
+    </div>
+    {% endif %}
+
+    {% if book.isbn %}
+    <div class="mt-4">
+      <a href="https://www.goodreads.com/search?q={{ book.isbn }}"
+         target="_blank" rel="noopener noreferrer"
+         class="text-sm text-primary-600 dark:text-primary-500 hover:underline">
+        View on Goodreads
+      </a>
+    </div>
+    {% endif %}
+
+    <div class="mt-8">
+      <h2 class="text-lg font-semibold mb-3">Copies in {{ library.name }}</h2>
+      <div class="space-y-2">
+        {% for copy in copies %}
+        <div class="flex items-center justify-between py-2 px-3 rounded-lg bg-gray-50 dark:bg-gray-800 text-sm">
+          {% if copy.missing %}
+          <span class="text-red-600 dark:text-red-400">Missing</span>
+          {% elif copy.user %}
+          <span>Borrowed by {{ copy.user.username }}</span>
+          <span class="text-gray-400 dark:text-gray-500">{{ copy.borrow_date|date:"M d, Y" }}</span>
+          {% else %}
+          <span class="text-green-600 dark:text-green-400">Available</span>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

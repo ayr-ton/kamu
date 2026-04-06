@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}{{ library.name }} — Kamu{% endblock %}
+
+{% block content %}
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+  <div>
+    <h1 class="text-2xl font-bold">{{ library.name }}</h1>
+    <p class="text-sm text-gray-500 dark:text-gray-400">{{ page.paginator.count }} book{{ page.paginator.count|pluralize }}</p>
+  </div>
+
+  <div v-scope="{ query: '{{ query|escapejs }}' }" class="w-full sm:w-80">
+    <input type="text"
+           v-model="query"
+           name="q"
+           placeholder="Search by title, author, or ISBN..."
+           hx-get="{% url 'book-list' slug=library.slug %}"
+           hx-trigger="input changed delay:300ms"
+           hx-target="#book-list"
+           hx-swap="innerHTML"
+           hx-include="this"
+           class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-2 text-sm placeholder-gray-400 dark:placeholder-gray-500 focus:border-primary-500 focus:ring-1 focus:ring-primary-500 focus:outline-hidden transition-colors"
+           aria-label="Search books">
+  </div>
+</div>
+
+<div id="book-list">
+  {% include "books/partials/book_list_items.html" %}
+</div>
+{% endblock %}

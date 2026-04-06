@@ -1,196 +1,179 @@
+[![Test](https://github.com/ayr-ton/kamu-oss/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/ayr-ton/kamu-oss/actions/workflows/test.yml)
 # Kamu
+
 > "Some books leave us free and some books make us free."
-> – Ralph Waldo Emerson
+> — Ralph Waldo Emerson
 
-[![Build Status](https://circleci.com/gh/ayr-ton/kamu.svg?style=svg)](https://circleci.com/gh/ayr-ton/kamu) [![Test Coverage](https://api.codeclimate.com/v1/badges/a16bb5d5b3c9e9557b2f/test_coverage)](https://codeclimate.com/github/ayr-ton/kamu/test_coverage) [![Maintainability](https://api.codeclimate.com/v1/badges/a16bb5d5b3c9e9557b2f/maintainability)](https://codeclimate.com/github/ayr-ton/kamu/maintainability)
-[![Open Source Helpers](https://www.codetriage.com/ayr-ton/kamu/badges/users.svg)](https://www.codetriage.com/ayr-ton/kamu)
+Kamu is an application for managing a physical library where you can add books,
+borrow and return them. Users browse libraries (different offices, cities, or
+friend groups), borrow available books, and join waitlists for unavailable ones.
 
-Join the Matrix.org contributors chat at https://matrix.to/#/#kamu:matrix.org
+## Tech Stack
 
-Kamu is an application that focus on managing a physical library where you can add books, borrow and return them.
-
-In the main page you can see the libraries shared between users. The libraries can be different unities, cities or name of friends that wants to share books. In the Screenshoot bellow, you can see an example of multiple libraries. 
-
-![Screenshoot for Kamu's multiple libraries](https://github.com/ayr-ton/kamu/raw/f4b254156e5efb02b4f35aeed28eca06733681c2/screen%20shots/First%20page.png)
+| Layer      | Technology                                         |
+|------------|----------------------------------------------------|
+| Frontend   | Django templates + HTMX + petite-vue + Tailwind CSS |
+| Backend    | Django 5.0 (server-rendered HTML)                   |
+| Build      | Tailwind CSS standalone CLI (no JS build step)      |
+| Database   | PostgreSQL everywhere                               |
+| Containers | Podman + podman-compose                             |
+| CI/CD      | GitHub Actions                                      |
+| Async      | Synchronous (feature-toggled, off by default)       |
 
 ## Requirements
 
-- Python 3.6+ for Django backend
-- Node.js 8+ for frontend assets
+- Python 3.12+
+- Podman and podman-compose
+- Tailwind CSS standalone CLI (for CSS development)
 
-## Installation / Getting started
+## Quick Start (Podman)
 
-Here is a quick step-by-step minimal setup, to get the app up and running in your local workstation:
+Start the development environment:
 
-### MacOS specific
-To install Node.js and npm you can either download it from the [node.js homepage](https://nodejs.org/en/download/) or install it using [homebrew](https://brew.sh):
-
-```shell
-brew install node
+```bash
+make dev
 ```
 
-### Platform independent
-Create Python virtual enviroment:
+This starts the Django app and PostgreSQL via podman-compose.
 
-```shell
-python3 -m venv venv
+Run migrations and seed data:
+
+```bash
+make migrate
+make createsuperuser
+make loaddata
 ```
 
-Activate virtual enviroment (this command can change based on OS):
+Visit [http://localhost:8000](http://localhost:8000).
 
-```shell
-source venv/bin/activate
+### CSS Development
+
+When working on templates, run the Tailwind watcher in a separate terminal:
+
+```bash
+make tailwind-watch
 ```
 
-Install backend dependencies using pip:
+### Email Notifications (Optional)
 
-```shell
-pip install -r requirements.txt
+To enable email notifications (waitlist alerts, overdue reminders), set
+`KAMU_ENABLE_ASYNC_TASKS=True` in your `.env` file and configure the
+`DJANGO_EMAIL_*` environment variables. Notifications are sent synchronously
+during the request — no Redis or background workers needed.
+
+For overdue reminders, run the management command on a schedule (e.g. via
+Cloud Scheduler + Cloud Run Jobs):
+
+```bash
+python manage.py send_overdue_reminders
 ```
 
-Install frontend dependencies using npm:
+## Quick Start (Local, No Containers)
 
-```shell
-npm install
+Create and activate a Python virtual environment:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
 ```
 
-Create database tables:
+Install dependencies:
 
-```shell
+```bash
+uv pip compile pyproject.toml -o requirements.lock
+uv pip sync requirements.lock
+```
+
+Set up the database (requires a local PostgreSQL instance):
+
+```bash
+export DATABASE_URL=postgres://kamu:kamu@localhost:5432/kamu
 python manage.py migrate
-```
-
-Create a super user:
-
-```shell
 python manage.py createsuperuser
-```
-
-You will use this super user to login as administrator in your local Kamu application.
-
-
-Seed the database with initial dump data:
-
-```shell
 python manage.py loaddata dump_data/*.json
 ```
 
-Start your local server:
+Start the development server:
 
-```shell
-npm start
+```bash
+python manage.py runserver
 ```
 
-Now just go to [http://localhost:8000](http://localhost:8000) in your browser :)
+## Testing
 
-**For local setup with Okta authentication:**
-Use the `OKTA_METADATA_URL` and `OKTA_ENTITY_ID` environment variables, concatenating it with the usual commands. Examples:
+```bash
+# Via containers
+make test
 
-```shell
-  OKTA_METADATA_URL='url-of-okta-saml' OKTA_ENTITY_ID='url-of-okta-login' npm start
-  OKTA_METADATA_URL='url-of-okta-saml' OKTA_ENTITY_ID='url-of-okta-login' python manage.py migrate
+# Locally
+make local-test
+
+# With coverage
+coverage run manage.py test
+coverage report
 ```
 
-Another way is to export the var and then execute the commands:
+## Authentication
 
-```shell
-  export OKTA_METADATA_URL='url-of-okta-saml' OKTA_ENTITY_ID='url-of-okta-login'
-  npm start
-  python manage.py migrate
+### Default (Django Login)
+
+Uses Django's built-in session authentication. Create a superuser with
+`make createsuperuser` and log in at `/accounts/login/`.
+
+### Okta SAML2
+
+Set the following environment variables:
+
+```bash
+OKTA_METADATA_URL='url-of-okta-saml'
+OKTA_ENTITY_ID='url-of-okta-login'
 ```
 
-If you wish to disable Okta authentication again, execute:
+To disable Okta authentication:
 
-```shell
-  unset OKTA_METADATA_URL OKTA_ENTITY_ID
+```bash
+unset OKTA_METADATA_URL OKTA_ENTITY_ID
 ```
 
-## Using Docker for local development
+## Environment Variables
 
-Remember to create a `.env` file with all the environment variables you need for spining up the environment.
+| Variable                   | Default                | Description                              |
+|---------------------------|------------------------|------------------------------------------|
+| `DATABASE_URL`            | (required)             | PostgreSQL connection string             |
+| `SECRET_KEY`              | (required in prod)     | Django secret key                        |
+| `DEBUG`                   | `false`                | Django debug mode                        |
+| `OKTA_METADATA_URL`       | (unset)                | Okta SAML2 metadata URL                  |
+| `OKTA_ENTITY_ID`          | (unset)                | Okta entity ID                           |
 
-For building the image:
+### Email Notifications
 
-```shell
-  make docker-build
-```
+| Variable                   | Default                | Description                              |
+|---------------------------|------------------------|------------------------------------------|
+| `KAMU_ENABLE_ASYNC_TASKS` | `false`                | Enable email notifications               |
+| `DJANGO_EMAIL_BACKEND`    | `smtp.EmailBackend`    | Email backend (use `console.EmailBackend` for testing) |
+| `DJANGO_EMAIL_FROM`       | (unset)                | Sender address (e.g. `kamu@yourorg.com`) |
+| `DJANGO_EMAIL_HOST`       | (unset)                | SMTP server (e.g. `smtp.sendgrid.net`)   |
+| `DJANGO_EMAIL_PORT`       | (unset)                | SMTP port (e.g. `587`)                   |
+| `DJANGO_EMAIL_HOST_USER`  | (unset)                | SMTP username                            |
+| `DJANGO_EMAIL_HOST_PASSWORD` | (unset)             | SMTP password                            |
 
-If you're not planning to use a heroku like build or touch docker files, you can also pull from Dockerhub:
+## Documentation
 
-```shell 
-  make docker-pull
-```
+| Document                       | Purpose                                   |
+|-------------------------------|-------------------------------------------|
+| `AGENTS.md`                   | AI agent guide and task tracking           |
+| `docs/ARCHITECTURE.md`       | System design and principles               |
+| `docs/TECH_STACK.md`         | Technology choices and rationale            |
+| `docs/TDD_WORKFLOW.md`       | Test-driven development process            |
+| `docs/USER_STORIES.md`       | User stories with acceptance criteria      |
+| `docs/FEATURES.md`           | Feature breakdown by migration phase       |
+| `docs/DJANGO_STRUCTURE.md`   | Target Django project layout               |
+| `docs/FRONTEND.md`           | HTMX + petite-vue frontend architecture    |
+| `docs/DATABASE_SCHEMA.md`    | Data model documentation                   |
+| `docs/DOCKER.md`             | Podman container strategy                  |
+| `docs/ASSETS.md`             | Tailwind CSS and static asset management   |
+| `docs/AI_CHANGELOG.md`       | Changelog of all AI-driven changes         |
 
-Create database tables:
+## License
 
-```shell
-  make docker-migrate
-```
-
-Create a super user (for non Okta based usage):
-
-```shell
-  make docker-createsuperuser
-```
-
-You will use this super user to login as administrator in your local Kamu application.
-
-
-Seed the database with initial dump data:
-
-```shell
-  make docker-loaddata
-```
-
-Start your local server:
-
-```shell
-  make docker-dev
-```
-
-Now just go to [http://localhost:8000](http://localhost:8000) in your browser :)
-
-For simulating a Heroku like environment (recommended to make build first):
-
-```shell
-  make docker-heroku
-```
-
-Access your local Heroku in the same link [http://localhost:8000](http://localhost:8000)
-
-Stop your environment:
-
-```shell
-  make docker-down
-```
-
-## Deployment
-
-We have out of the box support for [Heroku :dragon:](https://www.heroku.com/), [Dokku :whale:](http://dokku.viewdocs.io/dokku/) and [Docker :whale:](https://cloud.docker.com/repository/docker/ayrton/kamu). 
-
-For deployment, create a new Python app and set the remote origin from Dokku or Heroku, push it and enable the Postgres plugin.
-
-The buildpacks should configure all the necessary libraries for you.
-
-Now, we need the following environment variables before running Kamu for the first time:
-```shell
-SECRET_KEY="django-secret-key" # https://duckduckgo.com/?q=django+secret+key+generator
-DEBUG=true # Or false, depending if is a testing or production app
-DJANGO_SETTINGS_MODULE="core.settings.prod" # If you plan to run a testing version
-DATABASE_URL=postgres://dbhost/dbname # This variable should be automatically configured by the postgres extension.
-ALLOWED_HOSTS="kamu.example.com, kamu.heroku.etc"
-OKTA_METADATA_URL="SECRET-OKTA-STUFF" # On the case of Okta Authentication support
-OKTA_ENTITY_ID="http://kamu.example.com/okta-login/acs/" # On the case of Okta Authentication support, the URL to the acs login route
-ANALYTICS_ACCOUNT_ID="UA-123456789-1" # Only if you want to enable Google Analytics, otherwise don't set it
-SENTRY_DSN="SECRET-SENTRY-DSN" # Only if you want to enable Sentry, otherwise don't set it
-SSL=false # Enabled by default in production like deployments
-```
-See [Dokku environment variables](http://dokku.viewdocs.io/dokku/configuration/environment-variables/) or [Heroku Config Vars](https://devcenter.heroku.com/articles/config-vars) for more details.
-
-On non Okta based deployments, you should run either `dokku run kamu /bin/bash` or `heroku run /bin/bash -a kamu` (On this case, kamu is app name)
-```shell
-python manage.py createsuperuser
-```
-See [#74](https://github.com/ayr-ton/kamu/issues/74)
-
-![Thanks!](http://gifgifmagazine.com/wp-content/uploads/2018/11/macka-daj-pet-jea.gif)
+[MIT](LICENSE)

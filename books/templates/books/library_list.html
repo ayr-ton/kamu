@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Choose a Library — Kamu{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+  <h1 class="text-2xl font-bold mb-6">Libraries</h1>
+
+  {% if libraries %}
+  <div class="space-y-3">
+    {% for library in libraries %}
+    <a href="/libraries/{{ library.slug }}/"
+       class="card flex items-center justify-between group hover:border-primary-500 dark:hover:border-primary-500 transition-colors">
+      <span class="text-lg font-medium group-hover:text-primary-600 dark:group-hover:text-primary-500 transition-colors">
+        {{ library.name }}
+      </span>
+      <svg class="w-5 h-5 text-gray-400 group-hover:text-primary-600 dark:group-hover:text-primary-500 transition-colors" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+      </svg>
+    </a>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="text-gray-500 dark:text-gray-400">No libraries available yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,7 +1,7 @@
 from unittest.mock import patch
 
 from django.contrib.auth.models import User
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.utils import timezone
 from datetime import timedelta
 from django.db.utils import IntegrityError
@@ -132,13 +132,23 @@ class CreateItemTest(TestCase):
                 self.library, self.book, self.user,
             )
 
-    def test_that_a_creation_of_waitlist_item_starts_a_notification_task(self, notification_task):
+    @override_settings(KAMU_ENABLE_ASYNC_TASKS=True)
+    def test_create_item_starts_notification_task_when_toggle_on(self, notification_task):
         borrower1 = User.objects.create(username="person 1", email="person1@gmail.com")
         self.book.bookcopy_set.create(library=self.library, user=borrower1)
         self.waitlist_item = WaitlistItem.create_item(
             book=self.book, library=self.library, user=self.user,
         )
-        notification_task.delay.assert_called_with(self.waitlist_item.id)
+        notification_task.assert_called_with(self.waitlist_item.id)
+
+    @override_settings(KAMU_ENABLE_ASYNC_TASKS=False)
+    def test_create_item_skips_notification_task_when_toggle_off(self, notification_task):
+        borrower1 = User.objects.create(username="person 1", email="person1@gmail.com")
+        self.book.bookcopy_set.create(library=self.library, user=borrower1)
+        WaitlistItem.create_item(
+            book=self.book, library=self.library, user=self.user,
+        )
+        notification_task.assert_not_called()
 
 
 def add_to_waitlist(book, user, library, added_date):

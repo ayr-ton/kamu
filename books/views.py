@@ -1,34 +1,243 @@
-import os
 from django.contrib import messages, admin
-from django.db.models import Count
-from django.db.models import Q
+from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+from django.db.models import Exists, OuterRef, Q
 from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 
+from django.urls import reverse
 from django.utils.http import urlencode
-from django.views.generic.base import View, TemplateView
-from filters.mixins import (
-    FiltersMixin,
-)
-from rest_framework import viewsets, filters
-from rest_framework.decorators import action
-from rest_framework.response import Response
-from rest_framework.views import APIView
+from django.views.generic.base import View
 
-from books.google import BookFinder
-from books.serializers import *
+from books.google import BookFinder, lookup_isbn
+from books.models import Book, BookCopy, Library
 from .forms import IsbnForm
 from .models import Book as BookModel
-from waitlist.models import WaitlistItem
 
 
-class FrontendView(TemplateView):
-    template_name = 'index.html'
+@login_required
+def library_list(request):
+    last_library = request.COOKIES.get("last_library")
+    if last_library and Library.objects.filter(slug=last_library).exists():
+        return redirect(f"/libraries/{last_library}/")
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['analyticsAccountId'] = os.environ.get('ANALYTICS_ACCOUNT_ID')
-        return context
+    libraries = Library.objects.order_by("name")
+    return render(request, "books/library_list.html", {"libraries": libraries})
+
+
+@login_required
+def book_list(request, slug):
+    library = get_object_or_404(Library, slug=slug)
+
+    books = Book.objects.filter(bookcopy__library=library).distinct()
+
+    query = request.GET.get("q", "")
+    if query:
+        books = books.filter(
+            Q(title__icontains=query)
+            | Q(author__icontains=query)
+            | Q(isbn__icontains=query)
+        )
+
+    available_copy = BookCopy.objects.filter(
+        book=OuterRef("pk"), library=library, user=None, missing=False
+    )
+    books = books.annotate(is_available=Exists(available_copy)).order_by("title")
+
+    paginator = Paginator(books, 20)
+    page = paginator.get_page(request.GET.get("page"))
+
+    context = {"library": library, "page": page, "query": query}
+
+    if request.headers.get("HX-Request"):
+        return render(request, "books/partials/book_list_items.html", context)
+
+    response = render(request, "books/book_list.html", context)
+    response.set_cookie("last_library", slug, max_age=365 * 24 * 60 * 60)
+    return response
+
+
+@login_required
+def book_detail(request, slug, pk):
+    library = get_object_or_404(Library, slug=slug)
+    book = get_object_or_404(Book, pk=pk)
+    if not book.bookcopy_set.filter(library=library).exists():
+        raise Http404
+
+    copies = book.bookcopy_set.filter(library=library).select_related("user")
+    action = book.available_action(request.user, library)
+
+    context = {
+        "library": library,
+        "book": book,
+        "copies": copies,
+        "action": action,
+    }
+    return render(request, "books/book_detail.html", context)
+
+
+def _book_action_context(book, user, library):
+    copies = book.bookcopy_set.filter(library=library).select_related("user")
+    action = book.available_action(user, library)
+    return {"library": library, "book": book, "copies": copies, "action": action}
+
+
+@login_required
+def borrow_book(request, slug, pk):
+    if request.method != "POST":
+        return redirect("book-detail", slug=slug, pk=pk)
+    library = get_object_or_404(Library, slug=slug)
+    book = get_object_or_404(Book, pk=pk)
+    try:
+        book.borrow(user=request.user, library=library)
+    except ValueError:
+        pass
+    context = _book_action_context(book, request.user, library)
+    if request.headers.get("HX-Request"):
+        return render(request, "books/partials/book_action.html", context)
+    return redirect("book-detail", slug=slug, pk=pk)
+
+
+@login_required
+def return_book(request, slug, pk):
+    if request.method != "POST":
+        return redirect("book-detail", slug=slug, pk=pk)
+    library = get_object_or_404(Library, slug=slug)
+    book = get_object_or_404(Book, pk=pk)
+    try:
+        book.return_to_library(user=request.user, library=library)
+    except ValueError:
+        pass
+    context = _book_action_context(book, request.user, library)
+    if request.headers.get("HX-Request"):
+        return render(request, "books/partials/book_action.html", context)
+    return redirect("book-detail", slug=slug, pk=pk)
+
+
+@login_required
+def join_waitlist(request, slug, pk):
+    if request.method != "POST":
+        return redirect("book-detail", slug=slug, pk=pk)
+    library = get_object_or_404(Library, slug=slug)
+    book = get_object_or_404(Book, pk=pk)
+    from waitlist.models import WaitlistItem
+    try:
+        WaitlistItem.create_item(book=book, library=library, user=request.user)
+    except (ValueError, Exception):
+        pass
+    context = _book_action_context(book, request.user, library)
+    if request.headers.get("HX-Request"):
+        return render(request, "books/partials/book_action.html", context)
+    return redirect("book-detail", slug=slug, pk=pk)
+
+
+@login_required
+def leave_waitlist(request, slug, pk):
+    if request.method != "POST":
+        return redirect("book-detail", slug=slug, pk=pk)
+    library = get_object_or_404(Library, slug=slug)
+    book = get_object_or_404(Book, pk=pk)
+    book.waitlistitem_set.filter(user=request.user, library=library).delete()
+    context = _book_action_context(book, request.user, library)
+    if request.headers.get("HX-Request"):
+        return render(request, "books/partials/book_action.html", context)
+    return redirect("book-detail", slug=slug, pk=pk)
+
+
+@login_required
+def my_books(request):
+    borrowed_copies = BookCopy.objects.filter(
+        user=request.user
+    ).select_related("book", "library")
+    from waitlist.models import WaitlistItem
+    waitlist_items = WaitlistItem.objects.filter(
+        user=request.user
+    ).select_related("book", "library")
+    context = {
+        "borrowed_copies": borrowed_copies,
+        "waitlist_items": waitlist_items,
+    }
+    return render(request, "books/my_books.html", context)
+
+
+@login_required
+def add_book(request, slug):
+    library = get_object_or_404(Library, slug=slug)
+    return render(request, "books/add_book.html", {"library": library})
+
+
+@login_required
+def isbn_lookup(request, slug):
+    library = get_object_or_404(Library, slug=slug)
+    isbn = request.POST.get("isbn", "").strip()
+
+    if not isbn:
+        return render(request, "books/partials/book_preview.html", {
+            "library": library, "error": "Please enter an ISBN.",
+        })
+
+    existing = Book.objects.filter(isbn=isbn).first()
+    already_in_library = (
+        existing and BookCopy.objects.filter(book=existing, library=library).exists()
+    )
+
+    result = lookup_isbn(isbn)
+    if not result:
+        return render(request, "books/partials/book_preview.html", {
+            "library": library, "error": "No book found for that ISBN.",
+        })
+
+    return render(request, "books/partials/book_preview.html", {
+        "library": library,
+        "book_data": result,
+        "already_in_library": already_in_library,
+    })
+
+
+@login_required
+def add_book_confirm(request, slug):
+    library = get_object_or_404(Library, slug=slug)
+    isbn = request.POST.get("isbn", "").strip()
+
+    if not isbn:
+        return redirect("add-book", slug=slug)
+
+    result = lookup_isbn(isbn)
+    if not result:
+        messages.warning(request, "Could not find book. Please try again.")
+        return redirect("add-book", slug=slug)
+
+    book = Book.objects.filter(isbn=isbn).first()
+    if not book:
+        pub_date = result.get("publication_date", "")
+        try:
+            from django.utils.dateparse import parse_date
+            parsed_date = parse_date(pub_date)
+        except (ValueError, TypeError):
+            parsed_date = None
+
+        pages = result.get("number_of_pages", "")
+        try:
+            pages = int(pages)
+        except (ValueError, TypeError):
+            pages = None
+
+        book = Book.objects.create(
+            isbn=isbn,
+            title=result.get("title", ""),
+            subtitle=result.get("subtitle", ""),
+            author=result.get("author", ""),
+            publisher=result.get("publisher", ""),
+            description=result.get("description", ""),
+            publication_date=parsed_date,
+            number_of_pages=pages,
+            image_url=result.get("image_url", ""),
+        )
+
+    if not BookCopy.objects.filter(book=book, library=library).exists():
+        BookCopy.objects.create(book=book, library=library)
+
+    return redirect("book-detail", slug=slug, pk=book.pk)
 
 
 class IsbnFormView(View):
@@ -49,8 +258,8 @@ class IsbnFormView(View):
             book = BookFinder.fetch(isbn)
 
             if book_from_db:
-                 messages.warning(request, 'The requested book is on the table.')
-                 return self.get(request)
+                messages.warning(request, 'The requested book is on the table.')
+                return self.get(request)
 
             if book == {}:
                 messages.warning(request, 'Sorry! We could not find the book with the ISBN provided.')
@@ -62,161 +271,3 @@ class IsbnFormView(View):
             messages.error(request, 'Invalid ISBN provided!')
 
             return self.get(request)
-
-
-def get_book_filters_from_request(request, filters=('book_title', 'book_author')):
-    """Get book filters from a request
-    Given a request, return all filters with __icontains
-    Example:
-        > filters=('book_title') returns {title__icontains} if request has a book_title attribute
-    """
-    query = Q()
-
-    query_params = {query_param.strip(): request.query_params.get(query_param).strip() for query_param in request.query_params}
-
-    query_filters = {filter[5:] + "__icontains": query_params.get(filter) for filter in filters if
-            filter in query_params}
-
-    for key in query_filters:
-        query.add(Q(**{key: query_filters[key]}), Q.OR)
-
-    return query
-
-
-class LibraryViewSet(FiltersMixin, viewsets.ModelViewSet):
-    queryset = Library.objects.all()
-    serializer_class = LibraryCompactSerializer
-    lookup_field = 'slug'
-    filter_backends = (filters.OrderingFilter,)
-    ordering_fields = ('id', 'name')
-    ordering = ('name')
-
-    filter_mappings = {
-        'id': 'id',
-        'name': 'name__icontains',
-        'slug': 'slug__icontains'
-    }
-
-
-class BookViewSet(FiltersMixin, viewsets.ModelViewSet):
-    serializer_class = BookSerializer
-    queryset = Book.objects.filter()
-
-    def list(self, request, library_slug=None):
-        self.pagination_class.size = 1
-        self.filter_backends = ()
-        self.ordering_fields = ()
-        self.ordering = ()
-
-        library = get_object_or_404(Library, slug=library_slug)
-
-        book_filters = get_book_filters_from_request(request, ('book_title', 'book_author', 'book_isbn'))
-        book_filters.add(Q(bookcopy__library__slug__exact=library_slug), Q.AND)
-
-        books = self.queryset.filter(book_filters).order_by('title')
-        books = books.annotate(copies=Count('id'))
-
-        page = self.paginate_queryset(books)
-
-        serializer = BookCompactSerializer(page, many=True, context={
-            'request': request,
-            'library': library,
-            'user': request.user,
-        })
-
-        return self.get_paginated_response(serializer.data)
-
-    def retrieve(self, request, pk, library_slug=None):
-        book = get_object_or_404(self.queryset, pk=pk)
-        library = get_object_or_404(Library, slug=library_slug)
-        if not book.bookcopy_set.filter(library=library).exists():
-            raise Http404()
-        return self.__serialize_book(book, library, request)
-
-    @action(detail=True, methods=['post'])
-    def borrow(self, request, library_slug=None, pk=None):
-        book = get_object_or_404(self.queryset, pk=pk)
-        library = get_object_or_404(Library, slug=library_slug)
-        return self.__handle_book_action(
-            book=book,
-            action=book.borrow,
-            library=library,
-            request=request,
-        )
-
-    @action(detail=True, methods=['post'], url_path='return', name='Return')
-    def return_to_library(self, request, library_slug=None, pk=None):
-        book = get_object_or_404(self.queryset, pk=pk)
-        library = get_object_or_404(Library, slug=library_slug)
-        return self.__handle_book_action(
-            book=book,
-            action=book.return_to_library,
-            library=library,
-            request=request,
-        )
-
-    @action(detail=True, methods=['patch'], url_path='missing', name='Report as missing')
-    def report_missing(self, request, library_slug=None, pk=None):
-        book = get_object_or_404(self.queryset, pk=pk)
-        library = get_object_or_404(Library, slug=library_slug)
-        try:
-            book.report_as_missing(library=library)
-            return self.__serialize_book(book, library, request)
-        except ValueError as error:
-            return Response({'message': str(error)}, status=400)
-
-    @action(detail=True, methods=['patch'], url_path='found', name='Report book found')
-    def report_found(self, request, library_slug=None, pk=None):
-        book = get_object_or_404(self.queryset, pk=pk)
-        library = get_object_or_404(Library, slug=library_slug)
-        try:
-            book.was_found(library=library)
-            return self.__serialize_book(book, library, request)
-        except ValueError as error:
-            return Response({'message': str(error)}, status=400)
-
-    def __handle_book_action(self, book, action, library, request):
-        try:
-            action(library=library, user=request.user)
-            return self.__serialize_book(book, library, request)
-        except ValueError as error:
-            return Response({'message': str(error)}, status=400)
-
-    def __serialize_book(self, book, library, request):
-        serializer = BookSerializer(book, context={
-            'request': request,
-            'library': library,
-            'user': request.user,
-        })
-        return Response(serializer.data)
-
-
-class UserView(APIView):
-    def get(self, request, format=None):
-        return Response({
-            'user': UserSerializer(request.user).data,
-        })
-
-
-class UserBooksView(APIView):
-    def get(self, request, format=None):
-        user_copies = BookCopy.objects.filter(user=request.user)
-        return Response({
-            'results': list(map(lambda book_copy: BookCompactSerializer(book_copy.book, context={
-                'user': request.user,
-                'request': request,
-                'library': book_copy.library
-            }).data, user_copies))
-        })
-
-
-class UserWaitlistView(APIView):
-    def get(self, request, format=None):
-        user_copies = WaitlistItem.objects.filter(user=request.user)
-        return Response({
-            'results': list(map(lambda book_copy: BookCompactSerializer(book_copy.book, context={
-                'user': request.user,
-                'request': request,
-                'library': book_copy.library
-            }).data, user_copies))
-        })

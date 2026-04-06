@@ -1,72 +1,67 @@
-prod:
-	python manage.py migrate
-	python manage.py collectstatic --noinput
+.PHONY: build dev stop migrate createsuperuser loaddata shell test test-coverage local-dev local-test backend-deps tailwind-image tailwind-build tailwind-watch prod
 
-docker-build:
-	docker-compose build
+COMPOSE := podman-compose -f compose.yml
 
-docker-pull:
-	docker pull ayrton/kamu
+# Tailwind CSS (via container)
+TAILWIND_IMAGE := localhost/kamu-tailwind:dev
+TAILWIND_VOLUMES := -v ./static:/app/static -v ./core/templates:/app/core/templates -v ./books/templates:/app/books/templates -v ./waitlist/templates:/app/waitlist/templates
 
-docker-migrate:
-	docker-compose run --rm web python manage.py migrate
+# Container operations
+build:
+	$(COMPOSE) build
 
-docker-createsuperuser:
-	docker-compose run --rm web python manage.py createsuperuser
+dev:
+	$(COMPOSE) up web database
 
-docker-loaddata:
-	docker-compose run --rm web python manage.py loaddata dump_data/*.json
+stop:
+	$(COMPOSE) down
 
-docker-dev:
-	docker-compose -f docker-compose.yml -f docker-compose.dev.yml up dev worker
+# Django management (via container)
+migrate:
+	$(COMPOSE) run --rm web run manage.py migrate
 
-docker-stop:
-	docker-compose -f docker-compose.yml -f docker-compose.dev.yml stop
+createsuperuser:
+	$(COMPOSE) run --rm web run manage.py createsuperuser
 
-docker-test:
-	docker-compose run --rm -e DJANGO_SETTINGS_MODULE=core.settings.test web coverage run manage.py test
+loaddata:
+	$(COMPOSE) run --rm web run manage.py loaddata dump_data/*.json
 
-docker-heroku:
-	docker-compose up web
+shell:
+	$(COMPOSE) run --rm web run manage.py shell
 
-docker-down:
-	docker-compose down
+# Testing (via container)
+test:
+	$(COMPOSE) run --rm web run manage.py test
 
-download-cc-test-reporter:
-	mkdir -p tmp/
-	curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 \
-	> ./tmp/cc-test-reporter
-	chmod +x ./tmp/cc-test-reporter
+test-coverage:
+	$(COMPOSE) run --rm web sh -c "coverage run manage.py test && coverage report"
 
-security-checks:
-	sh ci/security-checks.sh
+# Local development (without containers)
+local-dev:
+	DJANGO_SETTINGS_MODULE=core.settings.dev uv run manage.py runserver 0.0.0.0:8000
 
+local-test:
+	DJANGO_SETTINGS_MODULE=core.settings.test uv run manage.py test
+
+local-test-coverage:
+	DJANGO_SETTINGS_MODULE=core.settings.test uv run coverage run manage.py test && uv run coverage report
+
+# Dependencies
 backend-deps:
-	python3 -m venv venv
-	. venv/bin/activate
-	pip install -r requirements.txt
+	uv pip compile pyproject.toml -o requirements.lock
+	uv pip sync requirements.lock
 
-backend-tests:
-	. venv/bin/activate
-	DJANGO_SETTINGS_MODULE=core.settings.test coverage run manage.py test
-	coverage xml
-	./tmp/cc-test-reporter format-coverage -t coverage.py \
-	-o tmp/codeclimate.backend.json coverage.xml
+# Tailwind steps
+tailwind-image:
+	podman build --target tailwind -t $(TAILWIND_IMAGE) -f Containerfile .
 
-frontend-deps:
-	npm i
+tailwind-build: tailwind-image
+	podman run --rm -w /app $(TAILWIND_VOLUMES) $(TAILWIND_IMAGE) tailwindcss -i static/css/input.css -o static/css/output.css --minify
 
-frontend-lint:
-	npm run lint
+tailwind-watch: tailwind-image
+	podman run --rm -w /app $(TAILWIND_VOLUMES) $(TAILWIND_IMAGE) tailwindcss -i static/css/input.css -o static/css/output.css --watch --poll
 
-frontend-tests:
-	npm test
-	./tmp/cc-test-reporter format-coverage -t lcov \
-	-o tmp/codeclimate.frontend.json coverage/lcov.info
-
-upload-coverage:
-	./tmp/cc-test-reporter sum-coverage tmp/codeclimate.*.json -p 2 \
-	-o tmp/codeclimate.total.json
-	./tmp/cc-test-reporter upload-coverage -i tmp/codeclimate.total.json
-
-test: backend-tests frontend-tests
+# Production
+prod:
+	uv run manage.py migrate
+	uv run manage.py collectstatic --noinput

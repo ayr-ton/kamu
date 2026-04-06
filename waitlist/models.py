@@ -3,6 +3,7 @@ from books.models import Library, Book, BookCopy
 from django.conf import settings
 from django.utils import timezone
 
+from core.feature_toggles import run_async_task
 from waitlist.tasks import send_new_user_on_waitlist_notification
 
 NO_WAITLIST_STATUS = 'NO_WAITLIST'
@@ -17,7 +18,7 @@ class Waitlist:
         self.items = WaitlistItem.objects.filter(book=book, library=library)
 
     def is_empty(self):
-        return len(self.items) is 0
+        return len(self.items) == 0
 
     def __is_user_first_on_waitlist(self, user):
         return not self.is_empty() and self.__ordered_items().first().user.id is user.id
@@ -51,13 +52,13 @@ class WaitlistItem(models.Model):
         )
         if copies.count():
             available_copies = copies.filter(user=None)
-            if available_copies.count() is 0:
+            if available_copies.count() == 0:
                 try:
                     waitlist_item = WaitlistItem.objects.create(book=book, user=user, library=library,
                                                                 added_date=timezone.now())
-                    send_new_user_on_waitlist_notification.delay(waitlist_item.id)
+                    run_async_task(send_new_user_on_waitlist_notification, waitlist_item.id)
                     return waitlist_item
-                except IntegrityError as error:
+                except IntegrityError:
                     raise IntegrityError('You are already on the waitlist for this book.')
             else:
                 raise ValueError('There are available copies of this book.')

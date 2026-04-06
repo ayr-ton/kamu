@@ -1,0 +1,77 @@
+{% load static %}
+
+{% if page.object_list %}
+<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+  {% for book in page.object_list %}
+  <a href="/libraries/{{ library.slug }}/books/{{ book.pk }}/"
+     class="card group hover:border-primary-500 dark:hover:border-primary-500 transition-colors flex flex-col">
+    <div class="aspect-[2/3] mb-3 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
+      {% if book.image_url %}
+      <img src="{{ book.image_url }}"
+           alt="{{ book.title }}"
+           class="w-full h-full object-cover"
+           loading="lazy">
+      {% else %}
+      <svg class="w-12 h-12 text-gray-300 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+      </svg>
+      {% endif %}
+    </div>
+
+    <h2 class="text-sm font-semibold leading-tight line-clamp-2 group-hover:text-primary-600 dark:group-hover:text-primary-500 transition-colors">
+      {{ book.title }}
+    </h2>
+    <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 truncate">{{ book.author }}</p>
+
+    <div class="mt-auto pt-2">
+      {% if book.is_available %}
+      <span class="inline-block text-xs font-medium px-2 py-0.5 rounded-full bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300">
+        Available
+      </span>
+      {% else %}
+      <span class="inline-block text-xs font-medium px-2 py-0.5 rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300">
+        Borrowed
+      </span>
+      {% endif %}
+    </div>
+  </a>
+  {% endfor %}
+</div>
+
+{% if page.has_other_pages %}
+<nav class="flex items-center justify-center gap-2 mt-8" aria-label="Pagination">
+  {% if page.has_previous %}
+  <a href="?page={{ page.previous_page_number }}{% if query %}&q={{ query|urlencode }}{% endif %}"
+     hx-get="{% url 'book-list' slug=library.slug %}?page={{ page.previous_page_number }}{% if query %}&q={{ query|urlencode }}{% endif %}"
+     hx-target="#book-list"
+     hx-swap="innerHTML"
+     class="btn-secondary text-sm">
+    Previous
+  </a>
+  {% endif %}
+
+  <span class="text-sm text-gray-500 dark:text-gray-400 px-3">
+    Page {{ page.number }} of {{ page.paginator.num_pages }}
+  </span>
+
+  {% if page.has_next %}
+  <a href="?page={{ page.next_page_number }}{% if query %}&q={{ query|urlencode }}{% endif %}"
+     hx-get="{% url 'book-list' slug=library.slug %}?page={{ page.next_page_number }}{% if query %}&q={{ query|urlencode }}{% endif %}"
+     hx-target="#book-list"
+     hx-swap="innerHTML"
+     class="btn-secondary text-sm">
+    Next
+  </a>
+  {% endif %}
+</nav>
+{% endif %}
+
+{% else %}
+<p class="text-gray-500 dark:text-gray-400 text-center py-12">
+  {% if query %}
+  No books found for "{{ query }}".
+  {% else %}
+  No books in this library yet.
+  {% endif %}
+</p>
+{% endif %}

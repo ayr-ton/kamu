@@ -12,7 +12,7 @@ from books.cron.send_notification import *
 
 class SendNotificationsTest(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user("test@thoughtworks.com")
+        self.user = User.objects.create_user("test@example.com")
         self.book = Book.objects.create(author="Author", title="the title", subtitle="The subtitle",
                                         publication_date=timezone.now())
         self.library = Library.objects.create(name="Santiago", slug="slug")

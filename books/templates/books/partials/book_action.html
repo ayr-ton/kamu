@@ -1,0 +1,29 @@
+{% if action.type == "BORROW" %}
+<button hx-post="{% url 'borrow-book' slug=library.slug pk=book.pk %}"
+        hx-target="#book-action-{{ book.pk }}"
+        hx-swap="innerHTML"
+        class="btn-primary w-full">
+  Borrow
+</button>
+{% elif action.type == "RETURN" %}
+<button hx-post="{% url 'return-book' slug=library.slug pk=book.pk %}"
+        hx-target="#book-action-{{ book.pk }}"
+        hx-swap="innerHTML"
+        class="btn-danger w-full">
+  Return
+</button>
+{% elif action.type == "JOIN_WAITLIST" %}
+<button hx-post="{% url 'join-waitlist' slug=library.slug pk=book.pk %}"
+        hx-target="#book-action-{{ book.pk }}"
+        hx-swap="innerHTML"
+        class="btn-secondary w-full">
+  Join Waitlist
+</button>
+{% elif action.type == "LEAVE_WAITLIST" %}
+<button hx-post="{% url 'leave-waitlist' slug=library.slug pk=book.pk %}"
+        hx-target="#book-action-{{ book.pk }}"
+        hx-swap="innerHTML"
+        class="btn-secondary w-full">
+  Leave Waitlist
+</button>
+{% endif %}

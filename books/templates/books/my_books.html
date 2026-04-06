@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}My Books — Kamu{% endblock %}
+
+{% block content %}
+<h1 class="text-2xl font-bold mb-6">My Books</h1>
+
+<section class="mb-10">
+  <h2 class="text-lg font-semibold mb-3">Borrowed ({{ borrowed_copies|length }})</h2>
+  {% if borrowed_copies %}
+  <div class="space-y-2">
+    {% for copy in borrowed_copies %}
+    <a href="{% url 'book-detail' slug=copy.library.slug pk=copy.book.pk %}"
+       class="card flex items-center gap-4 group hover:border-primary-500 dark:hover:border-primary-500 transition-colors">
+      <div class="w-10 h-14 flex-shrink-0 rounded overflow-hidden bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
+        {% if copy.book.image_url %}
+        <img src="{{ copy.book.image_url }}" alt="" class="w-full h-full object-cover" loading="lazy">
+        {% else %}
+        <svg class="w-5 h-5 text-gray-300 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+        </svg>
+        {% endif %}
+      </div>
+      <div class="flex-1 min-w-0">
+        <p class="text-sm font-semibold truncate group-hover:text-primary-600 dark:group-hover:text-primary-500 transition-colors">{{ copy.book.title }}</p>
+        <p class="text-xs text-gray-500 dark:text-gray-400">{{ copy.book.author }}</p>
+      </div>
+      <div class="text-xs text-gray-400 dark:text-gray-500 flex-shrink-0">
+        {{ copy.library.name }}
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="text-gray-500 dark:text-gray-400">You haven't borrowed any books.</p>
+  {% endif %}
+</section>
+
+<section>
+  <h2 class="text-lg font-semibold mb-3">Waitlist ({{ waitlist_items|length }})</h2>
+  {% if waitlist_items %}
+  <div class="space-y-2">
+    {% for item in waitlist_items %}
+    <a href="{% url 'book-detail' slug=item.library.slug pk=item.book.pk %}"
+       class="card flex items-center gap-4 group hover:border-primary-500 dark:hover:border-primary-500 transition-colors">
+      <div class="w-10 h-14 flex-shrink-0 rounded overflow-hidden bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
+        {% if item.book.image_url %}
+        <img src="{{ item.book.image_url }}" alt="" class="w-full h-full object-cover" loading="lazy">
+        {% else %}
+        <svg class="w-5 h-5 text-gray-300 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="currentColor" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+        </svg>
+        {% endif %}
+      </div>
+      <div class="flex-1 min-w-0">
+        <p class="text-sm font-semibold truncate group-hover:text-primary-600 dark:group-hover:text-primary-500 transition-colors">{{ item.book.title }}</p>
+        <p class="text-xs text-gray-500 dark:text-gray-400">{{ item.book.author }}</p>
+      </div>
+      <div class="text-right text-xs text-gray-400 dark:text-gray-500 flex-shrink-0">
+        <div>{{ item.library.name }}</div>
+        <div>Since {{ item.added_date|date:"M d, Y" }}</div>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="text-gray-500 dark:text-gray-400">You're not on any waitlists.</p>
+  {% endif %}
+</section>
+{% endblock %}

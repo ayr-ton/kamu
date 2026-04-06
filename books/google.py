@@ -1,4 +1,9 @@
+import logging
+
 import requests
+
+
+logger = logging.getLogger(__name__)
 
 
 class ResponseParser(object):
@@ -9,13 +14,6 @@ class ResponseParser(object):
     def extract_book(self):
         if self.content['totalItems'] == 0:
             return {}
-
-        # Hit the following URL to get a sample response:
-        #   https://www.googleapis.com/books/v1/volumes?q=isbn:9780133065268
-
-        # TODO: show an intermediate page with all the items and prompt user to select the one which
-        #   they would like to use as a template for adding a new book to the library.
-        #   For now, we select the last book in the list.
 
         return self._build(self.content['items'][-1])
 
@@ -53,7 +51,10 @@ class BookFinder(object):
 
     @classmethod
     def fetch(cls, isbn):
-        headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36'}
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) '
+                          'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36'
+        }
         url = "{}?q=isbn:{}".format(cls.GOOGLE_BOOKS_URL, isbn)
         response = requests.get(url, headers=headers, verify=False)
 
@@ -61,3 +62,60 @@ class BookFinder(object):
             return {}
 
         return ResponseParser(isbn, response.json()).extract_book()
+
+
+class OpenLibraryFinder(object):
+    BOOKS_URL = 'https://openlibrary.org/api/books'
+    COVER_URL = 'https://covers.openlibrary.org/b/isbn/{}-L.jpg'
+    OK = 200
+
+    @classmethod
+    def fetch(cls, isbn):
+        try:
+            params = {
+                'bibkeys': f'ISBN:{isbn}',
+                'format': 'json',
+                'jscmd': 'data',
+            }
+            response = requests.get(cls.BOOKS_URL, params=params, timeout=5)
+            if response.status_code != cls.OK:
+                return {}
+
+            data = response.json()
+            key = f'ISBN:{isbn}'
+            if key not in data:
+                return {}
+
+            return cls._build(isbn, data[key])
+        except (requests.RequestException, KeyError, ValueError):
+            logger.exception("Open Library lookup failed for ISBN %s", isbn)
+            return {}
+
+    @classmethod
+    def _build(cls, isbn, data):
+        authors = ', '.join(a.get('name', '') for a in data.get('authors', []))
+        return {
+            'isbn': isbn,
+            'title': data.get('title', ''),
+            'subtitle': data.get('subtitle', ''),
+            'author': authors,
+            'publisher': ', '.join(
+                p.get('name', '') for p in data.get('publishers', [])
+            ),
+            'publication_date': data.get('publish_date', ''),
+            'number_of_pages': data.get('number_of_pages', ''),
+            'description': '',
+            'image_url': cls.COVER_URL.format(isbn),
+        }
+
+
+def lookup_isbn(isbn):
+    """Try Open Library first (free, good covers), fall back to Google Books."""
+    result = OpenLibraryFinder.fetch(isbn)
+    if result:
+        google_result = BookFinder.fetch(isbn)
+        if google_result and not result.get('description'):
+            result['description'] = google_result.get('description', '')
+        return result
+
+    return BookFinder.fetch(isbn)

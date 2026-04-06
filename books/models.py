@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db import models
 from django.utils import timezone
 
+from core.feature_toggles import run_async_task
 from waitlist.tasks import send_waitlist_book_available_notification
 
 BOOK_RETURN_ACTION = 'RETURN'
@@ -72,7 +73,7 @@ class Book(models.Model):
         borrowed_copy.borrow_date = None
         borrowed_copy.save()
 
-        send_waitlist_book_available_notification.delay(borrowed_copy.pk)
+        run_async_task(send_waitlist_book_available_notification, borrowed_copy.pk)
 
     def report_as_missing(self, library):
         book_copy = self.__get_copy(library=library)
@@ -125,4 +126,3 @@ class BookCopy(models.Model):
 
     def __str__(self):
         return self.book.title
-

@@ -1,0 +1,48 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Containerfile
+    image: localhost/kamu:dev
+    ports:
+      - "8000:8000"
+    env_file: .env
+    environment:
+      - DATABASE_URL=postgres://kamu:kamu@database:5432/kamu
+      - DEBUG=true
+      - DJANGO_SETTINGS_MODULE=core.settings.dev
+      - KAMU_ENABLE_ASYNC_TASKS=false
+    volumes:
+      - ./core:/app/core
+      - ./books:/app/books
+      - ./waitlist:/app/waitlist
+      - ./static:/app/static
+      - ./manage.py:/app/manage.py
+      - ./Makefile:/app/Makefile
+      - ./requirements.lock:/app/requirements.lock
+      - ./pyproject.toml:/app/pyproject.toml
+    depends_on:
+      database:
+        condition: service_healthy
+    command: ["run", "manage.py", "runserver", "0.0.0.0:8000"]
+
+  database:
+    image: docker.io/library/postgres:16-alpine
+    expose:
+      - "5432"
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=kamu
+      - POSTGRES_PASSWORD=kamu
+      - POSTGRES_DB=kamu
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kamu"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  db-data:

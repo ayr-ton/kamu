@@ -2,7 +2,7 @@ from unittest import mock, TestCase
 
 import httpretty
 
-from books.google import BookFinder, ResponseParser
+from books.google import BookFinder, OpenLibraryFinder, ResponseParser, lookup_isbn
 
 
 class BookFinderTest(TestCase):
@@ -33,6 +33,99 @@ class BookFinderTest(TestCase):
         self.assertDictEqual(book, {})
 
         mockResponseParser.assert_not_called()
+
+
+class OpenLibraryFinderTest(TestCase):
+    @httpretty.activate
+    def test_fetch_returns_book_data_when_found(self):
+        isbn = '9780201633610'
+        response_body = {
+            f'ISBN:{isbn}': {
+                'title': 'Design Patterns',
+                'subtitle': 'Elements of Reusable Object-Oriented Software',
+                'authors': [{'name': 'Erich Gamma'}, {'name': 'Richard Helm'}],
+                'publishers': [{'name': 'Addison-Wesley'}],
+                'publish_date': '1994',
+                'number_of_pages': 395,
+            }
+        }
+
+        httpretty.register_uri(
+            httpretty.GET,
+            "https://openlibrary.org/api/books",
+            body=__import__('json').dumps(response_body),
+            status=200)
+
+        book = OpenLibraryFinder.fetch(isbn)
+
+        self.assertEqual(book['title'], 'Design Patterns')
+        self.assertEqual(book['author'], 'Erich Gamma, Richard Helm')
+        self.assertEqual(book['publisher'], 'Addison-Wesley')
+        self.assertEqual(book['number_of_pages'], 395)
+        self.assertIn(isbn, book['image_url'])
+
+    @httpretty.activate
+    def test_fetch_returns_empty_dict_when_not_found(self):
+        httpretty.register_uri(
+            httpretty.GET,
+            "https://openlibrary.org/api/books",
+            body='{}',
+            status=200)
+
+        book = OpenLibraryFinder.fetch('0000000000000')
+        self.assertDictEqual(book, {})
+
+    @httpretty.activate
+    def test_fetch_returns_empty_dict_on_api_error(self):
+        httpretty.register_uri(
+            httpretty.GET,
+            "https://openlibrary.org/api/books",
+            body='Server Error',
+            status=500)
+
+        book = OpenLibraryFinder.fetch('9780201633610')
+        self.assertDictEqual(book, {})
+
+
+class LookupIsbnTest(TestCase):
+    @mock.patch('books.google.BookFinder.fetch')
+    @mock.patch('books.google.OpenLibraryFinder.fetch')
+    def test_prefers_open_library_result(self, mock_ol, mock_google):
+        mock_ol.return_value = {
+            'isbn': '123', 'title': 'OL Title', 'description': '',
+            'author': 'A', 'publisher': 'P', 'subtitle': '',
+            'publication_date': '', 'number_of_pages': 100,
+            'image_url': 'http://covers.openlibrary.org/b/isbn/123-L.jpg',
+        }
+        mock_google.return_value = {
+            'isbn': '123', 'title': 'Google Title',
+            'description': 'A great book',
+            'author': 'A', 'publisher': 'P', 'subtitle': '',
+            'publication_date': '', 'number_of_pages': 100,
+            'image_url': 'http://google.com/cover.jpg',
+        }
+
+        result = lookup_isbn('123')
+        self.assertEqual(result['title'], 'OL Title')
+        self.assertEqual(result['description'], 'A great book')
+
+    @mock.patch('books.google.BookFinder.fetch')
+    @mock.patch('books.google.OpenLibraryFinder.fetch')
+    def test_falls_back_to_google_when_open_library_fails(self, mock_ol, mock_google):
+        mock_ol.return_value = {}
+        mock_google.return_value = {'isbn': '123', 'title': 'Google Title'}
+
+        result = lookup_isbn('123')
+        self.assertEqual(result['title'], 'Google Title')
+
+    @mock.patch('books.google.BookFinder.fetch')
+    @mock.patch('books.google.OpenLibraryFinder.fetch')
+    def test_returns_empty_when_both_fail(self, mock_ol, mock_google):
+        mock_ol.return_value = {}
+        mock_google.return_value = {}
+
+        result = lookup_isbn('123')
+        self.assertDictEqual(result, {})
 
 
 class ResponseParserTest(TestCase):
@@ -143,7 +236,6 @@ class ResponseParserTest(TestCase):
         })
 
     def test_should_not_raise_exception_when_fields_are_missing(self):
-        # content without subtitle, authors and description
         content = {
             "kind": "books#volumes",
             "totalItems": 2,
