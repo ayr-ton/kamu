@@ -1,46 +1,113 @@
-FROM debian:bookworm-slim AS tailwind
-WORKDIR /app
-RUN apt-get update && apt-get install -y --no-install-recommends curl ca-certificates \
-    && ARCH=$(uname -m) \
-    && case "$ARCH" in x86_64) ARCH=x64 ;; aarch64) ARCH=arm64 ;; esac \
-    && curl -sLO "https://github.com/tailwindlabs/tailwindcss/releases/latest/download/tailwindcss-linux-${ARCH}" \
-    && chmod +x "tailwindcss-linux-${ARCH}" \
-    && mv "tailwindcss-linux-${ARCH}" /usr/local/bin/tailwindcss \
-    && apt-get purge -y curl && apt-get autoremove -y && rm -rf /var/lib/apt/lists/*
 
-FROM tailwind AS build-tailwind
-COPY static/css/input.css static/css/
-COPY core/templates/ core/templates/
-COPY books/templates/ books/templates/
-COPY waitlist/templates/ waitlist/templates/
-RUN tailwindcss -i static/css/input.css -o static/css/output.css --minify
+services:
+  db:
+    image: postgres:17
+    container_name: django-pro-db
+    restart: unless-stopped
 
-FROM ghcr.io/astral-sh/uv:python3.12-alpine AS build
-WORKDIR /app
+    env_file:
+      - .env
 
-RUN apk add --no-cache postgresql-dev libffi-dev
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:?Defina POSTGRES_DB no .env}
+      POSTGRES_USER: ${POSTGRES_USER:?Defina POSTGRES_USER no .env}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Defina POSTGRES_PASSWORD no .env}
 
-ENV UV_LINK_MODE=copy \
-    UV_COMPILE_BYTECODE=1 \
-    UV_PYTHON_DOWNLOADS=never \
-    UV_PYTHON=python3.12
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
-COPY pyproject.toml requirements.lock ./
-RUN uv venv && uv pip sync requirements.lock
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
 
-COPY . /app
-COPY --from=build-tailwind /app/static/css/output.css /app/static/css/output.css
+    networks:
+      - backend
 
-RUN uv run manage.py collectstatic --noinput
+  web:
+    build:
+      context: .
+      dockerfile: Containerfile
+      target: production
 
+    container_name: django-pro-web
+    restart: unless-stopped
+    init: true
 
-FROM ghcr.io/astral-sh/uv:python3.12-alpine
-ENV PYTHONUNBUFFERED=1
-WORKDIR /app
-COPY --from=build /app /app
+    env_file:
+      - .env
 
-RUN apk add --no-cache bind-tools postgresql-dev libffi-dev xmlsec
+    environment:
+      POSTGRES_HOST: db
+      POSTGRES_PORT: "5432"
 
-EXPOSE 8000
-ENTRYPOINT ["uv"]
-CMD ["run", "gunicorn", "--bind", "0.0.0.0:8000", "--workers", "2", "core.wsgi:application"]
+    expose:
+      - "8000"
+
+    depends_on:
+      db:
+        condition: service_healthy
+
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - >-
+          import urllib.request;
+          urllib.request.urlopen(
+          'http://127.0.0.1:8000/health/',
+          timeout=3
+          )
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+    networks:
+      - backend
+
+  nginx:
+    build:
+      context: .
+      dockerfile: Containerfile
+      target: nginx
+
+    container_name: django-pro-nginx
+    restart: unless-stopped
+    init: true
+
+    ports:
+      - "80:80"
+
+    depends_on:
+      web:
+        condition: service_healthy
+
+    healthcheck:
+      test:
+        - CMD
+        - wget
+        - -q
+        - -O
+        - /dev/null
+        - http://127.0.0.1/health/
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
