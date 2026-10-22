@@ -1,107 +1,49 @@
+
 import airbnb from "eslint-config-airbnb-base-x/flat";
 import tseslint from "typescript-eslint";
 import globals from "globals";
 
-/**
- * ESLint PRO — Flat Config
- *
- * Princípios aplicados:
- * - Configuração organizada e previsível.
- * - Separação entre ESM, CommonJS e TypeScript.
- * - Ambientes específicos por tipo de arquivo.
- * - Type-aware linting.
- * - Regras compartilhadas centralizadas.
- * - Identificação de variáveis não utilizadas.
- * - Detecção de diretivas eslint-disable desnecessárias.
- * - Suporte a testes automatizados.
- * - Exclusão de arquivos e diretórios gerados.
- *
- * Divergências intencionais em relação ao Airbnb:
- * - Uso de tabs em vez de espaços.
- * - Tabs permitidas no código.
- */
-
-// ------------------------------------------------------------
-// 1. Regras compartilhadas
-// ------------------------------------------------------------
-
-const sharedRules = Object.freeze({
-	indent: ["error", "tab"],
-	"no-tabs": "off",
-
-	"no-unused-vars": [
-		"error",
-		{
-			vars: "all",
-			args: "all",
-			argsIgnorePattern: "^_",
-			caughtErrors: "all",
-			caughtErrorsIgnorePattern: "^_",
-			varsIgnorePattern: "^_",
-		},
-	],
-});
-
-// ------------------------------------------------------------
-// 2. Opções de linguagem
-// ------------------------------------------------------------
-
-const commonLanguageOptions = {
-	ecmaVersion: "latest",
+const unusedVarsOptions = {
+	vars: "all",
+	args: "all",
+	argsIgnorePattern: "^_",
+	caughtErrors: "all",
+	caughtErrorsIgnorePattern: "^_",
+	varsIgnorePattern: "^_",
 };
 
-// ------------------------------------------------------------
-// 3. Arquivos e diretórios ignorados
-// ------------------------------------------------------------
+const sharedRules = {
+	indent: ["error", "tab"],
+	"no-tabs": "off",
+	"no-unused-vars": ["error", unusedVarsOptions],
+};
 
 const ignoresConfig = {
 	ignores: [
-		// Dependências
-		"node_modules/**",
-
-		// Build
-		"dist/**",
-		"build/**",
-		"out/**",
-
-		// Cobertura
-		"coverage/**",
-
-		// Logs
-		"*.log",
-
-		// Cache
-		".cache/**",
-		".eslintcache",
-
-		// Frameworks
-		".next/**",
-		".nuxt/**",
-		".svelte-kit/**",
-
-		// Yarn Plug'n'Play
-		".pnp/**",
-
-		// Artefatos gerados
-		"vendor/**",
-		"public/build/**",
-
-		// Arquivos minificados
+		"**/node_modules/**",
+		"**/dist/**",
+		"**/build/**",
+		"**/out/**",
+		"**/coverage/**",
+		"**/*.log",
+		"**/.cache/**",
+		"**/.eslintcache",
+		"**/.next/**",
+		"**/.nuxt/**",
+		"**/.svelte-kit/**",
+		"**/.pnp/**",
+		"**/vendor/**",
+		"**/public/build/**",
 		"**/*.min.js",
 	],
 };
-
-// ------------------------------------------------------------
-// 4. Configuração ESM
-// ------------------------------------------------------------
 
 const esmConfig = {
 	files: ["**/*.js", "**/*.mjs"],
 
 	languageOptions: {
-		...commonLanguageOptions,
+		ecmaVersion: "latest",
 		sourceType: "module",
-
 		globals: {
 			...globals.browser,
 			...globals.node,
@@ -111,17 +53,12 @@ const esmConfig = {
 	rules: sharedRules,
 };
 
-// ------------------------------------------------------------
-// 5. Configuração CommonJS
-// ------------------------------------------------------------
-
 const commonJsConfig = {
 	files: ["**/*.cjs"],
 
 	languageOptions: {
-		...commonLanguageOptions,
+		ecmaVersion: "latest",
 		sourceType: "commonjs",
-
 		globals: {
 			...globals.node,
 		},
@@ -130,16 +67,11 @@ const commonJsConfig = {
 	rules: sharedRules,
 };
 
-// ------------------------------------------------------------
-// 6. Configuração TypeScript
-// ------------------------------------------------------------
-
 const typeScriptConfig = {
 	files: ["**/*.ts", "**/*.mts", "**/*.cts"],
 
 	languageOptions: {
-		...commonLanguageOptions,
-
+		ecmaVersion: "latest",
 		parser: tseslint.parser,
 
 		parserOptions: {
@@ -155,22 +87,13 @@ const typeScriptConfig = {
 	rules: {
 		...sharedRules,
 
-		// Desativa a regra JS em favor da versão TS
 		"no-unused-vars": "off",
 
 		"@typescript-eslint/no-unused-vars": [
 			"error",
-			{
-				vars: "all",
-				args: "all",
-				argsIgnorePattern: "^_",
-				caughtErrors: "all",
-				caughtErrorsIgnorePattern: "^_",
-				varsIgnorePattern: "^_",
-			},
+			unusedVarsOptions,
 		],
 
-		// Organização de tipos
 		"@typescript-eslint/consistent-type-imports": "error",
 
 		"@typescript-eslint/consistent-type-definitions": [
@@ -178,13 +101,9 @@ const typeScriptConfig = {
 			"interface",
 		],
 
-		// Segurança e qualidade
 		"@typescript-eslint/await-thenable": "error",
-
 		"@typescript-eslint/no-floating-promises": "error",
-
 		"@typescript-eslint/no-misused-promises": "error",
-
 		"@typescript-eslint/require-await": "error",
 
 		"@typescript-eslint/return-await": [
@@ -192,52 +111,27 @@ const typeScriptConfig = {
 			"in-try-catch",
 		],
 
-		// Modernização
 		"@typescript-eslint/prefer-nullish-coalescing": "error",
-
 		"@typescript-eslint/prefer-optional-chain": "error",
 
-		// Análises baseadas em tipos
-		"@typescript-eslint/no-unnecessary-type-assertion":
-			"error",
+		"@typescript-eslint/no-unnecessary-type-assertion": "error",
+		"@typescript-eslint/no-unnecessary-condition": "warn",
+		"@typescript-eslint/no-redundant-type-constituents": "error",
 
-		"@typescript-eslint/no-unnecessary-condition":
-			"warn",
-
-		"@typescript-eslint/no-redundant-type-constituents":
-			"error",
-
-		// Flexibilidade controlada
 		"@typescript-eslint/no-explicit-any": "warn",
-
 		"@typescript-eslint/no-empty-object-type": "warn",
 	},
 };
 
-// ------------------------------------------------------------
-// 7. Configuração de testes
-// ------------------------------------------------------------
-
 const testConfig = {
 	files: [
-		"**/*.test.js",
-		"**/*.test.mjs",
-		"**/*.test.ts",
-
-		"**/*.spec.js",
-		"**/*.spec.mjs",
-		"**/*.spec.ts",
-
-		"test/**/*.js",
-		"test/**/*.ts",
-
-		"tests/**/*.js",
-		"tests/**/*.ts",
+		"**/*.test.{js,mjs,cjs,ts,mts,cts}",
+		"**/*.spec.{js,mjs,cjs,ts,mts,cts}",
+		"test/**/*.{js,mjs,cjs,ts,mts,cts}",
+		"tests/**/*.{js,mjs,cjs,ts,mts,cts}",
 	],
 
 	languageOptions: {
-		...commonLanguageOptions,
-
 		globals: {
 			...globals.node,
 			...globals.jest,
@@ -245,29 +139,18 @@ const testConfig = {
 	},
 
 	rules: {
-		...sharedRules,
-
 		"no-console": "off",
 		"no-empty-function": "off",
-
-		// Mais flexível para mocks e stubs
 		"@typescript-eslint/no-explicit-any": "off",
 	},
 };
 
-// ------------------------------------------------------------
-// 8. Opções do ESLint
-// ------------------------------------------------------------
-
 const linterOptionsConfig = {
 	linterOptions: {
 		reportUnusedDisableDirectives: "error",
+		reportUnusedInlineConfigs: "error",
 	},
 };
-
-// ------------------------------------------------------------
-// 9. Exportação
-// ------------------------------------------------------------
 
 export default [
 	ignoresConfig,
@@ -275,8 +158,23 @@ export default [
 	...airbnb.recommended,
 	...airbnb.recommendedNode,
 
-	// Type-aware linting
-	...tseslint.configs.recommendedTypeChecked,
+	// Regras TypeScript sem exigir tipos para arquivos JavaScript.
+	{
+		files: ["**/*.ts", "**/*.mts", "**/*.cts"],
+		extends: [tseslint.configs.recommendedTypeChecked],
+		languageOptions: {
+			parser: tseslint.parser,
+			parserOptions: {
+				projectService: true,
+			},
+		},
+	},
+
+	// JavaScript não recebe regras que dependem de informações de tipos.
+	{
+		files: ["**/*.{js,mjs,cjs}"],
+		extends: [tseslint.configs.disableTypeChecked],
+	},
 
 	esmConfig,
 	commonJsConfig,
